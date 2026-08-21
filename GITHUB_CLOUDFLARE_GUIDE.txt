@@ -1,0 +1,80 @@
+BLACK FAMILY GAME NIGHT v1.0
+GITHUB + CLOUDFLARE LAUNCH GUIDE
+================================
+
+RECOMMENDED: DO THIS ON A WINDOWS/MAC COMPUTER.
+The app has more than 100 files because of the avatar library, so GitHub Desktop is easier than the browser uploader.
+
+WHAT YOU NEED
+-------------
+1. A free GitHub account.
+2. GitHub Desktop (free): https://desktop.github.com/
+3. Your free Cloudflare account.
+4. This unzipped Black Family Game Night v1.0 folder.
+
+PART A - PUT THE GAME ON GITHUB
+-------------------------------
+1. On github.com, click the + button at the top right > New repository.
+2. Repository name: black-family-game-night-live
+3. Set it to PRIVATE.
+4. Do not add a README, .gitignore or license. Click Create repository.
+5. Install/open GitHub Desktop and sign into the same GitHub account.
+6. In GitHub Desktop choose File > Clone repository.
+7. Choose the URL tab, paste the new repository URL, choose a folder on your computer, and click Clone.
+8. Open the folder GitHub Desktop cloned for you.
+9. Unzip the Black Family Game Night v1.0 download.
+10. Copy EVERYTHING INSIDE the unzipped game folder into the cloned GitHub folder.
+    At the top level you should see:
+       worker.mjs
+       wrangler.jsonc
+       package.json
+       gameEngine.mjs
+       extraGames.mjs
+       public/
+       test/
+       START_HERE.txt
+11. Return to GitHub Desktop. It should show many new files.
+12. In Summary type: Black Family Game Night v1.0
+13. Click Commit to main.
+14. Click Push origin.
+15. Open the repository on github.com and confirm worker.mjs begins with:
+       import crypto from 'node:crypto';
+    It must NOT say "Unsupported Media Type".
+
+PART B - CONNECT GITHUB TO CLOUDFLARE
+-------------------------------------
+1. Sign in to dash.cloudflare.com.
+2. Open Workers & Pages.
+3. Choose Create application / Create Worker, then the option to Import a repository.
+   (Cloudflare occasionally changes the exact button wording.)
+4. Connect GitHub if asked and choose: black-family-game-night-live
+5. Production branch: main
+6. Use these build settings:
+       Build command: leave blank / None
+       Deploy command: npx wrangler deploy
+       Root directory: /
+7. Save and Deploy.
+8. Cloudflare reads wrangler.jsonc and creates the SQLite-backed GameHub Durable Object automatically.
+9. When the deployment succeeds, open the workers.dev address Cloudflare gives you.
+
+PART C - FIRST REAL GAME TEST
+-----------------------------
+1. Open the workers.dev URL on your phone.
+2. Create Screw Your Buddy using the name John Black.
+   John's special Birthday Guy avatar should appear automatically.
+3. Share the invite link with a second phone/browser.
+4. Both players choose seats and press Ready.
+5. Start the game and confirm each phone sees ONLY its own private hand.
+6. Send a chat message and a reaction.
+7. Refresh one phone and confirm it reconnects to the same room.
+8. Try Join Voice on both phones and approve microphone permission.
+9. On iPhone Safari: Share > Add to Home Screen.
+
+AFTER LAUNCH
+------------
+Whenever this GitHub repository is updated and pushed to main, Cloudflare can build/deploy the new version automatically.
+
+IF CLOUDFLARE FAILS
+-------------------
+Open the failed build > Copy build log and paste the last error section into ChatGPT.
+Do not replace worker.mjs or wrangler.jsonc with files from any of the older prototype packages.

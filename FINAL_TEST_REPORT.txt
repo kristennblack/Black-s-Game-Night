@@ -1,0 +1,46 @@
+BLACK FAMILY GAME NIGHT v1.0 - FINAL PRE-UPLOAD TEST REPORT
+===========================================================
+Date: 2026-08-21
+
+RESULT: 79 / 79 automated tests passing.
+
+Launch verification includes:
+- All 18 game engines load and start through the Cloudflare GameHub adapter.
+- Create room -> join -> seat -> Ready -> start tested for all 18 games.
+- Viewer state exposes only the viewer's private hand; other players expose hand counts only.
+- Durable Object room snapshots write to persistent storage.
+- John Black is assigned the special Birthday Guy avatar when he creates a room using the name "John Black".
+- Original 20 character families remain available with Cute, Goofy, Rugged and Glam styles (80 styled looks total).
+- Syntax checks pass for worker.mjs, gameEngine.mjs, extraGames.mjs and public/app.js.
+
+Games included:
+1. Screw Your Buddy
+2. Fuck Your Buddy
+3. Smear
+4. Campfire Chaos
+5. Trail Trouble
+6. Prairie Pots
+7. Burn Logs
+8. Deck Sweep
+9. Cribbage
+10. Marbles & Jokers
+11. Euchre
+12. 31
+13. Golf
+14. Crazy Eights Countdown
+15. Mitts / Gloves / Socks
+16. Texas Hold'em Poker
+17. President
+18. Last Haven
+
+Important final real-device checks after Cloudflare deployment:
+- Actual microphone audio quality / WebRTC connectivity on two physical phones.
+- iPhone/Android touch sizing and browser safe-area behavior.
+- Full human playthroughs of the 15 newer game engines, which have automated and opening-flow coverage but less family playtesting than Screw Your Buddy, Fuck Your Buddy and Smear.
+
+Cloudflare configuration:
+- Worker entry: worker.mjs
+- Durable Object: GameHub
+- Storage backend: SQLite via new_sqlite_classes migration
+- Static assets: ./public
+- Deploy command: npx wrangler deploy

@@ -1,0 +1,15 @@
+{
+  "name": "black-family-game-night",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Black Family Game Night - private family multiplayer game lodge built for John Black.",
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check worker.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check public/app.js && node --test",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "4.125.0"
+  }
+}

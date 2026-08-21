@@ -1,0 +1,12 @@
+CLOUDFLARE BUILD SETTINGS
+=========================
+Build command:   None
+Deploy command:  npx wrangler deploy
+Root directory:  /
+
+Recommended workflow:
+- Use a computer.
+- Create a NEW private GitHub repository.
+- Upload all files/folders from this clean package to the repo root.
+- Connect that new repo to Cloudflare.
+- Do not copy any worker.mjs or wrangler.jsonc from the old repository into this one.

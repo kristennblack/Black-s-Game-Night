@@ -1,0 +1,24 @@
+BLACK FAMILY GAME NIGHT v1.0 - START HERE
+=========================================
+
+This is the FINAL CLEAN CLOUDFLARE LAUNCH PACKAGE.
+Do not mix it with any older prototype, Render, Replit or earlier Cloudflare files.
+
+BEST METHOD: use a computer and follow:
+   GITHUB_CLOUDFLARE_GUIDE.txt
+
+Cloudflare settings:
+   Build command: None / blank
+   Deploy command: npx wrangler deploy
+   Root directory: /
+
+Final automated test result:
+   79 / 79 passing
+
+John Black special birthday avatar:
+   public/avatars/john-black.png
+
+Original avatar library:
+   20 character families x 4 styles = 80 styled looks
+
+If a Cloudflare build fails, copy the LAST error section of the build log into ChatGPT.
