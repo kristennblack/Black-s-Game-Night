@@ -235,3 +235,12 @@ test('31 skips eliminated players when a player knocks',()=>{
   extraGameAction(r,p,{action:'thirtyKnock'});
   assert.equal(ex.turnPlayerId,ids[2]);assert.equal(ex.finalTurns.includes(ids[1]),false);
 });
+
+test('Trail Trouble exposes board metadata and card 4 moves backward four',()=>{
+  const r=room(GAME_TYPES.TRAIL,4,{teamMode:'teams2'});startExtraGame(r);const ex=r.game.extra,id=ex.turnPlayerId,p=r.players.get(id),pawn=ex.pawns[id][0];
+  pawn.zone='track';pawn.dist=12;ex.drawn={id:'trail-four',kind:'move',value:4,label:'4'};
+  const pub=extraPublicState(r,p);assert.equal(pub.trackLength,60);assert.equal(pub.deckCount,ex.deck.length);assert.equal(pub.direction,1);assert.ok(pub.startPositions[id]===0);
+  const backward=pub.actions.find(a=>a.action==='trailMove'&&a.args.pawnId===pawn.id&&a.args.steps===-4);assert.ok(backward,'4 should offer a backward-four move');
+  assert.equal(pub.actions.some(a=>a.action==='trailMove'&&a.args.pawnId===pawn.id&&a.args.steps===4),false);
+  extraGameAction(r,p,backward);assert.equal(pawn.dist,8);
+});

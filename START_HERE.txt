@@ -1,33 +1,51 @@
-BLACK FAMILY GAME NIGHT v1.0.2 - START HERE
-===========================================
+BLACK FAMILY GAME NIGHT v1.0.6
+FULL REPLACEMENT BUILD - JOHN'S 16 BIRTHDAY LOOKS
 
-THIS IS THE FULL REPLACEMENT CLOUDFLARE PACKAGE.
-Do not mix files from older Black Family Game Night ZIPs into this version.
+WHAT IS IN THIS VERSION
+- Everything from the prior v1.0.5 live build
+- All 18 games
+- All previous family-play corrections
+- Upgraded Trail Trouble board and movement display
+- Game Shelf button from games
+- Auto-seat when Ready is pressed
+- Screw Your Buddy and Fuck Your Buddy bidding-hand visibility
+- Reliable chat + quick reactions including the middle finger
+- Voice controls removed for now
+- Black Family & Pets roster plus every original avatar
+- 33 character identities total
+- John Black now has 16 exclusive Birthday Boy looks
+- 144 selectable character looks total
 
-YOU ALREADY HAVE GITHUB + CLOUDFLARE CONNECTED:
-   Follow UPDATE_EXISTING_LIVE_APP.txt
+UPDATE THE EXISTING LIVE APP
+1. Unzip this package.
+2. In GitHub Desktop, select Black-s-Game-Night.
+3. Click Show in Explorer.
+4. KEEP the hidden .git folder in that repository folder.
+5. Delete/replace the other project files with EVERYTHING INSIDE this v1.0.6 folder.
+6. Return to GitHub Desktop.
+7. Summary: Black Family Game Night v1.0.6 - John birthday looks
+8. Click Commit to main.
+9. Click Push origin.
+10. Cloudflare is already connected. Do NOT reconnect it or change the build settings.
+11. Wait for the new Cloudflare deployment to turn green.
+12. Open the main game URL and confirm the header says v1.0.6.
+13. Create a NEW room for the first test.
+14. Open the avatar picker and choose John Black. You should see all 16 Birthday Boy looks.
 
-CLOUDFLARE SETTINGS (leave these as they are):
-   Build command: blank / None
-   Deploy command: npx wrangler deploy
-   Root directory: /
-   Production branch: main
-
-FINAL AUTOMATED TEST RESULT:
-   82 / 82 passing
-
-WHAT CHANGED IN v1.0.2:
-   - Removed the in-app Install App button.
-   - Kept normal browser Add to Home Screen/PWA support.
-   - Included the live-room connection fix.
-   - Added Retry Connection + Back to Game Shelf after an 8-second room timeout.
-   - Added visible v1.0.2 version badge.
-   - Bumped service-worker cache so older app files are replaced.
-
-JOHN BLACK SPECIAL BIRTHDAY AVATAR:
-   public/avatars/john-black.png
-
-ORIGINAL AVATAR LIBRARY:
-   20 character families x 4 styles, plus John's special host artwork.
-
-If Cloudflare reports a build failure, copy the LAST error section of the build log into ChatGPT.
+JOHN'S 16 LOOKS
+1. Classic John
+2. Birthday Guy (default)
+3. Campfire Casual
+4. Rugged Outdoorsman
+5. Plaid & Proud
+6. Game Night Goof
+7. Post-Apoc Scout
+8. Sunday Best
+9. Plaid Woodsman
+10. Birthday Host
+11. Survival Scout
+12. Campfire Dealer
+13. Western Cap
+14. Lodge Flannel
+15. Denim Worker
+16. Wasteland Lumberjack

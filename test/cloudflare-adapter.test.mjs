@@ -99,10 +99,140 @@ test('Launch UI removes the nonfunctional install button and provides room retry
   assert.match(appSource,/data-action="retryConnect"/);
 });
 
-test('Launch assets advertise v1.0.2 and use a fresh service-worker cache', async()=>{
+test('Launch assets advertise v1.0.6 and use a fresh service-worker cache', async()=>{
   const {readFile}=await import('node:fs/promises');
   const appSource=await readFile(new URL('../public/app.js',import.meta.url),'utf8');
   const swSource=await readFile(new URL('../public/sw.js',import.meta.url),'utf8');
-  assert.match(appSource,/APP_VERSION='1\.0\.2'/);
-  assert.match(swSource,/black-family-game-night-v102/);
+  assert.match(appSource,/APP_VERSION='1\.0\.6'/);
+  assert.match(swSource,/black-family-game-night-v106/);
+});
+
+
+test('Ready auto-assigns an open seat when a player did not choose one', async()=>{
+  const {hub}=makeHub();
+  const created=await post(hub,'create',{name:'John Black',gameType:GAME_TYPES.SCREW});
+  const joined=await post(hub,'join',{roomId:created.roomId,name:'Kristen'});
+  await post(hub,'ready',{roomId:created.roomId,playerToken:created.playerToken,ready:true});
+  await post(hub,'ready',{roomId:created.roomId,playerToken:joined.playerToken,ready:true});
+  const s=await state(hub,created.roomId,created.playerToken);
+  assert.deepEqual(new Set(s.players.map(p=>p.seat)),new Set([0,1]));
+  assert.ok(s.players.every(p=>p.ready));
+  await post(hub,'start',{roomId:created.roomId,hostToken:created.hostToken});
+  const started=await state(hub,created.roomId,created.playerToken);
+  assert.equal(started.game.phase,'bidding');
+  assert.ok(started.game.hand.length>0,'Screw hand should be dealt before bidding');
+});
+
+test('Fuck Your Buddy exposes the viewer hand during bidding', async()=>{
+  const {hub}=makeHub();
+  const created=await post(hub,'create',{name:'John Black',gameType:GAME_TYPES.FUCK});
+  const joined=await post(hub,'join',{roomId:created.roomId,name:'Kristen'});
+  await post(hub,'ready',{roomId:created.roomId,playerToken:created.playerToken,ready:true});
+  await post(hub,'ready',{roomId:created.roomId,playerToken:joined.playerToken,ready:true});
+  await post(hub,'start',{roomId:created.roomId,hostToken:created.hostToken});
+  const a=await state(hub,created.roomId,created.playerToken);
+  const b=await state(hub,created.roomId,joined.playerToken);
+  assert.equal(a.game.phase,'bidding');
+  assert.ok(a.game.hand.length>0);
+  assert.ok(b.game.hand.length>0);
+});
+
+test('Chat is stored once and visible to the other player', async()=>{
+  const {hub}=makeHub();
+  const created=await post(hub,'create',{name:'John Black',gameType:GAME_TYPES.SCREW});
+  const joined=await post(hub,'join',{roomId:created.roomId,name:'Kristen'});
+  const before=await state(hub,created.roomId,joined.playerToken);
+  await post(hub,'chat',{roomId:created.roomId,playerToken:created.playerToken,text:'Testing family chat'});
+  const after=await state(hub,created.roomId,joined.playerToken);
+  assert.ok(after.revision>before.revision);
+  assert.equal(after.chat.at(-1).name,'John Black');
+  assert.equal(after.chat.at(-1).text,'Testing family chat');
+});
+
+test('Family-play UI includes Game Shelf home, bid-hand visibility, middle-finger reaction, and no voice controls', async()=>{
+  const {readFile}=await import('node:fs/promises');
+  const appSource=await readFile(new URL('../public/app.js',import.meta.url),'utf8');
+  assert.match(appSource,/⌂ Game Shelf/);
+  assert.match(appSource,/showBidHand/);
+  assert.match(appSource,/🖕/);
+  assert.doesNotMatch(appSource,/Join Voice|Voice chat|voiceToggle|voiceMute|getUserMedia/);
+  assert.doesNotMatch(appSource,/avatar-style-mark/);
+  assert.match(appSource,/setInterval\(\(\)=>hydrate\(false\),1500\)/);
+});
+
+test('All 18 games can auto-seat players who simply press Ready', async()=>{
+  const {hub}=makeHub();
+  for(const [gameType,count] of starts){
+    const created=await post(hub,'create',{name:'John Black',gameType});
+    const tokens=[created.playerToken];
+    for(let i=1;i<count;i++)tokens.push((await post(hub,'join',{roomId:created.roomId,name:`Auto ${i+1}`})).playerToken);
+    for(const playerToken of tokens)await post(hub,'ready',{roomId:created.roomId,playerToken,ready:true});
+    const lobby=await state(hub,created.roomId,created.playerToken);
+    assert.ok(lobby.players.every(p=>Number.isInteger(p.seat)),`${gameType} left an unseated ready player`);
+    assert.equal(new Set(lobby.players.map(p=>p.seat)).size,count,`${gameType} duplicated an assigned seat`);
+    await post(hub,'start',{roomId:created.roomId,hostToken:created.hostToken});
+    const started=await state(hub,created.roomId,created.playerToken);
+    assert.notEqual(started.game.phase,'lobby');
+  }
+});
+
+test('Middle-finger quick reaction is accepted and broadcast in room state', async()=>{
+  const {hub}=makeHub();
+  const created=await post(hub,'create',{name:'John Black',gameType:GAME_TYPES.SCREW});
+  await post(hub,'react',{roomId:created.roomId,playerToken:created.playerToken,emoji:'🖕'});
+  const s=await state(hub,created.roomId,created.playerToken);
+  assert.equal(s.reaction.emoji,'🖕');
+});
+
+
+test('Named Black family and pet players receive their matching avatar automatically', async()=>{
+  const {hub}=makeHub();
+  const created=await post(hub,'create',{name:'Kristen',gameType:GAME_TYPES.SCREW});
+  const expected={Dorothy:'dorothy',James:'james',Elizabeth:'elizabeth',Holly:'holly',Vanessa:'vanessa',Logan:'logan',Papa:'papa',Nana:'nana',Molly:'molly',Kelsi:'kelsi',Gunner:'gunner'};
+  for(const [name,avatar] of Object.entries(expected)){
+    const joined=await post(hub,'join',{roomId:created.roomId,name});
+    const s=await state(hub,created.roomId,joined.playerToken);
+    assert.equal(s.players.find(p=>p.id===s.viewerId).avatar,avatar,`${name} should default to ${avatar}`);
+  }
+  const hostState=await state(hub,created.roomId,created.playerToken);
+  assert.equal(hostState.players.find(p=>p.id===hostState.viewerId).avatar,'kristen');
+});
+
+test('All named family avatars have four style image files and remain alongside the original library', async()=>{
+  const {access,readFile}=await import('node:fs/promises');
+  const ids=['dorothy','james','elizabeth','holly','vanessa','logan','papa','nana','kristen','molly','kelsi','gunner'];
+  const styles=['cute','goofy','rugged','glam'];
+  for(const id of ids) for(const style of styles) await access(new URL(`../public/avatars/styles/${id}-${style}.jpg`,import.meta.url));
+  const appSource=await readFile(new URL('../public/app.js',import.meta.url),'utf8');
+  for(const id of ids) assert.match(appSource,new RegExp(`\\['${id}'`));
+  for(const original of ['cowboy','ballerina','construction','firefighter','chef','pirate','wizard','astronaut','princess','detective','lumberjack','hockey','braids','glasses','grandma','grandpa','fancy','moustache','pajamas','coolcap']) assert.match(appSource,new RegExp(`\\['${original}'`));
+  assert.match(appSource,/Black Family & Pets/);
+  assert.match(appSource,/Original Characters/);
+});
+
+
+test('John Black defaults to Birthday Guy and supports all 16 exclusive birthday looks', async()=>{
+  const {hub}=makeHub();
+  const created=await post(hub,'create',{name:'John Black',gameType:GAME_TYPES.SCREW});
+  let s=await state(hub,created.roomId,created.playerToken);
+  let john=s.players.find(p=>p.id===s.viewerId);
+  assert.equal(john.avatar,'john');
+  assert.equal(john.variant,1,'John should start on Birthday Guy look #2');
+  await post(hub,'profile',{roomId:created.roomId,playerToken:created.playerToken,name:'John Black',avatar:'john',variant:15,outfitVariant:0,color:john.color});
+  s=await state(hub,created.roomId,created.playerToken);
+  john=s.players.find(p=>p.id===s.viewerId);
+  assert.equal(john.variant,15,'John should be able to select look #16');
+});
+
+test('All 16 John look image files are packaged and the UI exposes the full Birthday Boy lookbook', async()=>{
+  const {access,readFile}=await import('node:fs/promises');
+  for(let i=1;i<=16;i++) await access(new URL(`../public/avatars/styles/john-look-${String(i).padStart(2,'0')}.jpg`,import.meta.url));
+  const appSource=await readFile(new URL('../public/app.js',import.meta.url),'utf8');
+  const cssSource=await readFile(new URL('../public/styles.css',import.meta.url),'utf8');
+  assert.match(appSource,/const johnLooks=\[/);
+  assert.match(appSource,/John gets 16 exclusive looks/);
+  assert.match(appSource,/Pick John’s Birthday Boy look/);
+  assert.match(appSource,/john-look-16/);
+  assert.match(cssSource,/\.john-look-grid/);
+  assert.match(cssSource,/\.john-look-choice/);
 });

@@ -20,8 +20,16 @@ const now=()=>Date.now();
 const gameName=t=>isExtraGame(t)?extraName(t):t===GAME_TYPES.FUCK?'Fuck Your Buddy':t===GAME_TYPES.SMEAR?'Smear':'Screw Your Buddy';
 const maxSeatsFor=t=>isExtraGame(t)?extraMaxSeats(t):t===GAME_TYPES.SMEAR?4:t===GAME_TYPES.FUCK?56:52;
 const jsonResponse=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'}});
+const namedAvatarKeys={
+  'john black':'john','john':'john','dorothy':'dorothy','james':'james','elizabeth':'elizabeth','holly':'holly','vanessa':'vanessa','logan':'logan',
+  'papa':'papa','nana':'nana','kristen':'kristen','molly':'molly','kelsi':'kelsi','gunner':'gunner'
+};
+const defaultAvatarForName=name=>namedAvatarKeys[String(name||'').trim().toLowerCase()]||'cowboy';
+const defaultVariantForName=name=>defaultAvatarForName(name)==='john'?1:0;
 
 function playerOrder(room){return [...room.players.values()].filter(p=>p.seat!=null).sort((a,b)=>a.seat-b.seat).map(p=>p.id)}
+function assignOpenSeat(room,p){if(p.seat!=null)return p.seat;const used=new Set([...room.players.values()].filter(x=>x.id!==p.id&&x.seat!=null).map(x=>x.seat));for(let i=0;i<room.maxSeats;i++)if(!used.has(i)){p.seat=i;return i}return null}
+function assignOpenSeats(room){for(const p of room.players.values())if(p.seat==null&&assignOpenSeat(room,p)==null)throw new Error('No open seats remain')}
 function player(room,playerToken){return [...room.players.values()].find(p=>p.token===playerToken)}
 function host(room,hostToken){return !!hostToken&&room.hostToken===hostToken}
 function currentRound(room){return room.game.roundIndex>=0?room.game.schedule[room.game.roundIndex]||null:null}
@@ -34,7 +42,7 @@ function publicState(room,viewerToken=null){
   const forbidden=!isExtraGame(room.gameType)&&room.gameType!==GAME_TYPES.SMEAR&&viewer&&g.phase==='bidding'&&g.bidTurnId===viewer.id&&viewer.id===g.dealerId
     ?forbiddenDealerBid(g.handSize,g.biddingOrder.filter(id=>id!==g.dealerId).map(id=>room.players.get(id).bid??0)):null;
   return {
-    id:room.id,createdAt:room.createdAt,phase:g.phase,gameType:room.gameType,gameName:gameName(room.gameType),settings:room.settings,
+    id:room.id,createdAt:room.createdAt,revision:room.revision||0,phase:g.phase,gameType:room.gameType,gameName:gameName(room.gameType),settings:room.settings,
     players,maxSeats:room.maxSeats,viewerId:viewer?.id||null,hostPlayerId:room.hostPlayerId,
     game:{phase:g.phase,roundIndex:g.roundIndex,roundNumber:g.roundIndex+1,totalRounds:room.gameType===GAME_TYPES.SMEAR?null:g.schedule.length,handSize:g.handSize,trump:(room.gameType===GAME_TYPES.SMEAR?g.trump:round?.trump)||null,powerRank:round?.powerRank||null,schedule:g.schedule,dealerId:g.dealerId,dealerCeremony:g.dealerCeremony,biddingOrder:g.biddingOrder,bidTurnId:g.bidTurnId,turnPlayerId:g.turnPlayerId,leaderId:g.leaderId,currentTrick:g.currentTrick,lastTrick:g.lastTrick,roundResults:g.roundResults,winnerIds:g.winnerIds,history:g.history,legalCardIds:legal,hand:viewer?viewer.hand:[],forbiddenBid:forbidden,teamScores:g.teamScores||null,highBid:g.highBid??null,highBidderId:g.highBidderId||null,contract:g.contract??null,fourAndOut:!!g.fourAndOut,biddingTeam:g.biddingTeam||null,smearAwards:g.smearAwards||null,gameValues:g.gameValues||null,extra:isExtraGame(room.gameType)&&g.extra?extraPublicState(room,viewer):null},
     chat:room.chat.slice(-80),reaction:room.reaction
@@ -44,20 +52,20 @@ function publicState(room,viewerToken=null){
 function serializeRoom(room){return {...room,subscribers:undefined,reaction:null,players:[...room.players.values()].map(p=>({...p,connected:false}))}}
 function restoreRoom(raw){
   const gameType=raw.gameType||GAME_TYPES.SCREW;
-  const restored={...raw,gameType,settings:{roundCount:10,...extraDefaults(gameType),...raw.settings},maxSeats:raw.maxSeats||maxSeatsFor(gameType),subscribers:new Set(),reaction:null,players:new Map((raw.players||[]).map(p=>[p.id,{...p,connected:false}]))};
+  const restored={...raw,revision:Number(raw.revision||0),gameType,settings:{roundCount:10,...extraDefaults(gameType),...raw.settings},maxSeats:raw.maxSeats||maxSeatsFor(gameType),subscribers:new Set(),reaction:null,players:new Map((raw.players||[]).map(p=>[p.id,{...p,connected:false}]))};
   restored.game={schedule:[],history:[],...restored.game};
   if(!restored.game.schedule.length&&restored.game.handSizes?.length){restored.game.schedule=restored.game.handSizes.map((handSize,i)=>({handSize,trump:['hearts','clubs','diamonds','spades','none'][i%5],powerRank:null,source:null}))}
   return restored;
 }
 function persistRoom(room){activeHub?.persistRoom(room)}
 function writeEvent(sub,type,payload){try{sub.controller.enqueue(encoder.encode(`event: ${type}\ndata: ${JSON.stringify(payload)}\n\n`));return true}catch{return false}}
-function broadcast(room){persistRoom(room);for(const sub of [...room.subscribers]){if(!writeEvent(sub,'state',publicState(room,sub.token)))room.subscribers.delete(sub)}}
+function broadcast(room){room.revision=(room.revision||0)+1;persistRoom(room);for(const sub of [...room.subscribers]){if(!writeEvent(sub,'state',publicState(room,sub.token)))room.subscribers.delete(sub)}}
 function sendVoiceSignal(room,targetId,payload){for(const sub of [...room.subscribers]){const target=player(room,sub.token);if(target?.id!==targetId)continue;if(!writeEvent(sub,'voice',payload))room.subscribers.delete(sub)}}
 
 function newRoom(hostName='Host',gameType=GAME_TYPES.SCREW){
   if(!Object.values(GAME_TYPES).includes(gameType))gameType=GAME_TYPES.SCREW;
   const id=safeId(),hostToken=token(),pToken=token(),pId=crypto.randomUUID();
-  const room={id,gameType,settings:{roundCount:10,...extraDefaults(gameType)},hostToken,hostPlayerId:pId,createdAt:now(),maxSeats:maxSeatsFor(gameType),subscribers:new Set(),chat:[],reaction:null,players:new Map([[pId,{id:pId,token:pToken,name:hostName,avatar:/^john black$/i.test(hostName.trim())?'john':'cowboy',variant:0,outfitVariant:0,color:'#2f6b4f',seat:null,ready:false,connected:true,bid:null,tricks:0,score:0,continued:false,hand:[],eliminated:false}]]),game:{phase:'lobby',roundIndex:-1,schedule:[],handSize:0,dealerId:null,dealerCeremony:null,biddingOrder:[],bidTurnId:null,bidActionCount:0,highBid:null,highBidderId:null,contract:null,fourAndOut:false,biddingTeam:null,teamScores:{A:0,B:0},trump:null,trumpPlays:[],capturedByTeam:{A:[],B:[]},smearAwards:null,gameValues:null,turnPlayerId:null,leaderId:null,currentTrick:[],lastTrick:null,roundResults:null,winnerIds:[],history:[],extra:null}};
+  const room={id,revision:0,gameType,settings:{roundCount:10,...extraDefaults(gameType)},hostToken,hostPlayerId:pId,createdAt:now(),maxSeats:maxSeatsFor(gameType),subscribers:new Set(),chat:[],reaction:null,players:new Map([[pId,{id:pId,token:pToken,name:hostName,avatar:defaultAvatarForName(hostName),variant:defaultVariantForName(hostName),outfitVariant:0,color:'#2f6b4f',seat:null,ready:false,connected:true,bid:null,tricks:0,score:0,continued:false,hand:[],eliminated:false}]]),game:{phase:'lobby',roundIndex:-1,schedule:[],handSize:0,dealerId:null,dealerCeremony:null,biddingOrder:[],bidTurnId:null,bidActionCount:0,highBid:null,highBidderId:null,contract:null,fourAndOut:false,biddingTeam:null,teamScores:{A:0,B:0},trump:null,trumpPlays:[],capturedByTeam:{A:[],B:[]},smearAwards:null,gameValues:null,turnPlayerId:null,leaderId:null,currentTrick:[],lastTrick:null,roundResults:null,winnerIds:[],history:[],extra:null}};
   rooms.set(id,room);persistRoom(room);return {room,hostToken,playerToken:pToken};
 }
 
@@ -108,18 +116,18 @@ async function handleApi(request){
   }
   if(u.pathname==='/api/join'&&request.method==='POST'){
     const b=await parseBody(request),room=await activeHub.getRoom(b.roomId);if(!room)return jsonResponse({error:'Room not found'},404);if(room.game.phase!=='lobby')return jsonResponse({error:'Game already started'},409);if(room.players.size>=room.maxSeats)return jsonResponse({error:'Room is full'},409);
-    const id=crypto.randomUUID(),t=token();room.players.set(id,{id,token:t,name:(b.name||'Player').slice(0,24),avatar:b.avatar||(/^john black$/i.test(String(b.name||'').trim())?'john':'cowboy'),variant:Number(b.variant||0),outfitVariant:Number(b.outfitVariant||0),color:b.color||'#6c7a89',seat:null,ready:false,connected:true,bid:null,tricks:0,score:0,continued:false,hand:[],eliminated:false});broadcast(room);return jsonResponse({playerToken:t,playerId:id,gameType:room.gameType});
+    const id=crypto.randomUUID(),t=token();room.players.set(id,{id,token:t,name:(b.name||'Player').slice(0,24),avatar:b.avatar||defaultAvatarForName(b.name),variant:Number(b.variant??defaultVariantForName(b.name)),outfitVariant:Number(b.outfitVariant||0),color:b.color||'#6c7a89',seat:null,ready:false,connected:true,bid:null,tricks:0,score:0,continued:false,hand:[],eliminated:false});broadcast(room);return jsonResponse({playerToken:t,playerId:id,gameType:room.gameType});
   }
   if(!u.pathname.startsWith('/api/'))return jsonResponse({error:'Unknown route'},404);
   const b=await parseBody(request),room=await activeHub.getRoom(b.roomId);if(!room)return jsonResponse({error:'Room not found'},404);const p=player(room,b.playerToken);const fail=(msg,code=400)=>jsonResponse({error:msg},code);
   if(u.pathname==='/api/profile'&&request.method==='POST'){if(!p)return fail('Player not found',401);if(room.game.phase!=='lobby')return fail('Profile locked after start');p.name=(b.name||p.name).slice(0,24);p.avatar=b.avatar||p.avatar;p.variant=Number(b.variant??p.variant);p.outfitVariant=Number(b.outfitVariant??p.outfitVariant??0);p.color=b.color||p.color;p.ready=false;broadcast(room);return jsonResponse({ok:true})}
   if(u.pathname==='/api/seat'&&request.method==='POST'){if(!p)return fail('Player not found',401);if(room.game.phase!=='lobby')return fail('Seats are locked');const seat=Number(b.seat);if(!Number.isInteger(seat)||seat<0||seat>=room.maxSeats)return fail('Invalid seat');if([...room.players.values()].some(x=>x.id!==p.id&&x.seat===seat))return fail('Seat occupied');p.seat=seat;p.ready=false;broadcast(room);return jsonResponse({ok:true})}
   if(u.pathname==='/api/removePlayer'&&request.method==='POST'){if(!host(room,b.hostToken))return fail('Host only',403);if(room.game.phase!=='lobby')return fail('Players can only be removed before the game starts');const target=room.players.get(String(b.targetId||''));if(!target)return fail('Player not found');if(target.id===room.hostPlayerId)return fail('The host cannot remove themselves');room.players.delete(target.id);broadcast(room);return jsonResponse({ok:true})}
-  if(u.pathname==='/api/ready'&&request.method==='POST'){if(!p||p.seat==null)return fail('Choose a seat first');if(room.game.phase!=='lobby')return fail('Game already started');p.ready=!!b.ready;broadcast(room);return jsonResponse({ok:true})}
+  if(u.pathname==='/api/ready'&&request.method==='POST'){if(!p)return fail('Player not found',401);if(room.game.phase!=='lobby')return fail('Game already started');const ready=!!b.ready;if(ready&&p.seat==null&&assignOpenSeat(room,p)==null)return fail('No open seat available');p.ready=ready;broadcast(room);return jsonResponse({ok:true,seat:p.seat})}
   if(u.pathname==='/api/settings'&&request.method==='POST'){if(!host(room,b.hostToken))return fail('Host only',403);if(room.game.phase!=='lobby')return fail('Settings locked after start');if(isExtraGame(room.gameType)){applyExtraSettings(room,b)}else if(room.gameType===GAME_TYPES.FUCK){const n=Number(b.roundCount);if(!Number.isInteger(n)||n<1||n>100)return fail('Choose 1 to 100 rounds');room.settings.roundCount=n}broadcast(room);return jsonResponse({ok:true})}
   if(u.pathname==='/api/start'&&request.method==='POST'){
-    if(!host(room,b.hostToken))return fail('Host only',403);if(isExtraGame(room.gameType)){try{startExtraGame(room);broadcast(room);return jsonResponse({ok:true})}catch(err){return fail(err.message)}}
-    const joined=[...room.players.values()];if(room.gameType===GAME_TYPES.SMEAR&&joined.length!==4)return fail('Smear requires exactly 4 players');if(room.gameType!==GAME_TYPES.SMEAR&&joined.length<2)return fail('Need at least 2 players');if(joined.some(x=>x.seat==null))return fail('Everyone must choose a seat');if(joined.some(x=>!x.ready))return fail('Everyone must be Ready');const order=playerOrder(room);
+    if(!host(room,b.hostToken))return fail('Host only',403);const joined=[...room.players.values()];if(joined.some(x=>!x.ready))return fail('Everyone must be Ready');try{assignOpenSeats(room)}catch(err){return fail(err.message)}if(isExtraGame(room.gameType)){try{startExtraGame(room);broadcast(room);return jsonResponse({ok:true})}catch(err){return fail(err.message)}}
+    if(room.gameType===GAME_TYPES.SMEAR&&joined.length!==4)return fail('Smear requires exactly 4 players');if(room.gameType!==GAME_TYPES.SMEAR&&joined.length<2)return fail('Need at least 2 players');const order=playerOrder(room);
     room.game.schedule=room.gameType===GAME_TYPES.SMEAR?[{handSize:6,trump:null,powerRank:null,source:null}]:room.gameType===GAME_TYPES.FUCK?generateFuckSchedule(room.settings.roundCount,order.length):buildScrewSchedule(order.length);for(const id of order){room.players.get(id).score=0}
     if(room.gameType===GAME_TYPES.SMEAR){room.game.teamScores={A:0,B:0};const dealerId=randomDealer(order);room.game.dealerId=dealerId;room.game.dealerCeremony={type:'random',dealerId,sequence:[],createdAt:now()}}else{const ceremony=firstDealerCeremony(order,room.gameType);room.game.dealerId=ceremony.dealerId;room.game.dealerCeremony={type:'jack',...ceremony,createdAt:now()}}startRound(room,0);return jsonResponse({ok:true});
   }

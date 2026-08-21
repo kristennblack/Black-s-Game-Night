@@ -1,3 +1,2 @@
-Black Family Game Night v1.0.2
-Full replacement release
-82 / 82 automated tests passing
+Black Family Game Night v1.0.6
+Full replacement: v1.0.5 family roster + all prior corrections + 16 exclusive John Black Birthday Boy looks.

@@ -1,37 +1,38 @@
-BLACK FAMILY GAME NIGHT v1.0.2 - FINAL REPLACEMENT TEST REPORT
-==============================================================
+BLACK FAMILY GAME NIGHT v1.0.6 - FINAL TEST REPORT
 Date: 2026-08-21
 
-RESULT: 82 / 82 automated tests passing.
+RESULT
+95 / 95 automated tests passing.
 
-Coverage includes:
-- All 18 game engines starting through the Cloudflare adapter.
-- Private player state / no opponent hand exposure.
-- Durable Object room snapshot persistence.
-- Initial live EventSource room state returning without hanging.
-- Screw Your Buddy house rules and scalable rounds.
-- Fuck Your Buddy 56-card/Joker/power-rank/random-schedule rules.
-- Smear bidding, team, scoring, Jack/Game and 4-and-out rules.
-- Campfire Chaos legal draw/play behavior and LAST LOG window.
-- Trail Trouble team/Home logic.
-- Prairie Pots startup/private state.
-- Burn Logs startup, draw/discard and completion behavior.
-- Deck Sweep legal play and configured final round.
-- Cribbage Ace-low pegging runs and immediate 121 finish.
-- Marbles & Jokers five-home/team-help/blocking/partner-hit rules.
-- Euchre calling and Ace-No-Face behavior.
-- 31 deck recycling and eliminated-player turn skipping.
-- Golf deck recycling, six-player capacity and replacement flow.
-- Crazy Eights Countdown startup/private state.
-- Mitts / Gloves / Socks startup/private state.
-- Texas Hold'em first betting action and all-in board runout.
-- President full-round turn rotation.
-- Last Haven randomized board, trading, 15-point finish and repeating seven-warning Raider cycle.
-- v1.0.2 UI check confirming the in-app Install App button is absent.
-- v1.0.2 room retry controls and fresh service-worker cache/version badge.
+NEW v1.0.6 COVERAGE
+- John Black defaults to his Birthday Guy look.
+- John can select and persist all 16 exclusive look variants.
+- All 16 John look image files are packaged in the live public assets.
+- The in-game avatar picker exposes the complete 16-look John Birthday Boy grid.
+- John remains a named automatic family-avatar match.
+- All prior named family/pet characters remain available.
+- All 20 original character families remain available.
+- Total character identities: 33.
+- Total selectable styled looks: 144.
 
-Manual physical-device checks still recommended after deployment:
-- Two-device invite/join flow.
-- iPhone/Android responsive layout.
-- Actual microphone audio quality for optional voice chat.
-- Browser Share > Add to Home Screen, if the family chooses to use it.
+REGRESSION COVERAGE STILL PASSING
+- All 18 games create, join, seat/auto-seat, Ready, and start through the Cloudflare game adapter.
+- Private hands remain private.
+- Screw Your Buddy and Fuck Your Buddy expose the viewer's hand during bidding.
+- Chat is stored and visible to the other player.
+- Game Shelf navigation remains present.
+- Voice controls remain removed.
+- Quick reactions include the middle finger.
+- Cloudflare live room stream returns its initial state without hanging.
+- Retry Connection controls remain present.
+- Trail Trouble board, cards, cabins, camps, homes, markers, animation, and backward-4 behavior remain covered.
+- All previous game-engine rule tests remain passing.
+
+FIRST LIVE CHECK AFTER DEPLOYMENT
+1. Confirm the app says v1.0.6.
+2. Create a fresh room as John Black.
+3. Open the avatar picker.
+4. Confirm Birthday Guy is selected by default.
+5. Tap several John looks, including #16 Wasteland Lumberjack.
+6. Join from a second device and confirm the selected John look appears there too.
+7. Continue normal two-device game testing.
