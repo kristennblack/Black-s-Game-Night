@@ -1,484 +1,506 @@
+
+> black-family-game-night@1.0.2 test
+> node --test
+
 TAP version 13
 # Subtest: Cloudflare adapter creates, seats, readies and starts all 18 games
 ok 1 - Cloudflare adapter creates, seats, readies and starts all 18 games
   ---
-  duration_ms: 87.030974
+  duration_ms: 88.678238
   type: 'test'
   ...
 # Subtest: Cloudflare adapter persists room snapshots to Durable Object storage
 ok 2 - Cloudflare adapter persists room snapshots to Durable Object storage
   ---
-  duration_ms: 0.645517
+  duration_ms: 0.582566
+  type: 'test'
+  ...
+# Subtest: Cloudflare live room stream returns the initial state without hanging
+ok 3 - Cloudflare live room stream returns the initial state without hanging
+  ---
+  duration_ms: 1.417987
+  type: 'test'
+  ...
+# Subtest: Launch UI removes the nonfunctional install button and provides room retry controls
+ok 4 - Launch UI removes the nonfunctional install button and provides room retry controls
+  ---
+  duration_ms: 7.01831
+  type: 'test'
+  ...
+# Subtest: Launch assets advertise v1.0.2 and use a fresh service-worker cache
+ok 5 - Launch assets advertise v1.0.2 and use a fresh service-worker cache
+  ---
+  duration_ms: 1.166854
   type: 'test'
   ...
 # Subtest: Campfire Chaos starts and returns private public state
-ok 3 - Campfire Chaos starts and returns private public state
+ok 6 - Campfire Chaos starts and returns private public state
   ---
-  duration_ms: 2.217609
+  duration_ms: 3.964566
   type: 'test'
   ...
 # Subtest: Trail Trouble starts and returns private public state
-ok 4 - Trail Trouble starts and returns private public state
+ok 7 - Trail Trouble starts and returns private public state
   ---
-  duration_ms: 13.819095
+  duration_ms: 0.850333
   type: 'test'
   ...
 # Subtest: Prairie Pots starts and returns private public state
-ok 5 - Prairie Pots starts and returns private public state
+ok 8 - Prairie Pots starts and returns private public state
   ---
-  duration_ms: 4.437382
+  duration_ms: 4.754235
   type: 'test'
   ...
 # Subtest: Burn Logs starts and returns private public state
-ok 6 - Burn Logs starts and returns private public state
+ok 9 - Burn Logs starts and returns private public state
   ---
-  duration_ms: 0.618537
+  duration_ms: 0.732569
   type: 'test'
   ...
 # Subtest: Deck Sweep starts and returns private public state
-ok 7 - Deck Sweep starts and returns private public state
+ok 10 - Deck Sweep starts and returns private public state
   ---
-  duration_ms: 0.68099
+  duration_ms: 0.612881
   type: 'test'
   ...
 # Subtest: Cribbage starts and returns private public state
-ok 8 - Cribbage starts and returns private public state
+ok 11 - Cribbage starts and returns private public state
   ---
-  duration_ms: 0.433613
+  duration_ms: 0.514534
   type: 'test'
   ...
 # Subtest: Marbles & Jokers starts and returns private public state
-ok 9 - Marbles & Jokers starts and returns private public state
+ok 12 - Marbles & Jokers starts and returns private public state
   ---
-  duration_ms: 0.703523
+  duration_ms: 0.891395
   type: 'test'
   ...
 # Subtest: Euchre starts and returns private public state
-ok 10 - Euchre starts and returns private public state
+ok 13 - Euchre starts and returns private public state
   ---
-  duration_ms: 0.389027
+  duration_ms: 0.368718
   type: 'test'
   ...
 # Subtest: 31 starts and returns private public state
-ok 11 - 31 starts and returns private public state
+ok 14 - 31 starts and returns private public state
   ---
-  duration_ms: 0.590115
+  duration_ms: 0.604869
   type: 'test'
   ...
 # Subtest: Golf starts and returns private public state
-ok 12 - Golf starts and returns private public state
+ok 15 - Golf starts and returns private public state
   ---
-  duration_ms: 0.8157
+  duration_ms: 0.855051
   type: 'test'
   ...
 # Subtest: Crazy Eights Countdown starts and returns private public state
-ok 13 - Crazy Eights Countdown starts and returns private public state
+ok 16 - Crazy Eights Countdown starts and returns private public state
   ---
-  duration_ms: 0.449617
+  duration_ms: 0.4436
   type: 'test'
   ...
 # Subtest: Mitts / Gloves / Socks starts and returns private public state
-ok 14 - Mitts / Gloves / Socks starts and returns private public state
+ok 17 - Mitts / Gloves / Socks starts and returns private public state
   ---
-  duration_ms: 0.527412
+  duration_ms: 0.537398
   type: 'test'
   ...
 # Subtest: Poker starts and returns private public state
-ok 15 - Poker starts and returns private public state
+ok 18 - Poker starts and returns private public state
   ---
-  duration_ms: 0.686478
+  duration_ms: 0.451721
   type: 'test'
   ...
 # Subtest: President starts and returns private public state
-ok 16 - President starts and returns private public state
+ok 19 - President starts and returns private public state
   ---
-  duration_ms: 0.413453
+  duration_ms: 0.411932
   type: 'test'
   ...
 # Subtest: Last Haven starts and returns private public state
-ok 17 - Last Haven starts and returns private public state
+ok 20 - Last Haven starts and returns private public state
   ---
-  duration_ms: 1.758378
+  duration_ms: 1.641439
   type: 'test'
   ...
 # Subtest: Campfire Chaos first legal action works
-ok 18 - Campfire Chaos first legal action works
+ok 21 - Campfire Chaos first legal action works
   ---
-  duration_ms: 1.815603
+  duration_ms: 2.783296
   type: 'test'
   ...
 # Subtest: 31 can draw and discard
-ok 19 - 31 can draw and discard
+ok 22 - 31 can draw and discard
   ---
-  duration_ms: 0.349258
+  duration_ms: 0.382909
   type: 'test'
   ...
 # Subtest: Golf can draw and replace
-ok 20 - Golf can draw and replace
+ok 23 - Golf can draw and replace
   ---
-  duration_ms: 29.015644
+  duration_ms: 0.417971
   type: 'test'
   ...
 # Subtest: Euchre calling action works
-ok 21 - Euchre calling action works
+ok 24 - Euchre calling action works
   ---
-  duration_ms: 0.305043
+  duration_ms: 0.195069
   type: 'test'
   ...
 # Subtest: Cribbage discards to crib
-ok 22 - Cribbage discards to crib
+ok 25 - Cribbage discards to crib
   ---
-  duration_ms: 0.43819
+  duration_ms: 0.334147
   type: 'test'
   ...
 # Subtest: Trail Trouble draws a movement card
-ok 23 - Trail Trouble draws a movement card
+ok 26 - Trail Trouble draws a movement card
   ---
-  duration_ms: 0.22243
+  duration_ms: 0.191405
   type: 'test'
   ...
 # Subtest: Marbles & Jokers draws a card
-ok 24 - Marbles & Jokers draws a card
+ok 27 - Marbles & Jokers draws a card
   ---
-  duration_ms: 0.472771
+  duration_ms: 0.389679
   type: 'test'
   ...
 # Subtest: Burn Logs draws then offers discard or mission actions
-ok 25 - Burn Logs draws then offers discard or mission actions
+ok 28 - Burn Logs draws then offers discard or mission actions
   ---
-  duration_ms: 0.812686
+  duration_ms: 0.818015
   type: 'test'
   ...
 # Subtest: Deck Sweep can play a legal starting group
-ok 26 - Deck Sweep can play a legal starting group
+ok 29 - Deck Sweep can play a legal starting group
   ---
-  duration_ms: 0.563826
+  duration_ms: 0.296611
   type: 'test'
   ...
 # Subtest: Poker first betting action works
-ok 27 - Poker first betting action works
+ok 30 - Poker first betting action works
   ---
-  duration_ms: 0.860326
+  duration_ms: 0.549997
   type: 'test'
   ...
 # Subtest: Last Haven setup can place a camp and route
-ok 28 - Last Haven setup can place a camp and route
+ok 31 - Last Haven setup can place a camp and route
   ---
-  duration_ms: 0.803311
+  duration_ms: 0.805657
   type: 'test'
   ...
 # Subtest: Campfire LAST LOG catch window expires after the next player completes a turn
-ok 29 - Campfire LAST LOG catch window expires after the next player completes a turn
+ok 32 - Campfire LAST LOG catch window expires after the next player completes a turn
   ---
-  duration_ms: 0.246335
+  duration_ms: 0.236382
   type: 'test'
   ...
 # Subtest: 31 recycles the discard pile when stock is exhausted
-ok 30 - 31 recycles the discard pile when stock is exhausted
+ok 33 - 31 recycles the discard pile when stock is exhausted
   ---
-  duration_ms: 0.405722
+  duration_ms: 0.295449
   type: 'test'
   ...
 # Subtest: Golf recycles discards and is capped at six players for a 56-card deck
-ok 31 - Golf recycles discards and is capped at six players for a 56-card deck
+ok 34 - Golf recycles discards and is capped at six players for a 56-card deck
   ---
-  duration_ms: 0.318142
+  duration_ms: 0.303301
   type: 'test'
   ...
 # Subtest: Trail Trouble only wins when all team markers reach the final Home space
-ok 32 - Trail Trouble only wins when all team markers reach the final Home space
+ok 35 - Trail Trouble only wins when all team markers reach the final Home space
   ---
-  duration_ms: 0.799976
+  duration_ms: 0.505501
   type: 'test'
   ...
 # Subtest: President can finish a full round without assigning the turn to a player already out
-ok 33 - President can finish a full round without assigning the turn to a player already out
+ok 36 - President can finish a full round without assigning the turn to a player already out
   ---
-  duration_ms: 1.84743
+  duration_ms: 1.77676
   type: 'test'
   ...
 # Subtest: Poker all-ins automatically run out the board instead of hanging between streets
-ok 34 - Poker all-ins automatically run out the board instead of hanging between streets
+ok 37 - Poker all-ins automatically run out the board instead of hanging between streets
   ---
-  duration_ms: 1.440056
+  duration_ms: 1.378158
   type: 'test'
   ...
 # Subtest: Euchre exposes Ace-No-Face redeal to an eligible player
-ok 35 - Euchre exposes Ace-No-Face redeal to an eligible player
+ok 38 - Euchre exposes Ace-No-Face redeal to an eligible player
   ---
-  duration_ms: 0.252654
+  duration_ms: 0.194318
   type: 'test'
   ...
 # Subtest: Last Haven randomizes tiles, includes trading posts, and repeats the seven-warning Raider cycle
-ok 36 - Last Haven randomizes tiles, includes trading posts, and repeats the seven-warning Raider cycle
+ok 39 - Last Haven randomizes tiles, includes trading posts, and repeats the seven-warning Raider cycle
   ---
-  duration_ms: 2.008159
+  duration_ms: 1.95164
   type: 'test'
   ...
 # Subtest: Last Haven trade target receives accept and decline actions
-ok 37 - Last Haven trade target receives accept and decline actions
+ok 40 - Last Haven trade target receives accept and decline actions
   ---
-  duration_ms: 0.383178
+  duration_ms: 0.403539
   type: 'test'
   ...
 # Subtest: Campfire Chaos only allows drawing when no card is playable
-ok 38 - Campfire Chaos only allows drawing when no card is playable
+ok 41 - Campfire Chaos only allows drawing when no card is playable
   ---
-  duration_ms: 0.629754
+  duration_ms: 0.588505
   type: 'test'
   ...
 # Subtest: Campfire Chaos playable stock draw can be played or kept, but no other card can be substituted
-ok 39 - Campfire Chaos playable stock draw can be played or kept, but no other card can be substituted
+ok 42 - Campfire Chaos playable stock draw can be played or kept, but no other card can be substituted
   ---
-  duration_ms: 0.81604
+  duration_ms: 0.771467
   type: 'test'
   ...
 # Subtest: Cribbage treats Ace as low in pegging runs
-ok 40 - Cribbage treats Ace as low in pegging runs
+ok 43 - Cribbage treats Ace as low in pegging runs
   ---
-  duration_ms: 0.583666
+  duration_ms: 0.384491
   type: 'test'
   ...
 # Subtest: Cribbage ends immediately when a player reaches 121 during pegging
-ok 41 - Cribbage ends immediately when a player reaches 121 during pegging
+ok 44 - Cribbage ends immediately when a player reaches 121 during pegging
   ---
-  duration_ms: 0.664795
+  duration_ms: 0.303131
   type: 'test'
   ...
 # Subtest: Burn Logs can finish when the target-log player goes out
-ok 42 - Burn Logs can finish when the target-log player goes out
+ok 45 - Burn Logs can finish when the target-log player goes out
   ---
-  duration_ms: 0.834567
+  duration_ms: 0.819989
   type: 'test'
   ...
 # Subtest: Deck Sweep can finish a configured final round
-ok 43 - Deck Sweep can finish a configured final round
+ok 46 - Deck Sweep can finish a configured final round
   ---
-  duration_ms: 0.445371
+  duration_ms: 0.427485
   type: 'test'
   ...
 # Subtest: Last Haven can end as soon as a survivor reaches 15 Survival Points
-ok 44 - Last Haven can end as soon as a survivor reaches 15 Survival Points
+ok 47 - Last Haven can end as soon as a survivor reaches 15 Survival Points
   ---
-  duration_ms: 0.538509
+  duration_ms: 0.493864
   type: 'test'
   ...
 # Subtest: Marbles & Jokers uses all five Home holes and team help only after your own five are Home
-ok 45 - Marbles & Jokers uses all five Home holes and team help only after your own five are Home
+ok 48 - Marbles & Jokers uses all five Home holes and team help only after your own five are Home
   ---
-  duration_ms: 1.645731
+  duration_ms: 1.483755
   type: 'test'
   ...
 # Subtest: Marbles & Jokers cannot pass over a marble of the same colour
-ok 46 - Marbles & Jokers cannot pass over a marble of the same colour
+ok 49 - Marbles & Jokers cannot pass over a marble of the same colour
   ---
-  duration_ms: 0.634752
+  duration_ms: 0.467615
   type: 'test'
   ...
 # Subtest: Marbles & Jokers landing on a partner sends that partner to their in-spot
-ok 47 - Marbles & Jokers landing on a partner sends that partner to their in-spot
+ok 50 - Marbles & Jokers landing on a partner sends that partner to their in-spot
   ---
-  duration_ms: 0.637746
+  duration_ms: 0.862661
   type: 'test'
   ...
 # Subtest: 31 skips eliminated players when a player knocks
-ok 48 - 31 skips eliminated players when a player knocks
+ok 51 - 31 skips eliminated players when a player knocks
   ---
-  duration_ms: 0.197974
+  duration_ms: 0.523558
   type: 'test'
   ...
 # Subtest: Screw max hands scale by player count
-ok 49 - Screw max hands scale by player count
+ok 52 - Screw max hands scale by player count
   ---
-  duration_ms: 0.820196
+  duration_ms: 0.90876
   type: 'test'
   ...
 # Subtest: Fuck deck is 56 cards with 2 high and 2 low Jokers
-ok 50 - Fuck deck is 56 cards with 2 high and 2 low Jokers
+ok 53 - Fuck deck is 56 cards with 2 high and 2 low Jokers
   ---
-  duration_ms: 0.621742
+  duration_ms: 0.612841
   type: 'test'
   ...
 # Subtest: Fuck max hand stays capped at 13 but uses 56-card capacity
-ok 51 - Fuck max hand stays capped at 13 but uses 56-card capacity
+ok 54 - Fuck max hand stays capped at 13 but uses 56-card capacity
   ---
-  duration_ms: 0.140549
+  duration_ms: 0.137104
   type: 'test'
   ...
 # Subtest: Screw rounds climb then descend without repeating peak
-ok 52 - Screw rounds climb then descend without repeating peak
+ok 55 - Screw rounds climb then descend without repeating peak
   ---
-  duration_ms: 0.537707
+  duration_ms: 0.534705
   type: 'test'
   ...
 # Subtest: Screw trump cycles continuously
-ok 53 - Screw trump cycles continuously
+ok 56 - Screw trump cycles continuously
   ---
-  duration_ms: 0.224232
+  duration_ms: 0.29555
   type: 'test'
   ...
 # Subtest: dealer forbidden bid enforces total not equal to hand size
-ok 54 - dealer forbidden bid enforces total not equal to hand size
+ok 57 - dealer forbidden bid enforces total not equal to hand size
   ---
-  duration_ms: 0.116212
+  duration_ms: 0.179457
   type: 'test'
   ...
 # Subtest: Screw must follow suit if able
-ok 55 - Screw must follow suit if able
+ok 58 - Screw must follow suit if able
   ---
-  duration_ms: 0.234818
+  duration_ms: 0.337752
   type: 'test'
   ...
 # Subtest: Fuck Joker is always legal even when player can follow suit
-ok 56 - Fuck Joker is always legal even when player can follow suit
+ok 59 - Fuck Joker is always legal even when player can follow suit
   ---
-  duration_ms: 0.237923
+  duration_ms: 0.258974
   type: 'test'
   ...
 # Subtest: Fuck leading Joker allows any play until first normal card establishes suit
-ok 57 - Fuck leading Joker allows any play until first normal card establishes suit
+ok 60 - Fuck leading Joker allows any play until first normal card establishes suit
   ---
-  duration_ms: 0.286735
+  duration_ms: 0.483589
   type: 'test'
   ...
 # Subtest: Screw trump beats led suit
-ok 58 - Screw trump beats led suit
+ok 61 - Screw trump beats led suit
   ---
-  duration_ms: 0.325673
+  duration_ms: 0.476579
   type: 'test'
   ...
 # Subtest: Screw no trump uses highest led suit only
-ok 59 - Screw no trump uses highest led suit only
+ok 62 - Screw no trump uses highest led suit only
   ---
-  duration_ms: 0.200547
+  duration_ms: 0.22872
   type: 'test'
   ...
 # Subtest: Fuck trump power-rank card is absolute highest
-ok 60 - Fuck trump power-rank card is absolute highest
+ok 63 - Fuck trump power-rank card is absolute highest
   ---
-  duration_ms: 0.163662
+  duration_ms: 0.23522
   type: 'test'
   ...
 # Subtest: Fuck first high Joker wins a high-Joker tie
-ok 61 - Fuck first high Joker wins a high-Joker tie
+ok 64 - Fuck first high Joker wins a high-Joker tie
   ---
-  duration_ms: 0.072207
+  duration_ms: 0.112918
   type: 'test'
   ...
 # Subtest: Fuck first non-trump power-rank card wins ties
-ok 62 - Fuck first non-trump power-rank card wins ties
+ok 65 - Fuck first non-trump power-rank card wins ties
   ---
-  duration_ms: 0.060821
+  duration_ms: 0.109362
   type: 'test'
   ...
 # Subtest: Fuck later low Joker beats earlier low Joker but every normal card beats both
-ok 63 - Fuck later low Joker beats earlier low Joker but every normal card beats both
+ok 66 - Fuck later low Joker beats earlier low Joker but every normal card beats both
   ---
-  duration_ms: 0.076334
+  duration_ms: 0.133849
   type: 'test'
   ...
 # Subtest: Fuck no-trump high Joker is above power rank
-ok 64 - Fuck no-trump high Joker is above power rank
+ok 67 - Fuck no-trump high Joker is above power rank
   ---
-  duration_ms: 0.065557
+  duration_ms: 0.111176
   type: 'test'
   ...
 # Subtest: Fuck normal trick-taking resumes below special cards
-ok 65 - Fuck normal trick-taking resumes below special cards
+ok 68 - Fuck normal trick-taking resumes below special cards
   ---
-  duration_ms: 0.065167
+  duration_ms: 0.124916
   type: 'test'
   ...
 # Subtest: Fuck random schedule respects requested count and playable max
-ok 66 - Fuck random schedule respects requested count and playable max
+ok 69 - Fuck random schedule respects requested count and playable max
   ---
-  duration_ms: 0.880837
+  duration_ms: 0.796354
   type: 'test'
   ...
 # Subtest: exact bid scoring
-ok 67 - exact bid scoring
+ok 70 - exact bid scoring
   ---
-  duration_ms: 0.077575
+  duration_ms: 0.079318
   type: 'test'
   ...
 # Subtest: Smear deck is 32 cards using only 7 through Ace
-ok 68 - Smear deck is 32 cards using only 7 through Ace
+ok 71 - Smear deck is 32 cards using only 7 through Ace
   ---
-  duration_ms: 0.16873
+  duration_ms: 0.206126
   type: 'test'
   ...
 # Subtest: Smear teams are opposite seats
-ok 69 - Smear teams are opposite seats
+ok 72 - Smear teams are opposite seats
   ---
-  duration_ms: 0.075362
+  duration_ms: 0.081711
   type: 'test'
   ...
 # Subtest: Smear bid order treats 4 and out above regular 4
-ok 70 - Smear bid order treats 4 and out above regular 4
+ok 73 - Smear bid order treats 4 and out above regular 4
   ---
-  duration_ms: 0.06704
+  duration_ms: 0.06669
   type: 'test'
   ...
 # Subtest: Smear follows suit when able
-ok 71 - Smear follows suit when able
+ok 74 - Smear follows suit when able
   ---
-  duration_ms: 0.072688
+  duration_ms: 0.070054
   type: 'test'
   ...
 # Subtest: Smear scores High and Low to teams that played them and Jack to capturer
-ok 72 - Smear scores High and Low to teams that played them and Jack to capturer
+ok 75 - Smear scores High and Low to teams that played them and Jack to capturer
   ---
-  duration_ms: 0.250451
+  duration_ms: 0.279265
   type: 'test'
   ...
 # Subtest: Smear missing Jack simply leaves three available scoring points
-ok 73 - Smear missing Jack simply leaves three available scoring points
+ok 76 - Smear missing Jack simply leaves three available scoring points
   ---
-  duration_ms: 0.147148
+  duration_ms: 0.197483
   type: 'test'
   ...
 # Subtest: Smear equal game values are no game out
-ok 74 - Smear equal game values are no game out
+ok 77 - Smear equal game values are no game out
   ---
-  duration_ms: 0.115351
+  duration_ms: 0.132517
   type: 'test'
   ...
 # Subtest: Smear bidder set loses bid while defenders still score
-ok 75 - Smear bidder set loses bid while defenders still score
+ok 78 - Smear bidder set loses bid while defenders still score
   ---
-  duration_ms: 0.138215
+  duration_ms: 0.139497
   type: 'test'
   ...
 # Subtest: Smear bidder may score more than bid when contract is made
-ok 76 - Smear bidder may score more than bid when contract is made
+ok 79 - Smear bidder may score more than bid when contract is made
   ---
-  duration_ms: 0.072928
+  duration_ms: 0.07398
   type: 'test'
   ...
 # Subtest: Smear failed 4 and out is minus 11 and defenders keep earned points
-ok 77 - Smear failed 4 and out is minus 11 and defenders keep earned points
+ok 80 - Smear failed 4 and out is minus 11 and defenders keep earned points
   ---
-  duration_ms: 0.11458
+  duration_ms: 0.800029
   type: 'test'
   ...
 # Subtest: Smear successful 4 and out wins immediately
-ok 78 - Smear successful 4 and out wins immediately
+ok 81 - Smear successful 4 and out wins immediately
   ---
-  duration_ms: 0.108041
+  duration_ms: 0.09447
   type: 'test'
   ...
 # Subtest: Smear if both teams reach 11 on same hand bidding team wins
-ok 79 - Smear if both teams reach 11 on same hand bidding team wins
+ok 82 - Smear if both teams reach 11 on same hand bidding team wins
   ---
-  duration_ms: 0.076414
+  duration_ms: 0.074832
   type: 'test'
   ...
-1..79
-# tests 79
+1..82
+# tests 82
 # suites 0
-# pass 79
+# pass 82
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 248.605629
+# duration_ms 1157.859432

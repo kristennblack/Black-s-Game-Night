@@ -50,7 +50,7 @@ function restoreRoom(raw){
   return restored;
 }
 function persistRoom(room){activeHub?.persistRoom(room)}
-function writeEvent(sub,type,payload){try{sub.writer.write(encoder.encode(`event: ${type}\ndata: ${JSON.stringify(payload)}\n\n`));return true}catch{return false}}
+function writeEvent(sub,type,payload){try{sub.controller.enqueue(encoder.encode(`event: ${type}\ndata: ${JSON.stringify(payload)}\n\n`));return true}catch{return false}}
 function broadcast(room){persistRoom(room);for(const sub of [...room.subscribers]){if(!writeEvent(sub,'state',publicState(room,sub.token)))room.subscribers.delete(sub)}}
 function sendVoiceSignal(room,targetId,payload){for(const sub of [...room.subscribers]){const target=player(room,sub.token);if(target?.id!==targetId)continue;if(!writeEvent(sub,'voice',payload))room.subscribers.delete(sub)}}
 
@@ -96,11 +96,15 @@ async function handleApi(request){
   if(u.pathname==='/api/events'&&request.method==='GET'){
     const room=await activeHub.getRoom(u.searchParams.get('room'));if(!room)return new Response('Room not found',{status:404});
     const t=u.searchParams.get('token');const p=player(room,t);if(p)p.connected=true;
-    const stream=new TransformStream();const writer=stream.writable.getWriter();const sub={writer,token:t};room.subscribers.add(sub);
-    await writer.write(encoder.encode(`event: state\ndata: ${JSON.stringify(publicState(room,t))}\n\n`));broadcast(room);
-    const cleanup=()=>{room.subscribers.delete(sub);if(p){p.connected=false;setTimeout(()=>broadcast(room),50)}};
-    request.signal?.addEventListener('abort',cleanup,{once:true});writer.closed.catch(()=>{}).finally(cleanup);
-    return new Response(stream.readable,{status:200,headers:{'Content-Type':'text/event-stream','Cache-Control':'no-cache, no-transform','Connection':'keep-alive'}});
+    let sub=null;let cleaned=false;
+    const cleanup=()=>{if(cleaned)return;cleaned=true;if(sub)room.subscribers.delete(sub);if(p){p.connected=false;setTimeout(()=>broadcast(room),50)}};
+    const stream=new ReadableStream({
+      start(controller){sub={controller,token:t};room.subscribers.add(sub);controller.enqueue(encoder.encode(`event: state\ndata: ${JSON.stringify(publicState(room,t))}\n\n`));},
+      cancel(){cleanup()}
+    });
+    request.signal?.addEventListener('abort',cleanup,{once:true});
+    broadcast(room);
+    return new Response(stream,{status:200,headers:{'Content-Type':'text/event-stream; charset=utf-8','Cache-Control':'no-cache, no-transform','Connection':'keep-alive','X-Accel-Buffering':'no'}});
   }
   if(u.pathname==='/api/join'&&request.method==='POST'){
     const b=await parseBody(request),room=await activeHub.getRoom(b.roomId);if(!room)return jsonResponse({error:'Room not found'},404);if(room.game.phase!=='lobby')return jsonResponse({error:'Game already started'},409);if(room.players.size>=room.maxSeats)return jsonResponse({error:'Room is full'},409);

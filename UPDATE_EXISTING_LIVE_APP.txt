@@ -1,0 +1,60 @@
+BLACK FAMILY GAME NIGHT v1.0.2
+FULL REPLACEMENT UPDATE - EXISTING GITHUB + CLOUDFLARE
+======================================================
+
+You do NOT need to create another GitHub repository or reconnect Cloudflare.
+Your existing Black-s-Game-Night repository and automatic Cloudflare build connection can stay in place.
+
+1. Download and unzip the v1.0.2 ZIP.
+
+2. In GitHub Desktop, select the Black-s-Game-Night repository.
+
+3. Click Repository > Show in Explorer (or the Show in Explorer button).
+
+4. In the local Black-s-Game-Night folder, remove the OLD project files and folders.
+   IMPORTANT: do NOT delete the hidden .git folder. Windows normally hides it automatically.
+
+5. Copy EVERYTHING INSIDE this unzipped v1.0.2 package into the Black-s-Game-Night folder.
+   The repository root should directly contain files such as:
+      worker.mjs
+      wrangler.jsonc
+      package.json
+      gameEngine.mjs
+      extraGames.mjs
+      public/
+      test/
+
+6. Return to GitHub Desktop. It should show the replacement changes.
+
+7. In Summary type:
+      Replace app with Black Family Game Night v1.0.2
+
+8. Click Commit to main.
+
+9. Click Push origin.
+
+10. Cloudflare should automatically start a new build from main.
+    Do not reconnect the repository and do not change the Cloudflare build settings.
+
+11. Wait for the Cloudflare deployment to turn successful/green.
+
+12. Open the MAIN app URL, not an old room invite URL.
+
+13. Confirm the top bar shows v1.0.2.
+    If it still shows an older version, fully close the browser tab/app and reopen the main URL.
+
+14. First live test:
+    - Open the game shelf.
+    - Create Screw Your Buddy.
+    - Join from a second phone using the invite link.
+    - Choose seats and Ready.
+    - Start the game.
+    - Confirm each device sees only its own private hand.
+    - Refresh one device and confirm it reconnects.
+    - Try chat/reactions.
+    - Try voice only after normal gameplay is working.
+
+NOTE ABOUT INSTALLING ON iPHONE:
+There is intentionally NO Install App button inside Black Family Game Night anymore.
+If you want a Home Screen icon, use Safari's normal Share > Add to Home Screen option.
+The game itself does not require installation and works normally from its web address.

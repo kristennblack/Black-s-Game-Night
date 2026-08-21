@@ -1,24 +1,33 @@
-BLACK FAMILY GAME NIGHT v1.0 - START HERE
-=========================================
+BLACK FAMILY GAME NIGHT v1.0.2 - START HERE
+===========================================
 
-This is the FINAL CLEAN CLOUDFLARE LAUNCH PACKAGE.
-Do not mix it with any older prototype, Render, Replit or earlier Cloudflare files.
+THIS IS THE FULL REPLACEMENT CLOUDFLARE PACKAGE.
+Do not mix files from older Black Family Game Night ZIPs into this version.
 
-BEST METHOD: use a computer and follow:
-   GITHUB_CLOUDFLARE_GUIDE.txt
+YOU ALREADY HAVE GITHUB + CLOUDFLARE CONNECTED:
+   Follow UPDATE_EXISTING_LIVE_APP.txt
 
-Cloudflare settings:
-   Build command: None / blank
+CLOUDFLARE SETTINGS (leave these as they are):
+   Build command: blank / None
    Deploy command: npx wrangler deploy
    Root directory: /
+   Production branch: main
 
-Final automated test result:
-   79 / 79 passing
+FINAL AUTOMATED TEST RESULT:
+   82 / 82 passing
 
-John Black special birthday avatar:
+WHAT CHANGED IN v1.0.2:
+   - Removed the in-app Install App button.
+   - Kept normal browser Add to Home Screen/PWA support.
+   - Included the live-room connection fix.
+   - Added Retry Connection + Back to Game Shelf after an 8-second room timeout.
+   - Added visible v1.0.2 version badge.
+   - Bumped service-worker cache so older app files are replaced.
+
+JOHN BLACK SPECIAL BIRTHDAY AVATAR:
    public/avatars/john-black.png
 
-Original avatar library:
-   20 character families x 4 styles = 80 styled looks
+ORIGINAL AVATAR LIBRARY:
+   20 character families x 4 styles, plus John's special host artwork.
 
-If a Cloudflare build fails, copy the LAST error section of the build log into ChatGPT.
+If Cloudflare reports a build failure, copy the LAST error section of the build log into ChatGPT.

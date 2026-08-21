@@ -1,6 +1,6 @@
 {
   "name": "black-family-game-night",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "private": true,
   "type": "module",
   "description": "Black Family Game Night - private family multiplayer game lodge built for John Black.",

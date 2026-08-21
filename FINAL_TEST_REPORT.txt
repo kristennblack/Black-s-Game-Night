@@ -1,46 +1,37 @@
-BLACK FAMILY GAME NIGHT v1.0 - FINAL PRE-UPLOAD TEST REPORT
-===========================================================
+BLACK FAMILY GAME NIGHT v1.0.2 - FINAL REPLACEMENT TEST REPORT
+==============================================================
 Date: 2026-08-21
 
-RESULT: 79 / 79 automated tests passing.
+RESULT: 82 / 82 automated tests passing.
 
-Launch verification includes:
-- All 18 game engines load and start through the Cloudflare GameHub adapter.
-- Create room -> join -> seat -> Ready -> start tested for all 18 games.
-- Viewer state exposes only the viewer's private hand; other players expose hand counts only.
-- Durable Object room snapshots write to persistent storage.
-- John Black is assigned the special Birthday Guy avatar when he creates a room using the name "John Black".
-- Original 20 character families remain available with Cute, Goofy, Rugged and Glam styles (80 styled looks total).
-- Syntax checks pass for worker.mjs, gameEngine.mjs, extraGames.mjs and public/app.js.
+Coverage includes:
+- All 18 game engines starting through the Cloudflare adapter.
+- Private player state / no opponent hand exposure.
+- Durable Object room snapshot persistence.
+- Initial live EventSource room state returning without hanging.
+- Screw Your Buddy house rules and scalable rounds.
+- Fuck Your Buddy 56-card/Joker/power-rank/random-schedule rules.
+- Smear bidding, team, scoring, Jack/Game and 4-and-out rules.
+- Campfire Chaos legal draw/play behavior and LAST LOG window.
+- Trail Trouble team/Home logic.
+- Prairie Pots startup/private state.
+- Burn Logs startup, draw/discard and completion behavior.
+- Deck Sweep legal play and configured final round.
+- Cribbage Ace-low pegging runs and immediate 121 finish.
+- Marbles & Jokers five-home/team-help/blocking/partner-hit rules.
+- Euchre calling and Ace-No-Face behavior.
+- 31 deck recycling and eliminated-player turn skipping.
+- Golf deck recycling, six-player capacity and replacement flow.
+- Crazy Eights Countdown startup/private state.
+- Mitts / Gloves / Socks startup/private state.
+- Texas Hold'em first betting action and all-in board runout.
+- President full-round turn rotation.
+- Last Haven randomized board, trading, 15-point finish and repeating seven-warning Raider cycle.
+- v1.0.2 UI check confirming the in-app Install App button is absent.
+- v1.0.2 room retry controls and fresh service-worker cache/version badge.
 
-Games included:
-1. Screw Your Buddy
-2. Fuck Your Buddy
-3. Smear
-4. Campfire Chaos
-5. Trail Trouble
-6. Prairie Pots
-7. Burn Logs
-8. Deck Sweep
-9. Cribbage
-10. Marbles & Jokers
-11. Euchre
-12. 31
-13. Golf
-14. Crazy Eights Countdown
-15. Mitts / Gloves / Socks
-16. Texas Hold'em Poker
-17. President
-18. Last Haven
-
-Important final real-device checks after Cloudflare deployment:
-- Actual microphone audio quality / WebRTC connectivity on two physical phones.
-- iPhone/Android touch sizing and browser safe-area behavior.
-- Full human playthroughs of the 15 newer game engines, which have automated and opening-flow coverage but less family playtesting than Screw Your Buddy, Fuck Your Buddy and Smear.
-
-Cloudflare configuration:
-- Worker entry: worker.mjs
-- Durable Object: GameHub
-- Storage backend: SQLite via new_sqlite_classes migration
-- Static assets: ./public
-- Deploy command: npx wrangler deploy
+Manual physical-device checks still recommended after deployment:
+- Two-device invite/join flow.
+- iPhone/Android responsive layout.
+- Actual microphone audio quality for optional voice chat.
+- Browser Share > Add to Home Screen, if the family chooses to use it.

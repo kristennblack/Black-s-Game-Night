@@ -1,4 +1,4 @@
-BLACK FAMILY GAME NIGHT v1.0
+BLACK FAMILY GAME NIGHT v1.0.2
 GITHUB + CLOUDFLARE LAUNCH GUIDE
 ================================
 
@@ -10,7 +10,7 @@ WHAT YOU NEED
 1. A free GitHub account.
 2. GitHub Desktop (free): https://desktop.github.com/
 3. Your free Cloudflare account.
-4. This unzipped Black Family Game Night v1.0 folder.
+4. This unzipped Black Family Game Night v1.0.2 folder.
 
 PART A - PUT THE GAME ON GITHUB
 -------------------------------
@@ -22,7 +22,7 @@ PART A - PUT THE GAME ON GITHUB
 6. In GitHub Desktop choose File > Clone repository.
 7. Choose the URL tab, paste the new repository URL, choose a folder on your computer, and click Clone.
 8. Open the folder GitHub Desktop cloned for you.
-9. Unzip the Black Family Game Night v1.0 download.
+9. Unzip the Black Family Game Night v1.0.2 download.
 10. Copy EVERYTHING INSIDE the unzipped game folder into the cloned GitHub folder.
     At the top level you should see:
        worker.mjs
@@ -34,7 +34,7 @@ PART A - PUT THE GAME ON GITHUB
        test/
        START_HERE.txt
 11. Return to GitHub Desktop. It should show many new files.
-12. In Summary type: Black Family Game Night v1.0
+12. In Summary type: Black Family Game Night v1.0.2
 13. Click Commit to main.
 14. Click Push origin.
 15. Open the repository on github.com and confirm worker.mjs begins with:

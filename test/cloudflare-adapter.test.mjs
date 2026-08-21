@@ -69,3 +69,40 @@ test('Cloudflare adapter persists room snapshots to Durable Object storage', asy
   assert.equal(saved.players[0].name,'John Black');
   assert.equal(saved.players[0].avatar,'john');
 });
+
+
+test('Cloudflare live room stream returns the initial state without hanging', async()=>{
+  const {hub}=makeHub();
+  const created=await post(hub,'create',{name:'John Black',gameType:GAME_TYPES.SCREW});
+  const response=await Promise.race([
+    hub.fetch(new Request(`https://game.test/api/events?room=${encodeURIComponent(created.roomId)}&token=${encodeURIComponent(created.playerToken)}`)),
+    new Promise((_,reject)=>setTimeout(()=>reject(new Error('SSE response timed out')),1000))
+  ]);
+  assert.equal(response.ok,true);
+  assert.match(response.headers.get('content-type')||'',/text\/event-stream/);
+  const reader=response.body.getReader();
+  const first=await Promise.race([
+    reader.read(),
+    new Promise((_,reject)=>setTimeout(()=>reject(new Error('Initial SSE state timed out')),1000))
+  ]);
+  const text=new TextDecoder().decode(first.value||new Uint8Array());
+  assert.match(text,/event: state/);
+  assert.match(text,new RegExp(created.roomId));
+  await reader.cancel();
+});
+
+test('Launch UI removes the nonfunctional install button and provides room retry controls', async()=>{
+  const {readFile}=await import('node:fs/promises');
+  const appSource=await readFile(new URL('../public/app.js',import.meta.url),'utf8');
+  assert.doesNotMatch(appSource,/Install App|data-action=["']install["']|beforeinstallprompt|installPrompt/);
+  assert.match(appSource,/Retry Connection/);
+  assert.match(appSource,/data-action="retryConnect"/);
+});
+
+test('Launch assets advertise v1.0.2 and use a fresh service-worker cache', async()=>{
+  const {readFile}=await import('node:fs/promises');
+  const appSource=await readFile(new URL('../public/app.js',import.meta.url),'utf8');
+  const swSource=await readFile(new URL('../public/sw.js',import.meta.url),'utf8');
+  assert.match(appSource,/APP_VERSION='1\.0\.2'/);
+  assert.match(swSource,/black-family-game-night-v102/);
+});
