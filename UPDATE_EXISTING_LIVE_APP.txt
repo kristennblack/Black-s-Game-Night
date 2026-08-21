@@ -1,16 +1,30 @@
-BLACK FAMILY GAME NIGHT v1.0.6 - FULL REPLACEMENT
+BLACK FAMILY GAME NIGHT v1.0.10 - FULL REPLACEMENT
 
-This is a complete replacement build. It includes v1.0.5 plus all 16 John Black Birthday Boy looks.
+WHAT THIS VERSION ADDS
+- Detailed rustic Cribbage pegboard with scores, starter, pegging count, counting phase, and a clearly labeled crib owner.
+- Golf now shows a real stock pile + face-up discard; tap either to draw/take, then tap a grid card to swap. Stock draws may be discarded to flip a face-down grid card.
+- Marbles & Jokers now has a full colored marble board with Camps, track, Home lanes, zoom/pan controls, tappable cards and tappable marbles.
+- Draw-action games now show a physical deck on the table that can be tapped instead of relying only on action lists.
+- Home and connecting screens have a richer Black Family Lodge / fireplace birthday scene for John Black.
+- All v1.0.9 room switching, auto-sorted no-swipe hands, Trail Trouble, Prairie Pots, Last Haven, chat and avatar improvements remain.
 
-UPDATE YOUR EXISTING GITHUB REPOSITORY
-1. Unzip this v1.0.6 package.
-2. In GitHub Desktop, open Black-s-Game-Night and click Show in Explorer.
-3. Keep the hidden .git folder.
-4. Replace the other project files with everything inside this v1.0.6 folder.
-5. Return to GitHub Desktop.
-6. Summary: Black Family Game Night v1.0.6 - John birthday looks
-7. Commit to main.
-8. Push origin.
-9. Cloudflare will build automatically. Do not reconnect or change Cloudflare settings.
-10. After deployment, confirm the app says v1.0.6 and create a fresh room.
-11. Choose John Black in the avatar picker to see all 16 Birthday Boy looks.
+UPDATE THE LIVE APP
+1. Download and unzip the v1.0.10 full replacement ZIP.
+2. Open GitHub Desktop and select Black-s-Game-Night.
+3. Click Show in Explorer.
+4. Keep the hidden .git folder. Do not delete the repository folder itself.
+5. Copy everything INSIDE the v1.0.10 folder into the existing Black-s-Game-Night folder and replace the old project files.
+6. Return to GitHub Desktop.
+7. Summary: Black Family Game Night v1.0.10 - tabletop polish
+8. Commit to main.
+9. Push origin.
+10. Cloudflare should deploy automatically. Do not reconnect Cloudflare or change its settings.
+11. When deployment is green, open the main app URL and confirm the top bar says v1.0.10.
+12. Create fresh rooms for Cribbage, Golf, and Marbles & Jokers for the first test.
+
+FIRST TESTS
+- Cribbage: confirm the board, peg position, dealer/crib owner, starter, pegging count and crib discard flow are visible.
+- Golf: tap the stock, confirm the drawn card appears in front of you, then tap a grid card to swap. Also test taking the face-up discard.
+- Marbles & Jokers: tap the deck, select a highlighted card, zoom the board, and tap a glowing marble.
+- Campfire Chaos / 31 / Crazy Eights / Burn Logs: confirm a physical Draw deck appears whenever drawing is a legal action.
+- Home screen: confirm John Black's birthday cabin/fireplace hero and richer grouped game shelves appear.

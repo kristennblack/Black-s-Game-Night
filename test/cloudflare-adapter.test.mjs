@@ -99,12 +99,12 @@ test('Launch UI removes the nonfunctional install button and provides room retry
   assert.match(appSource,/data-action="retryConnect"/);
 });
 
-test('Launch assets advertise v1.0.6 and use a fresh service-worker cache', async()=>{
+test('Launch assets advertise v1.0.10 and use a fresh service-worker cache', async()=>{
   const {readFile}=await import('node:fs/promises');
   const appSource=await readFile(new URL('../public/app.js',import.meta.url),'utf8');
   const swSource=await readFile(new URL('../public/sw.js',import.meta.url),'utf8');
-  assert.match(appSource,/APP_VERSION='1\.0\.6'/);
-  assert.match(swSource,/black-family-game-night-v106/);
+  assert.match(appSource,/APP_VERSION='1\.0\.10'/);
+  assert.match(swSource,/black-family-game-night-v110/);
 });
 
 
@@ -230,9 +230,59 @@ test('All 16 John look image files are packaged and the UI exposes the full Birt
   const appSource=await readFile(new URL('../public/app.js',import.meta.url),'utf8');
   const cssSource=await readFile(new URL('../public/styles.css',import.meta.url),'utf8');
   assert.match(appSource,/const johnLooks=\[/);
-  assert.match(appSource,/John gets 16 exclusive looks/);
-  assert.match(appSource,/Pick John’s Birthday Boy look/);
+  assert.match(appSource,/John gets all 16 Birthday Boy looks/);
   assert.match(appSource,/john-look-16/);
+  assert.match(appSource,/selectedLookPicker/);
   assert.match(cssSource,/\.john-look-grid/);
   assert.match(cssSource,/\.john-look-choice/);
+});
+
+
+test('Avatar picker is character-first and reveals only the selected character looks beneath it', async()=>{
+  const {readFile}=await import('node:fs/promises');
+  const appSource=await readFile(new URL('../public/app.js',import.meta.url),'utf8');
+  const cssSource=await readFile(new URL('../public/styles.css',import.meta.url),'utf8');
+  assert.match(appSource,/Choose your character/);
+  assert.match(appSource,/selectedLookPicker\(selected,me\)/);
+  assert.match(appSource,/Choose \$\{esc\(selected\[1\]/);
+  assert.match(appSource,/Choose your colours/);
+  assert.doesNotMatch(appSource,/avatar-style-grid/);
+  assert.match(cssSource,/\.character-choice-grid/);
+  assert.match(cssSource,/\.look-grid/);
+  assert.match(cssSource,/\.colour-choice-columns/);
+});
+
+test('Refreshed original avatars and centered Elizabeth and Holly portraits are packaged at higher quality', async()=>{
+  const {stat}=await import('node:fs/promises');
+  const originals=['cowboy','ballerina','construction','firefighter','chef','pirate','wizard','astronaut','princess','detective','lumberjack','hockey','braids','glasses','grandma','grandpa','fancy','moustache','pajamas','coolcap'];
+  for(const id of originals){
+    const info=await stat(new URL(`../public/avatars/styles/${id}-cute.jpg`,import.meta.url));
+    assert.ok(info.size>40000,`${id} cute portrait should be the sharpened high-quality asset`);
+  }
+  for(const file of ['elizabeth-cute.jpg','elizabeth-goofy.jpg','elizabeth-rugged.jpg','elizabeth-glam.jpg','holly-cute.jpg','holly-goofy.jpg','holly-rugged.jpg','holly-glam.jpg']){
+    const info=await stat(new URL(`../public/avatars/styles/${file}`,import.meta.url));
+    assert.ok(info.size>100000,`${file} should use the recentered high-resolution crop`);
+  }
+});
+
+
+test('Host can switch the existing room to a new game while all players and tokens stay together', async()=>{
+  const {hub}=makeHub();
+  const created=await post(hub,'create',{name:'John Black',gameType:GAME_TYPES.SCREW});
+  const joined=await post(hub,'join',{roomId:created.roomId,name:'Kristen'});
+  await post(hub,'ready',{roomId:created.roomId,playerToken:created.playerToken,ready:true});
+  await post(hub,'ready',{roomId:created.roomId,playerToken:joined.playerToken,ready:true});
+  await post(hub,'start',{roomId:created.roomId,hostToken:created.hostToken});
+  const before=await state(hub,created.roomId,joined.playerToken);
+  const ids=new Set(before.players.map(p=>p.id));
+  await post(hub,'switchGame',{roomId:created.roomId,playerToken:created.playerToken,hostToken:created.hostToken,gameType:GAME_TYPES.PRAIRIE});
+  const hostView=await state(hub,created.roomId,created.playerToken);
+  const guestView=await state(hub,created.roomId,joined.playerToken);
+  assert.equal(hostView.gameType,GAME_TYPES.PRAIRIE);
+  assert.equal(hostView.game.phase,'lobby');
+  assert.deepEqual(new Set(hostView.players.map(p=>p.id)),ids);
+  assert.equal(guestView.viewerId,joined.playerId,'guest token should remain valid after game switch');
+  assert.ok(hostView.players.every(p=>p.ready===false&&p.seat===null),'new game should reset Ready and seats');
+  assert.equal(hostView.chat.at(-1).name,'Game Lodge');
+  assert.match(hostView.chat.at(-1).text,/Prairie Pots/);
 });

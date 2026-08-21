@@ -69,6 +69,15 @@ function newRoom(hostName='Host',gameType=GAME_TYPES.SCREW){
   rooms.set(id,room);persistRoom(room);return {room,hostToken,playerToken:pToken};
 }
 
+function switchRoomGame(room,gameType){
+  if(!Object.values(GAME_TYPES).includes(gameType))throw new Error('Unknown game');
+  const max=maxSeatsFor(gameType);if(room.players.size>max)throw new Error(`${gameName(gameType)} supports a maximum of ${max} players`);
+  room.gameType=gameType;room.settings={roundCount:10,...extraDefaults(gameType)};room.maxSeats=max;
+  for(const p of room.players.values()){p.seat=null;p.ready=false;p.bid=null;p.tricks=0;p.score=0;p.continued=false;p.hand=[];p.eliminated=false}
+  room.game={phase:'lobby',roundIndex:-1,schedule:[],handSize:0,dealerId:null,dealerCeremony:null,biddingOrder:[],bidTurnId:null,bidActionCount:0,highBid:null,highBidderId:null,contract:null,fourAndOut:false,biddingTeam:null,teamScores:{A:0,B:0},trump:null,trumpPlays:[],capturedByTeam:{A:[],B:[]},smearAwards:null,gameValues:null,turnPlayerId:null,leaderId:null,currentTrick:[],lastTrick:null,roundResults:null,winnerIds:[],history:[],extra:null};
+  room.chat.push({id:crypto.randomUUID(),playerId:'system',name:'Game Lodge',text:`Host moved the group to ${gameName(gameType)}.`,at:now()});
+}
+
 function startRound(room,roundIndex){
   const g=room.game,order=playerOrder(room),round=g.schedule[roundIndex];if(!round)throw new Error('Round does not exist.');
   g.roundIndex=roundIndex;g.handSize=round.handSize;g.phase='bidding';g.currentTrick=[];g.lastTrick=null;g.roundResults=null;
@@ -125,6 +134,7 @@ async function handleApi(request){
   if(u.pathname==='/api/removePlayer'&&request.method==='POST'){if(!host(room,b.hostToken))return fail('Host only',403);if(room.game.phase!=='lobby')return fail('Players can only be removed before the game starts');const target=room.players.get(String(b.targetId||''));if(!target)return fail('Player not found');if(target.id===room.hostPlayerId)return fail('The host cannot remove themselves');room.players.delete(target.id);broadcast(room);return jsonResponse({ok:true})}
   if(u.pathname==='/api/ready'&&request.method==='POST'){if(!p)return fail('Player not found',401);if(room.game.phase!=='lobby')return fail('Game already started');const ready=!!b.ready;if(ready&&p.seat==null&&assignOpenSeat(room,p)==null)return fail('No open seat available');p.ready=ready;broadcast(room);return jsonResponse({ok:true,seat:p.seat})}
   if(u.pathname==='/api/settings'&&request.method==='POST'){if(!host(room,b.hostToken))return fail('Host only',403);if(room.game.phase!=='lobby')return fail('Settings locked after start');if(isExtraGame(room.gameType)){applyExtraSettings(room,b)}else if(room.gameType===GAME_TYPES.FUCK){const n=Number(b.roundCount);if(!Number.isInteger(n)||n<1||n>100)return fail('Choose 1 to 100 rounds');room.settings.roundCount=n}broadcast(room);return jsonResponse({ok:true})}
+  if(u.pathname==='/api/switchGame'&&request.method==='POST'){if(!host(room,b.hostToken))return fail('Host only',403);try{switchRoomGame(room,String(b.gameType||''));broadcast(room);return jsonResponse({ok:true,gameType:room.gameType})}catch(err){return fail(err.message)}}
   if(u.pathname==='/api/start'&&request.method==='POST'){
     if(!host(room,b.hostToken))return fail('Host only',403);const joined=[...room.players.values()];if(joined.some(x=>!x.ready))return fail('Everyone must be Ready');try{assignOpenSeats(room)}catch(err){return fail(err.message)}if(isExtraGame(room.gameType)){try{startExtraGame(room);broadcast(room);return jsonResponse({ok:true})}catch(err){return fail(err.message)}}
     if(room.gameType===GAME_TYPES.SMEAR&&joined.length!==4)return fail('Smear requires exactly 4 players');if(room.gameType!==GAME_TYPES.SMEAR&&joined.length<2)return fail('Need at least 2 players');const order=playerOrder(room);

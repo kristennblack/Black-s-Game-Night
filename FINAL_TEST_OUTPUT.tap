@@ -1,584 +1,674 @@
 
-> black-family-game-night@1.0.6 check
-> node --check worker.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check public/app.js && node --test
+> black-family-game-night@1.0.10 test
+> node --test
 
 TAP version 13
 # Subtest: Cloudflare adapter creates, seats, readies and starts all 18 games
 ok 1 - Cloudflare adapter creates, seats, readies and starts all 18 games
   ---
-  duration_ms: 94.523589
+  duration_ms: 69.039078
   type: 'test'
   ...
 # Subtest: Cloudflare adapter persists room snapshots to Durable Object storage
 ok 2 - Cloudflare adapter persists room snapshots to Durable Object storage
   ---
-  duration_ms: 0.630388
+  duration_ms: 0.67141
   type: 'test'
   ...
 # Subtest: Cloudflare live room stream returns the initial state without hanging
 ok 3 - Cloudflare live room stream returns the initial state without hanging
   ---
-  duration_ms: 1.494855
+  duration_ms: 1.286515
   type: 'test'
   ...
 # Subtest: Launch UI removes the nonfunctional install button and provides room retry controls
 ok 4 - Launch UI removes the nonfunctional install button and provides room retry controls
   ---
-  duration_ms: 8.626039
+  duration_ms: 6.502769
   type: 'test'
   ...
-# Subtest: Launch assets advertise v1.0.6 and use a fresh service-worker cache
-ok 5 - Launch assets advertise v1.0.6 and use a fresh service-worker cache
+# Subtest: Launch assets advertise v1.0.10 and use a fresh service-worker cache
+ok 5 - Launch assets advertise v1.0.10 and use a fresh service-worker cache
   ---
-  duration_ms: 2.404153
+  duration_ms: 2.185658
   type: 'test'
   ...
 # Subtest: Ready auto-assigns an open seat when a player did not choose one
 ok 6 - Ready auto-assigns an open seat when a player did not choose one
   ---
-  duration_ms: 2.691195
+  duration_ms: 2.568323
   type: 'test'
   ...
 # Subtest: Fuck Your Buddy exposes the viewer hand during bidding
 ok 7 - Fuck Your Buddy exposes the viewer hand during bidding
   ---
-  duration_ms: 1.950624
+  duration_ms: 2.10265
   type: 'test'
   ...
 # Subtest: Chat is stored once and visible to the other player
 ok 8 - Chat is stored once and visible to the other player
   ---
-  duration_ms: 6.976474
+  duration_ms: 6.9477
   type: 'test'
   ...
 # Subtest: Family-play UI includes Game Shelf home, bid-hand visibility, middle-finger reaction, and no voice controls
 ok 9 - Family-play UI includes Game Shelf home, bid-hand visibility, middle-finger reaction, and no voice controls
   ---
-  duration_ms: 1.543888
+  duration_ms: 3.42694
   type: 'test'
   ...
 # Subtest: All 18 games can auto-seat players who simply press Ready
 ok 10 - All 18 games can auto-seat players who simply press Ready
   ---
-  duration_ms: 37.354929
+  duration_ms: 29.389764
   type: 'test'
   ...
 # Subtest: Middle-finger quick reaction is accepted and broadcast in room state
 ok 11 - Middle-finger quick reaction is accepted and broadcast in room state
   ---
-  duration_ms: 0.80626
+  duration_ms: 0.67175
   type: 'test'
   ...
 # Subtest: Named Black family and pet players receive their matching avatar automatically
 ok 12 - Named Black family and pet players receive their matching avatar automatically
   ---
-  duration_ms: 4.921986
+  duration_ms: 3.665116
   type: 'test'
   ...
 # Subtest: All named family avatars have four style image files and remain alongside the original library
 ok 13 - All named family avatars have four style image files and remain alongside the original library
   ---
-  duration_ms: 10.828257
+  duration_ms: 12.692101
   type: 'test'
   ...
 # Subtest: John Black defaults to Birthday Guy and supports all 16 exclusive birthday looks
 ok 14 - John Black defaults to Birthday Guy and supports all 16 exclusive birthday looks
   ---
-  duration_ms: 1.049753
+  duration_ms: 1.022141
   type: 'test'
   ...
 # Subtest: All 16 John look image files are packaged and the UI exposes the full Birthday Boy lookbook
 ok 15 - All 16 John look image files are packaged and the UI exposes the full Birthday Boy lookbook
   ---
-  duration_ms: 1.680361
+  duration_ms: 2.201146
+  type: 'test'
+  ...
+# Subtest: Avatar picker is character-first and reveals only the selected character looks beneath it
+ok 16 - Avatar picker is character-first and reveals only the selected character looks beneath it
+  ---
+  duration_ms: 1.200376
+  type: 'test'
+  ...
+# Subtest: Refreshed original avatars and centered Elizabeth and Holly portraits are packaged at higher quality
+ok 17 - Refreshed original avatars and centered Elizabeth and Holly portraits are packaged at higher quality
+  ---
+  duration_ms: 1.685588
+  type: 'test'
+  ...
+# Subtest: Host can switch the existing room to a new game while all players and tokens stay together
+ok 18 - Host can switch the existing room to a new game while all players and tokens stay together
+  ---
+  duration_ms: 1.909902
   type: 'test'
   ...
 # Subtest: Campfire Chaos starts and returns private public state
-ok 16 - Campfire Chaos starts and returns private public state
+ok 19 - Campfire Chaos starts and returns private public state
   ---
-  duration_ms: 2.691156
+  duration_ms: 1.993887
   type: 'test'
   ...
 # Subtest: Trail Trouble starts and returns private public state
-ok 17 - Trail Trouble starts and returns private public state
+ok 20 - Trail Trouble starts and returns private public state
   ---
-  duration_ms: 0.561897
+  duration_ms: 0.602968
   type: 'test'
   ...
 # Subtest: Prairie Pots starts and returns private public state
-ok 18 - Prairie Pots starts and returns private public state
+ok 21 - Prairie Pots starts and returns private public state
   ---
-  duration_ms: 3.898884
+  duration_ms: 3.982758
   type: 'test'
   ...
 # Subtest: Burn Logs starts and returns private public state
-ok 19 - Burn Logs starts and returns private public state
+ok 22 - Burn Logs starts and returns private public state
   ---
-  duration_ms: 0.665641
+  duration_ms: 0.615186
   type: 'test'
   ...
 # Subtest: Deck Sweep starts and returns private public state
-ok 20 - Deck Sweep starts and returns private public state
+ok 23 - Deck Sweep starts and returns private public state
   ---
-  duration_ms: 0.61805
+  duration_ms: 0.612001
   type: 'test'
   ...
 # Subtest: Cribbage starts and returns private public state
-ok 21 - Cribbage starts and returns private public state
+ok 24 - Cribbage starts and returns private public state
   ---
-  duration_ms: 0.432764
+  duration_ms: 0.763827
   type: 'test'
   ...
 # Subtest: Marbles & Jokers starts and returns private public state
-ok 22 - Marbles & Jokers starts and returns private public state
+ok 25 - Marbles & Jokers starts and returns private public state
   ---
-  duration_ms: 0.615537
+  duration_ms: 0.655426
   type: 'test'
   ...
 # Subtest: Euchre starts and returns private public state
-ok 23 - Euchre starts and returns private public state
+ok 26 - Euchre starts and returns private public state
   ---
-  duration_ms: 0.383301
+  duration_ms: 0.471332
   type: 'test'
   ...
 # Subtest: 31 starts and returns private public state
-ok 24 - 31 starts and returns private public state
+ok 27 - 31 starts and returns private public state
   ---
-  duration_ms: 0.585872
+  duration_ms: 0.630539
   type: 'test'
   ...
 # Subtest: Golf starts and returns private public state
-ok 25 - Golf starts and returns private public state
+ok 28 - Golf starts and returns private public state
   ---
-  duration_ms: 0.818007
+  duration_ms: 0.802675
   type: 'test'
   ...
 # Subtest: Crazy Eights Countdown starts and returns private public state
-ok 26 - Crazy Eights Countdown starts and returns private public state
+ok 29 - Crazy Eights Countdown starts and returns private public state
   ---
-  duration_ms: 0.446975
+  duration_ms: 0.604029
   type: 'test'
   ...
 # Subtest: Mitts / Gloves / Socks starts and returns private public state
-ok 27 - Mitts / Gloves / Socks starts and returns private public state
+ok 30 - Mitts / Gloves / Socks starts and returns private public state
   ---
-  duration_ms: 0.729977
+  duration_ms: 0.551151
   type: 'test'
   ...
 # Subtest: Poker starts and returns private public state
-ok 28 - Poker starts and returns private public state
+ok 31 - Poker starts and returns private public state
   ---
-  duration_ms: 0.431472
+  duration_ms: 0.430551
   type: 'test'
   ...
 # Subtest: President starts and returns private public state
-ok 29 - President starts and returns private public state
+ok 32 - President starts and returns private public state
   ---
-  duration_ms: 0.443059
+  duration_ms: 0.408268
   type: 'test'
   ...
 # Subtest: Last Haven starts and returns private public state
-ok 30 - Last Haven starts and returns private public state
+ok 33 - Last Haven starts and returns private public state
   ---
-  duration_ms: 1.570718
+  duration_ms: 2.02287
   type: 'test'
   ...
 # Subtest: Campfire Chaos first legal action works
-ok 31 - Campfire Chaos first legal action works
+ok 34 - Campfire Chaos first legal action works
   ---
-  duration_ms: 1.858346
+  duration_ms: 1.993638
   type: 'test'
   ...
 # Subtest: 31 can draw and discard
-ok 32 - 31 can draw and discard
+ok 35 - 31 can draw and discard
   ---
-  duration_ms: 0.386175
+  duration_ms: 0.329771
   type: 'test'
   ...
 # Subtest: Golf can draw and replace
-ok 33 - Golf can draw and replace
+ok 36 - Golf can draw and replace
   ---
-  duration_ms: 0.40968
+  duration_ms: 0.455428
   type: 'test'
   ...
 # Subtest: Euchre calling action works
-ok 34 - Euchre calling action works
+ok 37 - Euchre calling action works
   ---
-  duration_ms: 0.196543
+  duration_ms: 0.196973
   type: 'test'
   ...
 # Subtest: Cribbage discards to crib
-ok 35 - Cribbage discards to crib
+ok 38 - Cribbage discards to crib
   ---
-  duration_ms: 0.329841
+  duration_ms: 0.328729
   type: 'test'
   ...
 # Subtest: Trail Trouble draws a movement card
-ok 36 - Trail Trouble draws a movement card
+ok 39 - Trail Trouble draws a movement card
   ---
-  duration_ms: 0.203483
+  duration_ms: 0.206277
   type: 'test'
   ...
 # Subtest: Marbles & Jokers draws a card
-ok 37 - Marbles & Jokers draws a card
+ok 40 - Marbles & Jokers draws a card
   ---
-  duration_ms: 0.307237
+  duration_ms: 0.313096
   type: 'test'
   ...
 # Subtest: Burn Logs draws then offers discard or mission actions
-ok 38 - Burn Logs draws then offers discard or mission actions
+ok 41 - Burn Logs draws then offers discard or mission actions
   ---
-  duration_ms: 0.590008
+  duration_ms: 0.578731
   type: 'test'
   ...
 # Subtest: Deck Sweep can play a legal starting group
-ok 39 - Deck Sweep can play a legal starting group
+ok 42 - Deck Sweep can play a legal starting group
   ---
-  duration_ms: 0.290532
+  duration_ms: 0.616057
   type: 'test'
   ...
 # Subtest: Poker first betting action works
-ok 40 - Poker first betting action works
+ok 43 - Poker first betting action works
   ---
-  duration_ms: 0.852289
+  duration_ms: 0.296682
   type: 'test'
   ...
 # Subtest: Last Haven setup can place a camp and route
-ok 41 - Last Haven setup can place a camp and route
+ok 44 - Last Haven setup can place a camp and route
   ---
-  duration_ms: 0.930685
+  duration_ms: 0.735524
   type: 'test'
   ...
 # Subtest: Campfire LAST LOG catch window expires after the next player completes a turn
-ok 42 - Campfire LAST LOG catch window expires after the next player completes a turn
+ok 45 - Campfire LAST LOG catch window expires after the next player completes a turn
   ---
-  duration_ms: 0.237564
+  duration_ms: 0.229361
   type: 'test'
   ...
 # Subtest: 31 recycles the discard pile when stock is exhausted
-ok 43 - 31 recycles the discard pile when stock is exhausted
+ok 46 - 31 recycles the discard pile when stock is exhausted
   ---
-  duration_ms: 0.300767
+  duration_ms: 0.347838
   type: 'test'
   ...
 # Subtest: Golf recycles discards and is capped at six players for a 56-card deck
-ok 44 - Golf recycles discards and is capped at six players for a 56-card deck
+ok 47 - Golf recycles discards and is capped at six players for a 56-card deck
   ---
-  duration_ms: 0.291884
+  duration_ms: 0.326906
   type: 'test'
   ...
 # Subtest: Trail Trouble only wins when all team markers reach the final Home space
-ok 45 - Trail Trouble only wins when all team markers reach the final Home space
+ok 48 - Trail Trouble only wins when all team markers reach the final Home space
   ---
-  duration_ms: 0.431212
+  duration_ms: 0.43668
   type: 'test'
   ...
 # Subtest: President can finish a full round without assigning the turn to a player already out
-ok 46 - President can finish a full round without assigning the turn to a player already out
+ok 49 - President can finish a full round without assigning the turn to a player already out
   ---
-  duration_ms: 1.700711
+  duration_ms: 1.64602
   type: 'test'
   ...
 # Subtest: Poker all-ins automatically run out the board instead of hanging between streets
-ok 47 - Poker all-ins automatically run out the board instead of hanging between streets
+ok 50 - Poker all-ins automatically run out the board instead of hanging between streets
   ---
-  duration_ms: 1.322118
+  duration_ms: 1.450769
   type: 'test'
   ...
 # Subtest: Euchre exposes Ace-No-Face redeal to an eligible player
-ok 48 - Euchre exposes Ace-No-Face redeal to an eligible player
+ok 51 - Euchre exposes Ace-No-Face redeal to an eligible player
   ---
-  duration_ms: 0.192146
+  duration_ms: 0.190413
   type: 'test'
   ...
 # Subtest: Last Haven randomizes tiles, includes trading posts, and repeats the seven-warning Raider cycle
-ok 49 - Last Haven randomizes tiles, includes trading posts, and repeats the seven-warning Raider cycle
+ok 52 - Last Haven randomizes tiles, includes trading posts, and repeats the seven-warning Raider cycle
   ---
-  duration_ms: 1.788302
+  duration_ms: 1.938214
   type: 'test'
   ...
 # Subtest: Last Haven trade target receives accept and decline actions
-ok 50 - Last Haven trade target receives accept and decline actions
+ok 53 - Last Haven trade target receives accept and decline actions
   ---
-  duration_ms: 0.365915
+  duration_ms: 0.370381
   type: 'test'
   ...
 # Subtest: Campfire Chaos only allows drawing when no card is playable
-ok 51 - Campfire Chaos only allows drawing when no card is playable
+ok 54 - Campfire Chaos only allows drawing when no card is playable
   ---
-  duration_ms: 0.506254
+  duration_ms: 0.523188
   type: 'test'
   ...
 # Subtest: Campfire Chaos playable stock draw can be played or kept, but no other card can be substituted
-ok 52 - Campfire Chaos playable stock draw can be played or kept, but no other card can be substituted
+ok 55 - Campfire Chaos playable stock draw can be played or kept, but no other card can be substituted
   ---
-  duration_ms: 0.782394
+  duration_ms: 0.822224
   type: 'test'
   ...
 # Subtest: Cribbage treats Ace as low in pegging runs
-ok 53 - Cribbage treats Ace as low in pegging runs
+ok 56 - Cribbage treats Ace as low in pegging runs
   ---
-  duration_ms: 0.386275
+  duration_ms: 0.390631
   type: 'test'
   ...
 # Subtest: Cribbage ends immediately when a player reaches 121 during pegging
-ok 54 - Cribbage ends immediately when a player reaches 121 during pegging
+ok 57 - Cribbage ends immediately when a player reaches 121 during pegging
   ---
-  duration_ms: 0.445944
+  duration_ms: 0.491351
   type: 'test'
   ...
 # Subtest: Burn Logs can finish when the target-log player goes out
-ok 55 - Burn Logs can finish when the target-log player goes out
+ok 58 - Burn Logs can finish when the target-log player goes out
   ---
-  duration_ms: 0.56462
+  duration_ms: 0.552632
   type: 'test'
   ...
 # Subtest: Deck Sweep can finish a configured final round
-ok 56 - Deck Sweep can finish a configured final round
+ok 59 - Deck Sweep can finish a configured final round
   ---
-  duration_ms: 0.42971
+  duration_ms: 0.465123
   type: 'test'
   ...
 # Subtest: Last Haven can end as soon as a survivor reaches 15 Survival Points
-ok 57 - Last Haven can end as soon as a survivor reaches 15 Survival Points
+ok 60 - Last Haven can end as soon as a survivor reaches 15 Survival Points
   ---
-  duration_ms: 0.430071
+  duration_ms: 0.785058
   type: 'test'
   ...
 # Subtest: Marbles & Jokers uses all five Home holes and team help only after your own five are Home
-ok 58 - Marbles & Jokers uses all five Home holes and team help only after your own five are Home
+ok 61 - Marbles & Jokers uses all five Home holes and team help only after your own five are Home
   ---
-  duration_ms: 1.3566
+  duration_ms: 1.50442
   type: 'test'
   ...
 # Subtest: Marbles & Jokers cannot pass over a marble of the same colour
-ok 59 - Marbles & Jokers cannot pass over a marble of the same colour
+ok 62 - Marbles & Jokers cannot pass over a marble of the same colour
   ---
-  duration_ms: 0.605962
+  duration_ms: 0.424121
   type: 'test'
   ...
 # Subtest: Marbles & Jokers landing on a partner sends that partner to their in-spot
-ok 60 - Marbles & Jokers landing on a partner sends that partner to their in-spot
+ok 63 - Marbles & Jokers landing on a partner sends that partner to their in-spot
   ---
-  duration_ms: 0.57134
+  duration_ms: 0.736937
   type: 'test'
   ...
 # Subtest: 31 skips eliminated players when a player knocks
-ok 61 - 31 skips eliminated players when a player knocks
+ok 64 - 31 skips eliminated players when a player knocks
   ---
-  duration_ms: 1.183932
+  duration_ms: 2.388415
   type: 'test'
   ...
 # Subtest: Trail Trouble exposes board metadata and card 4 moves backward four
-ok 62 - Trail Trouble exposes board metadata and card 4 moves backward four
+ok 65 - Trail Trouble exposes board metadata and card 4 moves backward four
   ---
-  duration_ms: 0.743928
+  duration_ms: 0.683798
   type: 'test'
   ...
 # Subtest: Screw max hands scale by player count
-ok 63 - Screw max hands scale by player count
+ok 66 - Screw max hands scale by player count
   ---
-  duration_ms: 1.133377
+  duration_ms: 0.814662
   type: 'test'
   ...
 # Subtest: Fuck deck is 56 cards with 2 high and 2 low Jokers
-ok 64 - Fuck deck is 56 cards with 2 high and 2 low Jokers
+ok 67 - Fuck deck is 56 cards with 2 high and 2 low Jokers
   ---
-  duration_ms: 0.835904
+  duration_ms: 0.572422
   type: 'test'
   ...
 # Subtest: Fuck max hand stays capped at 13 but uses 56-card capacity
-ok 65 - Fuck max hand stays capped at 13 but uses 56-card capacity
+ok 68 - Fuck max hand stays capped at 13 but uses 56-card capacity
   ---
-  duration_ms: 0.225897
+  duration_ms: 0.762986
   type: 'test'
   ...
 # Subtest: Screw rounds climb then descend without repeating peak
-ok 66 - Screw rounds climb then descend without repeating peak
+ok 69 - Screw rounds climb then descend without repeating peak
   ---
-  duration_ms: 0.726942
+  duration_ms: 0.586373
   type: 'test'
   ...
 # Subtest: Screw trump cycles continuously
-ok 67 - Screw trump cycles continuously
+ok 70 - Screw trump cycles continuously
   ---
-  duration_ms: 0.278996
+  duration_ms: 0.198856
   type: 'test'
   ...
 # Subtest: dealer forbidden bid enforces total not equal to hand size
-ok 68 - dealer forbidden bid enforces total not equal to hand size
+ok 71 - dealer forbidden bid enforces total not equal to hand size
   ---
-  duration_ms: 0.169712
+  duration_ms: 0.110234
   type: 'test'
   ...
 # Subtest: Screw must follow suit if able
-ok 69 - Screw must follow suit if able
+ok 72 - Screw must follow suit if able
   ---
-  duration_ms: 0.337172
+  duration_ms: 0.223352
   type: 'test'
   ...
 # Subtest: Fuck Joker is always legal even when player can follow suit
-ok 70 - Fuck Joker is always legal even when player can follow suit
+ok 73 - Fuck Joker is always legal even when player can follow suit
   ---
-  duration_ms: 0.333106
+  duration_ms: 0.18808
   type: 'test'
   ...
 # Subtest: Fuck leading Joker allows any play until first normal card establishes suit
-ok 71 - Fuck leading Joker allows any play until first normal card establishes suit
+ok 74 - Fuck leading Joker allows any play until first normal card establishes suit
   ---
-  duration_ms: 0.439514
+  duration_ms: 0.290633
   type: 'test'
   ...
 # Subtest: Screw trump beats led suit
-ok 72 - Screw trump beats led suit
+ok 75 - Screw trump beats led suit
   ---
-  duration_ms: 0.475107
+  duration_ms: 0.393135
   type: 'test'
   ...
 # Subtest: Screw no trump uses highest led suit only
-ok 73 - Screw no trump uses highest led suit only
+ok 76 - Screw no trump uses highest led suit only
   ---
-  duration_ms: 0.235571
+  duration_ms: 0.242822
   type: 'test'
   ...
 # Subtest: Fuck trump power-rank card is absolute highest
-ok 74 - Fuck trump power-rank card is absolute highest
+ok 77 - Fuck trump power-rank card is absolute highest
   ---
-  duration_ms: 0.238125
+  duration_ms: 0.16798
   type: 'test'
   ...
 # Subtest: Fuck first high Joker wins a high-Joker tie
-ok 75 - Fuck first high Joker wins a high-Joker tie
+ok 78 - Fuck first high Joker wins a high-Joker tie
   ---
-  duration_ms: 0.1079
+  duration_ms: 0.073981
   type: 'test'
   ...
 # Subtest: Fuck first non-trump power-rank card wins ties
-ok 76 - Fuck first non-trump power-rank card wins ties
+ok 79 - Fuck first non-trump power-rank card wins ties
   ---
-  duration_ms: 0.103975
+  duration_ms: 0.06043
   type: 'test'
   ...
 # Subtest: Fuck later low Joker beats earlier low Joker but every normal card beats both
-ok 77 - Fuck later low Joker beats earlier low Joker but every normal card beats both
+ok 80 - Fuck later low Joker beats earlier low Joker but every normal card beats both
   ---
-  duration_ms: 0.134129
+  duration_ms: 0.078437
   type: 'test'
   ...
 # Subtest: Fuck no-trump high Joker is above power rank
-ok 78 - Fuck no-trump high Joker is above power rank
+ok 81 - Fuck no-trump high Joker is above power rank
   ---
-  duration_ms: 0.116564
+  duration_ms: 0.065448
   type: 'test'
   ...
 # Subtest: Fuck normal trick-taking resumes below special cards
-ok 79 - Fuck normal trick-taking resumes below special cards
+ok 82 - Fuck normal trick-taking resumes below special cards
   ---
-  duration_ms: 0.115842
+  duration_ms: 0.064285
   type: 'test'
   ...
 # Subtest: Fuck random schedule respects requested count and playable max
-ok 80 - Fuck random schedule respects requested count and playable max
+ok 83 - Fuck random schedule respects requested count and playable max
   ---
-  duration_ms: 0.895563
+  duration_ms: 0.834953
   type: 'test'
   ...
 # Subtest: exact bid scoring
-ok 81 - exact bid scoring
+ok 84 - exact bid scoring
   ---
-  duration_ms: 0.112177
+  duration_ms: 0.073079
   type: 'test'
   ...
 # Subtest: Smear deck is 32 cards using only 7 through Ace
-ok 82 - Smear deck is 32 cards using only 7 through Ace
+ok 85 - Smear deck is 32 cards using only 7 through Ace
   ---
-  duration_ms: 0.249021
+  duration_ms: 0.168471
   type: 'test'
   ...
 # Subtest: Smear teams are opposite seats
-ok 83 - Smear teams are opposite seats
+ok 86 - Smear teams are opposite seats
   ---
-  duration_ms: 0.164805
+  duration_ms: 0.073239
   type: 'test'
   ...
 # Subtest: Smear bid order treats 4 and out above regular 4
-ok 84 - Smear bid order treats 4 and out above regular 4
+ok 87 - Smear bid order treats 4 and out above regular 4
   ---
-  duration_ms: 0.118486
+  duration_ms: 0.062483
   type: 'test'
   ...
 # Subtest: Smear follows suit when able
-ok 85 - Smear follows suit when able
+ok 88 - Smear follows suit when able
   ---
-  duration_ms: 0.106369
+  duration_ms: 0.066269
   type: 'test'
   ...
 # Subtest: Smear scores High and Low to teams that played them and Jack to capturer
-ok 86 - Smear scores High and Low to teams that played them and Jack to capturer
+ok 89 - Smear scores High and Low to teams that played them and Jack to capturer
   ---
-  duration_ms: 0.371634
+  duration_ms: 0.3029
   type: 'test'
   ...
 # Subtest: Smear missing Jack simply leaves three available scoring points
-ok 87 - Smear missing Jack simply leaves three available scoring points
+ok 90 - Smear missing Jack simply leaves three available scoring points
   ---
-  duration_ms: 0.2084
+  duration_ms: 0.149012
   type: 'test'
   ...
 # Subtest: Smear equal game values are no game out
-ok 88 - Smear equal game values are no game out
+ok 91 - Smear equal game values are no game out
   ---
-  duration_ms: 0.14806
+  duration_ms: 0.10028
   type: 'test'
   ...
 # Subtest: Smear bidder set loses bid while defenders still score
-ok 89 - Smear bidder set loses bid while defenders still score
+ok 92 - Smear bidder set loses bid while defenders still score
   ---
-  duration_ms: 0.197424
+  duration_ms: 0.134901
   type: 'test'
   ...
 # Subtest: Smear bidder may score more than bid when contract is made
-ok 90 - Smear bidder may score more than bid when contract is made
+ok 93 - Smear bidder may score more than bid when contract is made
   ---
-  duration_ms: 0.734503
+  duration_ms: 0.108091
   type: 'test'
   ...
 # Subtest: Smear failed 4 and out is minus 11 and defenders keep earned points
-ok 91 - Smear failed 4 and out is minus 11 and defenders keep earned points
+ok 94 - Smear failed 4 and out is minus 11 and defenders keep earned points
   ---
-  duration_ms: 0.135472
+  duration_ms: 0.080279
   type: 'test'
   ...
 # Subtest: Smear successful 4 and out wins immediately
-ok 92 - Smear successful 4 and out wins immediately
+ok 95 - Smear successful 4 and out wins immediately
   ---
-  duration_ms: 0.115692
+  duration_ms: 0.06736
   type: 'test'
   ...
 # Subtest: Smear if both teams reach 11 on same hand bidding team wins
-ok 93 - Smear if both teams reach 11 on same hand bidding team wins
+ok 96 - Smear if both teams reach 11 on same hand bidding team wins
   ---
-  duration_ms: 0.123935
+  duration_ms: 0.065858
   type: 'test'
   ...
-# Subtest: Trail Trouble has a visual track, cabins, camps, homes, drawn-card panel and animated markers
-ok 94 - Trail Trouble has a visual track, cabins, camps, homes, drawn-card panel and animated markers
+# Subtest: v1.0.10 has a detailed Cribbage board and clearly marks the crib owner
+ok 97 - v1.0.10 has a detailed Cribbage board and clearly marks the crib owner
   ---
-  duration_ms: 0.812099
+  duration_ms: 0.829665
   type: 'test'
   ...
-# Subtest: Trail Trouble launch UI identifies the version as 1.0.6
-ok 95 - Trail Trouble launch UI identifies the version as 1.0.6
+# Subtest: Golf uses a clickable stock, face-up discard, held draw card and clickable 2x4 grid
+ok 98 - Golf uses a clickable stock, face-up discard, held draw card and clickable 2x4 grid
   ---
-  duration_ms: 0.107429
+  duration_ms: 0.256302
   type: 'test'
   ...
-1..95
-# tests 95
+# Subtest: Marbles & Jokers has a detailed zoomable board with colored pieces and direct draw deck
+ok 99 - Marbles & Jokers has a detailed zoomable board with colored pieces and direct draw deck
+  ---
+  duration_ms: 0.282721
+  type: 'test'
+  ...
+# Subtest: Lodge home and connection screen are birthday cabin themed
+ok 100 - Lodge home and connection screen are birthday cabin themed
+  ---
+  duration_ms: 0.188801
+  type: 'test'
+  ...
+# Subtest: Turn-draw games expose a physical clickable deck instead of only text actions
+ok 101 - Turn-draw games expose a physical clickable deck instead of only text actions
+  ---
+  duration_ms: 0.19483
+  type: 'test'
+  ...
+# Subtest: Trail Trouble has a square race board with Camp zones, Safe Trails, Home, zoom, cards and tappable markers
+ok 102 - Trail Trouble has a square race board with Camp zones, Safe Trails, Home, zoom, cards and tappable markers
+  ---
+  duration_ms: 1.073588
+  type: 'test'
+  ...
+# Subtest: Trail Trouble launch UI identifies the version as 1.0.10
+ok 103 - Trail Trouble launch UI identifies the version as 1.0.10
+  ---
+  duration_ms: 0.103344
+  type: 'test'
+  ...
+# Subtest: chat messages can surface as a temporary named banner
+ok 104 - chat messages can surface as a temporary named banner
+  ---
+  duration_ms: 0.828984
+  type: 'test'
+  ...
+# Subtest: Last Haven uses a responsive felt board with routes, camps and direct board actions
+ok 105 - Last Haven uses a responsive felt board with routes, camps and direct board actions
+  ---
+  duration_ms: 0.292826
+  type: 'test'
+  ...
+# Subtest: hand-based extra games support tap-to-play cards and contextual card choices
+ok 106 - hand-based extra games support tap-to-play cards and contextual card choices
+  ---
+  duration_ms: 0.161911
+  type: 'test'
+  ...
+# Subtest: all displayed card hands auto-sort and use no-swipe fit layouts
+ok 107 - all displayed card hands auto-sort and use no-swipe fit layouts
+  ---
+  duration_ms: 0.69179
+  type: 'test'
+  ...
+# Subtest: turn ownership makes YOUR HAND glow
+ok 108 - turn ownership makes YOUR HAND glow
+  ---
+  duration_ms: 0.193228
+  type: 'test'
+  ...
+# Subtest: Prairie Pots uses tappable hand actions and visible live chip pots
+ok 109 - Prairie Pots uses tappable hand actions and visible live chip pots
+  ---
+  duration_ms: 0.416189
+  type: 'test'
+  ...
+# Subtest: room-preserving host game switch is wired through Worker and client UI
+ok 110 - room-preserving host game switch is wired through Worker and client UI
+  ---
+  duration_ms: 0.172737
+  type: 'test'
+  ...
+1..110
+# tests 110
 # suites 0
-# pass 95
+# pass 110
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1831.20666
+# duration_ms 1787.567352

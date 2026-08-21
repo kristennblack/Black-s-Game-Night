@@ -1,4 +1,4 @@
-BLACK FAMILY GAME NIGHT v1.0.6 - FAMILY CHARACTER ROSTER
+BLACK FAMILY GAME NIGHT v1.0.7 - FAMILY CHARACTER ROSTER
 
 Featured family & pet characters:
 - John Black - Birthday Guy
@@ -21,7 +21,7 @@ Cute / Goofy / Rugged / Glam
 All 20 original character families from v1.0.4 are still included below the family roster in the avatar picker.
 
 
-JOHN BLACK BIRTHDAY BOY EXPANSION (v1.0.6)
+JOHN BLACK BIRTHDAY BOY EXPANSION (v1.0.7)
 - 16 exclusive selectable John looks
 - Birthday Guy is the default John look
 - All family, pet, and original characters remain available

@@ -1,38 +1,28 @@
-BLACK FAMILY GAME NIGHT v1.0.6 - FINAL TEST REPORT
+Black Family Game Night v1.0.10 - Final Test Report
 Date: 2026-08-21
 
-RESULT
-95 / 95 automated tests passing.
+RESULT: 110 / 110 automated tests passing
 
-NEW v1.0.6 COVERAGE
-- John Black defaults to his Birthday Guy look.
-- John can select and persist all 16 exclusive look variants.
-- All 16 John look image files are packaged in the live public assets.
-- The in-game avatar picker exposes the complete 16-look John Birthday Boy grid.
-- John remains a named automatic family-avatar match.
-- All prior named family/pet characters remain available.
-- All 20 original character families remain available.
-- Total character identities: 33.
-- Total selectable styled looks: 144.
+v1.0.10 additions verified:
+- Detailed Cribbage pegboard UI with crib-owner label, starter card, pegging/counting areas, and direct crib-card selection.
+- Golf stock/discard/held-card interaction and clickable 2x4 replacement grid.
+- Marbles & Jokers zoomable board with colored pieces, Home tracks, Camps, clickable deck, and board-selection hooks.
+- Physical clickable draw decks for turn-draw games.
+- Black Family Lodge fireplace birthday home/connection presentation.
+- v1.0.10 service-worker cache/version markers.
 
-REGRESSION COVERAGE STILL PASSING
-- All 18 games create, join, seat/auto-seat, Ready, and start through the Cloudflare game adapter.
-- Private hands remain private.
-- Screw Your Buddy and Fuck Your Buddy expose the viewer's hand during bidding.
-- Chat is stored and visible to the other player.
-- Game Shelf navigation remains present.
-- Voice controls remain removed.
-- Quick reactions include the middle finger.
-- Cloudflare live room stream returns its initial state without hanging.
-- Retry Connection controls remain present.
-- Trail Trouble board, cards, cabins, camps, homes, markers, animation, and backward-4 behavior remain covered.
-- All previous game-engine rule tests remain passing.
+Regression coverage retained:
+- All 18 games create, join, auto-seat, ready and start through the Cloudflare adapter.
+- Durable Object persistence and initial SSE room state.
+- Screw Your Buddy / Fuck Your Buddy bidding hands and rules.
+- Smear rules/scoring.
+- Trail Trouble advanced board and movement rules.
+- Prairie Pots direct cards/chip-pot display.
+- Last Haven responsive board/actions.
+- Chat, quick reactions, room-preserving game switching, private hands, avatar families and John birthday looks.
+- Auto-sorted, no-horizontal-swipe hands.
 
-FIRST LIVE CHECK AFTER DEPLOYMENT
-1. Confirm the app says v1.0.6.
-2. Create a fresh room as John Black.
-3. Open the avatar picker.
-4. Confirm Birthday Guy is selected by default.
-5. Tap several John looks, including #16 Wasteland Lumberjack.
-6. Join from a second device and confirm the selected John look appears there too.
-7. Continue normal two-device game testing.
+Important live-device checks still recommended:
+- Verify the new visual boards on the actual phones/tablets your family will use.
+- Confirm touch targets feel comfortable at the smallest phone size.
+- Test a full Cribbage hand, one Golf hole, and several Marbles & Jokers turns with two devices.

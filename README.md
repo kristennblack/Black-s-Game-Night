@@ -1,60 +1,26 @@
-# Black Family Game Night v1.0.6
+# Black Family Game Night v1.0.10
 
-Private family multiplayer game lodge built as a birthday gift for John Black.
+Private family multiplayer game lodge built for John Black.
 
-## v1.0.6 - Family character expansion
+## v1.0.10 gameplay + table polish
 
-This is a **full replacement build** based on v1.0.4. It keeps every gameplay and family-play correction from v1.0.4 and adds the new family character roster.
+- Trail Trouble now uses an original square lodge-race board with visible Camp zones, colour-coded Safe Trails and Home areas, zoom controls, a pannable board, tappable Trail cards, and tappable markers.
+- The host can switch the existing room to any compatible game without making everyone rejoin. Player names, avatars, chat, and tokens stay in the same room; seats and Ready reset for the new game.
+- Every card hand auto-sorts and resizes to fit the available width instead of requiring horizontal swiping.
+- YOUR HAND glows when it is your turn or decision.
+- Prairie Pots cards are tap-to-play and every pot now shows a visible chip stack and whether chips remain to be won.
+- Keeps the v1.0.8 chat banner, Last Haven felt board, tap-to-play controls, v1.0.7 avatar polish, 16 John looks, full family/pet roster, and all 18 game engines.
 
-### New named characters
+## Deploy
 
-- Dorothy
-- James
-- Elizabeth
-- Holly
-- Vanessa
-- Logan
-- Papa
-- Nana
-- Kristen
-- Molly
-- Kelsi
-- Gunner
+Replace the contents of the existing GitHub repository with this package while keeping the repository's hidden `.git` folder. Commit and push to `main`; the existing Cloudflare Git integration will deploy automatically.
 
-Each has **Cute, Goofy, Rugged and Glam** avatar variants. Joining with one of those matching names automatically starts on that character, but the player can still switch to any avatar before the game starts.
-
-John Black is featured first with **16 exclusive Birthday Boy looks**, and **all 20 original character families are still included**. Total selectable styled looks: **144**.
-
-## v1.0.4 corrections retained
-
-- Game Shelf button from every lobby/game.
-- Optional seat selection with automatic seat assignment on Ready.
-- Screw Your Buddy and Fuck Your Buddy show your dealt hand before/during bidding.
-- Chat live-sync plus fallback room-state sync.
-- Voice-chat controls removed for now.
-- Middle-finger quick reaction included.
-- Trail Trouble full visual board with Camps, Home lanes, Cabins, movement cards and animated markers.
-- Trail Trouble 4 card moves backward four.
-- Room reconnect and retry controls.
-- Install App button removed. Browser Add to Home Screen remains available normally.
-
-## Included
-
-- 18 playable games.
-- Multiplayer rooms and private card state.
-- Invite links, optional seat choice, automatic seat assignment, and Ready flow.
-- Text chat and quick reactions.
-- Reconnect and persistent room state.
-- PWA / Add to Home Screen support through the browser.
-- 33 selectable character identities: John + 12 named family/pet characters + 20 original characters.
-- 4 visual styles per character identity.
-
-## QA
-
-Final source validation for v1.0.6: **95 / 95 automated tests passing** on 2026-08-21.
-
-Run locally with `npm test` or the full source check with `npm run check`.
+Automated test status is recorded in `FINAL_TEST_REPORT.txt`.
 
 
-## v1.0.6 Birthday Boy expansion
-John Black now has 16 exclusive selectable looks in the in-game avatar picker. Birthday Guy is his default look. All family characters, original avatars, games, and gameplay fixes from the prior live build remain included.
+## v1.0.10 tabletop polish
+- Rustic cribbage pegboard with crib owner, starter, pegging lane and counting display.
+- Golf now plays directly from a visible stock/discard/held-card tabletop.
+- Marbles & Jokers has a zoomable colored marble board.
+- Draw-action games show clickable physical decks.
+- Home and connection screens are rebuilt as John Black birthday cabin scenes.
