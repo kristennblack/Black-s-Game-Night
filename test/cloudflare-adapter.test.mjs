@@ -59,6 +59,25 @@ test('Cloudflare adapter creates, seats, readies and starts all 18 games', async
   await flush();
 });
 
+test('All 18 original games can launch solo with computer players at Easy, Medium or Hard difficulty', async()=>{
+  for(const difficulty of ['easy','medium','hard']){
+    const {hub}=makeHub();
+    for(const [gameType,count] of starts){
+      const created=await post(hub,'create',{name:'Kristen',gameType});
+      for(let i=1;i<count;i++)await post(hub,'addBot',{roomId:created.roomId,hostToken:created.hostToken,difficulty});
+      await post(hub,'ready',{roomId:created.roomId,playerToken:created.playerToken,ready:true});
+      const lobby=await state(hub,created.roomId,created.playerToken);
+      assert.equal(lobby.players.length,count,`${gameType} did not fill required seats`);
+      assert.equal(lobby.players.filter(p=>p.isBot).length,count-1,`${gameType} missing computer players`);
+      assert.ok(lobby.players.filter(p=>p.isBot).every(p=>p.botDifficulty===difficulty),`${gameType} lost ${difficulty} difficulty`);
+      await post(hub,'start',{roomId:created.roomId,hostToken:created.hostToken});
+      for(let i=0;i<5;i++)await post(hub,'botTick',{roomId:created.roomId,hostToken:created.hostToken});
+      const started=await state(hub,created.roomId,created.playerToken);
+      assert.notEqual(started.game.phase,'lobby',`${gameType} failed solo computer launch`);
+    }
+  }
+});
+
 test('Cloudflare adapter persists room snapshots to Durable Object storage', async()=>{
   const {hub,storage,flush}=makeHub();
   const created=await post(hub,'create',{name:'John Black',gameType:GAME_TYPES.SCREW});
@@ -99,12 +118,12 @@ test('Launch UI removes the nonfunctional install button and provides room retry
   assert.match(appSource,/data-action="retryConnect"/);
 });
 
-test('Launch assets advertise v1.1.0-tryout.3 and use a fresh service-worker cache', async()=>{
+test('Launch assets advertise v1.2.0-launch and use a fresh service-worker cache', async()=>{
   const {readFile}=await import('node:fs/promises');
   const appSource=await readFile(new URL('../public/app.js',import.meta.url),'utf8');
   const swSource=await readFile(new URL('../public/sw.js',import.meta.url),'utf8');
-  assert.match(appSource,/APP_VERSION='1\.1\.0-tryout\.3'/);
-  assert.match(swSource,/black-family-game-night-v110-tryout3/);
+  assert.match(appSource,/APP_VERSION='1\.2\.0-launch'/);
+  assert.match(swSource,/black-family-game-night-v120-launch/);
 });
 
 
@@ -285,4 +304,35 @@ test('Host can switch the existing room to a new game while all players and toke
   assert.ok(hostView.players.every(p=>p.ready===false&&p.seat===null),'new game should reset Ready and seats');
   assert.equal(hostView.chat.at(-1).name,'Game Lodge');
   assert.match(hostView.chat.at(-1).text,/Prairie Pots/);
+});
+
+test('Host can add Easy, Medium or Hard computer players and start solo', async()=>{
+  const {hub}=makeHub();
+  const created=await post(hub,'create',{name:'Kristen',gameType:GAME_TYPES.SCREW});
+  for(const difficulty of ['easy','medium','hard'])await post(hub,'addBot',{roomId:created.roomId,playerToken:created.playerToken,hostToken:created.hostToken,difficulty});
+  await post(hub,'ready',{roomId:created.roomId,playerToken:created.playerToken,ready:true});
+  let s=await state(hub,created.roomId,created.playerToken);
+  assert.equal(s.players.filter(p=>p.isBot).length,3);
+  assert.deepEqual(new Set(s.players.filter(p=>p.isBot).map(p=>p.botDifficulty)),new Set(['easy','medium','hard']));
+  assert.ok(s.players.filter(p=>p.isBot).every(p=>p.ready&&p.connected));
+  await post(hub,'start',{roomId:created.roomId,hostToken:created.hostToken});
+  s=await state(hub,created.roomId,created.playerToken);
+  assert.notEqual(s.game.phase,'lobby');
+});
+
+test('botTick advances a computer turn without exposing hidden hands', async()=>{
+  const {hub}=makeHub();
+  const created=await post(hub,'create',{name:'Kristen',gameType:GAME_TYPES.SCREW});
+  await post(hub,'addBot',{roomId:created.roomId,playerToken:created.playerToken,hostToken:created.hostToken,difficulty:'medium'});
+  await post(hub,'ready',{roomId:created.roomId,playerToken:created.playerToken,ready:true});
+  await post(hub,'start',{roomId:created.roomId,hostToken:created.hostToken});
+  let s=await state(hub,created.roomId,created.playerToken);
+  for(let i=0;i<8;i++){
+    const before=s.revision;
+    const r=await post(hub,'botTick',{roomId:created.roomId,playerToken:created.playerToken,hostToken:created.hostToken});
+    s=await state(hub,created.roomId,created.playerToken);
+    if(r.acted)assert.ok(s.revision>before);
+    if(s.game.bidTurnId===s.viewerId||s.game.turnPlayerId===s.viewerId)break;
+  }
+  for(const p of s.players)assert.equal('hand' in p,false);
 });

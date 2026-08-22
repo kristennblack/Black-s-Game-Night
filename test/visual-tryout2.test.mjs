@@ -11,6 +11,6 @@ test('Family Mystery uses illustrated rooms, glowing movement blocks and avatar 
 });
 
 test('Lodge home uses a detailed cabin scene with animated fire',()=>{
-  for(const token of ['real-cabin-scene','stone-fireplace','real-flames','embers']) assert.ok(app.includes(token),token);
-  for(const token of ['lodgeFlameA','cabinFireWash','emberRise']) assert.ok(css.includes(token),token);
+  for(const token of ['approved-home-scene','home-cabin-approved.png','approved-fire','home-hotspot']) assert.ok(app.includes(token),token);
+  for(const token of ['homeFlameA','homeGlow','emberRise']) assert.ok(css.includes(token),token);
 });

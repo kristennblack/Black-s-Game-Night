@@ -1,26 +1,44 @@
-BLACK FAMILY GAME NIGHT v1.1.0-tryout.3
-THIRD-PERSON PROP HUNT + ANIMATED LODGE / MYSTERY TRYOUT
+BLACK FAMILY GAME NIGHT v1.2.0-launch
+FULL REPLACEMENT LAUNCH CANDIDATE
 
-This package is based directly on the real v1.0.10 full replacement project.
+This package builds on the tested Black Family Lodge project and keeps the original 18 multiplayer games while adding the newest family-game work.
 
-WHAT TO TRY FIRST
-1. Open the Black Family Lodge and confirm the detailed cabin/fireplace home still looks right.
-2. Open Family Mystery and confirm the illustrated locations, avatar standees and glowing movement blocks still feel game-like.
-3. Open Family Prop Hunt.
-4. Pick a family character and set the total player count. Unused seats become computer players.
-5. Start with Papa's Shop.
-6. On computer: WASD moves, drag the game view to look around, Space jumps, left click shoots, E changes prop, C drops decoy, Q flashes, X locks/unlocks the prop, R reloads.
-7. On phone: use the left joystick, drag the main game view to rotate the third-person camera, and use the six action buttons.
-8. Try jumping onto low boxes and benches, then chaining onto higher climbable surfaces.
-9. Try the tractor, shelving route, pallets, barn pens and outside apron in Papa's Shop.
-10. Test the other maps for bunks/picnic table, trampoline/trailers and sea cans/goat platforms.
+INSTALL / UPDATE
+1. Unzip this package.
+2. Open the existing Black-s-Game-Night repository folder in Explorer/Finder.
+3. KEEP the hidden .git folder.
+4. Replace/overwrite the existing project files with EVERYTHING inside this package.
+5. In GitHub Desktop, review the changes.
+6. Commit with a message such as:
+   Black Family Game Night v1.2.0 - Lodge launch update
+7. Push origin to main.
+8. Leave the existing Cloudflare connection/settings in place and allow the connected deployment to build automatically.
+9. When deployment is green, hard-refresh the app once so the v1.2.0 service-worker cache takes over.
 
-DEPLOYING OVER THE EXISTING GITHUB PROJECT
-1. Back up your current repository folder.
-2. Keep the hidden .git folder.
-3. Replace the project files with everything inside this package.
-4. Commit and push to main.
-5. Cloudflare should deploy through the existing connection.
-6. Confirm the app reports v1.1.0-tryout.3.
+WHAT IS NEW
+- Approved realistic Black Family Lodge home artwork.
+- Moving fireplace flames, glow and embers layered over the approved home scene.
+- Larger John-focused birthday Lodge presentation.
+- Family Mystery with illustrated rooms, glowing movement blocks, family standees, suggestions, notes, accusations and optional computer detectives.
+- Third-person 3D Family Prop Hunt tryout with family characters, visible prop-zapper, disguise/decoy/flash mechanics, 3-hit health, jumping, gravity, climbing and four family maps.
+- John's Birthday Seat: a new third-person platform/jumping race with checkpoints, family-themed obstacles, computer racers and the birthday seat at the top.
+- Character -> outfit selection flow with Back-to-character controls in the main multiplayer avatar flow and 3D-game selectors.
+- Easy / Medium / Hard computer players available in all 18 original multiplayer games. Family Mystery, Prop Hunt and Birthday Seat also include computer-play options for solo testing/play.
+- Every original multiplayer game can create an exact private-room invite URL. Game cards include Create & Share and room lobbies include Share Invite + Copy Link.
+- Every new-game page includes a Share Game link that opens the correct game directly.
 
-This is still a family/private testing build. Prop Hunt's new real-time 3D slice is intentionally local + computer-fill while its camera, traversal, props and maps are being tuned. The original multiplayer games remain on the existing backend.
+IMPORTANT MULTIPLAYER NOTE
+- The original 18 games are the fully synchronized private-room multiplayer games.
+- The three new games are included as playable launch tryouts with local/computer play. Their Share Game links open the correct game for another person, but their new 3D/local engines are not yet synchronized into the shared room state in this candidate.
+
+FIRST TEST CHECKLIST
+1. Open the home screen and confirm the approved cabin scene fills the Lodge hero area.
+2. Confirm the fireplace flames/glow visibly move (unless Reduced Motion is enabled).
+3. Create any original game using Create & Share and open the generated room link on a second device.
+4. In a lobby, add Easy, Medium or Hard computer players and start a game with only one human.
+5. Open Family Mystery and confirm illustrated rooms, glowing movement blocks, family standees and computer difficulty options.
+6. Open Family Prop Hunt and test third-person movement, camera, jump/climb, shooting, disguise, decoy and flash actions.
+7. Open John's Birthday Seat and test checkpoints, jumping/platforms and computer racers.
+8. On a phone, verify touch targets and movement controls are comfortable.
+
+Do not delete the .git folder or reconnect Cloudflare if the repository is already connected.

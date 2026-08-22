@@ -11,5 +11,5 @@ test('Trail Trouble has a square race board with Camp zones, Safe Trails, Home, 
 });
 
 test('Trail Trouble launch UI identifies the tryout version',()=>{
-  assert.ok(app.includes("const APP_VERSION='1.1.0-tryout.3'"));
+  assert.ok(app.includes("const APP_VERSION='1.2.0-launch'"));
 });

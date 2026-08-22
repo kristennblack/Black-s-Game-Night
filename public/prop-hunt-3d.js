@@ -1,6 +1,6 @@
 /*
  * Black Family Game Night - Family Prop Hunt 3D gameplay slice
- * v1.1.0-tryout.3
+ * v1.2.0-launch
  *
  * Self-contained third-person software-3D renderer using Canvas 2D.
  * This deliberately avoids an external 3D dependency so the Cloudflare static
@@ -14,6 +14,7 @@
   const FAMILY=window.FAMILY;
   const P=()=>FAMILY.people;
   let root=null,canvas=null,ctx=null,raf=0,last=0,state=null;
+  let setupSelection={charId:'john',outfit:0};
   const keys=Object.create(null);
   const joy={x:0,z:0,active:false,id:null};
   const pointer={active:false,id:null,lastX:0,lastY:0};
@@ -139,26 +140,24 @@
   function keysClear(){for(const k of Object.keys(keys))delete keys[k];joy.x=joy.z=0;joy.active=false;pointer.active=false;}
 
   function renderSetup(){
-    const defaultSelected='john';
+    const defaultSelected=setupSelection.charId||'john';
     root.innerHTML=`
-      <div class="game-title-row"><div><span class="eyebrow">THIRD-PERSON 3D GAMEPLAY SLICE</span><h1>Family Prop Hunt</h1><p class="subtext">Run as your family character, jump and climb real map geometry, transform into exact-looking props, and hunt in third person on phone or computer.</p></div><span class="pill">v1.1 tryout.3</span></div>
+      <div class="game-title-row"><div><span class="eyebrow">THIRD-PERSON 3D FAMILY GAME</span><h1>Family Prop Hunt</h1><p class="subtext">Run as your animated family character, jump and climb real map geometry, transform into exact-looking props, and hunt in third person on phone or computer.</p></div><span class="pill">Launch build</span></div>
       <div class="setup-grid">
-        <section class="panel panel-pad"><h2>Choose your character</h2><div id="ph3Chars" class="character-grid">${P().map(p=>`<button class="character-pick ${p.id===defaultSelected?'selected':''}" data-id="${p.id}">${window.avatarHTML(p)}<strong>${p.name}</strong><small>${p.dog?'Animated dog player':(OUTFITS[p.id]?.label||'animated family character')}</small></button>`).join('')}</div></section>
-        <section class="panel panel-pad"><h2>Match setup</h2>
-          <label class="field-label">Total players (empty seats are computer players)</label><select id="ph3Count" class="select">${[2,3,4,5,6,7,8,9,10,11].map(n=>`<option ${n===6?'selected':''}>${n}</option>`).join('')}</select><br><br>
-          <label class="field-label">Computer difficulty</label><select id="ph3Difficulty" class="select"><option value="easy">Easy</option><option value="normal" selected>Normal</option><option value="hard">Hard</option></select><br><br>
-          <label class="field-label">Mode</label><select id="ph3Mode" class="select"><option value="classic">Classic · caught hiders spectate</option><option value="chaos">Family Chaos · caught hiders join hunters</option></select><br><br>
-          <label class="field-label">3D map</label><select id="ph3Map" class="select"><option value="rotate">Rotate all four maps</option>${Object.entries(MAPS).map(([k,m])=>`<option value="${k}">${m.name}</option>`).join('')}</select>
-          <div class="stat-card" style="margin-top:14px"><strong>Detailed movement now active</strong><p class="subtext">Third-person camera · jump physics · climbable benches/crates/tractors/hay/trailers · collision heights · prop lock · 3-hit health · sparks · 3 disguise changes · 10 decoys · flash per disguise.</p></div>
-          <button id="ph3Start" class="btn success" style="width:100%;margin-top:12px">START 3D MATCH</button>
-        </section>
+        <section class="panel panel-pad"><h2>Choose your character</h2><p class="subtext">Choose the family member or dog first. Outfit choices appear on the next screen.</p><div id="ph3Chars" class="character-grid">${P().map(p=>`<button class="character-pick ${p.id===defaultSelected?'selected':''}" data-id="${p.id}">${window.avatarHTML(p)}<strong>${p.name}</strong><small>${p.dog?'Animated dog player':(OUTFITS[p.id]?.label||'animated family character')}</small></button>`).join('')}</div></section>
+        <section class="panel panel-pad"><h2>Character preview</h2><img src="/family-3d-lineup-approved.png" alt="Approved animated Black family 3D character style" style="width:100%;border-radius:16px;border:1px solid var(--line)"><p class="subtext">This approved mini full-body family style is the visual target for all 3D player games.</p><button id="ph3Next" class="btn success" style="width:100%;margin-top:12px">NEXT: OUTFIT & MATCH</button></section>
       </div>`;
-    root.querySelectorAll('#ph3Chars .character-pick').forEach(b=>b.addEventListener('click',()=>{root.querySelectorAll('#ph3Chars .character-pick').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')}));
-    root.querySelector('#ph3Start').addEventListener('click',()=>{
-      const charId=root.querySelector('#ph3Chars .selected')?.dataset.id||defaultSelected;
-      startMatch({charId,count:Number(root.querySelector('#ph3Count').value),difficulty:root.querySelector('#ph3Difficulty').value,mode:root.querySelector('#ph3Mode').value,mapKey:root.querySelector('#ph3Map').value});
-    });
-    const q=new URL(location.href).searchParams;if(q.get('autostart')==='1'){setTimeout(()=>startMatch({charId:q.get('char')||defaultSelected,count:clamp(Number(q.get('players')||6),2,11),difficulty:q.get('difficulty')||'normal',mode:q.get('mode')||'classic',mapKey:q.get('map')||'papa'}),30);}
+    root.querySelectorAll('#ph3Chars .character-pick').forEach(b=>b.addEventListener('click',()=>{setupSelection.charId=b.dataset.id;root.querySelectorAll('#ph3Chars .character-pick').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')}));
+    root.querySelector('#ph3Next').addEventListener('click',()=>renderPropOutfit(defaultSelected));
+  }
+
+  function renderPropOutfit(fallback='john'){
+    const charId=setupSelection.charId||fallback,person=P().find(p=>p.id===charId)||P()[0];
+    const labels=person.dog?['Classic','Playful','Rugged','Party']:['Casual','Western','Plaid','Sporty','Winter','Dressy'];
+    const imageFor=i=>person.id==='john'?`/avatars/styles/john-look-${String(Math.min(16,i+1)).padStart(2,'0')}.jpg`:`/avatars/styles/${person.id}-${['cute','rugged','glam','goofy'][i%4]}.jpg`;
+    root.innerHTML=`<div class="game-title-row"><div><span class="eyebrow">CHARACTER LOCK-IN</span><h1>${person.name}</h1><p class="subtext">Pick an outfit. Press Back to choose a different character.</p></div><button id="ph3Back" class="btn secondary">← Back</button></div><div class="setup-grid"><section class="panel panel-pad"><h2>Outfit options</h2><div class="look-grid">${labels.map((n,i)=>`<button class="look-choice ${setupSelection.outfit===i?'selected':''}" data-ph3-outfit="${i}"><img src="${imageFor(i)}" alt="${person.name} ${n}"><span><b>${i+1}</b>${n}</span></button>`).join('')}</div></section><section class="panel panel-pad"><h2>Match setup</h2><label class="field-label">Total players (empty seats are computer players)</label><select id="ph3Count" class="select">${[2,3,4,5,6,7,8,9,10,11].map(n=>`<option ${n===6?'selected':''}>${n}</option>`).join('')}</select><br><br><label class="field-label">Computer difficulty</label><select id="ph3Difficulty" class="select"><option value="easy">Easy</option><option value="medium" selected>Medium</option><option value="hard">Hard</option></select><br><br><label class="field-label">Mode</label><select id="ph3Mode" class="select"><option value="classic">Classic · caught hiders spectate</option><option value="chaos">Family Chaos · caught hiders join hunters</option></select><br><br><label class="field-label">3D map</label><select id="ph3Map" class="select"><option value="rotate">Rotate all four maps</option>${Object.entries(MAPS).map(([k,m])=>`<option value="${k}">${m.name}</option>`).join('')}</select><div class="stat-card" style="margin-top:14px"><strong>Detailed movement active</strong><p class="subtext">Third-person camera · jump physics · climbable benches/crates/tractors/hay/trailers · prop lock · 3-hit health · sparks · 3 disguise changes · 10 decoys · flash per disguise.</p></div><button id="ph3Start" class="btn success" style="width:100%;margin-top:12px">START 3D MATCH</button></section></div>`;
+    root.querySelector('#ph3Back').onclick=renderSetup;root.querySelectorAll('[data-ph3-outfit]').forEach(b=>b.onclick=()=>{setupSelection.outfit=Number(b.dataset.ph3Outfit);root.querySelectorAll('[data-ph3-outfit]').forEach(x=>x.classList.toggle('selected',x===b))});root.querySelector('#ph3Start').onclick=()=>startMatch({charId:person.id,outfit:setupSelection.outfit,count:Number(root.querySelector('#ph3Count').value),difficulty:root.querySelector('#ph3Difficulty').value,mode:root.querySelector('#ph3Mode').value,mapKey:root.querySelector('#ph3Map').value});
+    const q=new URL(location.href).searchParams;if(q.get('autostart')==='1')setTimeout(()=>startMatch({charId:q.get('char')||person.id,outfit:0,count:clamp(Number(q.get('players')||6),2,11),difficulty:q.get('difficulty')||'medium',mode:q.get('mode')||'classic',mapKey:q.get('map')||'papa'}),30);
   }
 
   function startMatch(opts){

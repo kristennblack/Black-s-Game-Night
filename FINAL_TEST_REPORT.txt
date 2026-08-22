@@ -1,30 +1,31 @@
-Black Family Game Night v1.1.0-tryout.3 - Test Report
+Black Family Game Night v1.2.0-launch - Final Test Report
 Date: 2026-08-22
 
-RESULT: 118 / 118 automated tests passing
+RESULT: 127 / 127 automated tests passing
 
-NEW TRYOUT.3 VERIFICATION
-- Third-person Family Prop Hunt override is packaged and loaded from the real Lodge tryout.
-- Software-3D renderer uses X/Y/Z world coordinates and perspective camera projection.
-- Family characters are visible on screen while playing and use existing family picture assets for recognizable faces.
-- Hunter character visibly carries a stylized prop-zapper.
-- Hider disguise renders through the same prop model function used for map props.
-- Jump/gravity/landing/support calculations are implemented.
-- Climbable geometry and different obstacle heights are implemented across all four maps.
-- Papa's Shop includes climbable tractor, workbench, tool chest, shelving route, motorcycle, lumber, pallets, pens and outdoor clutter.
-- Campsite includes bunks, picnic table, coolers, truck, tent, shoreline and other climbable items.
-- Acreage includes deck/hot tub, trailer, trampoline bounce, shops, woods and storage geometry.
-- Farmyard includes coop structures, goat stairs, sea cans, hay stack and goat platforms.
-- Shooting uses a third-person world ray, 30-round magazine/unlimited reserve, hit health and spark effects.
-- Prop lock, 3 prop changes, 10 decoys and one flash per disguise remain implemented.
-- Phone controls include joystick + drag camera + action buttons.
-- Desktop controls include WASD + mouse/keyboard actions.
-- Prop Hunt computer-fill seats and Easy/Normal/Hard AI are included in the local tryout.
-- Family Mystery illustrated board and animated Lodge home remain covered by regression tests.
-- Existing 18 multiplayer games, Durable Object room persistence, chat, reactions, avatar system and room-preserving game switching remain covered.
+LAUNCH FEATURES VERIFIED
+- Approved realistic Black Family Lodge home scene is used.
+- Moving fireplace flame/glow/ember CSS is present with reduced-motion handling.
+- All 18 original multiplayer games still create, seat, ready and start.
+- All 18 original games can be launched with one human plus computer players.
+- Easy, Medium and Hard bot difficulties persist into room state.
+- Bot driver actions execute without exposing other players' hidden hands.
+- Original game cards include Create & Share.
+- Room lobbies include Share Invite and Copy Link using the exact room URL.
+- New-game shelf and Share Game paths exist for Family Mystery, Family Prop Hunt and John's Birthday Seat.
+- Character -> outfit picker flow includes Back to Characters.
+- Family Mystery includes illustrated rooms, glowing movement blocks, family standees and computer detectives.
+- Family Prop Hunt loads the third-person 3D gameplay override with jump/climb/shoot/disguise systems and computer fill.
+- John's Birthday Seat is present with third-person platform movement, checkpoints, phone/desktop controls and computer racers.
+- Existing v1.0.10 regression coverage remains passing, including chat/reactions, room-preserving game switching, private hands, card sorting, Trail Trouble, Prairie Pots, Last Haven, Cribbage, Golf and Marbles & Jokers.
 
-LIMITATION / NEXT INTEGRATION STEP
-The new Prop Hunt real-time 3D slice is currently local/solo with computer-fill so camera, traversal, map density and disguise feel can be tuned safely. It has not yet been wired into the Cloudflare multiplayer room synchronization loop. That should happen after the 3D play style is approved, because real-time position/shot synchronization requires a different network cadence than the turn-based games.
+IMPORTANT LIVE-DEVICE QA
+Automated tests validate code paths and state rules, but a final device pass is still recommended for:
+- Cabin art cropping and moving fire alignment on the production screen sizes.
+- Touch control comfort in 3D Prop Hunt and Birthday Seat.
+- Full round pacing for new computer-player AI.
+- Exact invite-link opening on two real devices.
 
-VISUAL QA NOTE
-Automated rendering through the container's headless Chromium remained unreliable/hung in this environment, so the package should still be visually tested on the actual phone/computer browsers the family will use.
+MULTIPLAYER STATUS
+- Original 18 games: synchronized private-room multiplayer through the existing Cloudflare room engine.
+- Family Mystery / Prop Hunt / Birthday Seat: playable local/computer launch tryouts. Their Share Game links open the correct game, but those new engines are not yet synchronized into shared live room state between devices.

@@ -4,7 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
   <meta name="theme-color" content="#17120e" />
-  <title>Black Family Game Night - New Games Tryout</title>
+  <title>Black Family Game Night - New Games</title>
+  <link rel="stylesheet" href="/birthday-climb.css">
   <style>
 :root{
   --bg:#100e0c;--panel:#1b1713;--panel2:#241e18;--text:#f7f2e9;--muted:#b7aa9a;
@@ -18,7 +19,7 @@ button,input,select{font:inherit}.hidden{display:none!important}
 .topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:12px max(14px,env(safe-area-inset-left));background:rgba(16,14,12,.88);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.06)}
 .brand-wrap{text-align:center;line-height:1}.brand-kicker{font-size:10px;letter-spacing:.3em;color:var(--gold2)}.brand-title{font-weight:900;font-size:18px;letter-spacing:.08em;margin-top:5px}.ghost-btn{width:42px;height:42px;border:1px solid var(--line);border-radius:13px;background:#201a15;color:var(--text);font-size:20px}.screen{display:none;max-width:1180px;margin:0 auto;padding:20px 16px 50px}.screen.active{display:block}.game-screen{max-width:1400px}
 .hero-card{display:grid;grid-template-columns:1fr 150px;gap:20px;align-items:center;padding:28px;border:1px solid #4b3928;border-radius:28px;background:linear-gradient(135deg,rgba(81,52,31,.72),rgba(30,24,19,.92));box-shadow:var(--shadow);overflow:hidden}.hero-card h1{font-size:clamp(30px,7vw,62px);line-height:.98;margin:8px 0 14px;max-width:760px}.hero-card p{color:#d4c8bb;max-width:720px;line-height:1.6}.fireplace-art{height:150px;border-radius:28px;background:radial-gradient(circle,#f6c669 0,#a95325 34%,#332014 70%);display:grid;place-items:center;box-shadow:inset 0 0 40px #0008}.fireplace-art span{font-size:70px;filter:drop-shadow(0 10px 20px #000)}.eyebrow{font-size:11px;font-weight:800;letter-spacing:.16em;color:var(--gold2);text-transform:uppercase}.section-heading{display:flex;justify-content:space-between;gap:16px;align-items:end;margin:34px 2px 14px}.section-heading h2{margin:4px 0 0;font-size:24px}.pill{padding:7px 10px;border-radius:999px;background:#42341f;color:#f7d997;border:1px solid #66512e;font-size:12px;font-weight:700;white-space:nowrap}.pill.subtle{background:#22201c;color:#b9aea2;border-color:#39332d}
-.game-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.game-card{position:relative;min-height:220px;padding:20px;border:1px solid var(--line);border-radius:24px;text-align:left;color:var(--text);background:linear-gradient(145deg,#251e18,#17130f);box-shadow:var(--shadow);overflow:hidden;cursor:pointer}.game-card:active{transform:scale(.99)}.game-art{font-size:55px;margin-bottom:28px}.game-copy h3{font-size:25px;margin:0 0 8px}.game-copy p{color:var(--muted);line-height:1.45;margin:0;padding-right:50px}.play-chip{position:absolute;right:16px;bottom:16px;background:var(--gold);color:#20160a;font-size:11px;font-weight:950;letter-spacing:.12em;padding:9px 12px;border-radius:999px}.mystery-card:before,.prop-card:before{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-60px;top:-80px;background:#a36a2430;filter:blur(4px)}.prop-card:before{background:#417a5b35}
+.game-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.game-card{position:relative;min-height:220px;padding:20px;border:1px solid var(--line);border-radius:24px;text-align:left;color:var(--text);background:linear-gradient(145deg,#251e18,#17130f);box-shadow:var(--shadow);overflow:hidden;cursor:pointer}.game-card:active{transform:scale(.99)}.game-art{font-size:55px;margin-bottom:28px}.game-copy h3{font-size:25px;margin:0 0 8px}.game-copy p{color:var(--muted);line-height:1.45;margin:0;padding-right:50px}.play-chip{position:absolute;right:16px;bottom:16px;background:var(--gold);color:#20160a;font-size:11px;font-weight:950;letter-spacing:.12em;padding:9px 12px;border-radius:999px}.mystery-card:before,.prop-card:before,.birthday-card:before{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-60px;top:-80px;background:#a36a2430;filter:blur(4px)}.prop-card:before{background:#417a5b35}.birthday-card:before{background:#a86b8735}
 .legacy-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.legacy-item{padding:15px;border-radius:18px;border:1px solid var(--line);background:#181512}.legacy-item strong{display:block;margin-bottom:5px}.legacy-item span{font-size:12px;color:var(--muted);line-height:1.35;display:block}
 .panel{border:1px solid var(--line);background:linear-gradient(180deg,#201a15,#15120f);border-radius:22px;box-shadow:var(--shadow)}.panel-pad{padding:18px}.game-title-row{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:16px}.game-title-row h1{font-size:clamp(28px,5vw,44px);margin:0}.subtext{color:var(--muted);line-height:1.45}.btn{border:0;border-radius:14px;padding:12px 15px;font-weight:850;background:var(--gold);color:#21170b;cursor:pointer}.btn.secondary{background:#32291f;color:var(--text);border:1px solid #514333}.btn.danger{background:var(--red);color:#fff}.btn.success{background:var(--green);color:#fff}.btn.blue{background:var(--blue);color:#fff}.btn:disabled{opacity:.35;cursor:not-allowed}.button-row{display:flex;gap:9px;flex-wrap:wrap}.setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.character-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}.character-pick{border:1px solid var(--line);border-radius:15px;background:#181410;padding:10px;color:var(--text);text-align:center;cursor:pointer}.character-pick.selected{border-color:var(--gold);background:#33291b;box-shadow:0 0 0 1px var(--gold) inset}.avatar{width:52px;height:52px;border-radius:50%;margin:0 auto 7px;display:grid;place-items:center;background:linear-gradient(145deg,#795737,#38281a);border:2px solid #a98255;font-weight:950;overflow:hidden}.avatar img{width:100%;height:100%;object-fit:cover}.character-pick small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.field-label{display:block;font-size:12px;color:var(--muted);font-weight:800;margin-bottom:7px}.select,.input{width:100%;padding:12px;border-radius:13px;border:1px solid var(--line);background:#100e0c;color:var(--text)}
 .mystery-layout{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:14px;align-items:start}
@@ -58,7 +59,7 @@ button,input,select{font:inherit}.hidden{display:none!important}
         <div class="brand-kicker">BLACK FAMILY</div>
         <div class="brand-title">GAME NIGHT · TRYOUT</div>
       </div>
-      <button id="soundBtn" class="ghost-btn" aria-label="Sound">♪</button>
+      <div style="display:flex;gap:8px"><button id="shareGameBtn" class="ghost-btn" aria-label="Share this game">↗</button><button id="soundBtn" class="ghost-btn" aria-label="Sound">♪</button></div>
     </header>
 
     <main id="screen-home" class="screen active">
@@ -66,7 +67,7 @@ button,input,select{font:inherit}.hidden{display:none!important}
         <div>
           <div class="eyebrow">vNEXT PLAYABLE PREVIEW</div>
           <h1>Family game night, upgraded.</h1>
-          <p>This build focuses on the new family mystery and prop-hunt modes, with the polish systems ready to merge into the current game collection.</p>
+          <p>This launch build includes Family Mystery, 3D Family Prop Hunt, and John’s Birthday Seat alongside the main Black Family Lodge collection.</p>
         </div>
         <div class="fireplace-art" aria-hidden="true"><span>🔥</span></div>
       </section>
@@ -87,6 +88,11 @@ button,input,select{font:inherit}.hidden{display:none!important}
             <div class="game-copy"><h3>Family Prop Hunt</h3><p>Hide as believable props, drop decoys, flash hunters and survive six rotating rounds across four family maps.</p></div>
             <span class="play-chip">PLAY</span>
           </button>
+          <button class="game-card birthday-card" data-game="birthday">
+            <div class="game-art">🎂</div>
+            <div class="game-copy"><h3>John's Birthday Seat</h3><p>Jump, climb and race through a family-themed 3D obstacle course to claim John's birthday seat.</p></div>
+            <span class="play-chip">PLAY</span>
+          </button>
         </div>
       </section>
 
@@ -101,6 +107,7 @@ button,input,select{font:inherit}.hidden{display:none!important}
 
     <main id="screen-mystery" class="screen game-screen"></main>
     <main id="screen-prophunt" class="screen game-screen"></main>
+    <main id="screen-birthday" class="screen game-screen"></main>
   </div>
 
   <div id="toast" class="toast" role="status"></div>
@@ -135,12 +142,12 @@ window.avatarHTML=function(person,extra=''){
 </script>
   <script>
 (function(){
-  const screens={home:document.getElementById('screen-home'),mystery:document.getElementById('screen-mystery'),prophunt:document.getElementById('screen-prophunt')};
+  const screens={home:document.getElementById('screen-home'),mystery:document.getElementById('screen-mystery'),prophunt:document.getElementById('screen-prophunt'),birthday:document.getElementById('screen-birthday')};
   const homeBtn=document.getElementById('homeBtn');
   function show(name){Object.values(screens).forEach(s=>s.classList.remove('active'));screens[name].classList.add('active');homeBtn.classList.toggle('hidden',name==='home');window.scrollTo({top:0,behavior:'smooth'});}
   window.APP={show,toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._to);t._to=setTimeout(()=>t.classList.remove('show'),2200)}};
   homeBtn.addEventListener('click',()=>{location.href='/'});
-  document.querySelectorAll('[data-game]').forEach(b=>b.addEventListener('click',()=>{const g=b.dataset.game;show(g); if(g==='mystery') window.MysteryGame.mount(screens.mystery); else window.PropHunt.mount(screens.prophunt);}));
+  document.querySelectorAll('[data-game]').forEach(b=>b.addEventListener('click',()=>{const g=b.dataset.game;show(g); if(g==='mystery') window.MysteryGame.mount(screens.mystery); else if(g==='prophunt') window.PropHunt.mount(screens.prophunt); else if(g==='birthday') window.BirthdayClimb.mount(screens.birthday);}));
   const legacy=[
     ['Trail Trouble','Sorry-style board upgrades, teams/solo, cabins, chaos movement and animation polish'],
     ['UNO','Card-play polish, touch states, dealing/discard animations and multiplayer cleanup'],
@@ -161,6 +168,7 @@ window.avatarHTML=function(person,extra=''){
   ];
   document.getElementById('legacyGrid').innerHTML=legacy.map(([n,d])=>`<div class="legacy-item"><strong>${n}</strong><span>${d}</span></div>`).join('');
   let sound=true;document.getElementById('soundBtn').addEventListener('click',e=>{sound=!sound;e.currentTarget.textContent=sound?'♪':'×';APP.toast(sound?'Sound cues on':'Sound cues off')});
+  document.getElementById('shareGameBtn').addEventListener('click',async()=>{const game=new URL(location.href).searchParams.get('game'),names={mystery:'Family Mystery',prophunt:'Family Prop Hunt',birthday:"John's Birthday Seat"},url=`${location.origin}/new-games.html?game=${encodeURIComponent(game||'mystery')}`;try{if(navigator.share)await navigator.share({title:names[game]||'Black Family Game Night',text:`Play ${names[game]||'this family game'} with me`,url});else{await navigator.clipboard.writeText(url);APP.toast('Game link copied')}}catch{}});
 })();
 
 </script>
@@ -219,18 +227,18 @@ window.avatarHTML=function(person,extra=''){
   const labelCard=c=>c.type==='suspect'?P().find(x=>x.id===c.id).name:c.type==='weapon'?c.name:c.name;
   function mount(el){root=el; state=null; renderSetup();}
   function renderSetup(){
-    const selected=new Set(['john','kristen','vanessa','logan']);
-    root.innerHTML=`<div class="game-title-row"><div><span class="eyebrow">FAMILY DEDUCTION</span><h1>Family Mystery</h1><p class="subtext">Working title. Standard deduction underneath, extremely non-standard family behavior on top.</p></div><span class="pill">2–11 hot-seat players</span></div>
+    const selected=new Set(['kristen']);
+    root.innerHTML=`<div class="game-title-row"><div><span class="eyebrow">FAMILY DEDUCTION</span><h1>Family Mystery</h1><p class="subtext">Standard deduction underneath, extremely non-standard family behavior on top.</p></div><span class="pill">1–11 humans + computers</span></div>
     <div class="setup-grid">
-      <section class="panel panel-pad"><h2>Choose players</h2><p class="subtext">All 11 family characters remain possible suspects whether or not they are being played.</p><div id="mCharGrid" class="character-grid">${P().map(p=>`<button class="character-pick ${selected.has(p.id)?'selected':''}" data-id="${p.id}">${avatarHTML(p)}<strong>${p.name}</strong><small>${p.role}</small></button>`).join('')}</div></section>
-      <section class="panel panel-pad"><h2>Game setup</h2><label class="field-label">Movement animation</label><select id="animChoice" class="select"><option value="on">Short animation (default)</option><option value="skip">Skip movement animation</option></select><br><br><div class="stat-card"><strong>Case file</strong><p class="subtext">One suspect + one ridiculous family object + one of 10 family locations are hidden. Everyone else gets the remaining cards.</p></div><div class="stat-card"><strong>Board movement</strong><p class="subtext">Roll, then tap any glowing floor block or highlighted room within the rolled range. Your family standee walks the route.</p></div><button id="startMystery" class="btn success" style="width:100%;margin-top:12px">START MYSTERY</button></section>
+      <section class="panel panel-pad"><h2>Who is playing on this device?</h2><p class="subtext">Choose one or more human family characters. All 11 family members remain possible suspects whether they are playing or not.</p><div id="mCharGrid" class="character-grid">${P().map(p=>`<button class="character-pick ${selected.has(p.id)?'selected':''}" data-id="${p.id}">${avatarHTML(p)}<strong>${p.name}</strong><small>${p.role}</small></button>`).join('')}</div></section>
+      <section class="panel panel-pad"><h2>Game setup</h2><label class="field-label">Total players</label><select id="mTotal" class="select">${[2,3,4,5,6,7,8,9,10,11].map(n=>`<option ${n===6?'selected':''}>${n}</option>`).join('')}</select><p class="subtext">Empty seats are filled by computer family characters so you can play alone.</p><label class="field-label">Computer difficulty</label><select id="mDifficulty" class="select"><option value="easy">Easy</option><option value="medium" selected>Medium</option><option value="hard">Hard</option></select><br><br><label class="field-label">Movement animation</label><select id="animChoice" class="select"><option value="on">Short animation (default)</option><option value="skip">Skip movement animation</option></select><br><br><div class="stat-card"><strong>Case file</strong><p class="subtext">One suspect + one ridiculous family object + one of 10 family locations are hidden. Everyone else gets the remaining cards.</p></div><div class="stat-card"><strong>Board movement</strong><p class="subtext">Roll, then tap any glowing floor block or highlighted room within the rolled range. Family standees walk the route.</p></div><button id="startMystery" class="btn success" style="width:100%;margin-top:12px">START MYSTERY</button></section>
     </div>`;
     root.querySelectorAll('.character-pick').forEach(b=>b.addEventListener('click',()=>{b.classList.toggle('selected')}));
     root.querySelector('#startMystery').addEventListener('click',()=>{
-      const ids=[...root.querySelectorAll('.character-pick.selected')].map(b=>b.dataset.id); if(ids.length<2){APP.toast('Choose at least 2 players');return} start(ids,root.querySelector('#animChoice').value==='skip');
+      const ids=[...root.querySelectorAll('.character-pick.selected')].map(b=>b.dataset.id);if(ids.length<1){APP.toast('Choose at least one human player');return}const total=Math.max(ids.length,+root.querySelector('#mTotal').value);start(ids,root.querySelector('#animChoice').value==='skip',total,root.querySelector('#mDifficulty').value);
     });
   }
-  function start(ids,skip){
+  function start(ids,skip,total=ids.length,difficulty='medium'){
     const weaponPool=shuffle(W()).slice(0,10);
     const solution={suspect:shuffle(P())[0].id,weapon:shuffle(weaponPool)[0],location:shuffle(L())[0]};
     let deck=[];
@@ -239,11 +247,13 @@ window.avatarHTML=function(person,extra=''){
     L().forEach(l=>{if(l!==solution.location)deck.push({type:'location',name:l})});
     deck=shuffle(deck);
     const starts=['h0','h3','h7','h11','h13','h15','h20','h22','h16','h19','h26'];
-    const players=ids.map((id,i)=>({person:P().find(p=>p.id===id),hand:[],pos:starts[i%starts.length],canAccuse:true,notes:{}}));
+    const computerIds=shuffle(P().map(p=>p.id).filter(id=>!ids.includes(id))).slice(0,Math.max(0,total-ids.length));
+    const roster=[...ids.map(id=>({id,isBot:false})),...computerIds.map(id=>({id,isBot:true}))];
+    const players=roster.map(({id,isBot},i)=>({person:P().find(p=>p.id===id),hand:[],pos:starts[i%starts.length],canAccuse:true,notes:{},isBot,botDifficulty:isBot?difficulty:null,eliminated:false}));
     deck.forEach((c,i)=>players[i%players.length].hand.push(c));
     const all=[...P().map(p=>({key:`s:${p.id}`,name:p.name,type:'Suspect'})),...weaponPool.map(w=>({key:`w:${w}`,name:w,type:'Object'})),...L().map(l=>({key:`l:${l}`,name:l,type:'Location'}))];
     players.forEach(pl=>{all.forEach(c=>pl.notes[c.key]='');pl.hand.forEach(c=>{const k=c.type==='suspect'?`s:${c.id}`:c.type==='weapon'?`w:${c.name}`:`l:${c.name}`;pl.notes[k]='✓'})});
-    state={players,turn:0,phase:'privacy',rolled:null,moved:false,suggested:false,skipAnim:skip,solution,weaponPool,allCards:all,reachable:new Set(),feed:['The family has been assembled. Somebody is lying.'],round:1};
+    state={players,turn:0,phase:'privacy',rolled:null,moved:false,suggested:false,skipAnim:skip,solution,weaponPool,allCards:all,reachable:new Set(),feed:[`${computerIds.length?computerIds.length+' computer detective'+(computerIds.length===1?'':'s')+' joined. ':''}The family has been assembled. Somebody is lying.`],round:1,botBusy:false};
     renderGame();
   }
   function current(){return state.players[state.turn]}
@@ -251,16 +261,15 @@ window.avatarHTML=function(person,extra=''){
     const pl=current();
     root.innerHTML=`<div class="game-title-row"><div><span class="eyebrow">CASE IN PROGRESS</span><h1>Family Mystery</h1><p class="subtext">${pl.person.name}'s turn</p></div><div class="button-row"><button id="animToggle" class="btn secondary">${state.skipAnim?'Animations: SKIP':'Animations: SHORT'}</button><button id="restartM" class="btn secondary">New game</button></div></div>
     <div class="mystery-layout"><section class="board-shell"><div id="mBoard" class="mystery-board"></div></section><aside class="turn-sidebar">
-      <div class="stat-card"><div style="display:flex;align-items:center;gap:10px">${avatarHTML(pl.person)}<div><strong>${pl.person.name}</strong><div class="subtext">${nodes[pl.pos].room!=null?L()[nodes[pl.pos].room]:'Hallway'}</div></div><div id="dice" class="dice" style="margin-left:auto">${state.rolled||'?'}</div></div></div>
+      <div class="stat-card"><div style="display:flex;align-items:center;gap:10px">${avatarHTML(pl.person)}<div><strong>${pl.person.name}${pl.isBot?' • COMPUTER':''}</strong><div class="subtext">${nodes[pl.pos].room!=null?L()[nodes[pl.pos].room]:'Hallway'}${pl.isBot?` • ${pl.botDifficulty} difficulty`:''}</div></div><div id="dice" class="dice" style="margin-left:auto">${state.rolled||'?'}</div></div></div>
       <div id="actions" class="stat-card"></div>
-      <div class="stat-card"><strong>Your cards</strong><div class="card-row">${pl.hand.map(c=>`<div class="clue-card"><small>${c.type}</small>${labelCard(c)}</div>`).join('')||'<span class="subtext">None</span>'}</div></div>
-      <div class="stat-card"><strong>Detective notes</strong><div class="note-grid">${state.allCards.map(c=>`<span>${c.name}</span><button data-note="${encodeURIComponent(c.key)}">${pl.notes[c.key]||'·'}</button>`).join('')}</div></div>
+      ${pl.isBot?`<div class="stat-card"><strong>Computer detective</strong><p class="subtext">${pl.person.name}'s private cards and notebook stay hidden while the computer thinks using only information it has legally seen.</p></div>`:`<div class="stat-card"><strong>Your cards</strong><div class="card-row">${pl.hand.map(c=>`<div class="clue-card"><small>${c.type}</small>${labelCard(c)}</div>`).join('')||'<span class="subtext">None</span>'}</div></div><div class="stat-card"><strong>Detective notes</strong><div class="note-grid">${state.allCards.map(c=>`<span>${c.name}</span><button data-note="${encodeURIComponent(c.key)}">${pl.notes[c.key]||'·'}</button>`).join('')}</div></div>`}
       <div class="stat-card"><strong>Family chaos</strong><div class="kill-feed">${state.feed.slice(-8).map(x=>`<div>${x}</div>`).join('')}</div></div>
     </aside></div>`;
     drawBoard(); renderActions();
     root.querySelector('#animToggle').onclick=()=>{state.skipAnim=!state.skipAnim;renderGame()}; root.querySelector('#restartM').onclick=renderSetup;
     root.querySelectorAll('[data-note]').forEach(b=>b.onclick=()=>{const k=decodeURIComponent(b.dataset.note),v=pl.notes[k];pl.notes[k]=v==='✓'?'?':v==='?'?'': '✓'; b.textContent=pl.notes[k]||'·'});
-    if(state.phase==='privacy') showPrivacy();
+    if(pl.isBot){if(!state.botBusy)setTimeout(runBotTurn,380)}else if(state.phase==='privacy')showPrivacy();
   }
   function drawBoard(){
     const b=root.querySelector('#mBoard');
@@ -271,6 +280,7 @@ window.avatarHTML=function(person,extra=''){
   }
   function renderActions(){
     const a=root.querySelector('#actions'),pl=current(),inRoom=nodes[pl.pos].room!=null;
+    if(pl.isBot){a.innerHTML='<strong>Computer turn</strong><p class="subtext">Thinking, rolling, moving and making deductions…</p>';return}
     let html='<strong>Turn actions</strong><div class="button-row" style="margin-top:10px">';
     if(state.phase==='turn' && state.rolled==null)html+='<button id="rollBtn" class="btn">ROLL DICE</button>';
     if(state.phase==='turn' && state.rolled!=null && !state.moved)html+='<span class="subtext">Tap any highlighted destination.</span>';
@@ -279,6 +289,38 @@ window.avatarHTML=function(person,extra=''){
     if(state.phase==='turn' && state.moved)html+='<button id="endBtn" class="btn secondary">END TURN</button>';
     html+='</div>';a.innerHTML=html;
     const r=a.querySelector('#rollBtn');if(r)r.onclick=roll;const s=a.querySelector('#suggestBtn');if(s)s.onclick=suggest;const ac=a.querySelector('#accuseBtn');if(ac)ac.onclick=accuse;const e=a.querySelector('#endBtn');if(e)e.onclick=endTurn;
+  }
+  function botUnknown(pl,type){
+    if(type==='suspect')return P().filter(p=>pl.notes[`s:${p.id}`]!=='✓').map(p=>p.id);
+    if(type==='weapon')return state.weaponPool.filter(w=>pl.notes[`w:${w}`]!=='✓');
+    return L().filter(l=>pl.notes[`l:${l}`]!=='✓');
+  }
+  function botPick(pl,type){
+    const d=pl.botDifficulty||'medium',all=type==='suspect'?P().map(p=>p.id):type==='weapon'?[...state.weaponPool]:[...L()],unknown=botUnknown(pl,type);
+    const pool=d==='easy'&&Math.random()<.32?all:(unknown.length?unknown:all);
+    return pool[Math.floor(Math.random()*pool.length)];
+  }
+  function runBotTurn(){
+    if(!state||state.botBusy||!current()?.isBot)return;
+    const pl=current();state.botBusy=true;state.phase='turn';state.rolled=1+Math.floor(Math.random()*6);state.moved=false;state.suggested=false;state.reachable=new Set(reachableWithin(pl.pos,state.rolled));renderGame();
+    const choices=[...state.reachable];if(!choices.length){state.botBusy=false;endTurn();return}
+    const unknownRooms=new Set(botUnknown(pl,'location'));
+    const roomChoices=choices.filter(id=>nodes[id]?.room!=null&&unknownRooms.has(L()[nodes[id].room]));
+    const anyRooms=choices.filter(id=>nodes[id]?.room!=null);
+    const pool=roomChoices.length?roomChoices:anyRooms.length?anyRooms:choices;
+    const dest=pool[Math.floor(Math.random()*pool.length)],path=shortest(pl.pos,dest),delay=state.skipAnim?180:Math.max(420,path.length*205+120);
+    moveTo(dest);setTimeout(botAfterMove,delay);
+  }
+  function botAfterMove(){
+    if(!state||!current()?.isBot)return;const pl=current(),sus=botUnknown(pl,'suspect'),wep=botUnknown(pl,'weapon'),loc=botUnknown(pl,'location');
+    if(pl.canAccuse&&sus.length===1&&wep.length===1&&loc.length===1){botAccuse({suspect:sus[0],weapon:wep[0],location:loc[0]});return}
+    if(nodes[pl.pos].room!=null){state.suggested=true;resolveSuggestion(botPick(pl,'suspect'),botPick(pl,'weapon'),L()[nodes[pl.pos].room]);return}
+    state.botBusy=false;setTimeout(endTurn,320);
+  }
+  function botAccuse(ans){
+    const pl=current(),ok=ans.suspect===state.solution.suspect&&ans.weapon===state.solution.weapon&&ans.location===state.solution.location;
+    if(ok){state.botBusy=false;modal(`<div class="status-large"><span class="eyebrow">CASE CLOSED</span><strong>${pl.person.name} solved it!</strong><p>The ${pl.botDifficulty} computer detective cracked the case without seeing anyone's hidden cards.</p><p>It was <b>${P().find(p=>p.id===state.solution.suspect).name}</b> in <b>${state.solution.location}</b> with <b>${state.solution.weapon}</b>.</p><button id="againMyst" class="btn success">PLAY AGAIN</button></div>`,m=>m.querySelector('#againMyst').onclick=()=>{closeModal();renderSetup()});return}
+    pl.canAccuse=false;pl.eliminated=true;state.feed.push(`${pl.person.name} Computer made a wrong accusation and is out of the turn rotation.`);state.botBusy=false;setTimeout(endTurn,450);
   }
   function showPrivacy(){
     const pl=current(); modal(`<div class="privacy-screen">${avatarHTML(pl.person)}<span class="eyebrow">PASS THE DEVICE</span><h2>${pl.person.name}'s turn</h2><p class="subtext">Only ${pl.person.name} should look at the cards and notebook.</p><button id="readyPrivate" class="btn success">I'M ${pl.person.name.toUpperCase()}</button></div>`,m=>m.querySelector('#readyPrivate').onclick=()=>{closeModal();state.phase='turn';renderActions()});
@@ -306,12 +348,17 @@ window.avatarHTML=function(person,extra=''){
       if(ms.length){found=i;matches=ms;break}
     }
     if(found==null){
-      state.feed.push(`${current().person.name}'s suggestion could not be disproved.`);
-      APP.toast('Nobody could disprove it');
-      renderGame();
-      return;
+      const wasBot=current().isBot;state.feed.push(`${current().person.name}'s suggestion could not be disproved.`);APP.toast('Nobody could disprove it');renderGame();if(wasBot){state.botBusy=false;setTimeout(endTurn,480)}return;
     }
     const disprover=state.players[found],authorPl=current();
+    if(authorPl.isBot){
+      if(disprover.isBot){const c=matches[Math.floor(Math.random()*matches.length)],key=c.type==='suspect'?`s:${c.id}`:c.type==='weapon'?`w:${c.name}`:`l:${c.name}`;authorPl.notes[key]='✓';state.feed.push(`${disprover.person.name} Computer disproved ${authorPl.person.name} Computer.`);renderGame();state.botBusy=false;setTimeout(endTurn,480);return}
+      modal(`<h2>${disprover.person.name}, disprove the computer</h2><p class="subtext">Choose one matching card to show privately to ${authorPl.person.name} Computer.</p><div class="choice-grid">${matches.map((c,i)=>`<button class="choice-btn" data-i="${i}">${labelCard(c)}</button>`).join('')}</div>`,m=>m.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{const c=matches[+b.dataset.i],key=c.type==='suspect'?`s:${c.id}`:c.type==='weapon'?`w:${c.name}`:`l:${c.name}`;authorPl.notes[key]='✓';closeModal();state.feed.push(`${disprover.person.name} disproved ${authorPl.person.name} Computer.`);renderGame();state.botBusy=false;setTimeout(endTurn,420)}));return
+    }
+    if(disprover.isBot){
+      const c=matches[disprover.botDifficulty==='easy'?Math.floor(Math.random()*matches.length):0],key=c.type==='suspect'?`s:${c.id}`:c.type==='weapon'?`w:${c.name}`:`l:${c.name}`;authorPl.notes[key]='✓';
+      modal(`<div class="privacy-screen">${avatarHTML(authorPl.person)}<h2>${disprover.person.name} Computer showed you:</h2><div class="clue-card" style="font-size:22px">${labelCard(c)}</div><br><button id="doneShow" class="btn success">DONE</button></div>`,m=>m.querySelector('#doneShow').onclick=()=>{closeModal();state.feed.push(`${disprover.person.name} Computer disproved ${authorPl.person.name}'s suggestion.`);renderGame()});return
+    }
     modal(`<div class="privacy-screen">${avatarHTML(disprover.person)}<h2>Pass to ${disprover.person.name}</h2><p class="subtext">You can disprove ${authorPl.person.name}'s suggestion. Choose ONE card to show privately.</p><button id="revealMatches" class="btn">I'M ${disprover.person.name.toUpperCase()}</button></div>`,m=>{
       m.querySelector('#revealMatches').onclick=()=>{
         m.innerHTML=`<h2>Choose a card to show</h2><div class="choice-grid">${matches.map((c,i)=>`<button class="choice-btn" data-i="${i}">${labelCard(c)}</button>`).join('')}</div>`;
@@ -338,7 +385,7 @@ window.avatarHTML=function(person,extra=''){
   }
   function accuse(){chooseCase('Final accusation',true,ans=>{const ok=ans.suspect===state.solution.suspect&&ans.weapon===state.solution.weapon&&ans.location===state.solution.location;if(ok){const who=current().person.name;modal(`<div class="status-large"><span class="eyebrow">CASE CLOSED</span><strong>${who} solved it!</strong><p>It was <b>${P().find(p=>p.id===state.solution.suspect).name}</b> in <b>${state.solution.location}</b> with <b>${state.solution.weapon}</b>.</p><button id="againMyst" class="btn success">PLAY AGAIN</button></div>`,m=>m.querySelector('#againMyst').onclick=()=>{closeModal();renderSetup()});}else{current().canAccuse=false;current().eliminated=true;state.feed.push(`${current().person.name} made a wrong accusation and is out of the turn rotation, but must still disprove suggestions.`);modal(`<h2>Wrong accusation</h2><p>You are still part of the investigation and must still disprove suggestions, but you can no longer make another final accusation.</p><button id="wrongDone" class="btn">CONTINUE</button>`,m=>m.querySelector('#wrongDone').onclick=()=>{closeModal();endTurn()})}})}
   function chooseCase(title,includeLocation,cb){let s=P()[0].id,w=state.weaponPool[0],l=L()[0];modal(`<h2>${title}</h2><label class="field-label">Suspect</label><select id="caseS" class="select">${P().map(p=>`<option value="${p.id}">${p.name}</option>`).join('')}</select><br><br><label class="field-label">Object</label><select id="caseW" class="select">${state.weaponPool.map(x=>`<option>${x}</option>`).join('')}</select>${includeLocation?`<br><br><label class="field-label">Location</label><select id="caseL" class="select">${L().map(x=>`<option>${x}</option>`).join('')}</select>`:''}<br><br><button id="caseGo" class="btn ${includeLocation?'danger':'blue'}">${includeLocation?'MAKE ACCUSATION':'MAKE SUGGESTION'}</button>`,m=>m.querySelector('#caseGo').onclick=()=>{s=m.querySelector('#caseS').value;w=m.querySelector('#caseW').value;if(includeLocation)l=m.querySelector('#caseL').value;closeModal();cb({suspect:s,weapon:w,location:l})});}
-  function endTurn(){state.feed.push(chaos[Math.floor(Math.random()*chaos.length)]);let tries=0;do{state.turn=(state.turn+1)%state.players.length;tries++;}while(state.players[state.turn].eliminated&&tries<=state.players.length);state.rolled=null;state.moved=false;state.suggested=false;state.reachable.clear();state.phase='privacy';renderGame()}
+  function endTurn(){state.botBusy=false;state.feed.push(chaos[Math.floor(Math.random()*chaos.length)]);let tries=0;do{state.turn=(state.turn+1)%state.players.length;tries++;}while(state.players[state.turn].eliminated&&tries<=state.players.length);state.rolled=null;state.moved=false;state.suggested=false;state.reachable.clear();state.phase='privacy';renderGame()}
   function modal(html,bind){closeModal();const back=document.createElement('div');back.className='modal-backdrop';back.id='mModal';back.innerHTML=`<div class="modal">${html}</div>`;document.body.appendChild(back);if(bind)bind(back.querySelector('.modal'));}
   function closeModal(){document.getElementById('mModal')?.remove()}
   window.__MYSTERY_TEST__={nodes,edges,adj,roomIds,reachableWithin,shortest};
@@ -485,15 +532,17 @@ window.avatarHTML=function(person,extra=''){
 
 </script>
   <script src="/prop-hunt-3d.js"></script>
+  <script src="/birthday-climb.js"></script>
 
 <script>
 (function(){
   const game=new URL(location.href).searchParams.get('game');
-  const screens={mystery:document.getElementById('screen-mystery'),prophunt:document.getElementById('screen-prophunt')};
+  const screens={mystery:document.getElementById('screen-mystery'),prophunt:document.getElementById('screen-prophunt'),birthday:document.getElementById('screen-birthday')};
   if(!screens[game]){ location.replace('/'); return; }
   APP.show(game);
   if(game==='mystery') window.MysteryGame.mount(screens.mystery);
   if(game==='prophunt') window.PropHunt.mount(screens.prophunt);
+  if(game==='birthday') window.BirthdayClimb.mount(screens.birthday);
 })();
 </script>
 </body>

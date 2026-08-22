@@ -1,26 +1,28 @@
-# Black Family Game Night v1.0.10
+# Black Family Game Night v1.2.0-launch
 
-Private family multiplayer game lodge built for John Black.
+Private family game-night web app for the Black family, built for phones and computers.
 
-## v1.0.10 gameplay + table polish
+## Lodge
+The home screen uses the approved realistic cabin scene with John, John's Birthday Seat, the birthday portrait over the fireplace, cabin decor, and an animated fire/glow layer. The underlying game shelf, lobby, avatars, rooms, chat/reactions and room-preserving game switching remain part of the existing app.
 
-- Trail Trouble now uses an original square lodge-race board with visible Camp zones, colour-coded Safe Trails and Home areas, zoom controls, a pannable board, tappable Trail cards, and tappable markers.
-- The host can switch the existing room to any compatible game without making everyone rejoin. Player names, avatars, chat, and tokens stay in the same room; seats and Ready reset for the new game.
-- Every card hand auto-sorts and resizes to fit the available width instead of requiring horizontal swiping.
-- YOUR HAND glows when it is your turn or decision.
-- Prairie Pots cards are tap-to-play and every pot now shows a visible chip stack and whether chips remain to be won.
-- Keeps the v1.0.8 chat banner, Last Haven felt board, tap-to-play controls, v1.0.7 avatar polish, 16 John looks, full family/pet roster, and all 18 game engines.
+## Games
+The package keeps the 18 original multiplayer games and adds playable tryouts for:
+- Family Mystery
+- Family Prop Hunt
+- John's Birthday Seat
 
-## Deploy
+## Solo / computers
+Hosts can add computer players in Easy, Medium or Hard difficulty to the 18 original multiplayer games. The three new games also include computer-play options so they can be tested or played with one human.
 
-Replace the contents of the existing GitHub repository with this package while keeping the repository's hidden `.git` folder. Commit and push to `main`; the existing Cloudflare Git integration will deploy automatically.
+## Sharing
+For original multiplayer games, Create & Share creates the private room first and shares the exact room URL. Inside each room, Share Invite and Copy Link remain available. New-game pages have a Share Game control that opens the chosen game directly.
 
-Automated test status is recorded in `FINAL_TEST_REPORT.txt`.
+## New-game multiplayer status
+The original 18 games use the synchronized Cloudflare room engine. The new Mystery/Prop Hunt/Birthday Seat tryouts are currently local/computer-play engines; their direct links navigate friends to the same game but do not yet synchronize the new 3D/local game state between devices.
 
+## Validation
+Run:
 
-## v1.0.10 tabletop polish
-- Rustic cribbage pegboard with crib owner, starter, pegging lane and counting display.
-- Golf now plays directly from a visible stock/discard/held-card tabletop.
-- Marbles & Jokers has a zoomable colored marble board.
-- Draw-action games show clickable physical decks.
-- Home and connection screens are rebuilt as John Black birthday cabin scenes.
+    npm run check
+
+The launch candidate includes automated regression tests covering original games, computer-player seat fill, sharing paths, the animated Lodge, Family Mystery visuals/bots, 3D Prop Hunt hooks, and Birthday Seat.

@@ -8,7 +8,7 @@ const css=await readFile(new URL('../public/prop-hunt-3d.css',import.meta.url),'
 test('Prop Hunt loads the third-person 3D override',()=>{
   assert.ok(html.includes('/prop-hunt-3d.js'));
   assert.ok(html.includes('/prop-hunt-3d.css'));
-  for(const token of ['THIRD-PERSON 3D GAMEPLAY SLICE','cameraData','project','drawCharacter','raySphere']) assert.ok(js.includes(token),token);
+  for(const token of ['THIRD-PERSON 3D FAMILY GAME','cameraData','project','drawCharacter','raySphere']) assert.ok(js.includes(token),token);
 });
 
 test('3D Prop Hunt includes jump, climb, props, weapon and computer-fill systems',()=>{
