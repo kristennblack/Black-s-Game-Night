@@ -1,0 +1,23 @@
+{
+  "ok": true,
+  "setup": {
+    "cards": 13,
+    "next": true,
+    "prop": "object",
+    "test": "object"
+  },
+  "selected": {
+    "selected": true,
+    "label": "NEXT: Kristen OUTFIT & MATCH"
+  },
+  "outfit": {
+    "selected": true,
+    "start": true,
+    "bots": 5
+  },
+  "wasdDistance": 82.5,
+  "jumpVy": 119,
+  "dpadDistance": 52.2,
+  "prop": "Oil Jug",
+  "status": "MOVE NOW · joystick, arrows or WASD"
+}

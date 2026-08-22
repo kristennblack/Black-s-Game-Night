@@ -118,12 +118,12 @@ test('Launch UI removes the nonfunctional install button and provides room retry
   assert.match(appSource,/data-action="retryConnect"/);
 });
 
-test('Launch assets advertise v1.2.0-launch and use a fresh service-worker cache', async()=>{
+test('Launch assets advertise v1.2.4-launch and use a fresh service-worker cache', async()=>{
   const {readFile}=await import('node:fs/promises');
   const appSource=await readFile(new URL('../public/app.js',import.meta.url),'utf8');
   const swSource=await readFile(new URL('../public/sw.js',import.meta.url),'utf8');
-  assert.match(appSource,/APP_VERSION='1\.2\.0-launch'/);
-  assert.match(swSource,/black-family-game-night-v120-launch/);
+  assert.match(appSource,/APP_VERSION='1\.2\.4-launch'/);
+  assert.match(swSource,/black-family-game-night-v124-launch/);
 });
 
 
@@ -249,7 +249,7 @@ test('All 16 John look image files are packaged and the UI exposes the full Birt
   const appSource=await readFile(new URL('../public/app.js',import.meta.url),'utf8');
   const cssSource=await readFile(new URL('../public/styles.css',import.meta.url),'utf8');
   assert.match(appSource,/const johnLooks=\[/);
-  assert.match(appSource,/John gets all 16 Birthday Boy looks/);
+  assert.match(appSource,/John keeps all 16 original looks plus all 12 approved family packs/);
   assert.match(appSource,/john-look-16/);
   assert.match(appSource,/selectedLookPicker/);
   assert.match(cssSource,/\.john-look-grid/);
@@ -318,6 +318,22 @@ test('Host can add Easy, Medium or Hard computer players and start solo', async(
   await post(hub,'start',{roomId:created.roomId,hostToken:created.hostToken});
   s=await state(hub,created.roomId,created.playerToken);
   assert.notEqual(s.game.phase,'lobby');
+});
+
+test('Host can choose and later change each computer family character and difficulty', async()=>{
+  const {hub}=makeHub();
+  const created=await post(hub,'create',{name:'Kristen',gameType:GAME_TYPES.SCREW});
+  const added=await post(hub,'addBot',{roomId:created.roomId,playerToken:created.playerToken,hostToken:created.hostToken,difficulty:'easy',avatar:'gunner'});
+  let s=await state(hub,created.roomId,created.playerToken);
+  let bot=s.players.find(p=>p.id===added.playerId);
+  assert.equal(bot.avatar,'gunner');
+  assert.equal(bot.botDifficulty,'easy');
+  await post(hub,'updateBot',{roomId:created.roomId,playerToken:created.playerToken,hostToken:created.hostToken,targetId:bot.id,avatar:'papa',difficulty:'hard'});
+  s=await state(hub,created.roomId,created.playerToken);
+  bot=s.players.find(p=>p.id===added.playerId);
+  assert.equal(bot.avatar,'papa');
+  assert.equal(bot.botDifficulty,'hard');
+  assert.match(bot.name,/Papa/);
 });
 
 test('botTick advances a computer turn without exposing hidden hands', async()=>{

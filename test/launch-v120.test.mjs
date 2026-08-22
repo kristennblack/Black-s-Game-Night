@@ -29,11 +29,11 @@ test('character selection now moves from character to outfit and requires Back t
 });
 
 test('computer player controls exist globally with three difficulties',()=>{
-  for(const t of ['addBot','botTick','Easy computer','Medium computer','Hard computer','botDifficulty'])assert.ok(app.includes(t)||worker.includes(t),t);
+  for(const t of ['addBot','updateBot','botTick','botCharacter','botDifficulty','botCharacterOptions'])assert.ok(app.includes(t)||worker.includes(t),t);
 });
 
 test('all three new games support solo play with computer opponents',()=>{
-  for(const t of ['Empty seats are filled by computer family characters','Computer difficulty','botDifficulty','runBotTurn'])assert.ok(ng.includes(t),`Mystery bot support missing: ${t}`);
+  for(const t of ['Empty seats are filled by computer family characters','Default computer difficulty','Computer detectives','runBotTurn'])assert.ok(ng.includes(t),`Mystery bot support missing: ${t}`);
   for(const t of ['computer','difficulty','bot'])assert.ok(ng.toLowerCase().includes(t),`new-games bot option missing: ${t}`);
   assert.ok(bc.includes('bots:true'));
 });
@@ -41,5 +41,5 @@ test('all three new games support solo play with computer opponents',()=>{
 test("John's Birthday Seat is included as a playable 3D platform game",()=>{
   assert.ok(app.includes("John's Birthday Seat"));
   assert.ok(ng.includes('screen-birthday'));
-  for(const t of ['CHECKPOINTS','platforms','thirdPerson:true','jump:true','bots:true','birthday seat'])assert.ok(bc.toLowerCase().includes(t.toLowerCase()),t);
+  for(const t of ['course','stages','thirdPerson:true','fullBodySprites:true','jump:true','bots:true','botCharacters:true','visibleGoal:true','birthday seat'])assert.ok(bc.toLowerCase().includes(t.toLowerCase()),t);
 });

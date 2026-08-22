@@ -1,9 +1,9 @@
 {
   "name": "black-family-game-night",
-  "version": "1.2.0-launch",
+  "version": "1.2.4-launch",
   "private": true,
   "type": "module",
-  "description": "Black Family Game Night v1.2.0 launch candidate - animated Black Family Lodge, 18 original multiplayer games, Family Mystery, 3D Prop Hunt, John's Birthday Seat, computer players and share links.",
+  "description": "Black Family Game Night v1.2.4 test release - 12 approved family avatar packs wired into human and computer-player selectors, plus the v1.2.3 Cribbage and Prop Hunt fixes, animated Lodge, 18 synchronized multiplayer games, Family Mystery, Birthday Seat and share links.",
   "scripts": {
     "test": "node --test",
     "check": "node --check worker.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check public/app.js && node --check public/prop-hunt-3d.js && node --check public/birthday-climb.js && node --test",

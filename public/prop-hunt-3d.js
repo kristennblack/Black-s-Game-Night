@@ -1,6 +1,6 @@
 /*
  * Black Family Game Night - Family Prop Hunt 3D gameplay slice
- * v1.2.0-launch
+ * v1.2.3-launch
  *
  * Self-contained third-person software-3D renderer using Canvas 2D.
  * This deliberately avoids an external 3D dependency so the Cloudflare static
@@ -12,12 +12,14 @@
   'use strict';
 
   const FAMILY=window.FAMILY;
-  const P=()=>FAMILY.people;
+  const P=()=>[...FAMILY.people,...FAMILY.supports];
   let root=null,canvas=null,ctx=null,raf=0,last=0,state=null;
-  let setupSelection={charId:'john',outfit:0};
+  let setupSelection={charId:'john',outfit:0,count:6,botConfigs:[]};
   const keys=Object.create(null);
   const joy={x:0,z:0,active:false,id:null};
+  const touchMove={forward:false,back:false,left:false,right:false};
   const pointer={active:false,id:null,lastX:0,lastY:0};
+  let shootTimer=0;
   const TEST_SCALE=location.search.includes('test=1')?0.03:1;
   const TAU=Math.PI*2;
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -38,7 +40,9 @@
     dorothy:{top:'#9a6d82',legs:'#8f6377',boots:'#5a4038',label:'flowy dress'},
     kelsi:{top:'#c8a17a',legs:'#c8a17a',boots:'#8b684a',label:'dog'},
     molly:{top:'#d2ae87',legs:'#d2ae87',boots:'#8c674c',label:'dog'},
-    gunner:{top:'#8b745b',legs:'#8b745b',boots:'#594838',label:'dog'}
+    gunner:{top:'#8b745b',legs:'#8b745b',boots:'#594838',label:'dog'},
+    nana:{top:'#a97d83',legs:'#444a51',boots:'#47392f',label:'leggings · shirt'},
+    papa:{top:'#7b6a4e',legs:'#3f5870',boots:'#4c3525',label:'shirt · jeans'}
   };
 
   function B(x,z,w,d,h,name,opt={}){
@@ -131,37 +135,47 @@
   preloadAvatars();
 
   function mount(el){
-    root=el;stop();renderSetup();
+    root=el;stop();
+    const q=new URL(location.href).searchParams;
+    if(q.get('autostart')==='1'){
+      const charId=q.get('char')||setupSelection.charId||'john',count=clamp(Number(q.get('players')||6),2,13);phEnsureBots(count,charId);
+      startMatch({charId,outfit:0,count,botConfigs:setupSelection.botConfigs.map(x=>({...x})),mode:q.get('mode')||'classic',mapKey:q.get('map')||'papa'});
+    }else renderSetup();
   }
   function stop(){
-    if(raf)cancelAnimationFrame(raf);raf=0;last=0;state=null;keysClear();
+    if(raf)cancelAnimationFrame(raf);raf=0;last=0;state=null;if(shootTimer)clearInterval(shootTimer);shootTimer=0;keysClear();
     window.removeEventListener('keydown',onKeyDown);window.removeEventListener('keyup',onKeyUp);window.removeEventListener('resize',resizeCanvas);
   }
-  function keysClear(){for(const k of Object.keys(keys))delete keys[k];joy.x=joy.z=0;joy.active=false;pointer.active=false;}
+  function keysClear(){for(const k of Object.keys(keys))delete keys[k];joy.x=joy.z=0;joy.active=false;pointer.active=false;touchMove.forward=touchMove.back=touchMove.left=touchMove.right=false;}
+
+  function phSprite(p){return `/characters3d/${p.id}.png`}
+  function phEnsureBots(count,humanId){const need=Math.max(0,count-1),pool=P().filter(p=>p.id!==humanId);while(setupSelection.botConfigs.length<need){const q=pool[setupSelection.botConfigs.length%pool.length];setupSelection.botConfigs.push({charId:q.id,difficulty:'medium'})}setupSelection.botConfigs.length=need}
+  function phBotRows(){return setupSelection.botConfigs.map((b,i)=>`<div class="ph3-bot-row"><span>Computer ${i+1}</span><select class="select" data-ph3-bot-char="${i}">${P().map(p=>`<option value="${p.id}" ${p.id===b.charId?'selected':''}>${p.name}</option>`).join('')}</select><select class="select" data-ph3-bot-diff="${i}"><option value="easy" ${b.difficulty==='easy'?'selected':''}>Easy</option><option value="medium" ${b.difficulty==='medium'?'selected':''}>Medium</option><option value="hard" ${b.difficulty==='hard'?'selected':''}>Hard</option></select></div>`).join('')}
+  function phCaptureBots(){root?.querySelectorAll('[data-ph3-bot-char]').forEach(el=>{const i=Number(el.dataset.ph3BotChar);if(setupSelection.botConfigs[i])setupSelection.botConfigs[i].charId=el.value});root?.querySelectorAll('[data-ph3-bot-diff]').forEach(el=>{const i=Number(el.dataset.ph3BotDiff);if(setupSelection.botConfigs[i])setupSelection.botConfigs[i].difficulty=el.value})}
+  function phBindBotRows(){root.querySelectorAll('[data-ph3-bot-char]').forEach(el=>el.onchange=()=>{setupSelection.botConfigs[Number(el.dataset.ph3BotChar)].charId=el.value});root.querySelectorAll('[data-ph3-bot-diff]').forEach(el=>el.onchange=()=>{setupSelection.botConfigs[Number(el.dataset.ph3BotDiff)].difficulty=el.value})}
 
   function renderSetup(){
     const defaultSelected=setupSelection.charId||'john';
     root.innerHTML=`
-      <div class="game-title-row"><div><span class="eyebrow">THIRD-PERSON 3D FAMILY GAME</span><h1>Family Prop Hunt</h1><p class="subtext">Run as your animated family character, jump and climb real map geometry, transform into exact-looking props, and hunt in third person on phone or computer.</p></div><span class="pill">Launch build</span></div>
+      <div class="game-title-row"><div><span class="eyebrow">THIRD-PERSON 3D FAMILY GAME</span><h1>Family Prop Hunt</h1><p class="subtext">Run as your animated family character, jump and climb real map geometry, transform into exact-looking props, and hunt in third person on phone or computer.</p></div><span class="pill">1–13 family characters</span></div>
       <div class="setup-grid">
-        <section class="panel panel-pad"><h2>Choose your character</h2><p class="subtext">Choose the family member or dog first. Outfit choices appear on the next screen.</p><div id="ph3Chars" class="character-grid">${P().map(p=>`<button class="character-pick ${p.id===defaultSelected?'selected':''}" data-id="${p.id}">${window.avatarHTML(p)}<strong>${p.name}</strong><small>${p.dog?'Animated dog player':(OUTFITS[p.id]?.label||'animated family character')}</small></button>`).join('')}</div></section>
-        <section class="panel panel-pad"><h2>Character preview</h2><img src="/family-3d-lineup-approved.png" alt="Approved animated Black family 3D character style" style="width:100%;border-radius:16px;border:1px solid var(--line)"><p class="subtext">This approved mini full-body family style is the visual target for all 3D player games.</p><button id="ph3Next" class="btn success" style="width:100%;margin-top:12px">NEXT: OUTFIT & MATCH</button></section>
+        <section class="panel panel-pad"><h2>Choose your character</h2><p class="subtext">Choose the family member or dog first. Outfit choices appear on the next screen.</p><div id="ph3Chars" class="ph3-character-grid">${P().map(p=>`<button class="ph3-character-card ${p.id===defaultSelected?'selected':''}" data-id="${p.id}"><div><img src="${phSprite(p)}" alt="${p.name} full-body character"></div><strong>${p.name}</strong><small>${p.dog?'Animated dog player':(OUTFITS[p.id]?.label||'animated family character')}</small></button>`).join('')}</div></section>
+        <section class="panel panel-pad"><h2>Approved 3D family style</h2><img src="/family-3d-lineup-approved.png" alt="Approved animated Black family 3D character style" style="width:100%;border-radius:16px;border:1px solid var(--line)"><p class="subtext">These full-body characters are the movement cast for Prop Hunt and Birthday Seat.</p><button id="ph3Next" class="btn success" style="width:100%;margin-top:12px">NEXT: OUTFIT & MATCH</button></section>
       </div>`;
-    root.querySelectorAll('#ph3Chars .character-pick').forEach(b=>b.addEventListener('click',()=>{setupSelection.charId=b.dataset.id;root.querySelectorAll('#ph3Chars .character-pick').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')}));
-    root.querySelector('#ph3Next').addEventListener('click',()=>renderPropOutfit(defaultSelected));
+    root.querySelectorAll('#ph3Chars [data-id]').forEach(b=>b.addEventListener('click',()=>{setupSelection.charId=b.dataset.id;root.querySelectorAll('#ph3Chars [data-id]').forEach(x=>x.classList.toggle('selected',x===b));const next=root.querySelector('#ph3Next');if(next)next.textContent=`NEXT: ${b.querySelector('strong')?.textContent||'CHARACTER'} OUTFIT & MATCH`;}));
+    root.querySelector('#ph3Next').addEventListener('click',()=>renderPropOutfit(setupSelection.charId||defaultSelected));
   }
 
   function renderPropOutfit(fallback='john'){
-    const charId=setupSelection.charId||fallback,person=P().find(p=>p.id===charId)||P()[0];
+    const charId=setupSelection.charId||fallback,person=P().find(p=>p.id===charId)||P()[0];phEnsureBots(setupSelection.count,person.id);
     const labels=person.dog?['Classic','Playful','Rugged','Party']:['Casual','Western','Plaid','Sporty','Winter','Dressy'];
     const imageFor=i=>person.id==='john'?`/avatars/styles/john-look-${String(Math.min(16,i+1)).padStart(2,'0')}.jpg`:`/avatars/styles/${person.id}-${['cute','rugged','glam','goofy'][i%4]}.jpg`;
-    root.innerHTML=`<div class="game-title-row"><div><span class="eyebrow">CHARACTER LOCK-IN</span><h1>${person.name}</h1><p class="subtext">Pick an outfit. Press Back to choose a different character.</p></div><button id="ph3Back" class="btn secondary">← Back</button></div><div class="setup-grid"><section class="panel panel-pad"><h2>Outfit options</h2><div class="look-grid">${labels.map((n,i)=>`<button class="look-choice ${setupSelection.outfit===i?'selected':''}" data-ph3-outfit="${i}"><img src="${imageFor(i)}" alt="${person.name} ${n}"><span><b>${i+1}</b>${n}</span></button>`).join('')}</div></section><section class="panel panel-pad"><h2>Match setup</h2><label class="field-label">Total players (empty seats are computer players)</label><select id="ph3Count" class="select">${[2,3,4,5,6,7,8,9,10,11].map(n=>`<option ${n===6?'selected':''}>${n}</option>`).join('')}</select><br><br><label class="field-label">Computer difficulty</label><select id="ph3Difficulty" class="select"><option value="easy">Easy</option><option value="medium" selected>Medium</option><option value="hard">Hard</option></select><br><br><label class="field-label">Mode</label><select id="ph3Mode" class="select"><option value="classic">Classic · caught hiders spectate</option><option value="chaos">Family Chaos · caught hiders join hunters</option></select><br><br><label class="field-label">3D map</label><select id="ph3Map" class="select"><option value="rotate">Rotate all four maps</option>${Object.entries(MAPS).map(([k,m])=>`<option value="${k}">${m.name}</option>`).join('')}</select><div class="stat-card" style="margin-top:14px"><strong>Detailed movement active</strong><p class="subtext">Third-person camera · jump physics · climbable benches/crates/tractors/hay/trailers · prop lock · 3-hit health · sparks · 3 disguise changes · 10 decoys · flash per disguise.</p></div><button id="ph3Start" class="btn success" style="width:100%;margin-top:12px">START 3D MATCH</button></section></div>`;
-    root.querySelector('#ph3Back').onclick=renderSetup;root.querySelectorAll('[data-ph3-outfit]').forEach(b=>b.onclick=()=>{setupSelection.outfit=Number(b.dataset.ph3Outfit);root.querySelectorAll('[data-ph3-outfit]').forEach(x=>x.classList.toggle('selected',x===b))});root.querySelector('#ph3Start').onclick=()=>startMatch({charId:person.id,outfit:setupSelection.outfit,count:Number(root.querySelector('#ph3Count').value),difficulty:root.querySelector('#ph3Difficulty').value,mode:root.querySelector('#ph3Mode').value,mapKey:root.querySelector('#ph3Map').value});
-    const q=new URL(location.href).searchParams;if(q.get('autostart')==='1')setTimeout(()=>startMatch({charId:q.get('char')||person.id,outfit:0,count:clamp(Number(q.get('players')||6),2,11),difficulty:q.get('difficulty')||'medium',mode:q.get('mode')||'classic',mapKey:q.get('map')||'papa'}),30);
+    root.innerHTML=`<div class="game-title-row"><div><span class="eyebrow">CHARACTER LOCK-IN</span><h1>${person.name}</h1><p class="subtext">Pick an outfit, then choose exactly which family characters the computer players will use.</p></div><button id="ph3Back" class="btn secondary">← Back to Characters</button></div><div class="setup-grid"><section class="panel panel-pad"><div class="ph3-outfit-figure"><img src="${phSprite(person)}" alt="${person.name}"><div><h2>${person.name}</h2><p class="subtext">Approved full-body 3D character</p></div></div><h3>Outfit options</h3><div class="look-grid">${labels.map((n,i)=>`<button class="look-choice ${setupSelection.outfit===i?'selected':''}" data-ph3-outfit="${i}"><img src="${imageFor(i)}" alt="${person.name} ${n}"><span><b>${i+1}</b>${n}</span></button>`).join('')}</div></section><section class="panel panel-pad"><h2>Match setup</h2><label class="field-label">Total players</label><select id="ph3Count" class="select">${Array.from({length:12},(_,i)=>i+2).map(n=>`<option ${n===setupSelection.count?'selected':''}>${n}</option>`).join('')}</select><br><br><label class="field-label">Mode</label><select id="ph3Mode" class="select"><option value="classic">Classic · caught hiders spectate</option><option value="chaos">Family Chaos · caught hiders join hunters</option></select><br><br><label class="field-label">3D map</label><select id="ph3Map" class="select"><option value="rotate">Rotate all four maps</option>${Object.entries(MAPS).map(([k,m])=>`<option value="${k}">${m.name}</option>`).join('')}</select><div class="ph3-bot-head"><strong>Computer players</strong><span>Choose character + difficulty for each seat</span></div><div id="ph3BotRows" class="ph3-bot-rows">${phBotRows()}</div><div class="stat-card" style="margin-top:14px"><strong>Detailed movement active</strong><p class="subtext">Third-person camera · jump physics · climbable benches/crates/tractors/hay/trailers · prop lock · 3-hit health · sparks · 3 disguise changes · 10 decoys · flash per disguise.</p></div><button id="ph3Start" class="btn success" style="width:100%;margin-top:12px">START 3D MATCH</button></section></div>`;
+    root.querySelector('#ph3Back').onclick=renderSetup;root.querySelectorAll('[data-ph3-outfit]').forEach(b=>b.onclick=()=>{setupSelection.outfit=Number(b.dataset.ph3Outfit);root.querySelectorAll('[data-ph3-outfit]').forEach(x=>x.classList.toggle('selected',x===b));});const count=root.querySelector('#ph3Count');count.onchange=()=>{phCaptureBots();setupSelection.count=Number(count.value);phEnsureBots(setupSelection.count,person.id);renderPropOutfit()};phBindBotRows();root.querySelector('#ph3Start').onclick=()=>{phCaptureBots();startMatch({charId:person.id,outfit:setupSelection.outfit,count:setupSelection.count,botConfigs:setupSelection.botConfigs.map(x=>({...x})),mode:root.querySelector('#ph3Mode').value,mapKey:root.querySelector('#ph3Map').value})};
   }
 
   function startMatch(opts){
-    const family=[P().find(p=>p.id===opts.charId),...P().filter(p=>p.id!==opts.charId)].slice(0,opts.count);
+    const human=P().find(p=>p.id===opts.charId)||P()[0];phEnsureBots(opts.count,human.id);const configs=(opts.botConfigs?.length?opts.botConfigs:setupSelection.botConfigs).slice(0,opts.count-1);const family=[human,...configs.map(c=>P().find(p=>p.id===c.charId)||P()[1])];opts.botConfigs=configs;
     state={opts,family,round:0,wins:{hiders:0,hunters:0},feed:[],running:true,mapKey:null,map:null,player:null,actors:[],props:[],animals:[],effects:[],camera:{yaw:0,pitch:.28,distance:355,fov:720},phase:'hide',phaseLeft:30*TEST_SCALE,tauntIn:30*TEST_SCALE,shotCooldown:0,locked:false,nearProp:null,roundResult:null,botHunterMemory:[],screenShake:0};
     nextRound();
   }
@@ -172,23 +186,26 @@
     state.roundResult=null;state.phase='hide';state.phaseLeft=30*TEST_SCALE;state.tauntIn=30*TEST_SCALE;state.effects=[];state.locked=false;state.nearProp=null;
     const mapKeys=Object.keys(MAPS);state.mapKey=state.opts.mapKey==='rotate'?mapKeys[(state.round-1)%mapKeys.length]:state.opts.mapKey;state.map=MAPS[state.mapKey];
     const huntersNeeded=state.family.length<=5?1:2;
-    const hunterIndexes=[];for(let j=0;j<huntersNeeded;j++)hunterIndexes.push(((state.round-1)*huntersNeeded+j)%state.family.length);
-    state.actors=state.family.map((person,i)=>makeActor(person,i,hunterIndexes.includes(i)?'hunter':'hider',i!==0));
+    // Round one deliberately starts the human as a hider so movement, jumping and prop controls are immediately testable. Rotation remains fair across later rounds.
+    const hunterIndexes=[];const rotationBase=((state.round-1)*huntersNeeded+1)%state.family.length;for(let j=0;j<huntersNeeded;j++)hunterIndexes.push((rotationBase+j)%state.family.length);
+    state.actors=state.family.map((person,i)=>makeActor(person,i,hunterIndexes.includes(i)?'hunter':'hider',i!==0,i===0?'human':(state.opts.botConfigs[i-1]?.difficulty||'medium')));
     state.player=state.actors[0];state.player.bot=false;
-    scatterActors();state.props=buildProps(state.map);state.animals=buildAnimals(state.map);
+    state.props=buildProps(state.map);state.animals=buildAnimals(state.map);scatterActors();placeHumanNearPlayableProp();
     for(const a of state.actors.filter(a=>a.role==='hider'&&a.bot))botChooseInitialProp(a);
     state.camera.yaw=state.player.yaw;state.camera.pitch=.28;state.camera.distance=state.player.role==='hunter'?360:330;
     state.feed=[`Round ${state.round}: ${state.map.name}. ${huntersNeeded} hunter${huntersNeeded>1?'s':''}.`,state.player.role==='hunter'?'You are hunting this round. Hiders have 30 seconds.':'You are hiding. Find a believable prop and get positioned.'];
     renderGame();
   }
 
-  function makeActor(person,index,role,bot){
-    return{person,index,role,bot,alive:true,x:0,y:0,z:0,vy:0,yaw:0,r:22,height:person.dog?62:118,speed:role==='hunter'?175:165,runSpeed:role==='hunter'?245:230,health:3,prop:null,propShape:null,propChanges:3,decoys:10,flash:1,locked:false,ammo:30,reload:0,blind:0,moveAmount:0,ai:{target:null,timer:0,detected:null,shot:0,decoyTimer:rand(5,10),changeTimer:rand(8,15)}};
+  function makeActor(person,index,role,bot,botDifficulty='medium'){
+    return{person,index,role,bot,botDifficulty,alive:true,x:0,y:0,z:0,vy:0,yaw:0,r:22,height:person.dog?62:118,speed:role==='hunter'?175:165,runSpeed:role==='hunter'?245:230,health:3,prop:null,propShape:null,propChanges:3,decoys:10,flash:1,locked:false,ammo:30,reload:0,blind:0,moveAmount:0,jumpBuffer:0,coyote:.12,ai:{target:null,timer:0,detected:null,shot:0,decoyTimer:rand(5,10),changeTimer:rand(8,15)}};
   }
 
   function scatterActors(){
     const m=state.map,base=m.spawn;state.actors.forEach((a,i)=>{a.x=clamp(base.x+(i%4)*70,70,m.w-70);a.z=clamp(base.z+Math.floor(i/4)*70,70,m.d-70);a.y=groundSupport(a.x,a.z,0);a.yaw=rand(-Math.PI,Math.PI);});
   }
+  function placeHumanNearPlayableProp(){
+    const p=state.player;if(!p||p.role!=='hider'||!state.props.length)return;let near=null,best=Infinity;for(const q of state.props){const d=Math.hypot(q.x-state.map.spawn.x,q.z-state.map.spawn.z);if(d<best){best=d;near=q}}if(!near)return;const angle=Math.atan2(state.map.spawn.x-near.x,state.map.spawn.z-near.z);p.x=clamp(near.x+Math.sin(angle||0)*105,40,state.map.w-40);p.z=clamp(near.z+Math.cos(angle||0)*105,40,state.map.d-40);if(pointInsideAnySolid(p.x,p.z,state.map.boxes,p.r)){p.x=clamp(near.x+110,40,state.map.w-40);p.z=clamp(near.z+20,40,state.map.d-40)}p.y=groundSupport(p.x,p.z,0);p.yaw=Math.atan2(near.x-p.x,near.z-p.z);state.camera.yaw=p.yaw;}
 
   function buildProps(map){
     const out=map.props.map((p,i)=>({...p,id:`p${i}`,decoy:false}));
@@ -216,10 +233,10 @@
         <section class="ph3d-stage" id="ph3Stage">
           <canvas class="ph3d-canvas" id="ph3Canvas" aria-label="Third-person Family Prop Hunt game view"></canvas>
           <div class="ph3d-top"><div class="ph3d-chip role" id="ph3Role"></div><div class="ph3d-chip map" id="ph3Phase"></div><div class="ph3d-chip health" id="ph3Health"></div></div>
-          <div class="ph3d-camera-help">Computer: WASD move · drag mouse to look · Space jump · left click shoot · E prop · C decoy · Q flash · X lock · R reload</div>
+          <div class="ph3d-camera-help">Computer: WASD move · drag to look · Space jump · E prop · C decoy · Q flash · X lock · R reload</div><div class="ph3d-move-status" id="ph3MoveStatus"></div>
           <div class="ph3d-crosshair" id="ph3Cross"></div><div class="ph3d-hit" id="ph3Hit">✦</div><div class="ph3d-flash" id="ph3Flash"></div><div class="ph3d-prop-prompt" id="ph3Prompt"></div>
           <div class="ph3d-controls">
-            <div class="ph3d-joystick" id="ph3Joy"><div class="ph3d-stick" id="ph3Stick"></div></div>
+            <div class="ph3d-move-cluster"><div class="ph3d-joystick" id="ph3Joy"><div class="ph3d-stick" id="ph3Stick"></div></div><div class="ph3d-dpad" aria-label="Movement buttons"><button type="button" data-ph3-move="forward" aria-label="Move forward">▲</button><button type="button" data-ph3-move="left" aria-label="Move left">◀</button><button type="button" data-ph3-move="back" aria-label="Move back">▼</button><button type="button" data-ph3-move="right" aria-label="Move right">▶</button></div></div>
             <div class="ph3d-actions">
               <button class="ph3d-act primary" id="ph3Shoot">SHOOT</button><button class="ph3d-act jump" id="ph3Jump">JUMP</button><button class="ph3d-act prop" id="ph3Prop">PROP</button>
               <button class="ph3d-act flash" id="ph3FlashBtn">FLASH</button><button class="ph3d-act" id="ph3Decoy">DECOY</button><button class="ph3d-act lock" id="ph3Lock">LOCK</button>
@@ -229,7 +246,7 @@
         <aside class="ph3d-side">
           <div class="ph3d-mini"><h3>Loadout</h3><div class="ph3d-readout" id="ph3Load"></div></div>
           <div class="ph3d-mini"><h3>3D movement</h3><div class="ph3d-legend"><span>Blue edges = climbable</span><span>Gold outline = prop target</span><span>Low objects auto-step</span><span>Jump chains reach higher spots</span></div></div>
-          <div class="ph3d-mini"><h3>Family match</h3><div class="round-track">${[1,2,3,4,5,6].map(n=>`<div class="round-dot ${n<state.round?'done':n===state.round?'current':''}"></div>`).join('')}</div><p class="subtext">Computer players fill the unused seats at ${state.opts.difficulty} difficulty.</p></div>
+          <div class="ph3d-mini"><h3>Family match</h3><div class="round-track">${[1,2,3,4,5,6].map(n=>`<div class="round-dot ${n<state.round?'done':n===state.round?'current':''}"></div>`).join('')}</div><p class="subtext">Computer players use the family characters and individual difficulty settings you chose.</p></div>
           <div class="ph3d-mini"><h3>Round feed</h3><div class="ph3d-feed" id="ph3Feed"></div></div>
         </aside>
       </div>`;
@@ -241,13 +258,18 @@
 
   function bindControls(){
     const stage=root.querySelector('#ph3Stage'),j=root.querySelector('#ph3Joy'),stick=root.querySelector('#ph3Stick');
-    const setJoy=e=>{const r=j.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,max=r.width*.34,len=Math.hypot(dx,dy)||1,k=Math.min(1,max/len);dx*=k;dy*=k;joy.x=dx/max;joy.z=-dy/max;stick.style.transform=`translate(${dx}px,${dy}px)`;};
-    j.addEventListener('pointerdown',e=>{joy.active=true;joy.id=e.pointerId;j.setPointerCapture(e.pointerId);setJoy(e)});j.addEventListener('pointermove',e=>{if(joy.active&&e.pointerId===joy.id)setJoy(e)});const endJoy=e=>{if(e.pointerId!==joy.id)return;joy.active=false;joy.x=joy.z=0;stick.style.transform='translate(0,0)'};j.addEventListener('pointerup',endJoy);j.addEventListener('pointercancel',endJoy);
+    const setJoy=e=>{const r=j.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,max=Math.max(28,r.width*.34),len=Math.hypot(dx,dy)||1,k=Math.min(1,max/len);dx*=k;dy*=k;joy.x=dx/max;joy.z=-dy/max;stick.style.transform=`translate(${dx}px,${dy}px)`;};
+    const joyEnd=e=>{if(e&&joy.id!=null&&e.pointerId!==joy.id)return;joy.active=false;joy.id=null;joy.x=joy.z=0;stick.style.transform='translate(0,0)'};
+    j.addEventListener('pointerdown',e=>{e.preventDefault();joy.active=true;joy.id=e.pointerId;try{j.setPointerCapture(e.pointerId)}catch{}setJoy(e)});
+    j.addEventListener('pointermove',e=>{if(joy.active&&e.pointerId===joy.id){e.preventDefault();setJoy(e)}});j.addEventListener('pointerup',joyEnd);j.addEventListener('pointercancel',joyEnd);j.addEventListener('lostpointercapture',()=>joyEnd());
+    root.querySelectorAll('[data-ph3-move]').forEach(btn=>{const dir=btn.dataset.ph3Move,on=e=>{e.preventDefault();touchMove[dir]=true;btn.classList.add('pressed')},off=e=>{if(e)e.preventDefault();touchMove[dir]=false;btn.classList.remove('pressed')};btn.addEventListener('pointerdown',on);btn.addEventListener('pointerup',off);btn.addEventListener('pointercancel',off);btn.addEventListener('pointerleave',e=>{if(e.buttons===0)off(e)});});
     stage.addEventListener('contextmenu',e=>e.preventDefault());
-    stage.addEventListener('pointerdown',e=>{if(e.target.closest('button')||e.target.closest('#ph3Joy'))return;if(e.pointerType==='mouse'&&e.button!==2)return;pointer.active=true;pointer.id=e.pointerId;pointer.lastX=e.clientX;pointer.lastY=e.clientY;stage.setPointerCapture(e.pointerId)});
+    stage.addEventListener('pointerdown',e=>{if(e.target.closest('button')||e.target.closest('#ph3Joy')||e.target.closest('.ph3d-dpad'))return;if(e.pointerType==='mouse'&&e.button!==2)return;pointer.active=true;pointer.id=e.pointerId;pointer.lastX=e.clientX;pointer.lastY=e.clientY;try{stage.setPointerCapture(e.pointerId)}catch{}});
     stage.addEventListener('pointermove',e=>{if(!pointer.active||e.pointerId!==pointer.id)return;const dx=e.clientX-pointer.lastX,dy=e.clientY-pointer.lastY;pointer.lastX=e.clientX;pointer.lastY=e.clientY;state.camera.yaw=wrapAngle(state.camera.yaw-dx*.006);state.camera.pitch=clamp(state.camera.pitch-dy*.004,-.12,.72)});
-    const endPointer=e=>{if(e.pointerId===pointer.id)pointer.active=false};stage.addEventListener('pointerup',endPointer);stage.addEventListener('pointercancel',endPointer);
-    root.querySelector('#ph3Shoot').addEventListener('pointerdown',shoot);root.querySelector('#ph3Jump').addEventListener('click',jump);root.querySelector('#ph3Prop').addEventListener('click',changeProp);root.querySelector('#ph3Decoy').addEventListener('click',dropDecoy);root.querySelector('#ph3FlashBtn').addEventListener('click',flash);root.querySelector('#ph3Lock').addEventListener('click',toggleLock);
+    const endPointer=e=>{if(e.pointerId===pointer.id){pointer.active=false;pointer.id=null}};stage.addEventListener('pointerup',endPointer);stage.addEventListener('pointercancel',endPointer);stage.addEventListener('lostpointercapture',()=>{pointer.active=false;pointer.id=null});
+    const bindTap=(sel,fn)=>{const b=root.querySelector(sel);if(!b)return;b.addEventListener('click',e=>{e.preventDefault();fn()})};
+    const shootBtn=root.querySelector('#ph3Shoot');if(shootBtn){const start=e=>{e.preventDefault();shoot();if(shootTimer)clearInterval(shootTimer);shootTimer=setInterval(shoot,110);shootBtn.classList.add('pressed')},stopShoot=e=>{if(e)e.preventDefault();if(shootTimer)clearInterval(shootTimer);shootTimer=0;shootBtn.classList.remove('pressed')};shootBtn.addEventListener('pointerdown',start);shootBtn.addEventListener('pointerup',stopShoot);shootBtn.addEventListener('pointercancel',stopShoot);shootBtn.addEventListener('pointerleave',e=>{if(e.buttons===0)stopShoot(e)});}
+    bindTap('#ph3Jump',jump);bindTap('#ph3Prop',changeProp);bindTap('#ph3Decoy',dropDecoy);bindTap('#ph3FlashBtn',flash);bindTap('#ph3Lock',toggleLock);
     canvas.addEventListener('mousedown',e=>{if(e.button===0&&!pointer.active)shoot()});
   }
 
@@ -275,7 +297,7 @@
 
   function updatePlayer(dt){
     const p=state.player;if(!p.alive)return;
-    let ix=(keys.KeyD?1:0)-(keys.KeyA?1:0)+joy.x,iz=(keys.KeyW?1:0)-(keys.KeyS?1:0)+joy.z;
+    let ix=(keys.KeyD?1:0)-(keys.KeyA?1:0)+(touchMove.right?1:0)-(touchMove.left?1:0)+joy.x,iz=(keys.KeyW?1:0)-(keys.KeyS?1:0)+(touchMove.forward?1:0)-(touchMove.back?1:0)+joy.z;
     if(state.phase==='hide'&&p.role==='hunter'){ix=iz=0;}if(p.blind>0){ix*=.6;iz*=.6;}
     const len=Math.hypot(ix,iz);if(len>1){ix/=len;iz/=len;}
     const locked=p.role==='hider'&&p.prop&&p.locked;const sprint=keys.ShiftLeft||keys.ShiftRight;const speed=sprint?p.runSpeed:p.speed;
@@ -299,8 +321,12 @@
   }
 
   function applyVerticalPhysics(a,dt){
+    const beforeSupport=groundSupport(a.x,a.z,a.y),nearGround=Math.abs(a.y-beforeSupport)<5&&a.vy<=15;
+    a.coyote=nearGround ? .12 : Math.max(0,(a.coyote||0)-dt);a.jumpBuffer=Math.max(0,(a.jumpBuffer||0)-dt);
     a.vy-=820*dt;a.y+=a.vy*dt;const support=groundSupport(a.x,a.z,a.y);
-    if(a.y<=support){a.y=support;if(a.vy<0){const b=topBoxAt(a.x,a.z,support);if(b?.bounce)a.vy=b.bounce;else a.vy=0;}}
+    if(a.y<=support){a.y=support;if(a.vy<0){const b=topBoxAt(a.x,a.z,support);if(b?.bounce)a.vy=b.bounce;else a.vy=0;}a.coyote=.12;
+      if(a===state.player&&a.jumpBuffer>0&&!a.locked&&!(state.phase==='hide'&&a.role==='hunter')){a.vy=365;a.jumpBuffer=0;a.coyote=0;APP.toast('Jump');}
+    }
   }
 
   function groundSupport(x,z,currentY){
@@ -316,7 +342,7 @@
   }
   function pointInsideAnySolid(x,z,boxes,r=0){return boxes.some(b=>b.solid&&x+r>b.x&&x-r<b.x+b.w&&z+r>b.z&&z-r<b.z+b.d);}
 
-  function jump(){const p=state?.player;if(!p||!p.alive||p.locked)return;const support=groundSupport(p.x,p.z,p.y);if(Math.abs(p.y-support)<4){p.vy=350;APP.toast('Jump');}}
+  function jump(){const p=state?.player;if(!p||!p.alive)return;if(state.phase==='hide'&&p.role==='hunter'){APP.toast(`Hunters release in ${Math.max(0,Math.ceil(state.phaseLeft/TEST_SCALE))}s`);return}if(p.locked){APP.toast('Unlock your prop before jumping');return}const support=groundSupport(p.x,p.z,p.y);if(Math.abs(p.y-support)<6||(p.coyote||0)>0){p.vy=365;p.jumpBuffer=0;p.coyote=0;APP.toast('Jump');}else p.jumpBuffer=.22;}
   function toggleLock(){const p=state?.player;if(!p||p.role!=='hider'||!p.prop){APP.toast('Disguise first');return}p.locked=!p.locked;state.locked=p.locked;APP.toast(p.locked?'Prop locked. Camera stays free.':'Prop unlocked. Run!');updateHud();}
 
   function findNearestProp(a,maxD){let best=null,bd=maxD;for(const p of state.props){const d=xzDist(a,p);if(d<bd){best=p;bd=d;}}return best;}
@@ -364,9 +390,8 @@
   }
 
   function updateBots(dt){
-    const diff=state.opts.difficulty,react=diff==='easy'?1.4:diff==='hard'?.55:.9,accuracy=diff==='easy'?.48:diff==='hard'?.86:.68;
-    for(const a of state.actors){if(!a.bot||!a.alive)continue;if(a.blind>0){a.blind-=dt;continue;}a.ai.timer-=dt;a.ai.shot=Math.max(0,a.ai.shot-dt);a.ai.decoyTimer-=dt;a.ai.changeTimer-=dt;
-      if(a.role==='hider')updateBotHider(a,dt,react);else updateBotHunter(a,dt,react,accuracy);applyVerticalPhysics(a,dt);
+    for(const a of state.actors){if(!a.bot||!a.alive)continue;const diff=a.botDifficulty||'medium',react=diff==='easy'?1.4:diff==='hard'?.55:.9,accuracy=diff==='easy'?.48:diff==='hard'?.86:.68;if(a.blind>0){a.blind-=dt;continue;}a.ai.timer-=dt;a.ai.shot=Math.max(0,a.ai.shot-dt);a.ai.decoyTimer-=dt;a.ai.changeTimer-=dt;
+      if(a.role==='hider')updateBotHider(a,dt,react);else updateBotHunter(a,dt,react,accuracy,diff);applyVerticalPhysics(a,dt);
     }
   }
   function updateBotHider(a,dt,react){
@@ -376,13 +401,13 @@
       const ang=Math.atan2(a.x-nearest.x,a.z-nearest.z)+rand(-.35,.35);a.yaw=ang;tryMove(a,Math.sin(ang)*a.runSpeed*dt,Math.cos(ang)*a.runSpeed*dt);if(Math.random()<.012)botJump(a);
     }else{a.locked=true;if(a.ai.decoyTimer<=0&&a.decoys>0&&Math.random()<.25){a.decoys--;const s=a.propShape||propShape(a.prop||'Bucket');state.props.push({id:`bd${a.index}${Date.now()}`,x:a.x+rand(-55,55),z:a.z+rand(-55,55),y:0,type:a.prop||'Bucket',w:s.w,d:s.d,h:s.h,color:s.color,rot:rand(0,TAU),collider:s.collider,climbable:s.climbable,decoy:true});a.ai.decoyTimer=rand(7,13);}}
   }
-  function updateBotHunter(a,dt,react,accuracy){
+  function updateBotHunter(a,dt,react,accuracy,diff){
     if(state.phase==='hide')return;const hiders=state.actors.filter(x=>x.role==='hider'&&x.alive);if(!hiders.length)return;
     let target=a.ai.detected;if(!target||!target.alive||target.role!=='hider'){
       target=null;let best=Infinity;for(const h of hiders){const d=xzDist(a,h),moving=!h.locked||!h.prop;let detect=0;if(d<180)detect=.95;else if(d<330&&moving)detect=.8;else if(d<520&&moving)detect=.35;if(Math.random()<detect*dt/react&&d<best){target=h;best=d;}}
-      if(target){a.ai.detected=target;a.ai.timer=diffTimer(state.opts.difficulty);}
+      if(target){a.ai.detected=target;a.ai.timer=diffTimer(diff);}
     }else if(a.ai.timer<=0){a.ai.detected=null;target=null;}
-    if(target){const dx=target.x-a.x,dz=target.z-a.z,d=Math.hypot(dx,dz)||1;a.yaw=Math.atan2(dx,dz);if(d>170)tryMove(a,dx/d*a.runSpeed*dt,dz/d*a.runSpeed*dt);if(d<420&&a.ai.shot<=0){a.ai.shot=state.opts.difficulty==='hard'?.12:state.opts.difficulty==='easy'?.34:.21;if(Math.random()<accuracy){target.health--;target.locked=false;state.effects.push(...makeSparks(target.x,target.y+25,target.z,7));if(target.health<=0)catchHider(target);}}}
+    if(target){const dx=target.x-a.x,dz=target.z-a.z,d=Math.hypot(dx,dz)||1;a.yaw=Math.atan2(dx,dz);if(d>170)tryMove(a,dx/d*a.runSpeed*dt,dz/d*a.runSpeed*dt);if(d<420&&a.ai.shot<=0){a.ai.shot=diff==='hard'?.12:diff==='easy'?.34:.21;if(Math.random()<accuracy){target.health--;target.locked=false;state.effects.push(...makeSparks(target.x,target.y+25,target.z,7));if(target.health<=0)catchHider(target);}}}
     else{if(a.ai.timer<=0||!a.ai.target){a.ai.target={x:rand(80,state.map.w-80),z:rand(80,state.map.d-80)};a.ai.timer=rand(2.2,4.5);}const dx=a.ai.target.x-a.x,dz=a.ai.target.z-a.z,d=Math.hypot(dx,dz)||1;if(d>25){a.yaw=Math.atan2(dx,dz);tryMove(a,dx/d*a.speed*.65*dt,dz/d*a.speed*.65*dt);}}
   }
   function diffTimer(d){return d==='easy'?1.8:d==='hard'?4.5:3;}
@@ -403,14 +428,15 @@
   function renderMatchEnd(){if(raf)cancelAnimationFrame(raf);raf=0;const w=state.wins;root.innerHTML=`<div class="panel panel-pad status-large"><span class="eyebrow">SIX 3D ROUNDS COMPLETE</span><strong>${w.hiders>w.hunters?'HIDERS WIN THE NIGHT':w.hunters>w.hiders?'HUNTERS WIN THE NIGHT':'TIE GAME'}</strong><p class="subtext">Hiders ${w.hiders} · Hunters ${w.hunters}</p><button id="ph3Again" class="btn success">PLAY AGAIN</button></div>`;root.querySelector('#ph3Again').addEventListener('click',()=>{state=null;renderSetup()});}
 
   function updateHud(){
-    if(!root||!state||!state.player)return;const p=state.player,role=root.querySelector('#ph3Role'),phase=root.querySelector('#ph3Phase'),health=root.querySelector('#ph3Health'),load=root.querySelector('#ph3Load'),feed=root.querySelector('#ph3Feed'),prompt=root.querySelector('#ph3Prompt');if(!role)return;
+    if(!root||!state||!state.player)return;const p=state.player,role=root.querySelector('#ph3Role'),phase=root.querySelector('#ph3Phase'),health=root.querySelector('#ph3Health'),load=root.querySelector('#ph3Load'),feed=root.querySelector('#ph3Feed'),prompt=root.querySelector('#ph3Prompt'),moveStatus=root.querySelector('#ph3MoveStatus');if(!role)return;
     role.textContent=p.role==='hider'?`HIDER · ${p.prop||'family character'}`:'HUNTER · prop-zapper';phase.textContent=`${state.phase==='hide'?'HIDE':'HUNT'} ${fmt(state.phaseLeft/TEST_SCALE)} · ${state.map.name}`;health.textContent=`♥ ${Math.max(0,p.health)}/3`;
     load.innerHTML=p.role==='hider'?`Disguise: <b>${p.prop||'none'}</b><br>Changes: <b>${p.propChanges}</b><br>Decoys: <b>${p.decoys}/10</b><br>Flash: <b>${p.flash?'READY':'USED'}</b><br>Prop lock: <b>${p.locked?'LOCKED':'FREE'}</b><br>Health carries between disguises.`:`Magazine: <b>${p.reload>0?'RELOADING':p.ammo+'/30'}</b><br>Reserve: <b>∞</b><br>Aim: camera crosshair<br>No penalty for scenery shots.`;
     if(feed){feed.innerHTML=state.feed.slice(-12).map(x=>`<div>${x}</div>`).join('');feed.scrollTop=feed.scrollHeight;}
-    const hideActions=p.role!=='hider';for(const id of ['ph3Prop','ph3FlashBtn','ph3Decoy','ph3Lock']){const b=root.querySelector('#'+id);if(b)b.disabled=hideActions;}const shoot=root.querySelector('#ph3Shoot');if(shoot)shoot.disabled=p.role!=='hunter'||state.phase!=='hunt';
+    const isHider=p.role==='hider',hunterWaiting=p.role==='hunter'&&state.phase==='hide';for(const id of ['ph3Prop','ph3FlashBtn','ph3Decoy','ph3Lock']){const b=root.querySelector('#'+id);if(b)b.disabled=!isHider;}const shoot=root.querySelector('#ph3Shoot');if(shoot)shoot.disabled=p.role!=='hunter'||state.phase!=='hunt';const jumpBtn=root.querySelector('#ph3Jump');if(jumpBtn)jumpBtn.disabled=hunterWaiting||p.locked;
     const flashOverlay=root.querySelector('#ph3Flash');if(flashOverlay)flashOverlay.classList.toggle('on',p.blind>0);
-    if(prompt){if(p.role==='hider'&&state.nearProp){prompt.textContent=`PROP: ${state.nearProp.type} · press E / PROP`;prompt.classList.add('on')}else prompt.classList.remove('on');}
+    if(prompt){if(isHider&&state.nearProp){prompt.textContent=`PROP: ${state.nearProp.type} · tap PROP`;prompt.classList.add('on')}else prompt.classList.remove('on');}
     const lock=root.querySelector('#ph3Lock');if(lock)lock.textContent=p.locked?'UNLOCK':'LOCK';
+    if(moveStatus){if(hunterWaiting){moveStatus.textContent=`HUNTER HOLD · release in ${Math.max(0,Math.ceil(state.phaseLeft/TEST_SCALE))}s`;moveStatus.className='ph3d-move-status waiting'}else if(p.locked){moveStatus.textContent='PROP LOCKED · tap UNLOCK to move';moveStatus.className='ph3d-move-status locked'}else{moveStatus.textContent=isHider?'MOVE NOW · joystick, arrows or WASD':'MOVE & HUNT · joystick, arrows or WASD';moveStatus.className='ph3d-move-status ready'}}
   }
   function fmt(sec){sec=Math.max(0,Math.ceil(sec));return`${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')}`;}
   function addFeed(t){state.feed.push(t);if(state.feed.length>50)state.feed.shift();}
@@ -465,6 +491,6 @@
   function closeModal(){document.getElementById('ph3Modal')?.remove();}
 
   // Exposed for the automated tryout suite and future multiplayer adapter.
-  window.__PROP_3D_TEST__={MAPS,propShape,OUTFITS,features:{thirdPerson:true,jumpPhysics:true,climbableGeometry:true,computerPlayers:true,phoneControls:true,desktopControls:true,sparks:true,propLock:true}};
+  window.__PROP_3D_TEST__={MAPS,propShape,OUTFITS,getSnapshot:()=>state?{round:state.round,phase:state.phase,mapKey:state.mapKey,player:state.player?{x:state.player.x,y:state.player.y,z:state.player.z,vy:state.player.vy,role:state.player.role,locked:state.player.locked,prop:state.player.prop,propChanges:state.player.propChanges,decoys:state.player.decoys,flash:state.player.flash}:null}:null,features:{thirdPerson:true,jumpPhysics:true,climbableGeometry:true,computerPlayers:true,phoneControls:true,desktopControls:true,touchDpad:true,firstRoundHider:true,workingSelectors:true,sparks:true,propLock:true}};
   window.PropHunt={mount};
 })();

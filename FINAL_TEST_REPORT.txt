@@ -1,31 +1,41 @@
-Black Family Game Night v1.2.0-launch - Final Test Report
-Date: 2026-08-22
+BLACK FAMILY GAME NIGHT v1.2.4-launch
+FINAL AUTOMATED TEST REPORT
 
-RESULT: 127 / 127 automated tests passing
+RESULT
+143 / 143 tests passed
+0 failures
 
-LAUNCH FEATURES VERIFIED
-- Approved realistic Black Family Lodge home scene is used.
-- Moving fireplace flame/glow/ember CSS is present with reduced-motion handling.
-- All 18 original multiplayer games still create, seat, ready and start.
-- All 18 original games can be launched with one human plus computer players.
-- Easy, Medium and Hard bot difficulties persist into room state.
-- Bot driver actions execute without exposing other players' hidden hands.
-- Original game cards include Create & Share.
-- Room lobbies include Share Invite and Copy Link using the exact room URL.
-- New-game shelf and Share Game paths exist for Family Mystery, Family Prop Hunt and John's Birthday Seat.
-- Character -> outfit picker flow includes Back to Characters.
-- Family Mystery includes illustrated rooms, glowing movement blocks, family standees and computer detectives.
-- Family Prop Hunt loads the third-person 3D gameplay override with jump/climb/shoot/disguise systems and computer fill.
-- John's Birthday Seat is present with third-person platform movement, checkpoints, phone/desktop controls and computer racers.
-- Existing v1.0.10 regression coverage remains passing, including chat/reactions, room-preserving game switching, private hands, card sorting, Trail Trouble, Prairie Pots, Last Haven, Cribbage, Golf and Marbles & Jokers.
+SYNTAX / PACKAGE CHECKS
+PASS worker.mjs
+PASS gameEngine.mjs
+PASS extraGames.mjs
+PASS public/app.js
+PASS public/prop-hunt-3d.js
+PASS public/birthday-climb.js
 
-IMPORTANT LIVE-DEVICE QA
-Automated tests validate code paths and state rules, but a final device pass is still recommended for:
-- Cabin art cropping and moving fire alignment on the production screen sizes.
-- Touch control comfort in 3D Prop Hunt and Birthday Seat.
-- Full round pacing for new computer-player AI.
-- Exact invite-link opening on two real devices.
+V1.2.4 AVATAR PACK CHECKS
+PASS all 12 approved family avatar packs are present
+PASS all 13 family members/pets have an image in every pack
+PASS 156 new family-pack avatar image files verified
+PASS family-pack manifest version is 1.2.4-launch
+PASS human character selector exposes original looks + approved packs
+PASS John retains all 16 existing looks + approved packs
+PASS computer-player character/style/difficulty values persist through Worker state
+PASS Home > Avatars exposes the approved pack gallery
 
-MULTIPLAYER STATUS
-- Original 18 games: synchronized private-room multiplayer through the existing Cloudflare room engine.
-- Family Mystery / Prop Hunt / Birthday Seat: playable local/computer launch tryouts. Their Share Game links open the correct game, but those new engines are not yet synchronized into shared live room state between devices.
+RETAINED REGRESSION COVERAGE
+PASS all 18 original games create, seat, ready and start
+PASS all 18 original games can start solo using Easy/Medium/Hard computer players
+PASS room persistence / Durable Object adapter
+PASS room-preserving game switching
+PASS share/join paths
+PASS cabin home and animated fire
+PASS Cribbage pegging visibility and end-of-hand scoring review
+PASS Prop Hunt setup/movement/jump control code paths
+PASS Birthday Seat 32-step course and family runner roster
+PASS Family Mystery board / movement / clue UI checks
+
+COMMAND
+npm run check
+
+See FINAL_TEST_OUTPUT.tap for the complete TAP output.

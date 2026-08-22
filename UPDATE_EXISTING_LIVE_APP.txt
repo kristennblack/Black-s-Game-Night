@@ -1,4 +1,13 @@
-BLACK FAMILY GAME NIGHT v1.2.0-launch
+BLACK FAMILY GAME NIGHT v1.2.4-launch
+
+V1.2.4 AVATAR PACK CHANGES
+- 12 approved family avatar packs are now selectable, not just stored as art.
+- All 13 family characters/pets have every new pack.
+- Human players choose character -> avatar style -> colours.
+- Computer players can be assigned character + avatar style + Easy/Medium/Hard.
+- Home > Avatars shows the approved pack gallery.
+- Existing Cute/Goofy/Rugged/Glam, John 16-look set and original characters are preserved.
+
 UPDATE EXISTING LIVE APP
 
 Use this package as a full replacement of the tracked project files while preserving the repository's hidden .git directory.
@@ -11,13 +20,17 @@ KEEP
 REPLACE
 - Tracked project files with the contents of this package
 
-MAJOR CHANGES
-- Approved cabin Lodge home + animated fire
-- Three new playable games on the Game Shelf
-- Easy/Medium/Hard computer players across all 18 original games
-- Solo computer support in the new games
-- Character/outfit flow improvements
-- Per-game share/invite paths
-- Fresh v1.2.0 service-worker cache
+V1.2.3 CHANGES
+- Cribbage now shows every pegging play with owner and running total.
+- Cribbage end-of-hand review shows all cards and highlights exact scoring combinations.
+- Crib discard selection has a large persistent Send Selected Cards button.
+- Legacy top-down Prop Hunt code removed so only the third-person engine mounts.
+- Prop Hunt character/outfit/start selectors repaired.
+- Prop Hunt round one starts the human as a hider for immediately usable controls.
+- Prop Hunt phone D-pad added alongside joystick.
+- Prop Hunt WASD, jump, PROP selection and touch movement browser-smoke-tested.
+- Prop Hunt jump buffering makes near-landing jump taps more forgiving.
+- Existing Lodge, Birthday Seat, Mystery, bot-character setup and share links retained.
+- Fresh v1.2.3 service-worker cache.
 
-After pushing, test the exact production URL on at least one phone and one desktop browser.
+After pushing, test the production URL on at least one phone and one desktop browser.
