@@ -1,0 +1,21 @@
+BLACK FAMILY GAME NIGHT v1.1.0-tryout.1
+
+WHAT THIS BUILD IS
+- Built directly on the real v1.0.10 full-replacement source.
+- Keeps the Black Family Lodge home, room lobby, avatars, chat, reactions, room switching, and all 18 existing multiplayer games.
+- Adds Family Mystery and Family Prop Hunt to a new New Family Games shelf at the top of the Lodge.
+
+NEW GAME STATUS
+- Family Mystery is a playable local/hot-seat test of the locked deduction rules and movement UX.
+- Family Prop Hunt is a playable top-down systems test of the locked prop, decoy, flash, health, rounds, and family-map rules.
+- These two tryouts launch from the Lodge but are not yet wired into the live Durable Object multiplayer room engine. That is intentionally deferred so this test build does not destabilize the existing 18-game multiplayer code.
+
+TEST FOCUS
+1. Does the Lodge still feel like the version you wanted?
+2. Do the two new game cards feel like they belong on the shelf?
+3. Family Mystery: movement, board readability, clue flow, notes, family humor.
+4. Prop Hunt: controls, disguise/decoy/flash flow, map scale/identity, round pacing.
+5. Re-test a few existing games to confirm nothing feels changed or broken.
+
+DEPLOYMENT
+Use the same replacement workflow as v1.0.10: keep the repository's hidden .git folder, replace the project files with this package, commit, and push. Existing Cloudflare configuration is unchanged.

@@ -1,28 +1,23 @@
-Black Family Game Night v1.0.10 - Final Test Report
-Date: 2026-08-21
+Black Family Game Night v1.1.0-tryout.1 - Test Report
+Date: 2026-08-22
 
-RESULT: 110 / 110 automated tests passing
+RESULT: 113 / 113 automated tests passing
 
-v1.0.10 additions verified:
-- Detailed Cribbage pegboard UI with crib-owner label, starter card, pegging/counting areas, and direct crib-card selection.
-- Golf stock/discard/held-card interaction and clickable 2x4 replacement grid.
-- Marbles & Jokers zoomable board with colored pieces, Home tracks, Camps, clickable deck, and board-selection hooks.
-- Physical clickable draw decks for turn-draw games.
-- Black Family Lodge fireplace birthday home/connection presentation.
-- v1.0.10 service-worker cache/version markers.
+Regression coverage retained from v1.0.10:
+- All 18 existing games create/join/seat/ready/start through the Cloudflare adapter.
+- Durable Object room persistence and room state stream.
+- Existing custom rules for the trick-taking, card, race, table and Last Haven games.
+- Black Family Lodge home and existing lobby presentation.
+- Family and pet avatars, John birthday looks, chat, reactions and room-preserving game switching.
+- Cribbage, Golf, Marbles & Jokers, Trail Trouble, Prairie Pots and Last Haven UI/interaction regression checks.
 
-Regression coverage retained:
-- All 18 games create, join, auto-seat, ready and start through the Cloudflare adapter.
-- Durable Object persistence and initial SSE room state.
-- Screw Your Buddy / Fuck Your Buddy bidding hands and rules.
-- Smear rules/scoring.
-- Trail Trouble advanced board and movement rules.
-- Prairie Pots direct cards/chip-pot display.
-- Last Haven responsive board/actions.
-- Chat, quick reactions, room-preserving game switching, private hands, avatar families and John birthday looks.
-- Auto-sorted, no-horizontal-swipe hands.
+New tryout checks:
+- Family Mystery and Family Prop Hunt are present on the Lodge shelf.
+- Family Mystery includes all 11 family suspects and all 10 locked family locations.
+- Family Mystery includes highlighted reachable movement and detective notes.
+- Family Prop Hunt includes the six-round locked loadout and all four family maps.
+- New game page JavaScript passes syntax checking.
 
-Important live-device checks still recommended:
-- Verify the new visual boards on the actual phones/tablets your family will use.
-- Confirm touch targets feel comfortable at the smallest phone size.
-- Test a full Cribbage hand, one Golf hole, and several Marbles & Jokers turns with two devices.
+Known tryout limitation:
+- The two new games are playable client-side prototypes and are not yet integrated into the Durable Object multiplayer room state. This is intentional for this test build so the existing 18 multiplayer games remain stable while the new concepts are evaluated.
+- Rendered browser screenshot QA could not be completed in this build environment because the available headless Chromium process did not complete. Test the visual layout on the actual phones/tablets/desktop browsers you plan to use.

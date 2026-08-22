@@ -1,2 +1,2 @@
-Black Family Game Night v1.0.10
-Cribbage board, tactile Golf, detailed Marbles & Jokers board, clickable draw decks, and cabin birthday lodge polish.
+Black Family Game Night v1.1.0-tryout.1
+Built from the tested v1.0.10 Lodge. Adds Family Mystery and Family Prop Hunt as playable tryout games while preserving the original multiplayer engines.

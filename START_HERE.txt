@@ -1,30 +1,36 @@
-BLACK FAMILY GAME NIGHT v1.0.10 - FULL REPLACEMENT
+BLACK FAMILY GAME NIGHT v1.1.0-tryout.1
+FULL REPLACEMENT TRYOUT BUILD
 
-WHAT THIS VERSION ADDS
-- Detailed rustic Cribbage pegboard with scores, starter, pegging count, counting phase, and a clearly labeled crib owner.
-- Golf now shows a real stock pile + face-up discard; tap either to draw/take, then tap a grid card to swap. Stock draws may be discarded to flip a face-down grid card.
-- Marbles & Jokers now has a full colored marble board with Camps, track, Home lanes, zoom/pan controls, tappable cards and tappable marbles.
-- Draw-action games now show a physical deck on the table that can be tapped instead of relying only on action lists.
-- Home and connecting screens have a richer Black Family Lodge / fireplace birthday scene for John Black.
-- All v1.0.9 room switching, auto-sorted no-swipe hands, Trail Trouble, Prairie Pots, Last Haven, chat and avatar improvements remain.
+WHAT CHANGED
+- This build starts from the tested v1.0.10 Black Family Lodge source.
+- The Lodge home, existing room lobby, family avatars, chat, reactions, room-preserving game switching, and all 18 existing multiplayer games are retained.
+- A new "New Family Games - Tryout" shelf has been added at the top of the Lodge.
+- Family Mystery and Family Prop Hunt are playable from that shelf.
 
-UPDATE THE LIVE APP
-1. Download and unzip the v1.0.10 full replacement ZIP.
+IMPORTANT TRYOUT STATUS
+- The 18 existing games are still the live/private-room multiplayer engines from v1.0.10.
+- Family Mystery is currently a playable local/hot-seat systems build.
+- Family Prop Hunt is currently a playable top-down systems build for testing its rules, controls, maps and pacing before the full third-person multiplayer implementation.
+- The two new tryouts deliberately do not alter the Durable Object room engine yet. This protects the stable 18-game multiplayer build while you test the new game design.
+
+HOW TO UPDATE THE EXISTING LIVE APP
+1. Download and unzip this ZIP.
 2. Open GitHub Desktop and select Black-s-Game-Night.
 3. Click Show in Explorer.
-4. Keep the hidden .git folder. Do not delete the repository folder itself.
-5. Copy everything INSIDE the v1.0.10 folder into the existing Black-s-Game-Night folder and replace the old project files.
+4. KEEP the hidden .git folder in that repository folder.
+5. Remove/overwrite the old project files with EVERYTHING INSIDE this package.
 6. Return to GitHub Desktop.
-7. Summary: Black Family Game Night v1.0.10 - tabletop polish
-8. Commit to main.
-9. Push origin.
-10. Cloudflare should deploy automatically. Do not reconnect Cloudflare or change its settings.
-11. When deployment is green, open the main app URL and confirm the top bar says v1.0.10.
-12. Create fresh rooms for Cribbage, Golf, and Marbles & Jokers for the first test.
+7. Commit with: Black Family Game Night v1.1.0 tryout
+8. Push origin.
+9. Cloudflare should build automatically from the existing connection.
+10. Open the app and confirm the top bar shows v1.1.0-tryout.1.
 
-FIRST TESTS
-- Cribbage: confirm the board, peg position, dealer/crib owner, starter, pegging count and crib discard flow are visible.
-- Golf: tap the stock, confirm the drawn card appears in front of you, then tap a grid card to swap. Also test taking the face-up discard.
-- Marbles & Jokers: tap the deck, select a highlighted card, zoom the board, and tap a glowing marble.
-- Campfire Chaos / 31 / Crazy Eights / Burn Logs: confirm a physical Draw deck appears whenever drawing is a legal action.
-- Home screen: confirm John Black's birthday cabin/fireplace hero and richer grouped game shelves appear.
+FIRST THINGS TO TRY
+- Confirm the Black Family Lodge still looks and behaves like the previous version.
+- Open an existing game and confirm the regular room lobby/avatars/Ready flow is unchanged.
+- From the new top shelf, open Family Mystery and test movement, notes, suggestions and accusations.
+- Open Family Prop Hunt and test disguise changes, decoys, flash, health, jumping, shooting, rounds and the four maps.
+- Send back anything that feels wrong, too small, too slow, confusing, or just not fun yet.
+
+TEST STATUS
+113 / 113 automated checks passing.

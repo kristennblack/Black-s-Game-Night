@@ -99,12 +99,12 @@ test('Launch UI removes the nonfunctional install button and provides room retry
   assert.match(appSource,/data-action="retryConnect"/);
 });
 
-test('Launch assets advertise v1.0.10 and use a fresh service-worker cache', async()=>{
+test('Launch assets advertise v1.1.0-tryout.1 and use a fresh service-worker cache', async()=>{
   const {readFile}=await import('node:fs/promises');
   const appSource=await readFile(new URL('../public/app.js',import.meta.url),'utf8');
   const swSource=await readFile(new URL('../public/sw.js',import.meta.url),'utf8');
-  assert.match(appSource,/APP_VERSION='1\.0\.10'/);
-  assert.match(swSource,/black-family-game-night-v110/);
+  assert.match(appSource,/APP_VERSION='1\.1\.0-tryout\.1'/);
+  assert.match(swSource,/black-family-game-night-v110-tryout1/);
 });
 
 
