@@ -1,0 +1,11 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const app=fs.readFileSync(new URL('../public/app.js',import.meta.url),'utf8');
+const css=fs.readFileSync(new URL('../public/styles.css',import.meta.url),'utf8');
+const engine=fs.readFileSync(new URL('../extraGames.mjs',import.meta.url),'utf8');
+test('v1.0.10 has a detailed Cribbage board and clearly marks the crib owner',()=>{for(const t of ['cribBoard','crib-hole-row','crib-owner','crib-pegging','crib-card-stack'])assert.ok(app.includes(t)||css.includes('.'+t));assert.match(app,/S CRIB/);assert.match(engine,/countHand/)});
+test('Golf uses a clickable stock, face-up discard, held draw card and clickable 2x4 grid',()=>{for(const t of ['golf-deck-stack','golf-discard-stack','golf-held-card','golf-cell','data-golf-mode'])assert.ok(app.includes(t)||css.includes('.'+t));assert.match(engine,/stockCount:ex\.stock\.length/);assert.match(engine,/drawSource:ex\.drawSource/)});
+test('Marbles & Jokers has a detailed zoomable board with colored pieces and direct draw deck',()=>{for(const t of ['marbles-board','marble-track-hole','marble-piece','data-marble-zoom','marble-deck'])assert.ok(app.includes(t)||css.includes('.'+t));assert.match(engine,/discardTop:cloneCard/)});
+test('Lodge home and connection screen are birthday cabin themed',()=>{for(const t of ['birthday-lodge-hero','fireplace','john-birthday-card','cabin-loading','HAPPY BIRTHDAY, JOHN'])assert.ok(app.includes(t)||css.includes('.'+t));});
+test('Turn-draw games expose a physical clickable deck instead of only text actions',()=>{assert.match(app,/genericDrawDeck/);assert.match(app,/table-deck-button/);assert.match(app,/physical-deck/);});

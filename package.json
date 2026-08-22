@@ -1,0 +1,15 @@
+{
+  "name": "black-family-game-night",
+  "version": "1.1.0-tryout.3",
+  "private": true,
+  "type": "module",
+  "description": "Black Family Game Night v1.1.0 tryout 3 - third-person 3D Prop Hunt gameplay slice with vertical traversal and computer fill.",
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check worker.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check public/app.js && node --check public/prop-hunt-3d.js && node --test",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "4.125.0"
+  }
+}

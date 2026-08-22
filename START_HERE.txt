@@ -1,0 +1,26 @@
+BLACK FAMILY GAME NIGHT v1.1.0-tryout.3
+THIRD-PERSON PROP HUNT + ANIMATED LODGE / MYSTERY TRYOUT
+
+This package is based directly on the real v1.0.10 full replacement project.
+
+WHAT TO TRY FIRST
+1. Open the Black Family Lodge and confirm the detailed cabin/fireplace home still looks right.
+2. Open Family Mystery and confirm the illustrated locations, avatar standees and glowing movement blocks still feel game-like.
+3. Open Family Prop Hunt.
+4. Pick a family character and set the total player count. Unused seats become computer players.
+5. Start with Papa's Shop.
+6. On computer: WASD moves, drag the game view to look around, Space jumps, left click shoots, E changes prop, C drops decoy, Q flashes, X locks/unlocks the prop, R reloads.
+7. On phone: use the left joystick, drag the main game view to rotate the third-person camera, and use the six action buttons.
+8. Try jumping onto low boxes and benches, then chaining onto higher climbable surfaces.
+9. Try the tractor, shelving route, pallets, barn pens and outside apron in Papa's Shop.
+10. Test the other maps for bunks/picnic table, trampoline/trailers and sea cans/goat platforms.
+
+DEPLOYING OVER THE EXISTING GITHUB PROJECT
+1. Back up your current repository folder.
+2. Keep the hidden .git folder.
+3. Replace the project files with everything inside this package.
+4. Commit and push to main.
+5. Cloudflare should deploy through the existing connection.
+6. Confirm the app reports v1.1.0-tryout.3.
+
+This is still a family/private testing build. Prop Hunt's new real-time 3D slice is intentionally local + computer-fill while its camera, traversal, props and maps are being tuned. The original multiplayer games remain on the existing backend.

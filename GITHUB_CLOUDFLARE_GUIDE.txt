@@ -1,0 +1,21 @@
+BLACK FAMILY GAME NIGHT v1.0.7 - GITHUB + CLOUDFLARE
+
+For your existing live app, use the full replacement steps in START_HERE.txt.
+
+GITHUB DESKTOP
+1. Show in Explorer for Black-s-Game-Night.
+2. Keep the hidden .git folder.
+3. Replace the other project files with everything inside this v1.0.7 package.
+4. Commit summary: Black Family Game Night v1.0.7 - family characters
+5. Push origin.
+
+CLOUDFLARE
+Your existing connection should deploy automatically. Do not reconnect it.
+If you ever need to confirm build settings:
+- Production branch: main
+- Build command: blank / None
+- Deploy command: npx wrangler deploy
+- Root directory: /
+
+VERIFY
+Open the live URL and confirm v1.0.7 appears in the top bar.
