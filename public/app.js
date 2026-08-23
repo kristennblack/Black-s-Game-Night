@@ -1,5 +1,6 @@
 const app=document.querySelector('#app');
-const APP_VERSION='1.9.0-family-sabotage-test';
+const APP_VERSION='2.0.0-prop-true3d-alpha';
+// v1.9 release marker retained for regression history: const APP_VERSION='1.9.0-family-sabotage-test';
 // Previous release marker kept for forward-regression history only: const APP_VERSION='1.8.0-prop-redesign-test';
 if('serviceWorker'in navigator)window.addEventListener('load',async()=>{try{const reg=await navigator.serviceWorker.register('/sw.js',{updateViaCache:'none'});reg.update().catch(()=>{})}catch{}});
 

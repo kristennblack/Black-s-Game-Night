@@ -1,12 +1,12 @@
 {
   "name": "black-family-game-night",
-  "version": "1.10.0-prop-visual-test",
+  "version": "2.0.0-prop-true3d-alpha",
   "private": true,
   "type": "module",
-  "description": "Black Family Game Night v1.10.0 test - deep Prop Hunt visual overhaul with realistic scene plates, dense illustrated prop sprites and identical decoy/disguise art; retains Family Sabotage and all prior fixes.",
+  "description": "Black Family Game Night v2.0.0 alpha - true WebGL Prop Hunt presentation layer with volumetric props, 3D family rigs, third-person camera collision, 3D prop-zapper, and exact 3D disguise/decoy models while retaining Family Sabotage and all prior games.",
   "scripts": {
     "test": "node --test",
-    "check": "node --check worker.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check public/app.js && node --check public/prop-hunt-3d.js && node --check public/family-sabotage.js && node --check public/birthday-climb.js && node --test",
+    "check": "node --check worker.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check public/app.js && node --check public/prop-hunt-webgl.js && node --check public/prop-hunt-3d.js && node --check public/family-sabotage.js && node --check public/birthday-climb.js && node --test",
     "deploy": "wrangler deploy"
   },
   "devDependencies": {

@@ -1,21 +1,48 @@
-BLACK FAMILY GAME NIGHT v1.10.0 - PROP HUNT VISUAL TEST
+BLACK FAMILY GAME NIGHT v2.0.0-prop-true3d-alpha
+FINAL AUTOMATED TEST REPORT
+===============================================
 
-FINAL AUTOMATED RESULT
-206 / 206 tests passing
-0 failures
+RESULT: PASS
+TOTAL TESTS: 209
+PASSED: 209
+FAILED: 0
 
-PROP HUNT v1.10 VISUAL REGRESSIONS ADDED
-- realistic room/farm scene plates are packaged and referenced by the live renderer
-- second-generation prop sprite library contains 70+ PNG sprites
-- former outline-only shop/farm/camp props map to image sprites
-- unmatched props fall back to an illustrated crate rather than procedural line art
-- scenery, disguises and decoys all use the same prop renderer
-- room dressing density increased
-- fresh service-worker cache includes the new art assets
+Static/runtime syntax checks passed for:
+- worker.mjs
+- gameEngine.mjs
+- extraGames.mjs
+- public/app.js
+- public/prop-hunt-webgl.js
+- public/prop-hunt-3d.js
+- public/family-sabotage.js
+- public/birthday-climb.js
 
-RETAINED
-- v1.8 upright camera and role-specific HIDER/HUNTER HUD
-- v1.9 Family Sabotage
-- Family Mystery upgrades
-- Cribbage phone fixes and global card sorting
-- original 18 synchronized multiplayer games
+New v2 true-3D Prop Hunt regression coverage includes:
+- Three.js WebGL layer is loaded before the Prop Hunt gameplay engine
+- volumetric prop factory is shared by scenery, disguises and decoys
+- articulated 3D human/dog family rigs
+- characters use actor yaw/turning instead of fixed billboard orientation
+- modeled 3D hunter prop-zapper
+- true 3D camera ray used for hunter shooting
+- third-person perspective camera with wall/camera collision
+- explicit YOU / disguise / locked / ammo status HUD
+- player-only map with own position/facing direction
+- textured wood/stone/grass/gravel/earth/metal/fabric/hay materials
+- real lights, fog, tone mapping and shadow maps
+- 3D farm animals
+- fresh v2 service-worker cache and WebGL asset registration
+
+All 201 prior v1.9 and historical tests remain passing.
+
+VISUAL RUNTIME VERIFICATION NOTE
+--------------------------------
+The automated suite verifies code structure, game integration, state wiring and
+syntax. The local execution environment could not fetch the external jsDelivr
+Three.js module, so the real WebGL scene could not be visually rendered in the
+local headless browser here.
+
+After deployment, Prop Hunt should display the message:
+  TRUE 3D WEBGL ACTIVE
+when the new renderer loads successfully. If that message is absent and the
+older flat renderer appears, the CDN import failed and Three.js should be
+vendored locally in the next pass.

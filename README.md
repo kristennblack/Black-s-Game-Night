@@ -1,27 +1,40 @@
-# Black Family Game Night v1.10.0-prop-visual-test
+# Black Family Game Night v2.0.0-prop-true3d-alpha
 
-This test build carries forward v1.9 Family Sabotage and all prior game fixes, with a deep visual overhaul of Family Prop Hunt.
+This alpha keeps the full v1.9 game collection, including Family Sabotage, and replaces the visual presentation layer of **Family Prop Hunt** with a real WebGL / Three.js 3D renderer.
 
-## Prop Hunt visual overhaul
+## Why v2 exists
 
-- Uses the approved cozy rustic room artwork as cinematic scene plates behind the live 3D collision world.
-- Adds a second illustrated prop library for workshop, farm, campsite and bathroom objects that previously fell back to simple Canvas outlines.
-- Every Prop Hunt prop now resolves to an image sprite; unmatched objects deliberately fall back to a detailed illustrated crate rather than line art.
-- Decoys and disguises use the exact same sprite renderer as normal scenery.
-- Room clutter density is increased so the expanded v1.7 maps read as furnished, believable spaces rather than empty geometry.
-- Detailed wood/gravel/grass/water-edge floor materials and log/metal/fence wall materials remain active.
-- Upright third-person camera, HIDER/HUNTER mode HUD, phone joystick, jump/sprint, aim/shoot, lock, flash and decoy controls remain active.
+The prior Prop Hunt engine tracked x/y/z coordinates but rendered the world through Canvas2D projection. That architecture produced the issues visible in phone testing: large flat wall slabs, paper-like characters, props that looked pasted onto the floor, limited character turning and poor local-player readability.
 
-## Included
+The v2 renderer keeps the proven Prop Hunt rules/input/state engine and changes the renderer instead of trying to keep polishing the old projection system.
 
-- Original 18 synchronized multiplayer games
-- Family Mystery
-- Family Prop Hunt v1.10 visual test
-- John's Birthday Seat
-- Family Sabotage v1.9 local/computer test
-- Full family avatar/style library and per-bot character/style/difficulty controls
+## Prop Hunt true-3D layer
 
-## Important test note
+- real `THREE.Scene`, `PerspectiveCamera` and `WebGLRenderer`
+- third-person camera collision against walls/buildings
+- volumetric walls, furniture, structures and environmental props
+- textured wood, stone, metal, earth, grass, gravel, fabric, plaid and hay materials
+- fog, room lights, ACES tone mapping and soft shadows
+- 3D family character rigs that rotate and animate with movement
+- dog-specific 3D rigs
+- modeled 3D hunter prop-zapper
+- 3D farm animals
+- one shared 3D prop factory for scenery, player disguises and decoys
+- explicit local-player, disguise, lock-state, ammo and room HUD
+- player-only location/facing minimap
 
-Prop Hunt, Family Mystery, Birthday Seat and Family Sabotage are still local/computer game engines in this branch; the original 18 games remain the synchronized online multiplayer set.
+The existing four expanded Prop Hunt worlds and their room/clutter definitions are reused, so this is a renderer replacement rather than a gameplay reset.
 
+## Family Sabotage
+
+Family Sabotage from v1.9 remains included with its secret Family Crew / Fixer / Saboteur roles, tasks, fake tasks, service vents, sabotages, emergency meetings, chat, voting, ghosts and bots.
+
+## Test status
+
+`npm run check` passes **209 / 209 tests**.
+
+## Alpha runtime note
+
+The Three.js module is currently imported from jsDelivr at runtime. The old renderer remains as a fallback. Because this build environment cannot fetch the CDN from its local browser sandbox, the real WebGL scene still needs a post-deploy phone/browser visual check.
+
+When the true 3D renderer is active, the Prop Hunt status strip reads **TRUE 3D WEBGL ACTIVE**. If it does not, the CDN import did not load and the next engineering step is to vendor Three.js locally in the project.
