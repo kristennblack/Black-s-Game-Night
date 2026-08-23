@@ -44,13 +44,65 @@ button,input,select{font:inherit}.hidden{display:none!important}
 .turn-sidebar{display:flex;flex-direction:column;gap:10px}.stat-card{padding:14px;border-radius:18px;border:1px solid var(--line);background:#17130f}.dice{width:58px;height:58px;border-radius:16px;background:#f0e2cd;color:#261b12;display:grid;place-items:center;font-size:28px;font-weight:950;box-shadow:inset 0 -5px 0 #c4b49b}.card-row{display:flex;gap:6px;overflow:auto;padding:5px 0}.clue-card{min-width:100px;padding:10px;border-radius:13px;border:1px solid #514132;background:#292017}.clue-card small{display:block;color:#baaa99;margin-bottom:3px}.note-grid{display:grid;grid-template-columns:1fr 74px;gap:5px;font-size:12px}.note-grid button{border:1px solid var(--line);border-radius:8px;background:#17130f;color:#d7c8b8;padding:4px}.privacy-screen{text-align:center;padding:30px}.privacy-screen .avatar{width:82px;height:82px;font-size:22px}
 .modal-backdrop{position:fixed;inset:0;background:#000a;z-index:100;display:grid;place-items:center;padding:16px}.modal{width:min(560px,100%);max-height:85vh;overflow:auto;border:1px solid #594630;background:#1d1813;border-radius:24px;padding:20px;box-shadow:0 30px 80px #000}.modal h2{margin-top:0}.choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.choice-btn{padding:11px;border-radius:12px;border:1px solid var(--line);background:#15120f;color:var(--text);text-align:left}.choice-btn.selected{border-color:var(--gold);background:#372b1d}.privacy-screen{text-align:center;padding:30px}.privacy-screen .avatar{width:82px;height:82px;font-size:22px}
 .prop-wrap{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:14px}.prop-stage{position:relative;min-height:700px;border-radius:24px;overflow:hidden;border:1px solid #4f4135;background:#151a15;touch-action:none}.prop-canvas{display:block;width:100%;height:700px;background:#1a2019}.hud-top{position:absolute;left:12px;right:12px;top:12px;display:flex;justify-content:space-between;gap:8px;pointer-events:none}.hud-chip{background:#0c0c0bcc;border:1px solid #ffffff20;border-radius:12px;padding:9px 11px;font-weight:850;backdrop-filter:blur(8px)}.health{color:#ef7670}.prop-controls{position:absolute;left:12px;right:12px;bottom:14px;display:grid;grid-template-columns:1fr auto;align-items:end;gap:12px}.joystick{width:120px;height:120px;border-radius:50%;border:2px solid #ffffff25;background:#0a0a0a55;position:relative;touch-action:none}.stick{position:absolute;width:48px;height:48px;border-radius:50%;background:#ffffff35;left:36px;top:36px}.action-pad{display:grid;grid-template-columns:repeat(3,64px);gap:8px;align-items:end;justify-content:end}.action{height:58px;border-radius:17px;border:1px solid #ffffff2c;background:#151515cc;color:#fff;font-size:10px;font-weight:900;letter-spacing:.04em;box-shadow:0 6px 20px #0005}.action.primary{background:#8a4b3e}.action.flash{background:#8b772c}.action.prop{background:#486b4f}.crosshair{position:absolute;left:50%;top:50%;width:18px;height:18px;transform:translate(-50%,-50%);pointer-events:none}.crosshair:before,.crosshair:after{content:"";position:absolute;background:#fff9}.crosshair:before{width:18px;height:2px;top:8px}.crosshair:after{height:18px;width:2px;left:8px}.flash-overlay{position:absolute;inset:0;background:white;opacity:0;pointer-events:none;transition:opacity .15s}.flash-overlay.on{opacity:.94}.prop-side .map-list{display:grid;gap:8px}.map-option{padding:12px;border-radius:14px;border:1px solid var(--line);background:#15120f;color:var(--text);text-align:left}.map-option.selected{border-color:var(--gold);background:#33291d}.round-track{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}.round-dot{height:9px;border-radius:8px;background:#3a3129}.round-dot.done{background:var(--green)}.round-dot.current{background:var(--gold)}.kill-feed{height:120px;overflow:auto;font-size:12px;color:#cabeb0}.kill-feed div{padding:4px 0;border-bottom:1px solid #ffffff0c}.status-large{text-align:center;padding:18px}.status-large strong{font-size:34px;display:block}.taunt-bubble{position:absolute;left:50%;top:20%;transform:translateX(-50%);background:white;color:#1b1511;padding:10px 14px;border-radius:16px;font-weight:900;box-shadow:0 10px 30px #0008;animation:taunt 2.4s forwards;z-index:15}@keyframes taunt{0%{opacity:0;transform:translate(-50%,10px) scale(.9)}15%,75%{opacity:1;transform:translate(-50%,0) scale(1)}100%{opacity:0;transform:translate(-50%,-10px) scale(.95)}}
-.m-bot-head{display:flex;justify-content:space-between;gap:8px;align-items:end;margin:14px 0 7px}.m-bot-head span{font-size:10px;color:var(--muted)}.m-bot-rows{display:grid;gap:7px}.m-bot-row{display:grid;grid-template-columns:95px minmax(0,1fr) 105px;gap:7px;align-items:center;padding:7px;border:1px solid #33291f;border-radius:12px;background:#120f0c}.m-bot-row>span{font-size:11px;font-weight:850}.m-bot-row .select{min-height:40px;padding:7px}
 .toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);z-index:200;background:#f0e2cd;color:#21180f;padding:11px 15px;border-radius:14px;font-weight:850;opacity:0;pointer-events:none;transition:.2s;box-shadow:0 12px 35px #0009}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 @media(max-width:900px){.legacy-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.mystery-layout,.prop-wrap{grid-template-columns:1fr}.turn-sidebar,.prop-side{order:-1}.prop-side .map-list{grid-template-columns:repeat(2,1fr)}.prop-stage{min-height:610px}.prop-canvas{height:610px}}
-@media(max-width:640px){.m-bot-row{grid-template-columns:78px 1fr}.m-bot-row .select:last-child{grid-column:2}.hero-card{grid-template-columns:1fr;padding:21px}.fireplace-art{height:100px}.game-grid{grid-template-columns:1fr}.setup-grid{grid-template-columns:1fr}.character-grid{grid-template-columns:repeat(3,1fr)}.legacy-grid{grid-template-columns:1fr 1fr}.screen{padding-left:10px;padding-right:10px}.board-shell{min-height:700px;border-width:4px}.room-zone{width:108px;height:78px}.room-name{font-size:8px}.scene-icon{font-size:29px}.scene-small{font-size:16px}.walk-tile{width:32px;height:32px}.board-figure{width:40px;height:58px}.figure-card{width:32px;height:44px}.figure-base{width:37px}.board-title-plaque{width:145px;padding:9px}.board-title-plaque strong{font-size:13px}.action-pad{grid-template-columns:repeat(3,58px)}.action{height:54px}.joystick{width:106px;height:106px}.stick{left:29px;top:29px}.prop-controls{gap:7px}.prop-side .map-list{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.hero-card{grid-template-columns:1fr;padding:21px}.fireplace-art{height:100px}.game-grid{grid-template-columns:1fr}.setup-grid{grid-template-columns:1fr}.character-grid{grid-template-columns:repeat(3,1fr)}.legacy-grid{grid-template-columns:1fr 1fr}.screen{padding-left:10px;padding-right:10px}.board-shell{min-height:700px;border-width:4px}.room-zone{width:108px;height:78px}.room-name{font-size:8px}.scene-icon{font-size:29px}.scene-small{font-size:16px}.walk-tile{width:32px;height:32px}.board-figure{width:40px;height:58px}.figure-card{width:32px;height:44px}.figure-base{width:37px}.board-title-plaque{width:145px;padding:9px}.board-title-plaque strong{font-size:13px}.action-pad{grid-template-columns:repeat(3,58px)}.action{height:54px}.joystick{width:106px;height:106px}.stick{left:29px;top:29px}.prop-controls{gap:7px}.prop-side .map-list{grid-template-columns:1fr 1fr}}
 
 </style>
   <link rel="stylesheet" href="/prop-hunt-3d.css" />
+
+<style>
+.mystery-bot-head{display:flex;justify-content:space-between;gap:8px;margin:14px 0 7px}.mystery-bot-head span{font-size:10px;color:var(--muted)}.mystery-bot-rows{display:grid;gap:6px;max-height:270px;overflow:auto}.mystery-bot-row{display:grid;grid-template-columns:90px 1fr 100px;gap:6px;align-items:center}.mystery-bot-row>span{font-size:11px;font-weight:800}.mystery-bot-row .select{min-height:38px;padding:6px}@media(max-width:560px){.mystery-bot-row{grid-template-columns:80px 1fr}.mystery-bot-row .select:last-child{grid-column:2}}
+</style>
+
+<style id="mystery-v130-board">
+/* v1.3 Mystery board: zoomable top-down diorama */
+.board-shell{height:760px;min-height:0;border:8px solid #5a3b25;background:#120f0c;overflow:hidden;isolation:isolate}
+.mystery-board-viewport{position:absolute;inset:0;overflow:hidden;touch-action:none;cursor:grab;background:radial-gradient(circle at 50% 47%,#5c432e 0,#34271d 48%,#1b1511 100%)}
+.mystery-board-viewport:active{cursor:grabbing}
+.mystery-board{inset:auto;width:1200px;height:900px;transform-origin:0 0;isolation:isolate;background:linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),radial-gradient(circle at 50% 50%,#5f4732,#3d2d22 61%,#2a2019);background-size:48px 48px,48px 48px,auto;box-shadow:inset 0 0 100px #000a}
+.mystery-board:after{content:"";position:absolute;inset:2.5%;border:2px solid #a77b4e66;border-radius:28px;pointer-events:none}
+.board-camera-tools{position:absolute;z-index:35;right:12px;top:12px;display:flex;gap:5px;padding:5px;border:1px solid #ffffff1f;border-radius:15px;background:#16110edd;backdrop-filter:blur(8px)}
+.camera-btn{min-width:43px;height:43px;border:1px solid #5d4937;border-radius:11px;background:#2a211a;color:#fff1d6;font-weight:950;font-size:22px}.camera-btn.reset{font-size:10px;letter-spacing:.08em}
+.board-hint{position:absolute;z-index:34;left:12px;top:12px;max-width:280px;padding:9px 11px;border-radius:12px;background:#17120dcc;border:1px solid #ffffff1c;color:#e5d5bd;font-size:10px;font-weight:750;pointer-events:none}
+.board-title-plaque{left:50%;top:50%;width:250px;min-height:190px;padding:30px 20px 22px;border:5px double #c79a5a;border-radius:50%;background:radial-gradient(circle,#294532,#16281e 69%,#0f1c16);box-shadow:0 14px 35px #000b,inset 0 0 35px #0009,0 0 0 14px #271c1599;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.board-title-plaque i{font-style:normal;font-size:10px;letter-spacing:.22em;color:#d7bc82}.board-title-plaque strong{font-size:22px}.board-title-plaque span{font-size:11px}.board-title-plaque em{font-style:normal;margin-top:13px;font-size:9px;color:#a99069;letter-spacing:.08em}
+.path-link{height:34px;border-radius:8px;background:repeating-linear-gradient(90deg,#ad9169 0 31px,#5a402a 31px 34px);border:2px solid #64462c;box-shadow:0 5px 0 #3b291c,0 8px 15px #0008,inset 0 3px 4px #ead4ad55;opacity:1}
+.path-link:after{display:none}
+.walk-tile{width:44px;height:44px;border-radius:6px;border:2px solid #8a6b48;background:linear-gradient(145deg,#c8ae86,#9d7d57);box-shadow:0 5px 0 #4b3422,0 8px 13px #0007,inset 0 1px 2px #fff6}
+.walk-tile:before{width:5px;height:5px;background:#65482e;opacity:.55}
+.walk-tile.reachable{background:linear-gradient(145deg,#fff2a7,#e1b935);border-color:#fff4b0;box-shadow:0 0 0 5px #ffe36c48,0 0 30px #ffd445,0 5px 0 #74531d,0 10px 18px #0009}
+.room-zone{width:210px;height:145px;border-radius:10px;border:5px solid #9a784f;background:#493523;box-shadow:8px 10px 0 #281b12,12px 16px 24px #0009,inset 0 0 0 3px #dbc39a55;overflow:visible;perspective:600px}
+.room-zone:before{content:"";position:absolute;left:-8px;top:-8px;right:-8px;height:13px;background:linear-gradient(#c5aa81,#7b5c3c);border-radius:9px 9px 2px 2px;box-shadow:0 5px 5px #0007;z-index:8;pointer-events:none}
+.room-zone.reachable{transform:translate(-50%,-50%) scale(1.045);box-shadow:0 0 0 7px #ffe06c4a,0 0 40px #ffca43,8px 10px 0 #5e431e,12px 16px 24px #0009}
+.room-scene{border-radius:4px;background-color:#85694b;background-image:linear-gradient(90deg,#ffffff0d 1px,transparent 1px),linear-gradient(#00000010 1px,transparent 1px);background-size:23px 23px;box-shadow:inset 0 0 38px #0006}
+.room-wall{position:absolute;z-index:7;background:linear-gradient(#e0c79e,#8a6a46);box-shadow:0 4px 5px #0008}.room-wall.north{left:0;right:0;top:0;height:7px}.room-wall.west{left:0;top:0;bottom:0;width:7px}
+.room-name{left:10px;right:10px;bottom:7px;padding:5px 7px;background:#18110de6;border-color:#e4c99b66;font-size:11px;letter-spacing:.05em}
+.room-prop{position:absolute;z-index:3;border-radius:5px;background:linear-gradient(145deg,#b99b70,#6c5136);border:2px solid #4c3624;box-shadow:4px 5px 0 #302117,6px 8px 10px #0007;display:grid;place-items:center;overflow:hidden;color:#2a1b11;text-align:center}.room-prop b{position:relative;z-index:2;font-size:8px;line-height:1.05;text-shadow:0 1px #fff7}.room-prop i{position:absolute;inset:5px;border:1px solid #ffffff35;border-radius:3px}
+.prop-bed{background:linear-gradient(#e5d8c6 0 70%,#8c6f52 71%)}.prop-sofa,.prop-chair,.prop-yellowchair{background:#79523e}.prop-yellowchair{background:#c8a43e}.prop-counter,.prop-island,.prop-vanity{background:#d6c7aa}.prop-bunk{background:repeating-linear-gradient(90deg,#8a6645 0 7px,#cfb691 7px 20px)}.prop-fire{border-radius:50%;background:radial-gradient(circle,#fff0a7 0 15%,#ff9728 16% 39%,#8f3718 40% 62%,#423124 63%);animation:fireBob .65s ease-in-out infinite alternate;box-shadow:0 0 18px #ff7a24aa}.prop-table,.prop-bench,.prop-deck{background:#8d623e}.prop-shelf{background:repeating-linear-gradient(0deg,#5c442f 0 7px,#b08a5e 7px 11px)}.prop-toolbox{background:#a12f28}.prop-machine,.prop-tractor{background:#765b3b}.prop-tractor:after{content:"";position:absolute;left:5%;right:5%;bottom:-5px;height:13px;background:radial-gradient(circle at 10% 50%,#211b17 0 7px,transparent 8px),radial-gradient(circle at 90% 50%,#211b17 0 7px,transparent 8px)}.prop-bike{background:linear-gradient(90deg,transparent 0 15%,#6b5b4d 16% 84%,transparent 85%)}.prop-pool{border-radius:50%;background:radial-gradient(circle,#80d2e1 0 62%,#d9ecf1 63% 72%,#7a6046 73%)}.prop-trampoline{border-radius:50%;background:radial-gradient(circle,#27323a 0 62%,#15191c 63% 72%,#898989 73%)}.prop-tv{background:#1f272e}.prop-fridge{background:#e4e2dd}.prop-tub{border-radius:12px;background:radial-gradient(ellipse,#a9dfe7 0 52%,#f2f1eb 54%)}.prop-toilet{border-radius:45% 45% 30% 30%;background:#efeee9}.prop-mat{background:#6d93a3}.prop-cooler{background:#b53d36}.prop-mud{border-radius:44%;background:radial-gradient(ellipse at 30% 30%,#6b4b2c,#3c281a)}.prop-shelter{background:#7c5938}.prop-platform{background:#b08a55}.prop-goat{background:#eee7d8;border-radius:45% 55% 42% 58%}.prop-goat:after{content:"🐐";font-style:normal;font-size:19px;position:absolute;inset:0;display:grid;place-items:center}
+.room-camper{background-color:#765c40}.room-firepit{background-color:#41623f}.room-shop{background-color:#615346}.room-backyard{background-color:#527b48}.room-living{background-color:#75533f}.room-kitchen{background-color:#c2b18d}.room-papashop{background-color:#594b3d}.room-bathroom{background-color:#aad0d6}.room-papashack{background-color:#755d3f}.room-goatpen{background-color:#8a744d}
+.secret-marker{position:absolute;right:8px;bottom:34px;z-index:6;padding:4px 6px;border-radius:7px;background:#243b2cdd;border:1px solid #d5b86d;color:#f3d990;font-size:7px;font-weight:950;letter-spacing:.06em}
+.board-figure{width:64px;height:94px;transform:translate(-50%,-80%);filter:drop-shadow(0 8px 5px #0008)}.board-figure.walking{animation:figureWalk .19s ease-in-out infinite alternate}.board-figure.shortcutting{animation:secretPop .35s ease-in forwards}
+.figure-character{position:absolute;left:7px;top:0;width:50px;height:82px;display:flex;align-items:end;justify-content:center}.figure-character img{max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 2px 1px #0009)}.figure-label{bottom:-2px;z-index:4;max-width:58px;font-size:7px}.figure-shadow{position:absolute;left:8px;bottom:3px;width:49px;height:14px;border-radius:50%;background:#0007;filter:blur(2px);z-index:-1}.board-figure.current .figure-character img{filter:drop-shadow(0 0 5px #ffd66a) drop-shadow(0 3px 2px #000b)}
+@keyframes secretPop{50%{transform:translate(-50%,-95%) scale(.68);opacity:.35}100%{transform:translate(-50%,-80%) scale(1);opacity:1}}
+@media(max-width:900px){.board-shell{height:640px}.board-hint{display:none}.board-camera-tools{top:8px;right:8px}.camera-btn{min-width:40px;height:40px}}
+@media(max-width:640px){.board-shell{height:590px;border-width:4px}.room-zone{width:210px;height:145px}.walk-tile{width:44px;height:44px}.board-figure{width:64px;height:94px}.board-title-plaque{width:250px;padding:30px 20px}.board-title-plaque strong{font-size:22px}}
+</style>
+
+
+<style id="mystery-v160-polish">
+.mystery-mobile-actions{display:none}
+.mystery-notebook{display:grid;gap:10px}.mystery-note-group{border:1px solid #4b3c2f;border-radius:14px;overflow:hidden;background:#17120f}.mystery-note-group>strong{display:block;padding:8px 10px;background:#2b2119;color:#f0d49a;font-size:11px;letter-spacing:.08em;text-transform:uppercase}.mystery-note-items{display:grid;grid-template-columns:minmax(0,1fr) 44px}.mystery-note-items span,.mystery-note-items button{min-height:34px;border:0;border-top:1px solid #31271f}.mystery-note-items span{padding:8px 9px;font-size:11px;color:#ddd0bf;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mystery-note-items button{background:#211a14;color:#f6e7c5;font-weight:950;cursor:pointer}.mystery-note-items button.seen{background:#294c36;color:#dff6e7}.mystery-note-items button.maybe{background:#594926;color:#ffe6a5}
+.mystery-history{display:grid;gap:7px;max-height:245px;overflow:auto}.mystery-history-entry{padding:8px 9px;border-radius:11px;background:#17130f;border:1px solid #342a21;font-size:10px;line-height:1.4;color:#cdbfae}.mystery-history-entry b{color:#f4d78f}.mystery-history-entry .disproved{color:#a9d3b1}.mystery-history-entry .open{color:#efb8aa}
+.move-cost{position:absolute;right:-7px;top:-8px;min-width:21px;height:21px;padding:0 5px;border-radius:999px;display:grid;place-items:center;background:#f3cf72;color:#2c1e0c;border:2px solid #fff2c5;font-size:9px;font-weight:1000;box-shadow:0 3px 10px #0009;z-index:9;pointer-events:none}.room-zone .move-cost{right:5px;top:5px}.walk-tile.current-node{box-shadow:0 0 0 3px #7fd7ff inset,0 0 18px #67c9ff99}.room-zone.current-node{filter:drop-shadow(0 0 9px #73d3ff)}.room-zone.current-node .room-scene{box-shadow:0 0 0 4px #78d7ff inset,0 0 22px #62c7ff77}
+.mystery-dice.rolling{animation:mysteryDiceRoll .12s linear infinite}@keyframes mysteryDiceRoll{0%{transform:rotate(-8deg) scale(.96)}50%{transform:rotate(8deg) scale(1.06)}100%{transform:rotate(-8deg) scale(.96)}}
+.clue-reveal-card{margin:14px auto;max-width:300px;padding:22px;border-radius:20px;background:linear-gradient(145deg,#efe2c5,#cba66f);color:#2d1d10;border:4px double #6b4726;box-shadow:0 16px 35px #0008;text-align:center}.clue-reveal-card small{display:block;text-transform:uppercase;letter-spacing:.18em;font-weight:900;color:#7e5831;margin-bottom:8px}.clue-reveal-card strong{font-size:24px;line-height:1.08;display:block}
+.case-solution-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:16px 0}.case-solution-card{padding:14px 10px;border-radius:15px;background:#efe0bf;color:#28190e;border:2px solid #8a6035;text-align:center}.case-solution-card small{display:block;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:#79512e;margin-bottom:6px}.case-solution-card b{font-size:15px}
+.board-hint strong{color:#f1d28a}.camera-btn.me{width:auto;padding:0 9px;font-size:9px}
+@media(max-width:780px){.mystery-layout{display:block}.turn-sidebar{margin-top:10px}.mystery-mobile-actions{display:block;position:sticky;bottom:calc(8px + env(safe-area-inset-bottom));z-index:60;margin:8px 0;padding:8px;border-radius:18px;background:#17120ff2;border:1px solid #665035;box-shadow:0 12px 35px #000c;backdrop-filter:blur(10px)}.mystery-mobile-actions .button-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.mystery-mobile-actions .btn{min-height:48px;font-size:12px;padding:9px}.mystery-mobile-actions .subtext{grid-column:1/-1;text-align:center;padding:4px}.board-shell{min-height:590px}.mystery-history{max-height:180px}.case-solution-grid{grid-template-columns:1fr}}
+@media(max-width:430px){.board-shell{min-height:520px}.board-camera-tools{gap:4px}.camera-btn{width:36px;height:36px}.board-hint{font-size:8px}.mystery-note-items span{font-size:10px}}
+</style>
+
 </head>
 <body>
   <div id="app">
@@ -58,7 +110,7 @@ button,input,select{font:inherit}.hidden{display:none!important}
       <button id="homeBtn" class="ghost-btn hidden" aria-label="Home">⌂</button>
       <div class="brand-wrap">
         <div class="brand-kicker">BLACK FAMILY</div>
-        <div class="brand-title">GAME NIGHT · NEW GAMES</div>
+        <div class="brand-title">GAME NIGHT · TRYOUT</div>
       </div>
       <div style="display:flex;gap:8px"><button id="shareGameBtn" class="ghost-btn" aria-label="Share this game">↗</button><button id="soundBtn" class="ghost-btn" aria-label="Sound">♪</button></div>
     </header>
@@ -66,7 +118,7 @@ button,input,select{font:inherit}.hidden{display:none!important}
     <main id="screen-home" class="screen active">
       <section class="hero-card">
         <div>
-          <div class="eyebrow">v1.2.5 TEST GAMES</div>
+          <div class="eyebrow">vNEXT PLAYABLE PREVIEW</div>
           <h1>Family game night, upgraded.</h1>
           <p>This launch build includes Family Mystery, 3D Family Prop Hunt, and John’s Birthday Seat alongside the main Black Family Lodge collection.</p>
         </div>
@@ -86,7 +138,7 @@ button,input,select{font:inherit}.hidden{display:none!important}
           </button>
           <button class="game-card prop-card" data-game="prophunt">
             <div class="game-art">🪣</div>
-            <div class="game-copy"><h3>Family Prop Hunt</h3><p>Hide as believable props, drop decoys, flash hunters and survive six rotating rounds across four family maps.</p></div>
+            <div class="game-copy"><h3>Family Prop Hunt</h3><p>Hide as believable props, drop decoys, flash hunters and survive 6 rounds: 30s hide, 3m hunt, 3 prop changes, 10 decoys, 1 flash per disguise, and 3 health. Maps: Papa's Shop · Camper / Campsite · Backyard + Fire Pit · Farmyard / Animal Pens.</p></div>
             <span class="play-chip">PLAY</span>
           </button>
           <button class="game-card birthday-card" data-game="birthday">
@@ -135,8 +187,11 @@ window.FAMILY = {
   mysteryWeapons:["John's Wrench","Holly's Suspicious Squishy","Lizzie's Croc","Logan's Fishing Rod","Vanessa's Gray GMC","James's Coffee Mug","Dorothy's Crochet Hooks","Kristen's Beer Cooler","Kelsi's Rock","Molly's Laser Pointer","Gunner's Giant Dog Bone"],
   taunts:{james:'*coffee sip*',dorothy:"I'm going for a smoke.",john:'Seriously?',kristen:'Uhhh…',holly:'Please stop fighting.',vanessa:'*massive eye roll*',elizabeth:'*dramatic gasp*',logan:'Bruh.',kelsi:'*princess dog snort*',molly:'*excited bark*',gunner:'WOOF!',papa:'*beer can cracks open*',nana:"That's a sin!"}
 };
+window.MYSTERY_THEME='default';
 window.avatarHTML=function(person,extra=''){
-  const src=person.id==='john'?'/avatars/styles/john-look-02.jpg':`/avatars/styles/${person.id}-cute.jpg`;
+  const theme=window.MYSTERY_THEME||'default';
+  const themed=['country','rustic','rich','western','anime'].includes(theme);
+  const src=themed?`/avatars/themes/${theme}/${person.id}.jpg`:(person.id==='john'?'/avatars/styles/john-look-02.jpg':`/avatars/styles/${person.id}-cute.jpg`);
   return `<div class="avatar ${extra}"><img src="${src}" alt="" onerror="this.remove();this.parentElement.textContent='${person.short}'"></div>`;
 };
 
@@ -179,39 +234,59 @@ window.avatarHTML=function(person,extra=''){
   const L=()=>window.FAMILY.mysteryLocations;
   const W=()=>window.FAMILY.mysteryWeapons;
   const roomIds=['camper','firepit','shop','backyard','living','kitchen','papashop','bathroom','papashack','goatpen'];
+  // Original Black Family Mystery board: ten family locations arranged around a central investigation hall.
+  // Coordinates are percentages of a 1200 x 900 zoomable board surface.
   const nodes={
-    camper:{x:9,y:10,room:0}, firepit:{x:50,y:8,room:1}, shop:{x:91,y:10,room:2}, backyard:{x:92,y:48,room:3}, living:{x:89,y:90,room:4}, kitchen:{x:55,y:91,room:5}, papashop:{x:13,y:90,room:6}, bathroom:{x:8,y:53,room:7}, papashack:{x:32,y:49,room:8}, goatpen:{x:69,y:49,room:9},
-    h0:{x:22,y:13},h1:{x:35,y:13},h2:{x:64,y:13},h3:{x:78,y:13},
-    h4:{x:13,y:26},h5:{x:13,y:38},h6:{x:13,y:67},h7:{x:13,y:78},
-    h8:{x:87,y:25},h9:{x:87,y:36},h10:{x:87,y:65},h11:{x:87,y:78},
-    h12:{x:25,y:86},h13:{x:39,y:86},h14:{x:68,y:86},h15:{x:78,y:86},
-    h16:{x:24,y:48},h17:{x:43,y:48},h18:{x:57,y:48},h19:{x:77,y:48},
-    h20:{x:35,y:27},h21:{x:35,y:67},h22:{x:65,y:27},h23:{x:65,y:67},
-    h24:{x:50,y:29},h25:{x:50,y:67},h26:{x:50,y:79}
+    camper:{x:10,y:10,room:0}, firepit:{x:50,y:10,room:1}, shop:{x:90,y:10,room:2},
+    papashack:{x:9,y:36,room:8}, backyard:{x:91,y:36,room:3},
+    bathroom:{x:9,y:64,room:7}, goatpen:{x:91,y:64,room:9},
+    papashop:{x:11,y:90,room:6}, kitchen:{x:50,y:90,room:5}, living:{x:89,y:90,room:4},
+
+    t1:{x:23,y:22},t2:{x:34,y:22},t3:{x:45,y:22},t4:{x:56,y:22},t5:{x:67,y:22},t6:{x:78,y:22},
+    l1:{x:22,y:32},l2:{x:22,y:42},l3:{x:22,y:58},l4:{x:22,y:68},
+    r1:{x:78,y:32},r2:{x:78,y:42},r3:{x:78,y:58},r4:{x:78,y:68},
+    b1:{x:23,y:78},b2:{x:34,y:78},b3:{x:45,y:78},b4:{x:56,y:78},b5:{x:67,y:78},b6:{x:78,y:78},
+    u1:{x:34,y:34},u2:{x:45,y:34},u3:{x:56,y:34},u4:{x:67,y:34},
+    c1:{x:34,y:43},c2:{x:34,y:50},c3:{x:34,y:57},
+    c4:{x:67,y:43},c5:{x:67,y:50},c6:{x:67,y:57},
+    d1:{x:34,y:66},d2:{x:45,y:66},d3:{x:56,y:66},d4:{x:67,y:66},
+    x1:{x:42,y:43},x2:{x:58,y:43},x3:{x:42,y:57},x4:{x:58,y:57}
   };
   const edges=[
-    ['camper','h0'],['camper','h4'],['h0','h1'],['h1','h20'],['h20','h24'],['h24','h22'],['h22','h2'],['h2','h3'],['h3','shop'],['shop','h8'],
-    ['h4','h5'],['h5','bathroom'],['bathroom','h6'],['h6','h7'],['h7','papashop'],['papashop','h12'],['h12','h13'],['h13','h26'],['h26','h14'],['h14','h15'],['h15','living'],['living','h11'],['h11','h10'],['h10','backyard'],['backyard','h19'],['h19','h9'],['h9','h8'],
-    ['h5','h16'],['h16','papashack'],['papashack','h17'],['h17','h18'],['h18','goatpen'],['goatpen','h19'],
-    ['h20','h17'],['h21','h17'],['h21','h13'],['h21','h25'],['h22','h18'],['h23','h18'],['h23','h14'],['h23','h25'],['h25','h26'],['h25','h18'],['h24','h17'],['firepit','h24'],['kitchen','h25']
+    ['camper','t1'],['camper','l1'],['t1','t2'],['t2','t3'],['t3','t4'],['t4','t5'],['t5','t6'],['t6','shop'],['shop','r1'],
+    ['l1','l2'],['l2','l3'],['l3','l4'],['l1','papashack'],['l2','papashack'],['l3','bathroom'],['l4','bathroom'],
+    ['r1','r2'],['r2','r3'],['r3','r4'],['r1','backyard'],['r2','backyard'],['r3','goatpen'],['r4','goatpen'],
+    ['papashop','b1'],['papashop','l4'],['b1','b2'],['b2','b3'],['b3','b4'],['b4','b5'],['b5','b6'],['b6','living'],['living','r4'],
+    ['kitchen','b3'],['kitchen','b4'],['firepit','t3'],['firepit','t4'],
+    ['t2','u1'],['t3','u2'],['t4','u3'],['t5','u4'],['u1','u2'],['u2','u3'],['u3','u4'],
+    ['u1','c1'],['c1','c2'],['c2','c3'],['c3','d1'],['u4','c4'],['c4','c5'],['c5','c6'],['c6','d4'],
+    ['d1','d2'],['d2','d3'],['d3','d4'],['d1','b2'],['d2','b3'],['d3','b4'],['d4','b5'],
+    ['c1','x1'],['x1','u2'],['c4','x2'],['x2','u3'],['c3','x3'],['x3','d2'],['c6','x4'],['x4','d3']
   ];
+  // Two playful family shortcuts. They are optional and consume movement for the turn.
+  const secretPassages={camper:'living',living:'camper',shop:'papashop',papashop:'shop'};
   const roomScenes={
-    camper:{cls:'camper',icon:'&#127957;',one:'&#127867;',two:'&#128293;',three:'&#129681;'},
-    firepit:{cls:'firepit',icon:'&#128293;',one:'&#129681;',two:'&#129681;',three:'&#127866;'},
-    shop:{cls:'shop',icon:'&#128295;',one:'&#129520;',two:'&#128296;',three:'&#129529;'},
-    backyard:{cls:'backyard',icon:'&#127795;',one:'&#127946;',two:'&#129681;',three:'&#128021;'},
-    living:{cls:'living',icon:'&#128715;',one:'&#128250;',two:'&#9749;',three:'&#128021;'},
-    kitchen:{cls:'kitchen',icon:'&#127859;',one:'&#9749;',two:'&#129474;',three:'&#129379;'},
-    papashop:{cls:'papashop',icon:'&#128668;',one:'&#128295;',two:'&#128293;',three:'&#129681;'},
-    bathroom:{cls:'bathroom',icon:'&#128705;',one:'&#129767;',two:'&#129532;',three:'&#128703;'},
-    papashack:{cls:'papashack',icon:'&#127969;',one:'&#127866;',two:'&#128736;',three:'&#129681;'},
-    goatpen:{cls:'goatpen',icon:'&#128016;',one:'&#128055;',two:'&#127806;',three:'&#129387;'}
+    camper:{cls:'camper',tag:'CAMPER',props:[['bed','Bed',7,7,44,24],['sofa','Couch',55,12,35,18],['counter','Kitchen',56,42,35,16],['bunk','Bunks',8,44,32,29]]},
+    firepit:{cls:'firepit',tag:'FIRE PIT',props:[['fire','',38,33,24,24],['chair','',12,23,20,24],['chair','',68,22,19,24],['table','Picnic',18,65,64,15]]},
+    shop:{cls:'shop',tag:'SHOP',props:[['bench','Workbench',5,8,65,16],['shelf','Shelves',76,8,17,56],['toolbox','',12,45,20,18],['machine','Machine',42,42,29,24]]},
+    backyard:{cls:'backyard',tag:'BACKYARD',props:[['pool','Pool',56,11,37,37],['trampoline','',7,12,34,34],['deck','Deck',8,58,52,26],['chair','',67,62,18,20]]},
+    living:{cls:'living',tag:'LIVING ROOM',props:[['sofa','Sofa',8,16,57,20],['tv','TV',77,10,15,34],['table','Coffee',30,51,35,16],['chair','',7,52,19,24]]},
+    kitchen:{cls:'kitchen',tag:'KITCHEN',props:[['counter','Counter',5,6,86,15],['island','Island',29,36,44,18],['fridge','Fridge',76,29,17,29],['table','Table',16,65,34,19]]},
+    papashop:{cls:'papashop',tag:"PAPA'S SHOP",props:[['tractor','Tractor',8,12,42,29],['bench','Workbench',58,8,35,15],['yellowchair','Papa chair',64,48,22,28],['fire','',47,55,16,20],['bike','Bike',10,60,31,16]]},
+    bathroom:{cls:'bathroom',tag:'BATHROOM',props:[['tub','Tub',7,8,49,20],['vanity','Vanity',63,7,29,19],['toilet','',63,43,22,31],['mat','',13,48,35,27]]},
+    papashack:{cls:'papashack',tag:"PAPA'S SHACK",props:[['yellowchair','Chair',8,12,27,31],['table','Table',49,15,36,20],['shelf','Shelf',78,45,14,37],['cooler','',31,56,22,19]]},
+    goatpen:{cls:'goatpen',tag:'GOAT PEN',props:[['mud','Mud',7,48,42,29],['shelter','Shelter',57,8,36,26],['platform','Goat climb',53,47,40,18],['goat','',16,13,19,24]]}
   };
   const pawnColors=['#d8a64b','#6f9fc4','#b65e55','#6fa46c','#9a72b6','#d88750','#5f8b8e','#c584a2','#8b744d','#7aa7c5','#9b9b72'];
-  function figureSrc(person){return person.id==='john'?'/avatars/styles/john-look-02.jpg':`/avatars/styles/${person.id}-cute.jpg`}
-  function roomSceneHTML(id,label){const r=roomScenes[id]||{cls:'shop',icon:'&#9670;',one:'',two:'',three:''};return `<div class="room-scene room-${r.cls}"><span class="scene-icon">${r.icon}</span><span class="scene-small one">${r.one}</span><span class="scene-small two ${id==='papashop'?'fire':''}">${r.two}</span><span class="scene-small three">${r.three}</span><span class="room-name">${label}</span></div>`}
+  function figureSrc(person){const theme=state?.visualTheme||window.MYSTERY_THEME||'default';return ['country','rustic','rich'].includes(theme)?`/characters3d/themes/${theme}/${person.id}.png`:`/characters3d/${person.id}.png`}
+  function roomSceneHTML(id,label){
+    const r=roomScenes[id]||{cls:'shop',tag:label,props:[]};
+    const furniture=r.props.map(([cls,text,x,y,w,h])=>`<span class="room-prop prop-${cls}" style="left:${x}%;top:${y}%;width:${w}%;height:${h}%"><i></i>${text?`<b>${text}</b>`:''}</span>`).join('');
+    const shortcut=secretPassages[id]?`<span class="secret-marker" title="Shortcut to ${L()[nodes[secretPassages[id]].room]}">↗ SECRET</span>`:'';
+    return `<div class="room-scene room-${r.cls}"><span class="room-wall north"></span><span class="room-wall west"></span>${furniture}${shortcut}<span class="room-name">${label}</span></div>`;
+  }
   const adj={}; Object.keys(nodes).forEach(k=>adj[k]=[]); edges.forEach(([a,b])=>{adj[a].push(b);adj[b].push(a)});
-  let root,state=null;
+  let root,state=null,botSetup=[];
   const chaos=[
     'Papa watches the argument, takes a slow sip of beer, and says absolutely nothing.',
     'Nana, from somewhere nearby: “That’s a sin.”',
@@ -226,35 +301,27 @@ window.avatarHTML=function(person,extra=''){
   ];
   const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
   const labelCard=c=>c.type==='suspect'?P().find(x=>x.id===c.id).name:c.type==='weapon'?c.name:c.name;
-  const mysterySetup={botConfigs:[]};
-  function mount(el){root=el; state=null; mysterySetup.botConfigs=[]; renderSetup();}
-  function mysteryBotCharacterOptions(current='auto'){return `<option value="auto" ${current==='auto'?'selected':''}>Auto family character</option>${P().map(p=>`<option value="${p.id}" ${current===p.id?'selected':''}>${p.name}</option>`).join('')}`}
-  function mysteryBotDifficultyOptions(current='medium'){return ['easy','medium','hard'].map(d=>`<option value="${d}" ${current===d?'selected':''}>${d[0].toUpperCase()+d.slice(1)}</option>`).join('')}
-  function syncMysteryBots(){
-    const humanIds=[...root.querySelectorAll('.character-pick.selected')].map(b=>b.dataset.id),total=Math.max(humanIds.length,+root.querySelector('#mTotal').value||2),need=Math.max(0,total-humanIds.length),fallback=root.querySelector('#mDifficulty')?.value||'medium';
-    while(mysterySetup.botConfigs.length<need)mysterySetup.botConfigs.push({charId:'auto',difficulty:fallback});
-    mysterySetup.botConfigs.length=need;
-    const wrap=root.querySelector('#mBotRows');if(!wrap)return;
-    wrap.innerHTML=need?mysterySetup.botConfigs.map((bot,i)=>`<div class="m-bot-row"><span>Computer ${i+1}</span><select class="select" data-m-bot-char="${i}">${mysteryBotCharacterOptions(bot.charId)}</select><select class="select" data-m-bot-diff="${i}">${mysteryBotDifficultyOptions(bot.difficulty)}</select></div>`).join(''):`<p class="subtext">No computer detectives are needed with the current player count.</p>`;
-    wrap.querySelectorAll('[data-m-bot-char]').forEach(el=>el.onchange=()=>{mysterySetup.botConfigs[+el.dataset.mBotChar].charId=el.value});
-    wrap.querySelectorAll('[data-m-bot-diff]').forEach(el=>el.onchange=()=>{mysterySetup.botConfigs[+el.dataset.mBotDiff].difficulty=el.value});
+  function mount(el){root=el; state=null; renderSetup();}
+  function ensureMysteryBots(total,humanIds,defaultDifficulty='medium'){
+    const need=Math.max(0,total-humanIds.length),pool=P().filter(p=>!humanIds.includes(p.id));while(botSetup.length<need){const q=pool[botSetup.length%Math.max(1,pool.length)]||P()[0];botSetup.push({id:q.id,difficulty:defaultDifficulty})}botSetup.length=need;
   }
+  function mysteryBotRows(humanIds){const choices=P().filter(p=>!humanIds.includes(p.id));return botSetup.map((b,i)=>`<div class="mystery-bot-row"><span>Computer ${i+1}</span><select class="select" data-m-bot-char="${i}">${choices.map(p=>`<option value="${p.id}" ${p.id===b.id?'selected':''}>${p.name}</option>`).join('')}</select><select class="select" data-m-bot-diff="${i}"><option value="easy" ${b.difficulty==='easy'?'selected':''}>Easy</option><option value="medium" ${b.difficulty==='medium'?'selected':''}>Medium</option><option value="hard" ${b.difficulty==='hard'?'selected':''}>Hard</option></select></div>`).join('')||'<p class="subtext">No computer detectives in this setup.</p>'}
+  function bindMysteryBotRows(){root.querySelectorAll('[data-m-bot-char]').forEach(el=>el.onchange=()=>{botSetup[Number(el.dataset.mBotChar)].id=el.value});root.querySelectorAll('[data-m-bot-diff]').forEach(el=>el.onchange=()=>{botSetup[Number(el.dataset.mBotDiff)].difficulty=el.value})}
+  function renderMysteryBotRows(){const ids=[...root.querySelectorAll('.character-pick.selected')].map(b=>b.dataset.id),total=Math.max(ids.length,Number(root.querySelector('#mTotal')?.value||6)),def=root.querySelector('#mDifficulty')?.value||'medium';ensureMysteryBots(total,ids,def);const box=root.querySelector('#mBotRows');if(box)box.innerHTML=mysteryBotRows(ids);bindMysteryBotRows()}
   function renderSetup(){
     const selected=new Set(['kristen']);
+    ensureMysteryBots(6,[...selected],'medium');
     root.innerHTML=`<div class="game-title-row"><div><span class="eyebrow">FAMILY DEDUCTION</span><h1>Family Mystery</h1><p class="subtext">Standard deduction underneath, extremely non-standard family behavior on top.</p></div><span class="pill">1–11 humans + computers</span></div>
     <div class="setup-grid">
       <section class="panel panel-pad"><h2>Who is playing on this device?</h2><p class="subtext">Choose one or more human family characters. All 11 family members remain possible suspects whether they are playing or not.</p><div id="mCharGrid" class="character-grid">${P().map(p=>`<button class="character-pick ${selected.has(p.id)?'selected':''}" data-id="${p.id}">${avatarHTML(p)}<strong>${p.name}</strong><small>${p.role}</small></button>`).join('')}</div></section>
-      <section class="panel panel-pad"><h2>Game setup</h2><label class="field-label">Total players</label><select id="mTotal" class="select">${[2,3,4,5,6,7,8,9,10,11].map(n=>`<option ${n===6?'selected':''}>${n}</option>`).join('')}</select><p class="subtext">Empty seats are filled by computer family characters so you can play alone.</p><label class="field-label">Default computer difficulty</label><select id="mDifficulty" class="select"><option value="easy">Easy</option><option value="medium" selected>Medium</option><option value="hard">Hard</option></select><div class="m-bot-head"><strong>Computer detectives</strong><span>Choose each character + difficulty</span></div><div id="mBotRows" class="m-bot-rows"></div><br><label class="field-label">Movement animation</label><select id="animChoice" class="select"><option value="on">Short animation (default)</option><option value="skip">Skip movement animation</option></select><br><br><div class="stat-card"><strong>Case file</strong><p class="subtext">One suspect + one ridiculous family object + one of 10 family locations are hidden. Everyone else gets the remaining cards.</p></div><div class="stat-card"><strong>Board movement</strong><p class="subtext">Roll, then tap any glowing floor block or highlighted room within the rolled range. Family standees walk the route.</p></div><button id="startMystery" class="btn success" style="width:100%;margin-top:12px">START MYSTERY</button></section>
+      <section class="panel panel-pad"><h2>Game setup</h2><label class="field-label">Board character style</label><select id="mTheme" class="select"><option value="default">Default family characters</option><option value="country">Country</option><option value="rustic">Rustic</option><option value="rich">Rich</option></select><p class="subtext">The tiny family figures walking around the board use this approved full-body look.</p><label class="field-label">Total players</label><select id="mTotal" class="select">${[2,3,4,5,6,7,8,9,10,11].map(n=>`<option ${n===6?'selected':''}>${n}</option>`).join('')}</select><p class="subtext">Empty seats are filled by computer family characters so you can play alone.</p><label class="field-label">Default computer difficulty</label><select id="mDifficulty" class="select"><option value="easy">Easy</option><option value="medium" selected>Medium</option><option value="hard">Hard</option></select><div class="mystery-bot-head"><strong>Computer detectives</strong><span>Pick each character and difficulty</span></div><div id="mBotRows" class="mystery-bot-rows">${mysteryBotRows([...selected])}</div><br><label class="field-label">Movement animation</label><select id="animChoice" class="select"><option value="on">Short animation (default)</option><option value="skip">Skip movement animation</option></select><br><br><div class="stat-card"><strong>Case file</strong><p class="subtext">One suspect + one ridiculous family object + one of 10 family locations are hidden. Everyone else gets the remaining cards.</p></div><div class="stat-card"><strong>Board movement</strong><p class="subtext">Roll, then tap any glowing floor block or highlighted room within the rolled range. Family standees walk the route.</p></div><button id="startMystery" class="btn success" style="width:100%;margin-top:12px">START MYSTERY</button></section>
     </div>`;
-    root.querySelectorAll('.character-pick').forEach(b=>b.addEventListener('click',()=>{b.classList.toggle('selected');syncMysteryBots()}));
-    root.querySelector('#mTotal').addEventListener('change',syncMysteryBots);
-    root.querySelector('#mDifficulty').addEventListener('change',()=>{const d=root.querySelector('#mDifficulty').value;mysterySetup.botConfigs.forEach(bot=>bot.difficulty=d);syncMysteryBots()});
-    syncMysteryBots();
+    root.querySelectorAll('.character-pick').forEach(b=>b.addEventListener('click',()=>{b.classList.toggle('selected');renderMysteryBotRows()}));root.querySelector('#mTotal').onchange=renderMysteryBotRows;root.querySelector('#mDifficulty').onchange=()=>{botSetup.forEach(b=>b.difficulty=root.querySelector('#mDifficulty').value);renderMysteryBotRows()};bindMysteryBotRows();
     root.querySelector('#startMystery').addEventListener('click',()=>{
-      const ids=[...root.querySelectorAll('.character-pick.selected')].map(b=>b.dataset.id);if(ids.length<1){APP.toast('Choose at least one human player');return}const total=Math.max(ids.length,+root.querySelector('#mTotal').value);const configs=mysterySetup.botConfigs.map(x=>({...x}));start(ids,root.querySelector('#animChoice').value==='skip',total,root.querySelector('#mDifficulty').value,configs);
+      const ids=[...root.querySelectorAll('.character-pick.selected')].map(b=>b.dataset.id);if(ids.length<1){APP.toast('Choose at least one human player');return}const total=Math.max(ids.length,+root.querySelector('#mTotal').value);start(ids,root.querySelector('#animChoice').value==='skip',total,root.querySelector('#mDifficulty').value,botSetup.map(x=>({...x})),root.querySelector('#mTheme').value);
     });
   }
-  function start(ids,skip,total=ids.length,difficulty='medium',botConfigs=[]){
+  function start(ids,skip,total=ids.length,difficulty='medium',botConfigs=[],visualTheme='default'){
     const weaponPool=shuffle(W()).slice(0,10);
     const solution={suspect:shuffle(P())[0].id,weapon:shuffle(weaponPool)[0],location:shuffle(L())[0]};
     let deck=[];
@@ -262,50 +329,65 @@ window.avatarHTML=function(person,extra=''){
     weaponPool.forEach(w=>{if(w!==solution.weapon)deck.push({type:'weapon',name:w})});
     L().forEach(l=>{if(l!==solution.location)deck.push({type:'location',name:l})});
     deck=shuffle(deck);
-    const starts=['h0','h3','h7','h11','h13','h15','h20','h22','h16','h19','h26'];
-    const need=Math.max(0,total-ids.length),autoPool=shuffle(P().map(p=>p.id).filter(id=>!ids.includes(id)));
-    const resolvedBots=Array.from({length:need},(_,i)=>{const cfg=botConfigs[i]||{},charId=cfg.charId&&cfg.charId!=='auto'?cfg.charId:(autoPool.shift()||P()[i%P().length].id),d=['easy','medium','hard'].includes(cfg.difficulty)?cfg.difficulty:difficulty;return{id:charId,isBot:true,botDifficulty:d}});
-    const roster=[...ids.map(id=>({id,isBot:false,botDifficulty:null})),...resolvedBots];
-    const players=roster.map(({id,isBot,botDifficulty},i)=>({person:P().find(p=>p.id===id)||P()[0],hand:[],pos:starts[i%starts.length],canAccuse:true,notes:{},isBot,botDifficulty:isBot?botDifficulty:null,eliminated:false}));
+    const starts=['t1','t6','l1','r1','b1','b6','u1','u4','c2','c5','b3'];
+    const needed=Math.max(0,total-ids.length),available=P().map(p=>p.id).filter(id=>!ids.includes(id)),computerConfigs=Array.from({length:needed},(_,i)=>botConfigs[i]||{id:available[i%Math.max(1,available.length)]||P()[0].id,difficulty});
+    const computerIds=computerConfigs.map(c=>c.id);
+    const roster=[...ids.map(id=>({id,isBot:false,difficulty:null})),...computerConfigs.map(c=>({id:c.id,isBot:true,difficulty:c.difficulty||difficulty}))];
+    const players=roster.map(({id,isBot,difficulty:botDifficulty},i)=>({person:P().find(p=>p.id===id)||P()[0],hand:[],pos:starts[i%starts.length],canAccuse:true,notes:{},isBot,botDifficulty:isBot?botDifficulty:null,eliminated:false,seen:[],summoned:false}));
     deck.forEach((c,i)=>players[i%players.length].hand.push(c));
     const all=[...P().map(p=>({key:`s:${p.id}`,name:p.name,type:'Suspect'})),...weaponPool.map(w=>({key:`w:${w}`,name:w,type:'Object'})),...L().map(l=>({key:`l:${l}`,name:l,type:'Location'}))];
     players.forEach(pl=>{all.forEach(c=>pl.notes[c.key]='');pl.hand.forEach(c=>{const k=c.type==='suspect'?`s:${c.id}`:c.type==='weapon'?`w:${c.name}`:`l:${c.name}`;pl.notes[k]='✓'})});
-    state={players,turn:0,phase:'privacy',rolled:null,moved:false,suggested:false,skipAnim:skip,solution,weaponPool,allCards:all,reachable:new Set(),feed:[`${resolvedBots.length?resolvedBots.length+' computer detective'+(resolvedBots.length===1?'':'s')+' joined. ':''}The family has been assembled. Somebody is lying.`],round:1,botBusy:false};
+    window.MYSTERY_THEME=visualTheme;state={players,turn:0,phase:'privacy',rolled:null,moved:false,suggested:false,skipAnim:skip,visualTheme,solution,weaponPool,allCards:all,reachable:new Set(),reachCost:new Map(),view:null,history:[],rolling:false,feed:[`${computerIds.length?computerIds.length+' computer detective'+(computerIds.length===1?'':'s')+' joined. ':''}The family has been assembled. Somebody is lying.`],round:1,botBusy:false};
     renderGame();
   }
   function current(){return state.players[state.turn]}
+  function cardKey(c){return c.type==='suspect'?`s:${c.id}`:c.type==='weapon'?`w:${c.name}`:`l:${c.name}`}
+  function recordSeen(pl,c){const k=cardKey(c);pl.notes[k]='✓';if(!pl.seen.includes(k))pl.seen.push(k);}
+  function noteGroupHTML(pl,title,type,cards){return `<section class="mystery-note-group"><strong>${title}</strong><div class="mystery-note-items">${cards.map(c=>{const key=c.key||cardKey(c),v=pl.notes[key]||'',cls=v==='✓'?'seen':v==='?'?'maybe':'';return `<span title="${c.name}">${c.name}</span><button class="${cls}" data-note="${encodeURIComponent(key)}" aria-label="Mark ${c.name}">${v||'·'}</button>`}).join('')}</div></section>`}
+  function notebookHTML(pl){const suspects=state.allCards.filter(c=>c.type==='Suspect'),objects=state.allCards.filter(c=>c.type==='Object'),locations=state.allCards.filter(c=>c.type==='Location');return `<div class="mystery-notebook">${noteGroupHTML(pl,'Suspects','suspect',suspects)}${noteGroupHTML(pl,'Objects','weapon',objects)}${noteGroupHTML(pl,'Locations','location',locations)}</div>`}
+  function historyHTML(){if(!state.history.length)return '<p class="subtext">No suggestions yet. The case is still suspiciously quiet.</p>';return `<div class="mystery-history">${state.history.slice().reverse().map((h,i)=>`<div class="mystery-history-entry"><b>${h.author}</b>: ${h.suspect} · ${h.weapon} · ${h.location}<br><span class="${h.disprover?'disproved':'open'}">${h.disprover?`Disproved by ${h.disprover}`:'Nobody could disprove it'}</span></div>`).join('')}</div>`}
+  function solutionCardsHTML(){return `<div class="case-solution-grid"><div class="case-solution-card"><small>Suspect</small><b>${P().find(p=>p.id===state.solution.suspect).name}</b></div><div class="case-solution-card"><small>Object</small><b>${state.solution.weapon}</b></div><div class="case-solution-card"><small>Location</small><b>${state.solution.location}</b></div></div>`}
+  function pullSuggestedSuspect(suspect,location){const pl=state.players.find(x=>x.person.id===suspect),ri=L().indexOf(location);if(!pl||ri<0)return;if(pl.pos!==roomIds[ri]){pl.pos=roomIds[ri];pl.summoned=true;state.feed.push(`${pl.person.name} was called into ${location} by a suggestion.`)}}
   function renderGame(){
-    const pl=current();
-    root.innerHTML=`<div class="game-title-row"><div><span class="eyebrow">CASE IN PROGRESS</span><h1>Family Mystery</h1><p class="subtext">${pl.person.name}'s turn</p></div><div class="button-row"><button id="animToggle" class="btn secondary">${state.skipAnim?'Animations: SKIP':'Animations: SHORT'}</button><button id="restartM" class="btn secondary">New game</button></div></div>
-    <div class="mystery-layout"><section class="board-shell"><div id="mBoard" class="mystery-board"></div></section><aside class="turn-sidebar">
-      <div class="stat-card"><div style="display:flex;align-items:center;gap:10px">${avatarHTML(pl.person)}<div><strong>${pl.person.name}${pl.isBot?' • COMPUTER':''}</strong><div class="subtext">${nodes[pl.pos].room!=null?L()[nodes[pl.pos].room]:'Hallway'}${pl.isBot?` • ${pl.botDifficulty} difficulty`:''}</div></div><div id="dice" class="dice" style="margin-left:auto">${state.rolled||'?'}</div></div></div>
+    window.MYSTERY_THEME=state?.visualTheme||'default';
+    const pl=current(),place=nodes[pl.pos].room!=null?L()[nodes[pl.pos].room]:'Hallway';
+    root.innerHTML=`<div class="game-title-row"><div><span class="eyebrow">CASE IN PROGRESS</span><h1>Family Mystery</h1><p class="subtext">${pl.person.name}'s turn · ${place}</p></div><div class="button-row"><button id="animToggle" class="btn secondary">${state.skipAnim?'Animations: SKIP':'Animations: SHORT'}</button><button id="restartM" class="btn secondary">New game</button></div></div>
+    <div class="mystery-layout"><section class="board-shell"><div class="board-camera-tools" aria-label="Board camera"><button id="zoomOut" class="camera-btn" type="button" aria-label="Zoom out">−</button><button id="zoomReset" class="camera-btn reset" type="button">FIT</button><button id="zoomMe" class="camera-btn me" type="button">ME</button><button id="zoomIn" class="camera-btn" type="button" aria-label="Zoom in">+</button></div><div class="board-hint">Pinch / scroll to zoom · drag to pan · <strong>gold numbers show movement cost</strong></div><div id="mBoardViewport" class="mystery-board-viewport"><div id="mBoard" class="mystery-board"></div></div></section><aside class="turn-sidebar">
+      <div class="stat-card"><div style="display:flex;align-items:center;gap:10px">${avatarHTML(pl.person)}<div><strong>${pl.person.name}${pl.isBot?' · COMPUTER':''}</strong><div class="subtext">${place}${pl.summoned?' · moved here by a suggestion':''}${pl.isBot?` · ${pl.botDifficulty} difficulty`:''}</div></div><div id="dice" class="dice mystery-dice ${state.rolling?'rolling':''}" style="margin-left:auto">${state.rolling?'↻':state.rolled??'?'}</div></div></div>
       <div id="actions" class="stat-card"></div>
-      ${pl.isBot?`<div class="stat-card"><strong>Computer detective</strong><p class="subtext">${pl.person.name}'s private cards and notebook stay hidden while the computer thinks using only information it has legally seen.</p></div>`:`<div class="stat-card"><strong>Your cards</strong><div class="card-row">${pl.hand.map(c=>`<div class="clue-card"><small>${c.type}</small>${labelCard(c)}</div>`).join('')||'<span class="subtext">None</span>'}</div></div><div class="stat-card"><strong>Detective notes</strong><div class="note-grid">${state.allCards.map(c=>`<span>${c.name}</span><button data-note="${encodeURIComponent(c.key)}">${pl.notes[c.key]||'·'}</button>`).join('')}</div></div>`}
+      ${pl.isBot?`<div class="stat-card"><strong>Computer detective</strong><p class="subtext">${pl.person.name}'s private cards and notebook stay hidden. The computer only uses cards and disproof information it has legally seen.</p></div>`:`<div class="stat-card"><strong>Your cards</strong><div class="card-row">${pl.hand.map(c=>`<div class="clue-card"><small>${c.type}</small>${labelCard(c)}</div>`).join('')||'<span class="subtext">None</span>'}</div></div><div class="stat-card"><strong>Detective notebook · Detective notes</strong><p class="subtext">✓ = ruled out / seen · ? = suspicious. Revealed cards are marked automatically.</p>${notebookHTML(pl)}</div>`}
+      <div class="stat-card"><strong>Case history</strong><p class="subtext">Public suggestion history only. The actual card shown stays private.</p>${historyHTML()}</div>
       <div class="stat-card"><strong>Family chaos</strong><div class="kill-feed">${state.feed.slice(-8).map(x=>`<div>${x}</div>`).join('')}</div></div>
-    </aside></div>`;
-    drawBoard(); renderActions();
+    </aside></div><div id="mMobileActions" class="mystery-mobile-actions" aria-label="Phone turn controls"></div>`;
+    drawBoard(); setupBoardCamera(); renderActions();
     root.querySelector('#animToggle').onclick=()=>{state.skipAnim=!state.skipAnim;renderGame()}; root.querySelector('#restartM').onclick=renderSetup;
-    root.querySelectorAll('[data-note]').forEach(b=>b.onclick=()=>{const k=decodeURIComponent(b.dataset.note),v=pl.notes[k];pl.notes[k]=v==='✓'?'?':v==='?'?'': '✓'; b.textContent=pl.notes[k]||'·'});
+    root.querySelectorAll('[data-note]').forEach(b=>b.onclick=()=>{const k=decodeURIComponent(b.dataset.note),v=pl.notes[k];pl.notes[k]=v==='✓'?'?':v==='?'?'': '✓';renderGame()});
     if(pl.isBot){if(!state.botBusy)setTimeout(runBotTurn,380)}else if(state.phase==='privacy')showPrivacy();
   }
   function drawBoard(){
-    const b=root.querySelector('#mBoard');
-    b.innerHTML='<div class="board-title-plaque"><strong>BLACK FAMILY</strong><span>MYSTERY NIGHT</span></div>';
+    const b=root.querySelector('#mBoard'),cur=current();
+    b.innerHTML='<div class="board-title-plaque"><i>CASE FILE</i><strong>BLACK FAMILY</strong><span>MYSTERY NIGHT</span><em>Who · Where · With What?</em></div>';
     edges.forEach(([a,c])=>{const A=nodes[a],C=nodes[c],dx=C.x-A.x,dy=C.y-A.y,len=Math.hypot(dx,dy),ang=Math.atan2(dy,dx)*180/Math.PI;const e=document.createElement('div');e.className='path-link';e.style.left=A.x+'%';e.style.top=`calc(${A.y}% - 8px)`;e.style.width=len+'%';e.style.transform=`rotate(${ang}deg)`;b.appendChild(e)});
-    Object.entries(nodes).forEach(([id,n])=>{const d=document.createElement('button');const room=n.room!=null;d.className=(room?'room-zone':'walk-tile')+(state.reachable.has(id)?' reachable':'');d.style.left=n.x+'%';d.style.top=n.y+'%';d.dataset.node=id;if(room)d.innerHTML=roomSceneHTML(id,L()[n.room]);else d.setAttribute('aria-label','Walkway space');if(state.reachable.has(id))d.onclick=()=>moveTo(id);b.appendChild(d)});
-    state.players.forEach((pl,i)=>{const n=nodes[pl.pos],p=document.createElement('div');p.className='board-figure '+(i===state.turn?'current':'inactive');p.dataset.figure=pl.person.id;p.style.left=`calc(${n.x}% + ${(i%3)*10-10}px)`;p.style.top=`calc(${n.y}% + ${Math.floor(i/3)%2*9+4}px)`;p.style.setProperty('--pawn',pawnColors[i%pawnColors.length]);p.title=pl.person.name;p.innerHTML=`<div class="figure-card"><img src="${figureSrc(pl.person)}" alt="${pl.person.name}"><span class="figure-label">${pl.person.name}</span></div><i class="figure-base"></i>`;b.appendChild(p)});
+    Object.entries(nodes).forEach(([id,n])=>{const d=document.createElement('button'),room=n.room!=null,reachable=state.reachable.has(id),cost=state.reachCost?.get(id);d.className=(room?'room-zone':'walk-tile')+(reachable?' reachable':'')+(id===cur.pos?' current-node':'');d.style.left=n.x+'%';d.style.top=n.y+'%';d.dataset.node=id;if(room)d.innerHTML=roomSceneHTML(id,L()[n.room]);else d.setAttribute('aria-label','Walkway space');if(reachable&&cost!=null){d.insertAdjacentHTML('beforeend',`<span class="move-cost">${cost}</span>`);d.setAttribute('aria-label',`${room?L()[n.room]:'Walkway'} · ${cost} move${cost===1?'':'s'}`);d.onclick=()=>moveTo(id)}b.appendChild(d)});
+    state.players.forEach((pl,i)=>{const n=nodes[pl.pos],p=document.createElement('div');p.className='board-figure '+(i===state.turn?'current':'inactive');p.dataset.figure=pl.person.id;p.style.left=`calc(${n.x}% + ${(i%3)*10-10}px)`;p.style.top=`calc(${n.y}% + ${Math.floor(i/3)%2*9+4}px)`;p.style.setProperty('--pawn',pawnColors[i%pawnColors.length]);p.title=pl.person.name;p.innerHTML=`<div class="figure-character"><img src="${figureSrc(pl.person)}" alt="${pl.person.name}"><span class="figure-label">${pl.person.name}</span></div><i class="figure-shadow"></i>`;b.appendChild(p)});
   }
   function renderActions(){
-    const a=root.querySelector('#actions'),pl=current(),inRoom=nodes[pl.pos].room!=null;
-    if(pl.isBot){a.innerHTML='<strong>Computer turn</strong><p class="subtext">Thinking, rolling, moving and making deductions…</p>';return}
-    let html='<strong>Turn actions</strong><div class="button-row" style="margin-top:10px">';
-    if(state.phase==='turn' && state.rolled==null)html+='<button id="rollBtn" class="btn">ROLL DICE</button>';
-    if(state.phase==='turn' && state.rolled!=null && !state.moved)html+='<span class="subtext">Tap any highlighted destination.</span>';
-    if(state.phase==='turn' && state.moved && inRoom && !state.suggested)html+='<button id="suggestBtn" class="btn blue">SUGGEST</button>';
-    if(state.phase==='turn' && (state.moved||state.rolled==null))html+='<button id="accuseBtn" class="btn danger" '+(!pl.canAccuse?'disabled':'')+'>ACCUSE</button>';
-    if(state.phase==='turn' && state.moved)html+='<button id="endBtn" class="btn secondary">END TURN</button>';
-    html+='</div>';a.innerHTML=html;
-    const r=a.querySelector('#rollBtn');if(r)r.onclick=roll;const s=a.querySelector('#suggestBtn');if(s)s.onclick=suggest;const ac=a.querySelector('#accuseBtn');if(ac)ac.onclick=accuse;const e=a.querySelector('#endBtn');if(e)e.onclick=endTurn;
+    const pl=current(),inRoom=nodes[pl.pos].room!=null;
+    const markup=()=>{
+      if(pl.isBot)return '<strong>Computer turn</strong><p class="subtext">Thinking, rolling, moving and making deductions…</p>';
+      let html='<strong>Turn actions</strong><div class="button-row" style="margin-top:10px">';
+      if(state.phase==='turn'&&state.rolling)html+='<button class="btn" disabled>ROLLING…</button>';
+      else if(state.phase==='turn'&&state.rolled==null)html+='<button data-mystery-action="roll" class="btn">ROLL DICE</button>';
+      if(state.phase==='turn'&&state.rolled==null&&secretPassages[pl.pos])html+=`<button data-mystery-action="secret" class="btn blue">SHORTCUT → ${L()[nodes[secretPassages[pl.pos]].room]}</button>`;
+      if(state.phase==='turn'&&pl.summoned&&inRoom&&!state.suggested)html+='<button data-mystery-action="suggest" class="btn blue">SUGGEST FROM THIS ROOM</button>';
+      if(state.phase==='turn'&&state.rolled!=null&&!state.moved&&!state.rolling)html+=`<span class="subtext">Rolled <b>${state.rolled}</b>. Tap a gold-numbered destination.</span>`;
+      if(state.phase==='turn'&&state.moved&&inRoom&&!state.suggested)html+='<button data-mystery-action="suggest" class="btn blue">MAKE SUGGESTION</button>';
+      if(state.phase==='turn'&&(state.moved||state.rolled==null)&&!state.rolling)html+=`<button data-mystery-action="accuse" class="btn danger" ${!pl.canAccuse?'disabled':''}>FINAL ACCUSATION</button>`;
+      if(state.phase==='turn'&&state.moved)html+='<button data-mystery-action="end" class="btn secondary">END TURN</button>';
+      html+='</div>';return html;
+    };
+    const desktop=root.querySelector('#actions'),mobile=root.querySelector('#mMobileActions');if(desktop)desktop.innerHTML=markup();if(mobile)mobile.innerHTML=pl.isBot?'':markup();
+    root.querySelectorAll('[data-mystery-action]').forEach(btn=>btn.onclick=()=>{const a=btn.dataset.mysteryAction;if(a==='roll')roll();else if(a==='secret')useSecretPassage();else if(a==='suggest')suggest();else if(a==='accuse')accuse();else if(a==='end')endTurn();});
   }
   function botUnknown(pl,type){
     if(type==='suspect')return P().filter(p=>pl.notes[`s:${p.id}`]!=='✓').map(p=>p.id);
@@ -319,7 +401,7 @@ window.avatarHTML=function(person,extra=''){
   }
   function runBotTurn(){
     if(!state||state.botBusy||!current()?.isBot)return;
-    const pl=current();state.botBusy=true;state.phase='turn';state.rolled=1+Math.floor(Math.random()*6);state.moved=false;state.suggested=false;state.reachable=new Set(reachableWithin(pl.pos,state.rolled));renderGame();
+    const pl=current();state.botBusy=true;state.phase='turn';state.rolled=1+Math.floor(Math.random()*6);state.rolling=false;pl.summoned=false;state.moved=false;state.suggested=false;state.reachCost=reachableMap(pl.pos,state.rolled);state.reachable=new Set(state.reachCost.keys());renderGame();
     const choices=[...state.reachable];if(!choices.length){state.botBusy=false;endTurn();return}
     const unknownRooms=new Set(botUnknown(pl,'location'));
     const roomChoices=choices.filter(id=>nodes[id]?.room!=null&&unknownRooms.has(L()[nodes[id].room]));
@@ -336,14 +418,18 @@ window.avatarHTML=function(person,extra=''){
   }
   function botAccuse(ans){
     const pl=current(),ok=ans.suspect===state.solution.suspect&&ans.weapon===state.solution.weapon&&ans.location===state.solution.location;
-    if(ok){state.botBusy=false;modal(`<div class="status-large"><span class="eyebrow">CASE CLOSED</span><strong>${pl.person.name} solved it!</strong><p>The ${pl.botDifficulty} computer detective cracked the case without seeing anyone's hidden cards.</p><p>It was <b>${P().find(p=>p.id===state.solution.suspect).name}</b> in <b>${state.solution.location}</b> with <b>${state.solution.weapon}</b>.</p><button id="againMyst" class="btn success">PLAY AGAIN</button></div>`,m=>m.querySelector('#againMyst').onclick=()=>{closeModal();renderSetup()});return}
+    if(ok){state.botBusy=false;modal(`<div class="status-large"><span class="eyebrow">CASE CLOSED</span><strong>${pl.person.name} solved it!</strong><p>The ${pl.botDifficulty} computer detective cracked the case without seeing anyone's hidden cards.</p>${solutionCardsHTML()}<button id="againMyst" class="btn success">PLAY AGAIN</button></div>`,m=>m.querySelector('#againMyst').onclick=()=>{closeModal();renderSetup()});return}
     pl.canAccuse=false;pl.eliminated=true;state.feed.push(`${pl.person.name} Computer made a wrong accusation and is out of the turn rotation.`);state.botBusy=false;setTimeout(endTurn,450);
   }
   function showPrivacy(){
     const pl=current(); modal(`<div class="privacy-screen">${avatarHTML(pl.person)}<span class="eyebrow">PASS THE DEVICE</span><h2>${pl.person.name}'s turn</h2><p class="subtext">Only ${pl.person.name} should look at the cards and notebook.</p><button id="readyPrivate" class="btn success">I'M ${pl.person.name.toUpperCase()}</button></div>`,m=>m.querySelector('#readyPrivate').onclick=()=>{closeModal();state.phase='turn';renderActions()});
   }
-  function roll(){state.rolled=1+Math.floor(Math.random()*6);state.moved=false; state.reachable=new Set(reachableWithin(current().pos,state.rolled));renderGame();APP.toast(`${current().person.name} rolled ${state.rolled}`)}
-  function reachableWithin(start,max){const dist={[start]:0},q=[start],out=[];while(q.length){const v=q.shift();for(const n of adj[v])if(dist[n]==null){dist[n]=dist[v]+1;if(dist[n]<=max){q.push(n);out.push(n)}}}return out}
+  function roll(){
+    if(state.rolling||state.rolled!=null)return;current().summoned=false;state.rolling=true;renderGame();
+    setTimeout(()=>{if(!state)return;state.rolling=false;state.rolled=1+Math.floor(Math.random()*6);state.moved=false;state.reachCost=reachableMap(current().pos,state.rolled);state.reachable=new Set(state.reachCost.keys());renderGame();APP.toast(`${current().person.name} rolled ${state.rolled}`)},360);
+  }
+  function reachableMap(start,max){const dist=new Map([[start,0]]),q=[start],out=new Map();while(q.length){const v=q.shift(),base=dist.get(v);for(const n of adj[v])if(!dist.has(n)){const nd=base+1;dist.set(n,nd);if(nd<=max){q.push(n);out.set(n,nd)}}}return out}
+  function reachableWithin(start,max){return [...reachableMap(start,max).keys()]}
   function shortest(a,b){const q=[a],prev={[a]:null};while(q.length){const v=q.shift();if(v===b)break;for(const n of adj[v])if(prev[n]===undefined){prev[n]=v;q.push(n)}}let path=[];if(prev[b]===undefined)return[a];for(let x=b;x!=null;x=prev[x])path.unshift(x);return path}
   function moveTo(dest){
     const pl=current(),path=shortest(pl.pos,dest);state.reachable.clear();state.moved=true;
@@ -353,8 +439,29 @@ window.avatarHTML=function(person,extra=''){
     fig.classList.add('walking');let i=1;
     const step=()=>{if(i>=path.length){fig.classList.remove('walking');pl.pos=dest;setTimeout(renderGame,80);return}const next=path[i++],n=nodes[next];pl.pos=next;fig.style.left=n.x+'%';fig.style.top=`calc(${n.y}% + 4px)`;setTimeout(step,190)};step();
   }
-  function suggest(){state.suggested=true;const loc=L()[nodes[current().pos].room];chooseCase('Make a suggestion',false,({suspect,weapon})=>resolveSuggestion(suspect,weapon,loc));}
+  function setupBoardCamera(){
+    const vp=root.querySelector('#mBoardViewport'),board=root.querySelector('#mBoard');if(!vp||!board)return;
+    const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+    const apply=()=>{const v=state.view||{scale:.7,tx:0,ty:0};board.style.transform=`translate(${v.tx}px,${v.ty}px) scale(${v.scale})`;};
+    const fit=()=>{const w=1200,h=900,scale=clamp(Math.min(vp.clientWidth/w,vp.clientHeight/h)*.96,.34,1);state.view={scale,tx:(vp.clientWidth-w*scale)/2,ty:(vp.clientHeight-h*scale)/2};apply();};
+    const centerMe=()=>{const n=nodes[current().pos],v=state.view||{scale:.7,tx:0,ty:0};v.tx=vp.clientWidth/2-(n.x/100*1200)*v.scale;v.ty=vp.clientHeight/2-(n.y/100*900)*v.scale;state.view=v;apply();};
+    if(!state.view)requestAnimationFrame(fit);else apply();
+    const zoomAt=(factor,cx=vp.clientWidth/2,cy=vp.clientHeight/2)=>{const v=state.view||{scale:.7,tx:0,ty:0},ns=clamp(v.scale*factor,.34,1.8),wx=(cx-v.tx)/v.scale,wy=(cy-v.ty)/v.scale;v.tx=cx-wx*ns;v.ty=cy-wy*ns;v.scale=ns;state.view=v;apply();};
+    root.querySelector('#zoomIn').onclick=()=>zoomAt(1.18);root.querySelector('#zoomOut').onclick=()=>zoomAt(.84);root.querySelector('#zoomReset').onclick=fit;root.querySelector('#zoomMe').onclick=centerMe;
+    vp.addEventListener('wheel',e=>{e.preventDefault();const r=vp.getBoundingClientRect();zoomAt(e.deltaY<0?1.12:.89,e.clientX-r.left,e.clientY-r.top)},{passive:false});
+    const pts=new Map();let panStart=null,pinchStart=null;
+    vp.addEventListener('pointerdown',e=>{pts.set(e.pointerId,{x:e.clientX,y:e.clientY});vp.setPointerCapture?.(e.pointerId);if(pts.size===1&&!e.target.closest('button')){const v=state.view||{scale:.7,tx:0,ty:0};panStart={x:e.clientX,y:e.clientY,tx:v.tx,ty:v.ty}}if(pts.size===2){const a=[...pts.values()];pinchStart={dist:Math.hypot(a[1].x-a[0].x,a[1].y-a[0].y),scale:(state.view||{}).scale||.7};panStart=null}});
+    vp.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;pts.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pts.size===2&&pinchStart){const a=[...pts.values()],d=Math.hypot(a[1].x-a[0].x,a[1].y-a[0].y),midX=(a[0].x+a[1].x)/2-vp.getBoundingClientRect().left,midY=(a[0].y+a[1].y)/2-vp.getBoundingClientRect().top;zoomAt((pinchStart.scale*(d/pinchStart.dist))/((state.view||{}).scale||.7),midX,midY);pinchStart.scale=(state.view||{}).scale||.7;pinchStart.dist=d}else if(pts.size===1&&panStart){const v=state.view||{scale:.7,tx:0,ty:0};v.tx=panStart.tx+(e.clientX-panStart.x);v.ty=panStart.ty+(e.clientY-panStart.y);state.view=v;apply()}});
+    const end=e=>{pts.delete(e.pointerId);if(pts.size<2)pinchStart=null;if(!pts.size)panStart=null};vp.addEventListener('pointerup',end);vp.addEventListener('pointercancel',end);
+  }
+  function useSecretPassage(){
+    const pl=current(),dest=secretPassages[pl.pos];if(!dest||state.rolled!=null||state.phase!=='turn')return;
+    pl.summoned=false;state.rolled=0;state.moved=true;state.reachable.clear();state.feed.push(`${pl.person.name} slipped through the family shortcut to ${L()[nodes[dest].room]}.`);
+    const fig=root.querySelector(`[data-figure="${pl.person.id}"]`);if(fig&&!state.skipAnim){fig.classList.add('shortcutting');setTimeout(()=>{pl.pos=dest;renderGame()},360)}else{pl.pos=dest;renderGame()}
+  }
+  function suggest(){current().summoned=false;state.suggested=true;const loc=L()[nodes[current().pos].room];chooseCase('Make a suggestion',false,({suspect,weapon})=>resolveSuggestion(suspect,weapon,loc));}
   function resolveSuggestion(suspect,weapon,location){
+    pullSuggestedSuspect(suspect,location);
     const author=state.turn,targets=[];
     for(let k=1;k<state.players.length;k++)targets.push((author+k)%state.players.length);
     const wanted=[`s:${suspect}`,`w:${weapon}`,`l:${location}`];
@@ -364,17 +471,18 @@ window.avatarHTML=function(person,extra=''){
       const ms=pl.hand.filter(c=>wanted.includes(c.type==='suspect'?`s:${c.id}`:c.type==='weapon'?`w:${c.name}`:`l:${c.name}`));
       if(ms.length){found=i;matches=ms;break}
     }
+    const authorPl=current(),suspectName=P().find(p=>p.id===suspect)?.name||suspect;state.history.push({author:authorPl.person.name,suspect:suspectName,weapon,location,disprover:found==null?null:state.players[found].person.name});if(state.history.length>30)state.history.shift();
     if(found==null){
-      const wasBot=current().isBot;state.feed.push(`${current().person.name}'s suggestion could not be disproved.`);APP.toast('Nobody could disprove it');renderGame();if(wasBot){state.botBusy=false;setTimeout(endTurn,480)}return;
+      const wasBot=authorPl.isBot;state.feed.push(`${authorPl.person.name}'s suggestion could not be disproved.`);APP.toast('Nobody could disprove it');renderGame();if(wasBot){state.botBusy=false;setTimeout(endTurn,480)}return;
     }
-    const disprover=state.players[found],authorPl=current();
+    const disprover=state.players[found];
     if(authorPl.isBot){
-      if(disprover.isBot){const c=matches[Math.floor(Math.random()*matches.length)],key=c.type==='suspect'?`s:${c.id}`:c.type==='weapon'?`w:${c.name}`:`l:${c.name}`;authorPl.notes[key]='✓';state.feed.push(`${disprover.person.name} Computer disproved ${authorPl.person.name} Computer.`);renderGame();state.botBusy=false;setTimeout(endTurn,480);return}
-      modal(`<h2>${disprover.person.name}, disprove the computer</h2><p class="subtext">Choose one matching card to show privately to ${authorPl.person.name} Computer.</p><div class="choice-grid">${matches.map((c,i)=>`<button class="choice-btn" data-i="${i}">${labelCard(c)}</button>`).join('')}</div>`,m=>m.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{const c=matches[+b.dataset.i],key=c.type==='suspect'?`s:${c.id}`:c.type==='weapon'?`w:${c.name}`:`l:${c.name}`;authorPl.notes[key]='✓';closeModal();state.feed.push(`${disprover.person.name} disproved ${authorPl.person.name} Computer.`);renderGame();state.botBusy=false;setTimeout(endTurn,420)}));return
+      if(disprover.isBot){const c=matches[Math.floor(Math.random()*matches.length)],key=c.type==='suspect'?`s:${c.id}`:c.type==='weapon'?`w:${c.name}`:`l:${c.name}`;recordSeen(authorPl,c);state.feed.push(`${disprover.person.name} Computer disproved ${authorPl.person.name} Computer.`);renderGame();state.botBusy=false;setTimeout(endTurn,480);return}
+      modal(`<h2>${disprover.person.name}, disprove the computer</h2><p class="subtext">Choose one matching card to show privately to ${authorPl.person.name} Computer.</p><div class="choice-grid">${matches.map((c,i)=>`<button class="choice-btn" data-i="${i}">${labelCard(c)}</button>`).join('')}</div>`,m=>m.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{const c=matches[+b.dataset.i],key=c.type==='suspect'?`s:${c.id}`:c.type==='weapon'?`w:${c.name}`:`l:${c.name}`;recordSeen(authorPl,c);closeModal();state.feed.push(`${disprover.person.name} disproved ${authorPl.person.name} Computer.`);renderGame();state.botBusy=false;setTimeout(endTurn,420)}));return
     }
     if(disprover.isBot){
-      const c=matches[disprover.botDifficulty==='easy'?Math.floor(Math.random()*matches.length):0],key=c.type==='suspect'?`s:${c.id}`:c.type==='weapon'?`w:${c.name}`:`l:${c.name}`;authorPl.notes[key]='✓';
-      modal(`<div class="privacy-screen">${avatarHTML(authorPl.person)}<h2>${disprover.person.name} Computer showed you:</h2><div class="clue-card" style="font-size:22px">${labelCard(c)}</div><br><button id="doneShow" class="btn success">DONE</button></div>`,m=>m.querySelector('#doneShow').onclick=()=>{closeModal();state.feed.push(`${disprover.person.name} Computer disproved ${authorPl.person.name}'s suggestion.`);renderGame()});return
+      const c=matches[disprover.botDifficulty==='easy'?Math.floor(Math.random()*matches.length):0],key=c.type==='suspect'?`s:${c.id}`:c.type==='weapon'?`w:${c.name}`:`l:${c.name}`;recordSeen(authorPl,c);
+      modal(`<div class="privacy-screen">${avatarHTML(authorPl.person)}<h2>${disprover.person.name} Computer showed you:</h2><div class="clue-reveal-card"><small>${c.type}</small><strong>${labelCard(c)}</strong></div><br><button id="doneShow" class="btn success">DONE</button></div>`,m=>m.querySelector('#doneShow').onclick=()=>{closeModal();state.feed.push(`${disprover.person.name} Computer disproved ${authorPl.person.name}'s suggestion.`);renderGame()});return
     }
     modal(`<div class="privacy-screen">${avatarHTML(disprover.person)}<h2>Pass to ${disprover.person.name}</h2><p class="subtext">You can disprove ${authorPl.person.name}'s suggestion. Choose ONE card to show privately.</p><button id="revealMatches" class="btn">I'M ${disprover.person.name.toUpperCase()}</button></div>`,m=>{
       m.querySelector('#revealMatches').onclick=()=>{
@@ -386,8 +494,8 @@ window.avatarHTML=function(person,extra=''){
             modal(`<div class="privacy-screen">${avatarHTML(authorPl.person)}<h2>Pass back to ${authorPl.person.name}</h2><button id="showCard" class="btn">SHOW ME</button></div>`,mm=>{
               mm.querySelector('#showCard').onclick=()=>{
                 const key=c.type==='suspect'?`s:${c.id}`:c.type==='weapon'?`w:${c.name}`:`l:${c.name}`;
-                authorPl.notes[key]='✓';
-                mm.innerHTML=`<h2>${disprover.person.name} showed you:</h2><div class="clue-card" style="font-size:22px">${labelCard(c)}</div><br><button id="doneShow" class="btn success">DONE</button>`;
+                recordSeen(authorPl,c);
+                mm.innerHTML=`<h2>${disprover.person.name} showed you:</h2><div class="clue-reveal-card"><small>${c.type}</small><strong>${labelCard(c)}</strong></div><br><button id="doneShow" class="btn success">DONE</button>`;
                 mm.querySelector('#doneShow').onclick=()=>{
                   closeModal();
                   state.feed.push(`${disprover.person.name} disproved ${authorPl.person.name}'s suggestion.`);
@@ -400,9 +508,9 @@ window.avatarHTML=function(person,extra=''){
       };
     });
   }
-  function accuse(){chooseCase('Final accusation',true,ans=>{const ok=ans.suspect===state.solution.suspect&&ans.weapon===state.solution.weapon&&ans.location===state.solution.location;if(ok){const who=current().person.name;modal(`<div class="status-large"><span class="eyebrow">CASE CLOSED</span><strong>${who} solved it!</strong><p>It was <b>${P().find(p=>p.id===state.solution.suspect).name}</b> in <b>${state.solution.location}</b> with <b>${state.solution.weapon}</b>.</p><button id="againMyst" class="btn success">PLAY AGAIN</button></div>`,m=>m.querySelector('#againMyst').onclick=()=>{closeModal();renderSetup()});}else{current().canAccuse=false;current().eliminated=true;state.feed.push(`${current().person.name} made a wrong accusation and is out of the turn rotation, but must still disprove suggestions.`);modal(`<h2>Wrong accusation</h2><p>You are still part of the investigation and must still disprove suggestions, but you can no longer make another final accusation.</p><button id="wrongDone" class="btn">CONTINUE</button>`,m=>m.querySelector('#wrongDone').onclick=()=>{closeModal();endTurn()})}})}
+  function accuse(){chooseCase('Final accusation',true,ans=>{const suspectName=P().find(p=>p.id===ans.suspect)?.name||ans.suspect;modal(`<h2>Lock in this accusation?</h2><p class="subtext">A wrong final accusation removes you from future turns, although you still disprove cards.</p><div class="case-solution-grid"><div class="case-solution-card"><small>Suspect</small><b>${suspectName}</b></div><div class="case-solution-card"><small>Object</small><b>${ans.weapon}</b></div><div class="case-solution-card"><small>Location</small><b>${ans.location}</b></div></div><div class="button-row"><button id="cancelAccuse" class="btn secondary">GO BACK</button><button id="lockAccuse" class="btn danger">LOCK ACCUSATION</button></div>`,m=>{m.querySelector('#cancelAccuse').onclick=()=>{closeModal();renderGame()};m.querySelector('#lockAccuse').onclick=()=>{closeModal();const ok=ans.suspect===state.solution.suspect&&ans.weapon===state.solution.weapon&&ans.location===state.solution.location;if(ok){const who=current().person.name;modal(`<div class="status-large"><span class="eyebrow">CASE CLOSED</span><strong>${who} solved it!</strong>${solutionCardsHTML()}<button id="againMyst" class="btn success">PLAY AGAIN</button></div>`,mm=>mm.querySelector('#againMyst').onclick=()=>{closeModal();renderSetup()});}else{current().canAccuse=false;current().eliminated=true;state.feed.push(`${current().person.name} made a wrong accusation and is out of the turn rotation, but must still disprove suggestions.`);modal(`<h2>Wrong accusation</h2><p>You are still part of the investigation and must still disprove suggestions, but you can no longer make another final accusation.</p><button id="wrongDone" class="btn">CONTINUE</button>`,mm=>mm.querySelector('#wrongDone').onclick=()=>{closeModal();endTurn()})}}})})}
   function chooseCase(title,includeLocation,cb){let s=P()[0].id,w=state.weaponPool[0],l=L()[0];modal(`<h2>${title}</h2><label class="field-label">Suspect</label><select id="caseS" class="select">${P().map(p=>`<option value="${p.id}">${p.name}</option>`).join('')}</select><br><br><label class="field-label">Object</label><select id="caseW" class="select">${state.weaponPool.map(x=>`<option>${x}</option>`).join('')}</select>${includeLocation?`<br><br><label class="field-label">Location</label><select id="caseL" class="select">${L().map(x=>`<option>${x}</option>`).join('')}</select>`:''}<br><br><button id="caseGo" class="btn ${includeLocation?'danger':'blue'}">${includeLocation?'MAKE ACCUSATION':'MAKE SUGGESTION'}</button>`,m=>m.querySelector('#caseGo').onclick=()=>{s=m.querySelector('#caseS').value;w=m.querySelector('#caseW').value;if(includeLocation)l=m.querySelector('#caseL').value;closeModal();cb({suspect:s,weapon:w,location:l})});}
-  function endTurn(){state.botBusy=false;state.feed.push(chaos[Math.floor(Math.random()*chaos.length)]);let tries=0;do{state.turn=(state.turn+1)%state.players.length;tries++;}while(state.players[state.turn].eliminated&&tries<=state.players.length);state.rolled=null;state.moved=false;state.suggested=false;state.reachable.clear();state.phase='privacy';renderGame()}
+  function endTurn(){state.botBusy=false;state.feed.push(chaos[Math.floor(Math.random()*chaos.length)]);let tries=0;do{state.turn=(state.turn+1)%state.players.length;tries++;}while(state.players[state.turn].eliminated&&tries<=state.players.length);state.rolled=null;state.rolling=false;state.moved=false;state.suggested=false;state.reachable.clear();state.reachCost=new Map();state.phase='privacy';renderGame()}
   function modal(html,bind){closeModal();const back=document.createElement('div');back.className='modal-backdrop';back.id='mModal';back.innerHTML=`<div class="modal">${html}</div>`;document.body.appendChild(back);if(bind)bind(back.querySelector('.modal'));}
   function closeModal(){document.getElementById('mModal')?.remove()}
   window.__MYSTERY_TEST__={nodes,edges,adj,roomIds,reachableWithin,shortest};
@@ -410,7 +518,7 @@ window.avatarHTML=function(person,extra=''){
 })();
 
 </script>
-  <!-- v1.2.3: legacy top-down Prop Hunt removed so only the working third-person engine mounts. -->
+  <!-- Prop Hunt uses the single external third-person engine below. -->
   <script src="/prop-hunt-3d.js"></script>
   <script src="/birthday-climb.js"></script>
 

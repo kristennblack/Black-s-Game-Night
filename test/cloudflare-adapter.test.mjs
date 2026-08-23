@@ -118,12 +118,12 @@ test('Launch UI removes the nonfunctional install button and provides room retry
   assert.match(appSource,/data-action="retryConnect"/);
 });
 
-test('Launch assets advertise v1.2.6-test and use a fresh service-worker cache', async()=>{
+test('Launch assets advertise v1.6.0-prop-mystery-test and use a fresh service-worker cache', async()=>{
   const {readFile}=await import('node:fs/promises');
   const appSource=await readFile(new URL('../public/app.js',import.meta.url),'utf8');
   const swSource=await readFile(new URL('../public/sw.js',import.meta.url),'utf8');
-  assert.match(appSource,/APP_VERSION='1\.2\.6-test'/);
-  assert.match(swSource,/black-family-game-night-v126-test/);
+  assert.match(appSource,/APP_VERSION='1\.6\.0-prop-mystery-test'/);
+  assert.match(swSource,/black-family-game-night-v160-prop-mystery-test/);
 });
 
 
@@ -249,7 +249,7 @@ test('All 16 John look image files are packaged and the UI exposes the full Birt
   const appSource=await readFile(new URL('../public/app.js',import.meta.url),'utf8');
   const cssSource=await readFile(new URL('../public/styles.css',import.meta.url),'utf8');
   assert.match(appSource,/const johnLooks=\[/);
-  assert.match(appSource,/John keeps all 16 original looks plus all 12 approved family packs/);
+  assert.match(appSource,/John gets all 16 Birthday Boy looks/);
   assert.match(appSource,/john-look-16/);
   assert.match(appSource,/selectedLookPicker/);
   assert.match(cssSource,/\.john-look-grid/);
@@ -323,17 +323,31 @@ test('Host can add Easy, Medium or Hard computer players and start solo', async(
 test('Host can choose and later change each computer family character and difficulty', async()=>{
   const {hub}=makeHub();
   const created=await post(hub,'create',{name:'Kristen',gameType:GAME_TYPES.SCREW});
-  const added=await post(hub,'addBot',{roomId:created.roomId,playerToken:created.playerToken,hostToken:created.hostToken,difficulty:'easy',avatar:'gunner'});
+  const added=await post(hub,'addBot',{roomId:created.roomId,playerToken:created.playerToken,hostToken:created.hostToken,difficulty:'easy',avatar:'gunner',outfitVariant:3});
   let s=await state(hub,created.roomId,created.playerToken);
   let bot=s.players.find(p=>p.id===added.playerId);
   assert.equal(bot.avatar,'gunner');
   assert.equal(bot.botDifficulty,'easy');
-  await post(hub,'updateBot',{roomId:created.roomId,playerToken:created.playerToken,hostToken:created.hostToken,targetId:bot.id,avatar:'papa',difficulty:'hard'});
+  assert.equal(bot.outfitVariant,3);
+  await post(hub,'updateBot',{roomId:created.roomId,playerToken:created.playerToken,hostToken:created.hostToken,targetId:bot.id,avatar:'papa',difficulty:'hard',outfitVariant:6});
   s=await state(hub,created.roomId,created.playerToken);
   bot=s.players.find(p=>p.id===added.playerId);
   assert.equal(bot.avatar,'papa');
   assert.equal(bot.botDifficulty,'hard');
+  assert.equal(bot.outfitVariant,6);
   assert.match(bot.name,/Papa/);
+});
+
+test('Play Again restart keeps the room and players but starts a fresh game immediately', async()=>{
+  const {hub}=makeHub();
+  const created=await post(hub,'create',{name:'Kristen',gameType:GAME_TYPES.CAMPFIRE});
+  await post(hub,'addBot',{roomId:created.roomId,hostToken:created.hostToken,difficulty:'medium',avatar:'john',outfitVariant:2});
+  await post(hub,'ready',{roomId:created.roomId,playerToken:created.playerToken,ready:true});
+  await post(hub,'start',{roomId:created.roomId,hostToken:created.hostToken});
+  const internal=await hub.getRoom(created.roomId);internal.game.phase='gameOver';internal.game.extra.phase='gameOver';internal.game.winnerIds=[internal.hostPlayerId];
+  await post(hub,'restart',{roomId:created.roomId,playerToken:created.playerToken,hostToken:created.hostToken});
+  const s=await state(hub,created.roomId,created.playerToken);
+  assert.equal(s.id,created.roomId);assert.equal(s.players.length,2);assert.notEqual(s.game.phase,'gameOver');assert.equal(s.game.extra.type,GAME_TYPES.CAMPFIRE);assert.ok(s.players.find(p=>p.isBot&&p.avatar==='john'&&p.outfitVariant===2));
 });
 
 test('botTick advances a computer turn without exposing hidden hands', async()=>{

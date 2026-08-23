@@ -1,6 +1,6 @@
 /*
  * Black Family Game Night - Family Prop Hunt 3D gameplay slice
- * v1.2.5-test
+ * v1.6.0-prop-mystery-test
  *
  * Self-contained third-person software-3D renderer using Canvas 2D.
  * This deliberately avoids an external 3D dependency so the Cloudflare static
@@ -14,7 +14,7 @@
   const FAMILY=window.FAMILY;
   const P=()=>[...FAMILY.people,...FAMILY.supports];
   let root=null,canvas=null,ctx=null,raf=0,last=0,state=null;
-  let setupSelection={charId:'john',outfit:0,count:6,botConfigs:[]};
+  let setupSelection={charId:'john',outfit:0,style:'default',count:6,cameraSensitivity:1,botConfigs:[]};
   const keys=Object.create(null);
   const joy={x:0,z:0,active:false,id:null};
   const touchMove={forward:false,back:false,left:false,right:false};
@@ -148,21 +148,27 @@
   }
   function keysClear(){for(const k of Object.keys(keys))delete keys[k];joy.x=joy.z=0;joy.active=false;pointer.active=false;touchMove.forward=touchMove.back=touchMove.left=touchMove.right=false;}
 
-  function phSprite(p){return `/characters3d/${p.id}.png`}
-  const CHARACTER_SPRITES={};
-  function preloadCharacterSprites(){for(const person of P()){const img=new Image();img.decoding='async';img.src=phSprite(person);CHARACTER_SPRITES[person.id]=img;}}
+  const STYLE_PACKS=[['default','Default'],['anime','Anime'],['western','Western'],['rich','Rich'],['homeless','Homeless'],['country','Country'],['chinese','Chinese-inspired'],['african-american','African American-inspired'],['native-american','Native American-inspired'],['south-asian','South Asian-inspired'],['korean','Korean-inspired'],['superhero','Superhero'],['criminal','Criminal Crew']];
+  const FULL_BODY_STYLES=new Set(['country','rich','rustic']);
+  function avatarPath(id){return id==='john'?'/avatars/john-black.png':`/avatars/${id}.png`;}
+  function stylePortrait(p,style='default'){return style==='default'?avatarPath(p.id):`/avatars/family-packs/${style}/${p.id}.jpg`;}
+  function phSprite(p,style='default'){return FULL_BODY_STYLES.has(style)?`/characters3d/themes/${style}/${p.id}.png`:`/characters3d/${p.id}.png`;}
+  const CHARACTER_SPRITES=new Map();
+  const BODY_SPRITES=CHARACTER_SPRITES;
+  function characterSprite(person,style='default'){const key=`${style}:${person.id}`;if(CHARACTER_SPRITES.has(key))return CHARACTER_SPRITES.get(key);const img=new Image();img.decoding='async';img.src=phSprite(person,style);CHARACTER_SPRITES.set(key,img);return img;}
+  function preloadCharacterSprites(){for(const person of P())for(const style of ['default','country','rich'])characterSprite(person,style);}
   preloadCharacterSprites();
-  function phEnsureBots(count,humanId){const need=Math.max(0,count-1),pool=P().filter(p=>p.id!==humanId);while(setupSelection.botConfigs.length<need){const q=pool[setupSelection.botConfigs.length%pool.length];setupSelection.botConfigs.push({charId:q.id,difficulty:'medium'})}setupSelection.botConfigs.length=need}
-  function phBotRows(){return setupSelection.botConfigs.map((b,i)=>`<div class="ph3-bot-row"><span>Computer ${i+1}</span><select class="select" data-ph3-bot-char="${i}">${P().map(p=>`<option value="${p.id}" ${p.id===b.charId?'selected':''}>${p.name}</option>`).join('')}</select><select class="select" data-ph3-bot-diff="${i}"><option value="easy" ${b.difficulty==='easy'?'selected':''}>Easy</option><option value="medium" ${b.difficulty==='medium'?'selected':''}>Medium</option><option value="hard" ${b.difficulty==='hard'?'selected':''}>Hard</option></select></div>`).join('')}
-  function phCaptureBots(){root?.querySelectorAll('[data-ph3-bot-char]').forEach(el=>{const i=Number(el.dataset.ph3BotChar);if(setupSelection.botConfigs[i])setupSelection.botConfigs[i].charId=el.value});root?.querySelectorAll('[data-ph3-bot-diff]').forEach(el=>{const i=Number(el.dataset.ph3BotDiff);if(setupSelection.botConfigs[i])setupSelection.botConfigs[i].difficulty=el.value})}
-  function phBindBotRows(){root.querySelectorAll('[data-ph3-bot-char]').forEach(el=>el.onchange=()=>{setupSelection.botConfigs[Number(el.dataset.ph3BotChar)].charId=el.value});root.querySelectorAll('[data-ph3-bot-diff]').forEach(el=>el.onchange=()=>{setupSelection.botConfigs[Number(el.dataset.ph3BotDiff)].difficulty=el.value})}
+  function phEnsureBots(count,humanId){const need=Math.max(0,count-1),pool=P().filter(p=>p.id!==humanId);while(setupSelection.botConfigs.length<need){const q=pool[setupSelection.botConfigs.length%pool.length];setupSelection.botConfigs.push({charId:q.id,style:'default',difficulty:'medium'})}setupSelection.botConfigs.length=need}
+  function phBotRows(){return setupSelection.botConfigs.map((b,i)=>`<div class="ph3-bot-row"><span>Computer ${i+1}</span><select class="select" data-ph3-bot-char="${i}">${P().map(p=>`<option value="${p.id}" ${p.id===b.charId?'selected':''}>${p.name}</option>`).join('')}</select><select class="select" data-ph3-bot-style="${i}">${STYLE_PACKS.map(([id,label])=>`<option value="${id}" ${id===(b.style||'default')?'selected':''}>${label}</option>`).join('')}</select><select class="select" data-ph3-bot-diff="${i}"><option value="easy" ${b.difficulty==='easy'?'selected':''}>Easy</option><option value="medium" ${b.difficulty==='medium'?'selected':''}>Medium</option><option value="hard" ${b.difficulty==='hard'?'selected':''}>Hard</option></select></div>`).join('')}
+  function phCaptureBots(){root?.querySelectorAll('[data-ph3-bot-char]').forEach(el=>{const i=Number(el.dataset.ph3BotChar);if(setupSelection.botConfigs[i])setupSelection.botConfigs[i].charId=el.value});root?.querySelectorAll('[data-ph3-bot-style]').forEach(el=>{const i=Number(el.dataset.ph3BotStyle);if(setupSelection.botConfigs[i])setupSelection.botConfigs[i].style=el.value});root?.querySelectorAll('[data-ph3-bot-diff]').forEach(el=>{const i=Number(el.dataset.ph3BotDiff);if(setupSelection.botConfigs[i])setupSelection.botConfigs[i].difficulty=el.value})}
+  function phBindBotRows(){root.querySelectorAll('[data-ph3-bot-char]').forEach(el=>el.onchange=()=>{setupSelection.botConfigs[Number(el.dataset.ph3BotChar)].charId=el.value});root.querySelectorAll('[data-ph3-bot-style]').forEach(el=>el.onchange=()=>{setupSelection.botConfigs[Number(el.dataset.ph3BotStyle)].style=el.value});root.querySelectorAll('[data-ph3-bot-diff]').forEach(el=>el.onchange=()=>{setupSelection.botConfigs[Number(el.dataset.ph3BotDiff)].difficulty=el.value})}
 
   function renderSetup(){
     const defaultSelected=setupSelection.charId||'john';
     root.innerHTML=`
       <div class="game-title-row"><div><span class="eyebrow">THIRD-PERSON 3D FAMILY GAME</span><h1>Family Prop Hunt</h1><p class="subtext">Run as a visible full-body family character, jump and climb the map, transform into the exact same illustrated props you see in the world, and hunt in third person on phone or computer.</p></div><span class="pill">1–13 family characters</span></div>
       <div class="setup-grid">
-        <section class="panel panel-pad"><h2>Choose your character</h2><p class="subtext">Choose the family member or dog first. Outfit choices appear on the next screen.</p><div id="ph3Chars" class="ph3-character-grid">${P().map(p=>`<button class="ph3-character-card ${p.id===defaultSelected?'selected':''}" data-id="${p.id}"><div><img src="${phSprite(p)}" alt="${p.name} full-body character"></div><strong>${p.name}</strong><small>${p.dog?'Animated dog player':(OUTFITS[p.id]?.label||'animated family character')}</small></button>`).join('')}</div></section>
+        <section class="panel panel-pad"><h2>Choose your character</h2><p class="subtext">Choose the family member or dog first. Outfit choices appear on the next screen.</p><div id="ph3Chars" class="ph3-character-grid">${P().map(p=>`<button class="ph3-character-card ${p.id===defaultSelected?'selected':''}" data-id="${p.id}"><div><img src="${phSprite(p,'default')}" alt="${p.name} full-body character"></div><strong>${p.name}</strong><small>${p.dog?'Animated dog player':(OUTFITS[p.id]?.label||'animated family character')}</small></button>`).join('')}</div></section>
         <section class="panel panel-pad"><h2>Approved Prop Hunt look</h2><img src="/prop-hunt-approved-scene.png" alt="Approved cartoon cabin Prop Hunt gameplay look" style="width:100%;border-radius:16px;border:1px solid var(--line)"><p class="subtext">Full-body family avatars and illustrated props now use the same art language during gameplay and disguises.</p><button id="ph3Next" class="btn success" style="width:100%;margin-top:12px">NEXT: OUTFIT & MATCH</button></section>
       </div>`;
     root.querySelectorAll('#ph3Chars [data-id]').forEach(b=>b.addEventListener('click',()=>{setupSelection.charId=b.dataset.id;root.querySelectorAll('#ph3Chars [data-id]').forEach(x=>x.classList.toggle('selected',x===b));const next=root.querySelector('#ph3Next');if(next)next.textContent=`NEXT: ${b.querySelector('strong')?.textContent||'CHARACTER'} OUTFIT & MATCH`;}));
@@ -173,10 +179,14 @@
     const charId=setupSelection.charId||fallback,person=P().find(p=>p.id===charId)||P()[0];phEnsureBots(setupSelection.count,person.id);
     const labels=person.dog?['Classic','Playful','Rugged','Party']:['Casual','Western','Plaid','Sporty','Winter','Dressy'];
     const imageFor=i=>person.id==='john'?`/avatars/styles/john-look-${String(Math.min(16,i+1)).padStart(2,'0')}.jpg`:`/avatars/styles/${person.id}-${['cute','rugged','glam','goofy'][i%4]}.jpg`;
-    root.innerHTML=`<div class="game-title-row"><div><span class="eyebrow">CHARACTER LOCK-IN</span><h1>${person.name}</h1><p class="subtext">Pick an outfit, then choose exactly which family characters the computer players will use.</p></div><button id="ph3Back" class="btn secondary">← Back to Characters</button></div><div class="setup-grid"><section class="panel panel-pad"><div class="ph3-outfit-figure"><img src="${phSprite(person)}" alt="${person.name}"><div><h2>${person.name}</h2><p class="subtext">Approved full-body 3D character</p></div></div><h3>Outfit options</h3><div class="look-grid">${labels.map((n,i)=>`<button class="look-choice ${setupSelection.outfit===i?'selected':''}" data-ph3-outfit="${i}"><img src="${imageFor(i)}" alt="${person.name} ${n}"><span><b>${i+1}</b>${n}</span></button>`).join('')}</div></section><section class="panel panel-pad"><h2>Match setup</h2><label class="field-label">Total players</label><select id="ph3Count" class="select">${Array.from({length:12},(_,i)=>i+2).map(n=>`<option ${n===setupSelection.count?'selected':''}>${n}</option>`).join('')}</select><br><br><label class="field-label">Mode</label><select id="ph3Mode" class="select"><option value="classic">Classic · caught hiders spectate</option><option value="chaos">Family Chaos · caught hiders join hunters</option></select><br><br><label class="field-label">3D map</label><select id="ph3Map" class="select"><option value="rotate">Rotate all four maps</option>${Object.entries(MAPS).map(([k,m])=>`<option value="${k}">${m.name}</option>`).join('')}</select><div class="ph3-bot-head"><strong>Computer players</strong><span>Choose character + difficulty for each seat</span></div><div id="ph3BotRows" class="ph3-bot-rows">${phBotRows()}</div><div class="stat-card" style="margin-top:14px"><strong>Detailed movement active</strong><p class="subtext">Third-person camera · jump physics · climbable benches/crates/tractors/hay/trailers · prop lock · 3-hit health · sparks · 3 disguise changes · 10 decoys · flash per disguise.</p></div><button id="ph3Start" class="btn success" style="width:100%;margin-top:12px">START 3D MATCH</button></section></div>`;
-    root.querySelector('#ph3Back').onclick=renderSetup;root.querySelectorAll('[data-ph3-outfit]').forEach(b=>b.onclick=()=>{setupSelection.outfit=Number(b.dataset.ph3Outfit);root.querySelectorAll('[data-ph3-outfit]').forEach(x=>x.classList.toggle('selected',x===b));});const count=root.querySelector('#ph3Count');count.onchange=()=>{phCaptureBots();setupSelection.count=Number(count.value);phEnsureBots(setupSelection.count,person.id);renderPropOutfit()};phBindBotRows();root.querySelector('#ph3Start').onclick=()=>{phCaptureBots();startMatch({charId:person.id,outfit:setupSelection.outfit,count:setupSelection.count,botConfigs:setupSelection.botConfigs.map(x=>({...x})),mode:root.querySelector('#ph3Mode').value,mapKey:root.querySelector('#ph3Map').value})};
+    root.innerHTML=`<div class="game-title-row"><div><span class="eyebrow">CHARACTER LOCK-IN</span><h1>${person.name}</h1><p class="subtext">Pick the avatar look you want to represent, then tune controls and computer players.</p></div><button id="ph3Back" class="btn secondary">← Back to Characters</button></div><div class="setup-grid"><section class="panel panel-pad"><div class="ph3-outfit-figure"><img src="${phSprite(person,setupSelection.style)}" alt="${person.name}"><div><h2>${person.name}</h2><p class="subtext">The game uses a full-body movement figure. Approved portrait styles also appear in the HUD and player setup.</p></div></div><h3>Avatar style</h3><div class="ph3-style-grid">${STYLE_PACKS.map(([id,label])=>`<button class="ph3-style-choice ${setupSelection.style===id?'selected':''}" data-ph3-style="${id}"><img src="${stylePortrait(person,id)}" alt="${person.name} ${label}"><span>${label}</span></button>`).join('')}</div><h3>Outfit accent</h3><div class="look-grid">${labels.map((n,i)=>`<button class="look-choice ${setupSelection.outfit===i?'selected':''}" data-ph3-outfit="${i}"><img src="${imageFor(i)}" alt="${person.name} ${n}"><span><b>${i+1}</b>${n}</span></button>`).join('')}</div></section><section class="panel panel-pad"><h2>Match setup</h2><label class="field-label">Total players</label><select id="ph3Count" class="select">${Array.from({length:12},(_,i)=>i+2).map(n=>`<option ${n===setupSelection.count?'selected':''}>${n}</option>`).join('')}</select><br><br><label class="field-label">Mode</label><select id="ph3Mode" class="select"><option value="classic">Classic · caught hiders spectate</option><option value="chaos">Family Chaos · caught hiders join hunters</option></select><br><br><label class="field-label">3D map</label><select id="ph3Map" class="select"><option value="rotate">Rotate all four maps</option>${Object.entries(MAPS).map(([k,m])=>`<option value="${k}">${m.name}</option>`).join('')}</select><br><br><label class="field-label">Camera sensitivity</label><select id="ph3Sensitivity" class="select"><option value="0.72" ${setupSelection.cameraSensitivity===.72?'selected':''}>Gentle</option><option value="1" ${setupSelection.cameraSensitivity===1?'selected':''}>Normal</option><option value="1.35" ${setupSelection.cameraSensitivity===1.35?'selected':''}>Fast</option></select><div class="ph3-bot-head"><strong>Computer players</strong><span>Character · look · difficulty</span></div><div id="ph3BotRows" class="ph3-bot-rows">${phBotRows()}</div><div class="stat-card" style="margin-top:14px"><strong>Movement overhaul active</strong><p class="subtext">Large analog joystick · D-pad backup · camera drag zone · jump buffer/coyote time · sprint toggle · camera reset · climbable map geometry · identical disguise/scenery prop art.</p></div><button id="ph3Start" class="btn success" style="width:100%;margin-top:12px">START 3D MATCH</button></section></div>`;
+    root.querySelector('#ph3Back').onclick=renderSetup;
+    root.querySelectorAll('[data-ph3-style]').forEach(b=>b.onclick=()=>{setupSelection.style=b.dataset.ph3Style;renderPropOutfit(person.id)});
+    root.querySelectorAll('[data-ph3-outfit]').forEach(b=>b.onclick=()=>{setupSelection.outfit=Number(b.dataset.ph3Outfit);root.querySelectorAll('[data-ph3-outfit]').forEach(x=>x.classList.toggle('selected',x===b));});
+    const count=root.querySelector('#ph3Count');count.onchange=()=>{phCaptureBots();setupSelection.count=Number(count.value);phEnsureBots(setupSelection.count,person.id);renderPropOutfit(person.id)};phBindBotRows();
+    root.querySelector('#ph3Sensitivity').onchange=e=>setupSelection.cameraSensitivity=Number(e.target.value)||1;
+    root.querySelector('#ph3Start').onclick=()=>{phCaptureBots();startMatch({charId:person.id,outfit:setupSelection.outfit,style:setupSelection.style,count:setupSelection.count,cameraSensitivity:setupSelection.cameraSensitivity,botConfigs:setupSelection.botConfigs.map(x=>({...x})),mode:root.querySelector('#ph3Mode').value,mapKey:root.querySelector('#ph3Map').value})};
   }
-
   function startMatch(opts){
     const human=P().find(p=>p.id===opts.charId)||P()[0];phEnsureBots(opts.count,human.id);const configs=(opts.botConfigs?.length?opts.botConfigs:setupSelection.botConfigs).slice(0,opts.count-1);const family=[human,...configs.map(c=>P().find(p=>p.id===c.charId)||P()[1])];opts.botConfigs=configs;
     state={opts,family,round:0,wins:{hiders:0,hunters:0},feed:[],running:true,mapKey:null,map:null,player:null,actors:[],props:[],animals:[],effects:[],camera:{yaw:0,pitch:.28,distance:355,fov:720},phase:'hide',phaseLeft:30*TEST_SCALE,tauntIn:30*TEST_SCALE,shotCooldown:0,locked:false,nearProp:null,roundResult:null,botHunterMemory:[],screenShake:0};
@@ -191,7 +201,7 @@
     const huntersNeeded=state.family.length<=5?1:2;
     // Round one deliberately starts the human as a hider so movement, jumping and prop controls are immediately testable. Rotation remains fair across later rounds.
     const hunterIndexes=[];const rotationBase=((state.round-1)*huntersNeeded+1)%state.family.length;for(let j=0;j<huntersNeeded;j++)hunterIndexes.push((rotationBase+j)%state.family.length);
-    state.actors=state.family.map((person,i)=>makeActor(person,i,hunterIndexes.includes(i)?'hunter':'hider',i!==0,i===0?'human':(state.opts.botConfigs[i-1]?.difficulty||'medium')));
+    state.actors=state.family.map((person,i)=>makeActor(person,i,hunterIndexes.includes(i)?'hunter':'hider',i!==0,i===0?'human':(state.opts.botConfigs[i-1]?.difficulty||'medium'),i===0?(state.opts.style||'default'):(state.opts.botConfigs[i-1]?.style||'default')));
     state.player=state.actors[0];state.player.bot=false;
     state.props=buildProps(state.map);state.animals=buildAnimals(state.map);scatterActors();placeHumanNearPlayableProp();
     for(const a of state.actors.filter(a=>a.role==='hider'&&a.bot))botChooseInitialProp(a);
@@ -200,8 +210,8 @@
     renderGame();
   }
 
-  function makeActor(person,index,role,bot,botDifficulty='medium'){
-    return{person,index,role,bot,botDifficulty,alive:true,x:0,y:0,z:0,vy:0,yaw:0,r:22,height:person.dog?62:118,speed:role==='hunter'?175:165,runSpeed:role==='hunter'?245:230,health:3,prop:null,propShape:null,propChanges:3,decoys:10,flash:1,locked:false,ammo:30,reload:0,blind:0,moveAmount:0,jumpBuffer:0,coyote:.12,ai:{target:null,timer:0,detected:null,shot:0,decoyTimer:rand(5,10),changeTimer:rand(8,15)}};
+  function makeActor(person,index,role,bot,botDifficulty='medium',style='default'){
+    return{person,index,role,bot,botDifficulty,style,alive:true,x:0,y:0,z:0,vy:0,yaw:0,r:22,height:person.dog?62:118,speed:role==='hunter'?182:172,runSpeed:role==='hunter'?270:255,sprintToggle:false,health:3,prop:null,propShape:null,propChanges:3,decoys:10,flash:1,locked:false,ammo:30,reload:0,blind:0,moveAmount:0,jumpBuffer:0,coyote:.12,ai:{target:null,timer:0,detected:null,shot:0,decoyTimer:rand(5,10),changeTimer:rand(8,15)}};
   }
 
   function scatterActors(){
@@ -231,25 +241,30 @@
   }
 
   function renderGame(){
+    const playerPortrait=stylePortrait(state.player.person,state.player.style||'default');
     root.innerHTML=`<div class="game-title-row"><div><span class="eyebrow">ROUND ${state.round} · THIRD-PERSON</span><h1>Family Prop Hunt</h1><p class="subtext">${state.map.name} · ${state.map.ambient}</p></div><div class="button-row"><button id="ph3Restart" class="btn secondary">New match</button></div></div>
       <div class="ph3d-shell">
         <section class="ph3d-stage" id="ph3Stage">
           <canvas class="ph3d-canvas" id="ph3Canvas" aria-label="Third-person Family Prop Hunt game view"></canvas>
+          <div class="ph3d-player-card"><img src="${playerPortrait}" alt="${state.player.person.name} avatar"><span><b>${state.player.person.name}</b><small>${STYLE_PACKS.find(x=>x[0]===(state.player.style||'default'))?.[1]||'Default'}</small></span></div>
           <div class="ph3d-top"><div class="ph3d-chip role" id="ph3Role"></div><div class="ph3d-chip map" id="ph3Phase"></div><div class="ph3d-chip health" id="ph3Health"></div></div>
-          <div class="ph3d-camera-help">Computer: WASD move · drag to look · Space jump · E prop · C decoy · Q flash · X lock · R reload</div><div class="ph3d-move-status" id="ph3MoveStatus"></div>
+          <div class="ph3d-camera-help">Computer: WASD move · drag to look · Space jump · Shift sprint · E prop · C decoy · Q flash · X lock · R reload</div><div class="ph3d-look-hint">DRAG HERE TO LOOK</div><div class="ph3d-move-status" id="ph3MoveStatus"></div>
+          <button type="button" class="ph3d-camera-reset" id="ph3CameraReset">↻ CAMERA</button>
           <div class="ph3d-crosshair" id="ph3Cross"></div><div class="ph3d-hit" id="ph3Hit">✦</div><div class="ph3d-flash" id="ph3Flash"></div><div class="ph3d-prop-prompt" id="ph3Prompt"></div>
           <div class="ph3d-controls">
-            <div class="ph3d-move-cluster"><div class="ph3d-joystick" id="ph3Joy"><div class="ph3d-stick" id="ph3Stick"></div></div><div class="ph3d-dpad" aria-label="Movement buttons"><button type="button" data-ph3-move="forward" aria-label="Move forward">▲</button><button type="button" data-ph3-move="left" aria-label="Move left">◀</button><button type="button" data-ph3-move="back" aria-label="Move back">▼</button><button type="button" data-ph3-move="right" aria-label="Move right">▶</button></div></div>
+            <div class="ph3d-move-cluster"><div class="ph3d-control-label">MOVE</div><div class="ph3d-joystick" id="ph3Joy"><div class="ph3d-stick" id="ph3Stick"></div></div><div class="ph3d-dpad" aria-label="Movement buttons"><button type="button" data-ph3-move="forward" aria-label="Move forward">▲</button><button type="button" data-ph3-move="left" aria-label="Move left">◀</button><button type="button" data-ph3-move="back" aria-label="Move back">▼</button><button type="button" data-ph3-move="right" aria-label="Move right">▶</button></div></div>
             <div class="ph3d-actions">
-              <button class="ph3d-act primary" id="ph3Shoot">SHOOT</button><button class="ph3d-act jump" id="ph3Jump">JUMP</button><button class="ph3d-act prop" id="ph3Prop">PROP</button>
+              <button class="ph3d-act primary" id="ph3Shoot">SHOOT</button><button class="ph3d-act jump ph3d-big-jump" id="ph3Jump">↑<span>JUMP</span></button><button class="ph3d-act prop" id="ph3Prop">PROP</button>
               <button class="ph3d-act flash" id="ph3FlashBtn">FLASH</button><button class="ph3d-act" id="ph3Decoy">DECOY</button><button class="ph3d-act lock" id="ph3Lock">LOCK</button>
+              <button class="ph3d-act sprint" id="ph3Sprint">SPRINT</button>
             </div>
           </div>
         </section>
         <aside class="ph3d-side">
           <div class="ph3d-mini"><h3>Loadout</h3><div class="ph3d-readout" id="ph3Load"></div></div>
-          <div class="ph3d-mini"><h3>3D movement</h3><div class="ph3d-legend"><span>Furniture and props are climbable</span><span>Gold glow = prop target</span><span>Low objects auto-step</span><span>Jump chains reach higher spots</span></div></div>
-          <div class="ph3d-mini"><h3>Family match</h3><div class="round-track">${[1,2,3,4,5,6].map(n=>`<div class="round-dot ${n<state.round?'done':n===state.round?'current':''}"></div>`).join('')}</div><p class="subtext">Computer players use the family characters and individual difficulty settings you chose.</p></div>
+          <div class="ph3d-mini"><h3>Movement & camera</h3><div class="ph3d-legend"><span>Left joystick = move</span><span>Drag open screen = look</span><span>Big JUMP = climb</span><span>SPRINT toggles run</span><span>↻ Camera = behind player</span><span>D-pad = backup movement</span></div></div>
+          <div class="ph3d-mini"><h3>World rules</h3><div class="ph3d-legend"><span>Furniture/props are climbable</span><span>Gold glow = disguise target</span><span>Low objects auto-step</span><span>Locked props stay perfectly still</span></div></div>
+          <div class="ph3d-mini"><h3>Family match</h3><div class="round-track">${[1,2,3,4,5,6].map(n=>`<div class="round-dot ${n<state.round?'done':n===state.round?'current':''}"></div>`).join('')}</div><p class="subtext">Computer players use the character, look and difficulty you selected.</p></div>
           <div class="ph3d-mini"><h3>Round feed</h3><div class="ph3d-feed" id="ph3Feed"></div></div>
         </aside>
       </div>`;
@@ -258,11 +273,10 @@
     bindControls();resizeCanvas();window.addEventListener('resize',resizeCanvas);window.addEventListener('keydown',onKeyDown);window.addEventListener('keyup',onKeyUp);
     updateHud();last=performance.now();raf=requestAnimationFrame(loop);
   }
-
   function bindControls(){
     const stage=root.querySelector('#ph3Stage'),j=root.querySelector('#ph3Joy'),stick=root.querySelector('#ph3Stick');
     let touchJoyId=null;
-    const applyJoyPoint=(clientX,clientY)=>{const r=j.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,max=Math.max(30,r.width*.34);let dx=clientX-cx,dy=clientY-cy;const len=Math.hypot(dx,dy)||1,k=Math.min(1,max/len);dx*=k;dy*=k;joy.x=clamp(dx/max,-1,1);joy.z=clamp(-dy/max,-1,1);stick.style.transform=`translate(${dx}px,${dy}px)`;j.classList.add('active');};
+    const applyJoyPoint=(clientX,clientY)=>{const r=j.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,max=Math.max(34,r.width*.37);let dx=clientX-cx,dy=clientY-cy;const len=Math.hypot(dx,dy)||1,k=Math.min(1,max/len);dx*=k;dy*=k;const raw=clamp(Math.hypot(dx,dy)/max,0,1),mag=raw<.07?0:Math.pow((raw-.07)/.93,.86),ux=len?dx/(Math.hypot(dx,dy)||1):0,uz=len?-dy/(Math.hypot(dx,dy)||1):0;joy.x=ux*mag;joy.z=uz*mag;stick.style.transform=`translate(${dx}px,${dy}px)`;j.classList.add('active');};
     const joyEnd=(pointerId=null)=>{if(pointerId!=null&&joy.id!=null&&pointerId!==joy.id)return;joy.active=false;joy.id=null;joy.x=joy.z=0;stick.style.transform='translate(0,0)';j.classList.remove('active');};
 
     // Pointer Events path for modern desktop/mobile browsers. Listen on window too so
@@ -283,11 +297,13 @@
     root.querySelectorAll('[data-ph3-move]').forEach(btn=>{const dir=btn.dataset.ph3Move,on=e=>{e.preventDefault();touchMove[dir]=true;btn.classList.add('pressed')},off=e=>{if(e)e.preventDefault();touchMove[dir]=false;btn.classList.remove('pressed')};btn.addEventListener('pointerdown',on);btn.addEventListener('pointerup',off);btn.addEventListener('pointercancel',off);btn.addEventListener('pointerleave',e=>{if(e.buttons===0)off(e)});btn.addEventListener('touchstart',on,{passive:false});btn.addEventListener('touchend',off,{passive:false});});
     stage.addEventListener('contextmenu',e=>e.preventDefault());
     stage.addEventListener('pointerdown',e=>{if(e.target.closest('button')||e.target.closest('#ph3Joy')||e.target.closest('.ph3d-dpad'))return;if(e.pointerType==='mouse'&&e.button!==2)return;pointer.active=true;pointer.id=e.pointerId;pointer.lastX=e.clientX;pointer.lastY=e.clientY;try{stage.setPointerCapture(e.pointerId)}catch{}});
-    stage.addEventListener('pointermove',e=>{if(!pointer.active||e.pointerId!==pointer.id)return;const dx=e.clientX-pointer.lastX,dy=e.clientY-pointer.lastY;pointer.lastX=e.clientX;pointer.lastY=e.clientY;state.camera.yaw=wrapAngle(state.camera.yaw-dx*.006);state.camera.pitch=clamp(state.camera.pitch-dy*.004,-.12,.72)});
+    stage.addEventListener('pointermove',e=>{if(!pointer.active||e.pointerId!==pointer.id)return;const dx=e.clientX-pointer.lastX,dy=e.clientY-pointer.lastY;pointer.lastX=e.clientX;pointer.lastY=e.clientY;const sens=state.opts.cameraSensitivity||1;state.camera.yaw=wrapAngle(state.camera.yaw-dx*.006*sens);state.camera.pitch=clamp(state.camera.pitch-dy*.004*sens,-.12,.72)});
     const endPointer=e=>{if(e.pointerId===pointer.id){pointer.active=false;pointer.id=null}};stage.addEventListener('pointerup',endPointer);stage.addEventListener('pointercancel',endPointer);stage.addEventListener('lostpointercapture',()=>{pointer.active=false;pointer.id=null});
     const bindTap=(sel,fn)=>{const b=root.querySelector(sel);if(!b)return;let lastTouch=0;b.addEventListener('touchend',e=>{e.preventDefault();lastTouch=performance.now();fn()},{passive:false});b.addEventListener('click',e=>{e.preventDefault();if(performance.now()-lastTouch<450)return;fn()})};
     const shootBtn=root.querySelector('#ph3Shoot');if(shootBtn){const start=e=>{e.preventDefault();shoot();if(shootTimer)clearInterval(shootTimer);shootTimer=setInterval(shoot,110);shootBtn.classList.add('pressed')},stopShoot=e=>{if(e)e.preventDefault();if(shootTimer)clearInterval(shootTimer);shootTimer=0;shootBtn.classList.remove('pressed')};shootBtn.addEventListener('pointerdown',start);shootBtn.addEventListener('pointerup',stopShoot);shootBtn.addEventListener('pointercancel',stopShoot);shootBtn.addEventListener('touchstart',start,{passive:false});shootBtn.addEventListener('touchend',stopShoot,{passive:false});}
     bindTap('#ph3Jump',jump);bindTap('#ph3Prop',changeProp);bindTap('#ph3Decoy',dropDecoy);bindTap('#ph3FlashBtn',flash);bindTap('#ph3Lock',toggleLock);
+    bindTap('#ph3Sprint',()=>{const p=state?.player;if(!p)return;p.sprintToggle=!p.sprintToggle;APP.toast(p.sprintToggle?'Sprint ON':'Sprint OFF');updateHud();});
+    bindTap('#ph3CameraReset',()=>{if(!state?.player)return;state.camera.yaw=state.player.yaw;state.camera.pitch=.28;APP.toast('Camera centered');});
     canvas.addEventListener('mousedown',e=>{if(e.button===0&&!pointer.active)shoot()});
   }
 
@@ -318,7 +334,7 @@
     let ix=(keys.KeyD?1:0)-(keys.KeyA?1:0)+(touchMove.right?1:0)-(touchMove.left?1:0)+joy.x,iz=(keys.KeyW?1:0)-(keys.KeyS?1:0)+(touchMove.forward?1:0)-(touchMove.back?1:0)+joy.z;
     if(state.phase==='hide'&&p.role==='hunter'){ix=iz=0;}if(p.blind>0){ix*=.6;iz*=.6;}
     const len=Math.hypot(ix,iz);if(len>1){ix/=len;iz/=len;}
-    const locked=p.role==='hider'&&p.prop&&p.locked;const sprint=keys.ShiftLeft||keys.ShiftRight;const speed=sprint?p.runSpeed:p.speed;
+    const locked=p.role==='hider'&&p.prop&&p.locked;const sprint=keys.ShiftLeft||keys.ShiftRight||p.sprintToggle;const speed=sprint?p.runSpeed:p.speed;
     if(!locked&&len>.05){
       const sy=Math.sin(state.camera.yaw),cy=Math.cos(state.camera.yaw);const dx=(ix*cy+iz*sy),dz=(iz*cy-ix*sy);const dl=Math.hypot(dx,dz)||1;
       const nx=dx/dl,nz=dz/dl;p.yaw=Math.atan2(nx,nz);tryMove(p,nx*speed*dt,nz*speed*dt);p.moveAmount=lerp(p.moveAmount,1,.2);
@@ -453,8 +469,8 @@
     const isHider=p.role==='hider',hunterWaiting=p.role==='hunter'&&state.phase==='hide';for(const id of ['ph3Prop','ph3FlashBtn','ph3Decoy','ph3Lock']){const b=root.querySelector('#'+id);if(b)b.disabled=!isHider;}const shoot=root.querySelector('#ph3Shoot');if(shoot)shoot.disabled=p.role!=='hunter'||state.phase!=='hunt';const jumpBtn=root.querySelector('#ph3Jump');if(jumpBtn)jumpBtn.disabled=hunterWaiting||p.locked;
     const flashOverlay=root.querySelector('#ph3Flash');if(flashOverlay)flashOverlay.classList.toggle('on',p.blind>0);
     if(prompt){if(isHider&&state.nearProp){prompt.textContent=`PROP: ${state.nearProp.type} · tap PROP`;prompt.classList.add('on')}else prompt.classList.remove('on');}
-    const lock=root.querySelector('#ph3Lock');if(lock)lock.textContent=p.locked?'UNLOCK':'LOCK';
-    if(moveStatus){if(hunterWaiting){moveStatus.textContent=`HUNTER HOLD · release in ${Math.max(0,Math.ceil(state.phaseLeft/TEST_SCALE))}s`;moveStatus.className='ph3d-move-status waiting'}else if(p.locked){moveStatus.textContent='PROP LOCKED · tap UNLOCK to move';moveStatus.className='ph3d-move-status locked'}else{moveStatus.textContent=isHider?'MOVE NOW · joystick, arrows or WASD':'MOVE & HUNT · joystick, arrows or WASD';moveStatus.className='ph3d-move-status ready'}}
+    const lock=root.querySelector('#ph3Lock');if(lock)lock.textContent=p.locked?'UNLOCK':'LOCK';const sprintBtn=root.querySelector('#ph3Sprint');if(sprintBtn){sprintBtn.textContent=p.sprintToggle?'SPRINT ✓':'SPRINT';sprintBtn.classList.toggle('pressed',!!p.sprintToggle);sprintBtn.disabled=hunterWaiting||p.locked;}
+    if(moveStatus){if(hunterWaiting){moveStatus.textContent=`HUNTER HOLD · release in ${Math.max(0,Math.ceil(state.phaseLeft/TEST_SCALE))}s`;moveStatus.className='ph3d-move-status waiting'}else if(p.locked){moveStatus.textContent='PROP LOCKED · tap UNLOCK to move';moveStatus.className='ph3d-move-status locked'}else{moveStatus.textContent=isHider?'MOVE NOW · left thumb moves · drag screen to look':'MOVE & HUNT · left thumb moves · drag screen to look';moveStatus.className='ph3d-move-status ready'}}
   }
   function fmt(sec){sec=Math.max(0,Math.ceil(sec));return`${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')}`;}
   function addFeed(t){state.feed.push(t);if(state.feed.length>50)state.feed.shift();}
@@ -544,7 +560,7 @@
     }else if(n.includes('stairs')||n.includes('platform')){
       for(let i=0;i<4;i++)roundRect(-w*.45+i*w*.13,-h*(.18+i*.17),w*(.5-i*.08),h*.16,2,'#876644','#4d3826',1);
     }else{
-      roundRect(-w*.44,-h*.55,w*.88,h*.52,h*.06,b.color||'#78644c','#45372a',2);for(let i=1;i<4;i++)line(-w*.37,-h*.12*i,w*.37,-h*.12*i,'#ffffff18',1);
+      roundRect(-w*.44,-h*.55,w*.88,h*.52,h*.06,b.color||'#78644c','#45372a',2);roundRect(-w*.36,-h*.47,w*.72,h*.12,h*.025,'#ffffff12',null);for(let i=1;i<4;i++)line(-w*.37,-h*.12*i,w*.37,-h*.12*i,'#ffffff22',1);line(-w*.34,-h*.5,w*.34,-h*.08,'#2d221a55',1);
     }
     ctx.restore();
   }
@@ -552,11 +568,11 @@
   function pushProp(cmd,p,cam,W,H,highlight){
     const base=project({x:p.x,y:p.y||0,z:p.z},cam,W,H),top=project({x:p.x,y:(p.y||0)+p.h,z:p.z},cam,W,H);if(!base||!top)return;
     const h=clamp(Math.abs(base.y-top.y)*1.18,14,150),w=clamp(h*(p.w/Math.max(18,p.h)),12,170),depth=(base.z+top.z)/2;
-    cmd.push({depth,draw:()=>drawCartoonProp(p.type,base.x,base.y,w,h,highlight,(p.id||p.type).length)});
+    cmd.push({depth,draw:()=>drawCartoonProp(p.type,base.x,base.y,w,h,highlight,(p.id||p.type).length,p.animate!==false)});
   }
 
-  function drawCartoonProp(type,x,y,w,h,highlight=false,seed=0){
-    const n=String(type||'prop').toLowerCase(),t=performance.now()*.002+seed,bob=Math.sin(t*1.7)*Math.min(1.8,h*.02);
+  function drawCartoonProp(type,x,y,w,h,highlight=false,seed=0,animate=true){
+    const n=String(type||'prop').toLowerCase(),t=performance.now()*.002+seed,bob=animate?Math.sin(t*1.7)*Math.min(1.8,h*.02):0;
     ctx.save();ctx.translate(x,y+bob);ctx.fillStyle='#0005';ctx.beginPath();ctx.ellipse(0,3,w*.38,Math.max(2,h*.055),0,0,TAU);ctx.fill();
     if(highlight){ctx.shadowColor='#ffd96a';ctx.shadowBlur=18;ctx.strokeStyle='#ffe184';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(0,-h*.47,w*.62,h*.58,0,0,TAU);ctx.stroke();ctx.shadowBlur=0;}
     const brown='#8b633d',dark='#3a3028',metal='#7b8180',red='#a24d3f',green='#61734b',blue='#5e8392',gold='#b99651';
@@ -598,11 +614,11 @@
   }
 
   function pushActor(cmd,a,cam,W,H,isPlayer){
-    if(a.role==='hider'&&a.prop){const s=a.propShape||propShape(a.prop),p={id:`actor-${a.index}`,x:a.x,z:a.z,y:a.y,type:a.prop,w:s.w,d:s.d,h:s.h,color:s.color,climbable:s.climbable};pushProp(cmd,p,cam,W,H,false);return;}
+    if(a.role==='hider'&&a.prop){const s=a.propShape||propShape(a.prop),p={id:`actor-${a.index}`,x:a.x,z:a.z,y:a.y,type:a.prop,w:s.w,d:s.d,h:s.h,color:s.color,climbable:s.climbable,animate:!a.locked};pushProp(cmd,p,cam,W,H,false);return;}
     const base=project({x:a.x,y:a.y,z:a.z},cam,W,H),head=project({x:a.x,y:a.y+a.height,z:a.z},cam,W,H);if(!base||!head)return;const depth=(base.z+head.z)/2;cmd.push({depth,draw:()=>drawCharacterSprite(a,base,head,cam,W,H,isPlayer)});
   }
   function drawCharacterSprite(a,base,head,cam,W,H,isPlayer){
-    const img=CHARACTER_SPRITES[a.person.id],dog=a.person.dog,screenH=Math.abs(base.y-head.y),h=clamp(screenH*(dog?1.12:1.22),dog?38:64,dog?145:245),ratio=(img&&img.naturalHeight)?img.naturalWidth/img.naturalHeight:(dog?.78:.48),w=h*ratio,bob=a.moveAmount*Math.sin(performance.now()*.018+a.index)*Math.min(5,h*.025),x=base.x,y=base.y+bob;
+    const img=characterSprite(a.person,a.style||'default'),dog=a.person.dog,screenH=Math.abs(base.y-head.y),h=clamp(screenH*(dog?1.12:1.22),dog?38:64,dog?145:245),ratio=(img&&img.naturalHeight)?img.naturalWidth/img.naturalHeight:(dog?.78:.48),w=h*ratio,bob=a.moveAmount*Math.sin(performance.now()*.018+a.index)*Math.min(5,h*.025),x=base.x,y=base.y+bob;
     ctx.save();ctx.globalAlpha=a.blind>0?.7:1;ctx.fillStyle='#0005';ctx.beginPath();ctx.ellipse(x,y+4,w*.4,Math.max(3,h*.045),0,0,TAU);ctx.fill();
     if(isPlayer){ctx.shadowColor='#f5d477';ctx.shadowBlur=14;}const rel=wrapAngle(a.yaw-state.camera.yaw),flip=Math.sin(rel)<-.2?-1:1;
     ctx.translate(x,y);ctx.scale(flip,1);const lean=a.moveAmount*Math.sin(performance.now()*.012+a.index)*.025;ctx.rotate(lean);
@@ -622,6 +638,6 @@
   function closeModal(){document.getElementById('ph3Modal')?.remove();}
 
   // Exposed for the automated tryout suite and future multiplayer adapter.
-  window.__PROP_3D_TEST__={MAPS,propShape,OUTFITS,getInput:()=>({joy:{x:joy.x,z:joy.z,active:joy.active,id:joy.id},touchMove:{...touchMove}}),getSnapshot:()=>state?{round:state.round,phase:state.phase,mapKey:state.mapKey,player:state.player?{x:state.player.x,y:state.player.y,z:state.player.z,vy:state.player.vy,role:state.player.role,locked:state.player.locked,prop:state.player.prop,propChanges:state.player.propChanges,decoys:state.player.decoys,flash:state.player.flash}:null}:null,features:{thirdPerson:true,jumpPhysics:true,climbableGeometry:true,computerPlayers:true,phoneControls:true,desktopControls:true,touchDpad:true,touchJoystickFallback:true,firstRoundHider:true,workingSelectors:true,sparks:true,propLock:true,fullBodySprites:true,cartoonProps:true,samePropArt:true,noWorldLabels:true}};
+  window.__PROP_3D_TEST__={MAPS,propShape,OUTFITS,getInput:()=>({joy:{x:joy.x,z:joy.z,active:joy.active,id:joy.id},touchMove:{...touchMove}}),getSnapshot:()=>state?{round:state.round,phase:state.phase,mapKey:state.mapKey,player:state.player?{x:state.player.x,y:state.player.y,z:state.player.z,vy:state.player.vy,role:state.player.role,locked:state.player.locked,prop:state.player.prop,propChanges:state.player.propChanges,decoys:state.player.decoys,flash:state.player.flash}:null}:null,features:{thirdPerson:true,jumpPhysics:true,climbableGeometry:true,computerPlayers:true,phoneControls:true,desktopControls:true,touchDpad:true,touchJoystickFallback:true,firstRoundHider:true,workingSelectors:true,sparks:true,propLock:true,fullBodySprites:true,cartoonProps:true,samePropArt:true,noWorldLabels:true,largeJoystick:true,cameraReset:true,sprintToggle:true,avatarStyleHUD:true,lockedPropStill:true}};
   window.PropHunt={mount};
 })();

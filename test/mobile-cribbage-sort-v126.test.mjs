@@ -24,5 +24,5 @@ test('v1.2.6 Cribbage phone table is viewport-height and compact instead of forc
   assert.match(css,/\.extra-cribbage \.extra-center\{width:98%!important/);
   assert.match(css,/\.crib-pegging\{grid-template-columns:58px minmax\(0,1fr\)!important/);
   assert.match(css,/\.extra-cribbage \.extra-hand-card\{max-width:50px!important\}/);
-  assert.ok(sw.includes('black-family-game-night-v126-test'));
+  assert.ok(sw.includes('black-family-game-night-v160-prop-mystery-test'));
 });

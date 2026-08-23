@@ -1,49 +1,44 @@
-BLACK FAMILY GAME NIGHT v1.2.6-test
-PHONE CRIBBAGE + GLOBAL CARD SORT TEST BUILD
+BLACK FAMILY GAME NIGHT v1.6.0-prop-mystery-test
 
-USE THIS ZIP AS A FULL REPLACEMENT OF THE PREVIOUS TEST BUILD.
-Keep your repository's hidden .git folder, replace the tracked project files with this build, commit, and push to main for the existing Cloudflare deployment.
+PROP HUNT + FAMILY MYSTERY TEST BUILD
 
-WHAT CHANGED IN v1.2.6
+UPLOAD
+1. Keep the hidden .git folder in your existing project checkout.
+2. Replace the tracked project files with this package.
+3. Commit and push to the same branch Cloudflare currently deploys.
+4. Let Cloudflare deploy normally.
+5. On phones, refresh once after deployment if an older service-worker shell is still visible.
 
-CRIBBAGE ON PHONES
-- The Cribbage game table now uses the phone's actual small viewport height instead of forcing the older 760px-tall layout.
-- The board, starter/crib zone, pegging display, and hand are compressed on narrow screens so more remains visible at once.
-- GO is no longer buried in the sidebar below the game table.
-- When GO is legal, a large GO button appears directly above your hand.
-- Manual Score Hand / Continue counting actions use the same reachable phone action strip.
-- Safe-area spacing is included for iPhone bottom controls.
-- The crib discard SEND SELECTED CARDS control remains above the hand.
-- End-of-hand scoring review and highlighted scoring combinations remain included.
+TEST PROP HUNT FIRST
+- Pick a family character and avatar style.
+- Add computer players and choose their character/style/difficulty.
+- Start as a hider and confirm the left joystick moves continuously while held/dragged.
+- Test the D-pad backup, Jump, Sprint and Camera Reset.
+- Drag the main play area to rotate/look around.
+- Transform with PROP and compare your disguise to the same scenery object.
+- Lock the prop and confirm the disguise stops moving while the camera still moves.
+- Try Flash and Decoy.
+- Jump/climb onto low scenery and try the larger climbable routes.
+- Try all four maps: Papa's Shop, Camper / Campsite, Backyard + Fire Pit, Farmyard / Animal Pens.
 
-CARD SORTING
-All normal playing-card hands shown through the shared game UI now sort automatically:
-1. Spades
-2. Hearts
-3. Diamonds
-4. Clubs
-5. Jokers / no-suit cards
+TEST FAMILY MYSTERY
+- Start with one human plus computer detectives if desired.
+- Roll and confirm glowing legal destinations show gold movement-cost numbers.
+- Pan/zoom the board and use FIT and ME.
+- On a phone, confirm the sticky turn-action bar stays easy to reach.
+- Enter a room and make a suggestion.
+- Confirm the suggested family character is pulled into the room.
+- Confirm Case History shows the suggestion/disprover but never names the private card shown.
+- Check the grouped notebook: Suspects / Objects / Locations.
+- Try a secret shortcut/passsage when available.
+- Try a final accusation and confirm the game asks before locking it.
+- If correct, confirm all three solution cards are revealed.
 
-Inside each suit the cards run:
-Ace, King, Queen, Jack, 10, 9, 8, 7, 6, 5, 4, 3, 2.
+RECHECK
+- Cribbage on a phone: GO / Score / Continue should remain reachable above the hand.
+- Standard card hands should sort by suit and highest-to-lowest rank.
+- Cabin home buttons/fireplace.
+- Avatar and computer-player selectors.
 
-This applies to the shared hand rendering used by the classic trick-taking games and extra card games such as Cribbage, Euchre, 31, Poker, President, Prairie Pots, Burn Logs, and other normal-card hands. Custom non-standard decks keep their own category grouping, with numeric ranks ordered high to low.
-
-RETAINED FROM v1.2.5
-- Rebuilt Prop Hunt touch joystick / jump / illustrated prop work.
-- Full family avatar style packs and bot avatar selection.
-- Birthday Seat rebuild.
-- Animated Lodge fireplace and working home navigation.
-- Share/invite links and original online multiplayer games.
-
-TEST STATUS
-150 / 150 automated tests passing.
-0 failures.
-See FINAL_TEST_REPORT.txt and FINAL_TEST_OUTPUT.tap.
-
-PHONE TEST I RECOMMEND FIRST
-1. Open Cribbage on an iPhone-sized screen.
-2. Confirm the bottom hand is fully visible.
-3. Play until you have no legal pegging card and confirm the large GO button appears directly above your hand.
-4. Confirm the pegging cards/running count remain visible while choosing a card.
-5. Check several games and verify each standard hand groups suits and runs high to low.
+IMPORTANT
+The original 18 room games are synchronized online multiplayer. Family Mystery, Prop Hunt and Birthday Seat are still local/computer test engines and are not yet synchronized live across separate phones/computers.

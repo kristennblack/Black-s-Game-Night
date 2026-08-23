@@ -1,77 +1,56 @@
-# Black Family Game Night v1.2.6-test
+# Black Family Game Night v1.6.0-prop-mystery-test
 
-Private family game-night web app for phones and computers.
+Private family game-night web app test build focused on a deeper **Family Prop Hunt** and **Family Mystery** experience while retaining the v1.5 visual/tabletop polish, v1.2.6 phone Cribbage fixes, global card sorting, cabin home, avatar packs, bots and the original synchronized multiplayer games.
 
-## What changed in v1.2.5
+## Prop Hunt overhaul
 
-### Family Prop Hunt visual + control rebuild
+- One active third-person Prop Hunt engine, with the older conflicting prototype removed.
+- Full-body family movement figures in the world instead of circular head markers.
+- Approved avatar-style portraits in setup/HUD; Country, Rustic and Rich use their approved themed full-body movement sprites when available.
+- Larger analog phone joystick with explicit touch handling, D-pad backup, Jump, Sprint, Camera Reset, Prop, Flash, Decoy, Lock/Unlock and Shoot controls.
+- Desktop movement remains WASD + mouse/camera controls.
+- Jump buffer, coyote-time forgiveness, gravity, landing, collision, low-object stepping, climbable geometry and trampoline/bounce behavior.
+- Illustrated/cartoon prop renderer for environmental items, with the same renderer used when a hider transforms into that item.
+- Locked disguised players remain visually still while the camera can move independently.
+- Four family maps remain: Papa's Shop, Camper / Campsite, Backyard + Fire Pit, and Farmyard / Animal Pens.
+- Six-round family rules remain: 30-second hide, 3-minute hunt, 3 additional prop changes, 10 decoys, one flash per disguise and three-hit health.
+- Easy / Medium / Hard computer players remain supported without hidden-information cheating.
 
-The Prop Hunt engine has been rebuilt around the approved third-person cabin look instead of the earlier placeholder boxes and circular face markers.
+## Family Mystery overhaul
 
-- **Actual joystick bug fixed:** the joystick math was attempting to modify `const` values, which threw a browser error on every drag. It now uses mutable coordinates and has been verified with a real headless-browser touch gesture.
-- Added an explicit iPhone/Safari touch fallback in addition to Pointer Events.
-- The small arrow pad remains available as a redundant movement control on phones.
-- Family players now render as the packaged **full-body 3D family sprites**, not circular head portraits.
-- Hiders disappear into their disguise exactly as expected.
-- World props are no longer labelled cubes. They render as illustrated cartoon objects such as mugs, buckets, oil/gas cans, toolboxes, welding helmets, shop vacs, crates, stools/chairs, sawhorses, hay bales, wheelbarrows, rocks, stumps, firewood/logs, lanterns, coolers, tires, flower pots, watering cans, barrels, troughs, pallets, dog toys, feed bags, pool floats, shovels and animal feeders.
-- **The scenery prop and disguised-player prop use the same renderer**, so if you become a gas can, you look like the same cartoon gas can that was already sitting in the map.
-- Large scenery now has recognizable illustrated forms too, including tractors, motorcycles, fireplaces, furniture, beds/bunks, workbenches/tables, shelving, trucks, tents, BBQs, hot tubs/pools, trampolines, boats, trailers, trees, sheds/shops, hay stacks, sea cans and climbing platforms.
-- Floating world-name labels were removed.
-- The approved Prop Hunt scene and art-pack references are included in the build for continued visual tuning.
+- Illustrated family-room board and full-body moving family standees retained from the polished tabletop branch.
+- Legal destinations now display the exact movement cost after a dice roll.
+- FIT, ME, zoom and pan controls make the large board easier to navigate on phones.
+- Sticky phone action tray keeps Roll, Suggest, Accuse and End Turn controls reachable.
+- Detective notebook is grouped into Suspects, Objects and Locations.
+- Seen/revealed cards are marked automatically; players can also flag suspicious possibilities.
+- Public Case History records each suggestion and who disproved it, while keeping the actual privately shown card secret.
+- Standard suggestion movement is supported: a suggested suspect is pulled into the room and may make a suggestion from there on their own turn without first rolling out.
+- Secret family shortcuts/passages remain available from supported rooms.
+- Final accusations now have a confirmation screen before locking the answer.
+- Correct accusations reveal the full three-card case file: suspect, object and location.
+- Wrong accusers leave the active turn rotation but still participate when they must disprove a suggestion.
+- Easy / Medium / Hard computer detectives continue to use only information they are legally allowed to know.
 
-### Approved family avatar packs remain selectable
+## Other retained improvements
 
-The 12 v1.2.4 family packs remain wired into the live multiplayer avatar system for all 13 family characters and pets: Anime, Western, Rich, Homeless, Country, Chinese-inspired, African American-inspired, Native American-inspired, South Asian-inspired, Korean-inspired, Superhero, and Criminal Crew. The existing Cute/Goofy/Rugged/Glam looks and John's 16 looks remain available too.
+- Phone-focused Cribbage layout with accessible GO / Score Hand / Continue actions above the player's cards.
+- Pegging cards remain visible, and end-of-hand scoring can show/highlight the exact scoring combinations.
+- Shared standard-card sorting: Spades, Hearts, Diamonds, Clubs; Ace through 2 within each suit.
+- Approved family avatar/style packs and per-computer character/look/difficulty setup.
+- Detailed lodge home and animated fireplace.
+- The original 18 room games retain their synchronized Cloudflare multiplayer flow and shareable room links.
 
-## Other retained updates
+## Multiplayer status
 
-### Cribbage
+The original 18 room games are the synchronized cross-device online games. Family Mystery, Family Prop Hunt and John's Birthday Seat are still the newer local/computer test engines; their share links open the correct game, but their live game state is not yet synchronized between separate devices.
 
-- Visible pegging table showing played cards, owner and running count.
-- Pair / 15 / 31 / run scoring feedback during pegging.
-- End-of-hand card review with tappable scoring groups that highlight the exact scoring cards.
-- Large persistent SEND SELECTED CARDS TO CRIB control.
-
-### Family Prop Hunt
-
-- Active third-person engine only; legacy top-down version remains removed.
-- Working character/outfit/start controls.
-- Human begins round one as a hider for immediate movement testing.
-- WASD, phone joystick/direction pad, jump, prop, decoy, flash and lock controls.
-- Jump buffering/coyote timing and clearer movement-status messages.
-
-### Other retained features
-
-- Approved Black Family Lodge home with animated fire/glow/embers.
-- 18 synchronized Cloudflare multiplayer games.
-- Family Mystery, Family Prop Hunt and John's Birthday Seat local/computer modes.
-- 13 approved full-body 3D family runner choices.
-- Per-computer family character + Easy / Medium / Hard setup.
-- Working home-screen destination buttons and share/invite paths.
-- Rebuilt 32-step John's Birthday Seat course.
-
-## Online sharing
-
-The 18 original room games are synchronized multiplayer. **Create & Share** creates a private room and shares its exact join URL, and active rooms retain Share Invite / Copy Link controls.
-
-Family Mystery, Family Prop Hunt and John's Birthday Seat have direct Share Game links, but their gameplay state is still local to each device in v1.2.5. They are not yet synchronized between separate devices.
-
-## Validation
+## Verify
 
 Run:
 
-    npm run check
+```sh
+npm run check
+```
 
-The v1.2.5 test release passes **147 / 147 automated checks** with zero failures. A separate browser interaction smoke test also verified a real touch joystick gesture moved the player more than 100 world units, JUMP produced positive vertical velocity, and PROP successfully transformed the player into a nearby illustrated object.
-
-## v1.2.6-test
-
-Phone-focused Cribbage polish and global hand sorting:
-
-- Cribbage now sizes its table to the small mobile viewport rather than enforcing the old 760px minimum.
-- GO, manual score, and count-continue actions are mirrored into a large action strip immediately above the hand on narrow screens.
-- The phone Cribbage board, pegging area, count review, and hand use more compact dimensions while retaining the full gameplay information.
-- Standard playing-card hands are grouped Spades, Hearts, Diamonds, Clubs and sorted Ace-to-2 within each suit.
-- Custom non-standard decks retain category grouping while numeric ranks sort high-to-low.
-- All prior v1.2.5 Prop Hunt, avatar, multiplayer, Lodge, and Birthday Seat work is retained.
-- Automated regression status: 150/150 passing.
+The packaged v1.6.0 test build passed **180 / 180 automated tests**.

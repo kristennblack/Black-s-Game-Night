@@ -1,22 +1,3 @@
-BLACK FAMILY GAME NIGHT v1.2.5-test
-FULL REPLACEMENT UPDATE
+BLACK FAMILY GAME NIGHT v1.5.0-polish-test
 
-MAIN CHANGE
-Family Prop Hunt has been rebuilt around the approved third-person cartoon look.
-
-- Fixed the actual joystick failure that caused drag input to throw a browser error.
-- Added redundant Pointer Event + iPhone/Safari touch handling.
-- Full-body family characters replace circular head markers during gameplay.
-- Environmental props are recognizable illustrated objects rather than labelled cubes.
-- Hider disguises use the exact same prop art as the map object they copy.
-- Key scenery/landmarks have illustrated shapes instead of plain labelled blocks.
-- Approved Prop Hunt scene/art reference files are included for future refinement.
-
-All prior v1.2.4 avatar packs, Cribbage changes, Birthday Seat, Lodge, original games, computer-player settings and invite/share features are retained.
-
-TEST STATUS
-147 / 147 automated checks passing.
-Real browser touch smoke test passed joystick movement, jump and prop transformation.
-
-DEPLOYMENT
-Use this package as a full replacement of tracked project files while preserving the existing hidden .git folder, then commit and push to main. The new service-worker cache is black-family-game-night-v125-test.
+Use this as a full replacement of the tracked files in the existing repository. Do not remove the hidden .git folder. Commit and push normally so the existing Cloudflare connection deploys the new version.

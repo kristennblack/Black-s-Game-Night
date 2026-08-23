@@ -1,9 +1,9 @@
 {
   "name": "black-family-game-night",
-  "version": "1.2.6-test",
+  "version": "1.6.0-prop-mystery-test",
   "private": true,
   "type": "module",
-  "description": "Black Family Game Night v1.2.6 test release - Cribbage rebuilt for narrow phones with an always-reachable GO/count action strip, plus global suit-grouped high-to-low card sorting and all v1.2.5 Prop Hunt/avatar updates.",
+  "description": "Black Family Game Night v1.6.0 test - Prop Hunt controls/art overhaul plus deeper Family Mystery board and deduction UX, while retaining v1.5 polish and v1.2.6 mobile/card fixes.",
   "scripts": {
     "test": "node --test",
     "check": "node --check worker.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check public/app.js && node --check public/prop-hunt-3d.js && node --check public/birthday-climb.js && node --test",
