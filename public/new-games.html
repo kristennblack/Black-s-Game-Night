@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#17120e" />
   <title>Black Family Game Night - New Games</title>
   <link rel="stylesheet" href="/birthday-climb.css">
+  <link rel="stylesheet" href="/family-sabotage.css">
   <style>
 :root{
   --bg:#100e0c;--panel:#1b1713;--panel2:#241e18;--text:#f7f2e9;--muted:#b7aa9a;
@@ -19,7 +20,7 @@ button,input,select{font:inherit}.hidden{display:none!important}
 .topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:12px max(14px,env(safe-area-inset-left));background:rgba(16,14,12,.88);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.06)}
 .brand-wrap{text-align:center;line-height:1}.brand-kicker{font-size:10px;letter-spacing:.3em;color:var(--gold2)}.brand-title{font-weight:900;font-size:18px;letter-spacing:.08em;margin-top:5px}.ghost-btn{width:42px;height:42px;border:1px solid var(--line);border-radius:13px;background:#201a15;color:var(--text);font-size:20px}.screen{display:none;max-width:1180px;margin:0 auto;padding:20px 16px 50px}.screen.active{display:block}.game-screen{max-width:1400px}
 .hero-card{display:grid;grid-template-columns:1fr 150px;gap:20px;align-items:center;padding:28px;border:1px solid #4b3928;border-radius:28px;background:linear-gradient(135deg,rgba(81,52,31,.72),rgba(30,24,19,.92));box-shadow:var(--shadow);overflow:hidden}.hero-card h1{font-size:clamp(30px,7vw,62px);line-height:.98;margin:8px 0 14px;max-width:760px}.hero-card p{color:#d4c8bb;max-width:720px;line-height:1.6}.fireplace-art{height:150px;border-radius:28px;background:radial-gradient(circle,#f6c669 0,#a95325 34%,#332014 70%);display:grid;place-items:center;box-shadow:inset 0 0 40px #0008}.fireplace-art span{font-size:70px;filter:drop-shadow(0 10px 20px #000)}.eyebrow{font-size:11px;font-weight:800;letter-spacing:.16em;color:var(--gold2);text-transform:uppercase}.section-heading{display:flex;justify-content:space-between;gap:16px;align-items:end;margin:34px 2px 14px}.section-heading h2{margin:4px 0 0;font-size:24px}.pill{padding:7px 10px;border-radius:999px;background:#42341f;color:#f7d997;border:1px solid #66512e;font-size:12px;font-weight:700;white-space:nowrap}.pill.subtle{background:#22201c;color:#b9aea2;border-color:#39332d}
-.game-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.game-card{position:relative;min-height:220px;padding:20px;border:1px solid var(--line);border-radius:24px;text-align:left;color:var(--text);background:linear-gradient(145deg,#251e18,#17130f);box-shadow:var(--shadow);overflow:hidden;cursor:pointer}.game-card:active{transform:scale(.99)}.game-art{font-size:55px;margin-bottom:28px}.game-copy h3{font-size:25px;margin:0 0 8px}.game-copy p{color:var(--muted);line-height:1.45;margin:0;padding-right:50px}.play-chip{position:absolute;right:16px;bottom:16px;background:var(--gold);color:#20160a;font-size:11px;font-weight:950;letter-spacing:.12em;padding:9px 12px;border-radius:999px}.mystery-card:before,.prop-card:before,.birthday-card:before{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-60px;top:-80px;background:#a36a2430;filter:blur(4px)}.prop-card:before{background:#417a5b35}.birthday-card:before{background:#a86b8735}
+.game-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.game-card{position:relative;min-height:220px;padding:20px;border:1px solid var(--line);border-radius:24px;text-align:left;color:var(--text);background:linear-gradient(145deg,#251e18,#17130f);box-shadow:var(--shadow);overflow:hidden;cursor:pointer}.game-card:active{transform:scale(.99)}.game-art{font-size:55px;margin-bottom:28px}.game-copy h3{font-size:25px;margin:0 0 8px}.game-copy p{color:var(--muted);line-height:1.45;margin:0;padding-right:50px}.play-chip{position:absolute;right:16px;bottom:16px;background:var(--gold);color:#20160a;font-size:11px;font-weight:950;letter-spacing:.12em;padding:9px 12px;border-radius:999px}.mystery-card:before,.prop-card:before,.birthday-card:before,.sabotage-card:before{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-60px;top:-80px;background:#a36a2430;filter:blur(4px)}.prop-card:before{background:#417a5b35}.birthday-card:before{background:#a86b8735}.sabotage-card:before{background:#9d3e3938}
 .legacy-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.legacy-item{padding:15px;border-radius:18px;border:1px solid var(--line);background:#181512}.legacy-item strong{display:block;margin-bottom:5px}.legacy-item span{font-size:12px;color:var(--muted);line-height:1.35;display:block}
 .panel{border:1px solid var(--line);background:linear-gradient(180deg,#201a15,#15120f);border-radius:22px;box-shadow:var(--shadow)}.panel-pad{padding:18px}.game-title-row{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:16px}.game-title-row h1{font-size:clamp(28px,5vw,44px);margin:0}.subtext{color:var(--muted);line-height:1.45}.btn{border:0;border-radius:14px;padding:12px 15px;font-weight:850;background:var(--gold);color:#21170b;cursor:pointer}.btn.secondary{background:#32291f;color:var(--text);border:1px solid #514333}.btn.danger{background:var(--red);color:#fff}.btn.success{background:var(--green);color:#fff}.btn.blue{background:var(--blue);color:#fff}.btn:disabled{opacity:.35;cursor:not-allowed}.button-row{display:flex;gap:9px;flex-wrap:wrap}.setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.character-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}.character-pick{border:1px solid var(--line);border-radius:15px;background:#181410;padding:10px;color:var(--text);text-align:center;cursor:pointer}.character-pick.selected{border-color:var(--gold);background:#33291b;box-shadow:0 0 0 1px var(--gold) inset}.avatar{width:52px;height:52px;border-radius:50%;margin:0 auto 7px;display:grid;place-items:center;background:linear-gradient(145deg,#795737,#38281a);border:2px solid #a98255;font-weight:950;overflow:hidden}.avatar img{width:100%;height:100%;object-fit:cover}.character-pick small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.field-label{display:block;font-size:12px;color:var(--muted);font-weight:800;margin-bottom:7px}.select,.input{width:100%;padding:12px;border-radius:13px;border:1px solid var(--line);background:#100e0c;color:var(--text)}
 .mystery-layout{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:14px;align-items:start}
@@ -120,7 +121,7 @@ button,input,select{font:inherit}.hidden{display:none!important}
         <div>
           <div class="eyebrow">vNEXT PLAYABLE PREVIEW</div>
           <h1>Family game night, upgraded.</h1>
-          <p>This launch build includes Family Mystery, 3D Family Prop Hunt, and John’s Birthday Seat alongside the main Black Family Lodge collection.</p>
+          <p>This test build includes Family Mystery, 3D Family Prop Hunt, John’s Birthday Seat, and the new Family Sabotage social-deduction game alongside the main Black Family Lodge collection.</p>
         </div>
         <div class="fireplace-art" aria-hidden="true"><span>🔥</span></div>
       </section>
@@ -146,6 +147,11 @@ button,input,select{font:inherit}.hidden{display:none!important}
             <div class="game-copy"><h3>John's Birthday Seat</h3><p>Jump, climb and race through a family-themed 3D obstacle course to claim John's birthday seat.</p></div>
             <span class="play-chip">PLAY</span>
           </button>
+          <button class="game-card sabotage-card" data-game="sabotage">
+            <div class="game-art">🚨</div>
+            <div class="game-copy"><h3>Family Sabotage</h3><p>Secret Family Crew and Saboteur roles, chores, service vents, emergency meetings, body reports, chat, voting and family-property sabotages on the expanded Prop Hunt maps.</p></div>
+            <span class="play-chip">NEW · PLAY</span>
+          </button>
         </div>
       </section>
 
@@ -161,6 +167,7 @@ button,input,select{font:inherit}.hidden{display:none!important}
     <main id="screen-mystery" class="screen game-screen"></main>
     <main id="screen-prophunt" class="screen game-screen"></main>
     <main id="screen-birthday" class="screen game-screen"></main>
+    <main id="screen-sabotage" class="screen game-screen"></main>
   </div>
 
   <div id="toast" class="toast" role="status"></div>
@@ -198,12 +205,12 @@ window.avatarHTML=function(person,extra=''){
 </script>
   <script>
 (function(){
-  const screens={home:document.getElementById('screen-home'),mystery:document.getElementById('screen-mystery'),prophunt:document.getElementById('screen-prophunt'),birthday:document.getElementById('screen-birthday')};
+  const screens={home:document.getElementById('screen-home'),mystery:document.getElementById('screen-mystery'),prophunt:document.getElementById('screen-prophunt'),birthday:document.getElementById('screen-birthday'),sabotage:document.getElementById('screen-sabotage')};
   const homeBtn=document.getElementById('homeBtn');
   function show(name){Object.values(screens).forEach(s=>s.classList.remove('active'));screens[name].classList.add('active');homeBtn.classList.toggle('hidden',name==='home');window.scrollTo({top:0,behavior:'smooth'});}
   window.APP={show,toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._to);t._to=setTimeout(()=>t.classList.remove('show'),2200)}};
   homeBtn.addEventListener('click',()=>{location.href='/'});
-  document.querySelectorAll('[data-game]').forEach(b=>b.addEventListener('click',()=>{const g=b.dataset.game;show(g); if(g==='mystery') window.MysteryGame.mount(screens.mystery); else if(g==='prophunt') window.PropHunt.mount(screens.prophunt); else if(g==='birthday') window.BirthdayClimb.mount(screens.birthday);}));
+  document.querySelectorAll('[data-game]').forEach(b=>b.addEventListener('click',()=>{const g=b.dataset.game;show(g); if(g==='mystery') window.MysteryGame.mount(screens.mystery); else if(g==='prophunt') window.PropHunt.mount(screens.prophunt); else if(g==='birthday') window.BirthdayClimb.mount(screens.birthday); else if(g==='sabotage') window.FamilySabotage.mount(screens.sabotage);}));
   const legacy=[
     ['Trail Trouble','Sorry-style board upgrades, teams/solo, cabins, chaos movement and animation polish'],
     ['UNO','Card-play polish, touch states, dealing/discard animations and multiplayer cleanup'],
@@ -224,7 +231,7 @@ window.avatarHTML=function(person,extra=''){
   ];
   document.getElementById('legacyGrid').innerHTML=legacy.map(([n,d])=>`<div class="legacy-item"><strong>${n}</strong><span>${d}</span></div>`).join('');
   let sound=true;document.getElementById('soundBtn').addEventListener('click',e=>{sound=!sound;e.currentTarget.textContent=sound?'♪':'×';APP.toast(sound?'Sound cues on':'Sound cues off')});
-  document.getElementById('shareGameBtn').addEventListener('click',async()=>{const game=new URL(location.href).searchParams.get('game'),names={mystery:'Family Mystery',prophunt:'Family Prop Hunt',birthday:"John's Birthday Seat"},url=`${location.origin}/new-games.html?game=${encodeURIComponent(game||'mystery')}`;try{if(navigator.share)await navigator.share({title:names[game]||'Black Family Game Night',text:`Play ${names[game]||'this family game'} with me`,url});else{await navigator.clipboard.writeText(url);APP.toast('Game link copied')}}catch{}});
+  document.getElementById('shareGameBtn').addEventListener('click',async()=>{const game=new URL(location.href).searchParams.get('game'),names={mystery:'Family Mystery',prophunt:'Family Prop Hunt',birthday:"John's Birthday Seat",sabotage:'Family Sabotage'},url=`${location.origin}/new-games.html?game=${encodeURIComponent(game||'mystery')}`;try{if(navigator.share)await navigator.share({title:names[game]||'Black Family Game Night',text:`Play ${names[game]||'this family game'} with me`,url});else{await navigator.clipboard.writeText(url);APP.toast('Game link copied')}}catch{}});
 })();
 
 </script>
@@ -520,17 +527,19 @@ window.avatarHTML=function(person,extra=''){
 </script>
   <!-- Prop Hunt uses the single external third-person engine below. -->
   <script src="/prop-hunt-3d.js"></script>
+  <script src="/family-sabotage.js"></script>
   <script src="/birthday-climb.js"></script>
 
 <script>
 (function(){
   const game=new URL(location.href).searchParams.get('game');
-  const screens={mystery:document.getElementById('screen-mystery'),prophunt:document.getElementById('screen-prophunt'),birthday:document.getElementById('screen-birthday')};
+  const screens={mystery:document.getElementById('screen-mystery'),prophunt:document.getElementById('screen-prophunt'),birthday:document.getElementById('screen-birthday'),sabotage:document.getElementById('screen-sabotage')};
   if(!screens[game]){ location.replace('/'); return; }
   APP.show(game);
   if(game==='mystery') window.MysteryGame.mount(screens.mystery);
   if(game==='prophunt') window.PropHunt.mount(screens.prophunt);
   if(game==='birthday') window.BirthdayClimb.mount(screens.birthday);
+  if(game==='sabotage') window.FamilySabotage.mount(screens.sabotage);
 })();
 </script>
 </body>

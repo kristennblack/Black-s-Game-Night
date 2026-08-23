@@ -1,43 +1,21 @@
-Black Family Game Night v1.8.0-prop-redesign-test
-FINAL TEST REPORT
+BLACK FAMILY GAME NIGHT v1.10.0 - PROP HUNT VISUAL TEST
 
-Result: 193 / 193 automated tests passing
-Failures: 0
+FINAL AUTOMATED RESULT
+206 / 206 tests passing
+0 failures
 
-Primary v1.8 Prop Hunt redesign verified:
-- Correct upright camera basis (forward x right = up) fixes the inverted/upside-down presentation at the projection level.
-- Hunter AIM mode changes camera distance/FOV without reversing the camera.
-- Explicit role HUD: YOU ARE A HIDER / YOU ARE A HUNTER.
-- Explicit mode ribbon: HIDING MODE / SHOOTING MODE.
-- Hider-only actions: PROP, FLASH, DECOY, LOCK.
-- Hunter-only actions: SHOOT, RELOAD, AIM.
-- Hunter crosshair is role/phase specific.
-- Large phone joystick, D-pad backup, jump, sprint and camera reset are retained.
-- 44 illustrated prop sprite files are present and wired into both scenery and disguises.
-- Prop sprites are included in the service-worker asset cache.
-- Room-specific prop palettes and increased clutter counts are present.
-- Walls/structures use log, plank/wood, fence and metal material detailing.
-- Floors use room/location-specific wood, gravel, grass, earth and water-edge detailing.
-- Fixed room-dressing fixtures are present.
-- Expanded v1.7 maps and AREA/minimap navigation are retained.
-- Full-body family character rendering and selected avatar-style HUD are retained.
+PROP HUNT v1.10 VISUAL REGRESSIONS ADDED
+- realistic room/farm scene plates are packaged and referenced by the live renderer
+- second-generation prop sprite library contains 70+ PNG sprites
+- former outline-only shop/farm/camp props map to image sprites
+- unmatched props fall back to an illustrated crate rather than procedural line art
+- scenery, disguises and decoys all use the same prop renderer
+- room dressing density increased
+- fresh service-worker cache includes the new art assets
 
-Retained regression coverage:
-- Family Mystery v1.6 board, movement, notebook, case history and phone UI improvements.
-- Cribbage phone GO / Score / Continue controls, visible pegging play and scoring review.
-- Global suit + high-to-low card sorting.
-- Avatar packs and computer character/style/difficulty controls.
-- Original 18 room games and Cloudflare adapter.
-- Lodge home / birthday artwork and animated fireplace.
-
-Command executed:
-npm run check
-
-Automated suite result:
-193 tests
-193 pass
-0 fail
-0 cancelled
-0 skipped
-
-Archive integrity is checked separately after packaging.
+RETAINED
+- v1.8 upright camera and role-specific HIDER/HUNTER HUD
+- v1.9 Family Sabotage
+- Family Mystery upgrades
+- Cribbage phone fixes and global card sorting
+- original 18 synchronized multiplayer games

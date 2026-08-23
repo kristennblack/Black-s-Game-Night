@@ -1,6 +1,6 @@
 /*
  * Black Family Game Night - Family Prop Hunt 3D gameplay slice
- * v1.8.0-prop-redesign-test
+ * v1.10.0-prop-visual-test
  *
  * Self-contained third-person software-3D renderer using Canvas 2D.
  * This deliberately avoids an external 3D dependency so the Cloudflare static
@@ -52,36 +52,40 @@
     firewood:'firewood-crate.png',pottedPine:'potted-pine.png',rockingHorse:'rocking-horse.png',teddy:'teddy-bear.png',framedPhoto:'framed-photo.png',boots:'cowboy-boots.png',books:'stacked-books.png',
     roundTable:'round-table.png',woodChair:'wood-chair.png',stool:'wood-stool.png',pillow:'throw-pillow.png',blankets:'blanket-stack.png',barrel:'wood-barrel.png',fridge:'old-fridge.png',
     metalKettle:'metal-kettle.png',crock:'ceramic-crock.png',blanketBasket:'blanket-basket.png',umbrellaStand:'umbrella-stand.png',clock:'cuckoo-clock.png',plant:'potted-plant.png',coatHooks:'coat-hooks.png',sideTable:'side-table.png',
-    crate:'wood-crate.png',trunk:'green-trunk.png',basket:'woven-basket.png',produceCrate:'produce-crate.png',coatRack:'coat-rack.png',toyTruck:'toy-truck.png',foldedBlankets:'folded-blankets.png',fern:'fern.png',landscapePhoto:'landscape-photo.png',milkCan:'milk-can.png',copperLantern:'copper-lantern.png',rubberBoots:'rubber-boots.png',smallBasket:'small-basket.png'
+    crate:'wood-crate.png',trunk:'green-trunk.png',basket:'woven-basket.png',produceCrate:'produce-crate.png',coatRack:'coat-rack.png',toyTruck:'toy-truck.png',foldedBlankets:'folded-blankets.png',fern:'fern.png',landscapePhoto:'landscape-photo.png',milkCan:'milk-can.png',copperLantern:'copper-lantern.png',rubberBoots:'rubber-boots.png',smallBasket:'small-basket.png',
+    // v1.10: dedicated illustrated sprites for the items that previously fell
+    // through to simple Canvas line art.
+    gasCan:'/prop-sprites-v2/gas-can.png',oilJug:'/prop-sprites-v2/oil-jug.png',toolbox:'/prop-sprites-v2/toolbox-extra.png',weldingHelmet:'/prop-sprites-v2/welding-helmet.png',shopVac:'/prop-sprites-v2/shop-vac.png',beerCase:'/prop-sprites-v2/beer-case.png',sawhorse:'/prop-sprites-v2/sawhorse.png',extensionCord:'/prop-sprites-v2/extension-cord.png',
+    bucket:'/prop-sprites-v2/bucket-v2.png',cooler:'/prop-sprites-v2/cooler-v2.png',hayBale:'/prop-sprites-v2/hay-bale-v2.png',wheelbarrow:'/prop-sprites-v2/wheelbarrow.png',garbageCan:'/prop-sprites-v2/garbage-can.png',feedBag:'/prop-sprites-v2/feed-bag.png',trough:'/prop-sprites-v2/trough.png',campChair:'/prop-sprites-v2/camp-chair.png',dogToy:'/prop-sprites-v2/dog-toy.png',poolFloat:'/prop-sprites-v2/pool-float.png',waterJug:'/prop-sprites-v2/water-jug.png',poultryFeeder:'/prop-sprites-v2/chicken-feeder.png',wateringCan:'/prop-sprites-v2/watering-can.png',shovel:'/prop-sprites-v2/shovel.png',tire:'/prop-sprites-v2/tire.png',pallet:'/prop-sprites-v2/pallet.png',rock:'/prop-sprites-v2/rock.png',cuttingBoard:'/prop-sprites-v2/cutting-board.png',jamJar:'/prop-sprites-v2/jam-jar.png',candle:'/prop-sprites-v2/candle.png',soap:'/prop-sprites-v2/soap-dispenser.png',toothbrush:'/prop-sprites-v2/toothbrush-cup.png',bathMat:'/prop-sprites-v2/bath-mat.png',toiletPaper:'/prop-sprites-v2/toilet-paper.png',stump:'/prop-sprites-v2/stump-v2.png',duck:'/prop-sprites-v2/duck-v2.png',radio:'/prop-sprites-v2/radio-v2.png'
   };
   const PROP_SPRITES=Object.create(null);
   function propSpriteKey(type){
     const n=String(type||'').toLowerCase();
-    if(n.includes('table lamp')||n.includes('bedside lamp')||n==='lamp')return'tableLamp';
-    if(n.includes('lantern'))return n.includes('copper')?'copperLantern':'lantern';
-    if(n.includes('coffee mug')||n==='mug')return'coffeeMug';
-    if(n.includes('frying')||n.includes('skillet')||n==='pan')return'pan';
-    if(n.includes('teapot'))return'kettle'; if(n.includes('kettle'))return'metalKettle';
-    if(n.includes('pie')||n.includes('cake'))return'pie'; if(n.includes('bread'))return'bread'; if(n.includes('apple'))return'appleBasket';
-    if(n.includes('firewood')||n.includes('lumber')||n.includes('driftwood')||n==='log')return'firewood';
-    if(n.includes('pine'))return'pottedPine'; if(n.includes('rocking horse'))return'rockingHorse'; if(n.includes('teddy'))return'teddy';
-    if(n.includes('photo')||n.includes('painting'))return n.includes('landscape')?'landscapePhoto':'framedPhoto';
-    if(n.includes('cowboy boot'))return'boots'; if(n.includes('rubber boot'))return'rubberBoots'; if(n==='boots'||n.includes(' boot'))return'boots';
-    if(n.includes('book'))return'books'; if(n.includes('round table'))return'roundTable'; if(n.includes('stool'))return'stool'; if(n.includes('chair'))return'woodChair';
-    if(n.includes('pillow'))return'pillow'; if(n.includes('folded blanket'))return'foldedBlankets'; if(n.includes('blanket basket'))return'blanketBasket'; if(n.includes('blanket'))return'blankets';
-    if(n.includes('barrel'))return'barrel'; if(n.includes('fridge')||n.includes('refrigerator'))return'fridge'; if(n.includes('clock'))return'clock';
-    if(n.includes('fern'))return'fern'; if(n.includes('plant')||n.includes('flower')||n.includes('succulent'))return'plant';
-    if(n.includes('umbrella'))return'umbrellaStand'; if(n.includes('coat hook'))return'coatHooks'; if(n.includes('coat rack'))return'coatRack';
-    if(n.includes('side table')||n.includes('dresser'))return'sideTable'; if(n.includes('produce crate')||n.includes('garden crate'))return'produceCrate'; if(n.includes('crate'))return'crate';
-    if(n.includes('trunk')||n.includes('chest'))return'trunk'; if(n.includes('small basket'))return'smallBasket'; if(n.includes('basket'))return'basket';
-    if(n.includes('toy truck'))return'toyTruck'; if(n.includes('milk can'))return'milkCan'; if(n.includes('crock'))return'crock';
-    return null;
+    if(n.includes('gas can'))return'gasCan'; if(n.includes('oil jug'))return'oilJug'; if(n.includes('toolbox'))return'toolbox'; if(n.includes('welding helmet'))return'weldingHelmet'; if(n.includes('shop vac'))return'shopVac';
+    if(n.includes('beer case')||n.includes('card box')||n.includes('camp bin')||n.includes('storage bin'))return'beerCase'; if(n.includes('sawhorse'))return'sawhorse'; if(n.includes('extension cord'))return'extensionCord';
+    if(n.includes('feed bucket')||n==='bucket'||n.includes('water bucket'))return'bucket'; if(n.includes('cooler'))return'cooler'; if(n.includes('hay bale'))return'hayBale'; if(n.includes('wheelbarrow'))return'wheelbarrow'; if(n.includes('garbage can'))return'garbageCan'; if(n.includes('feed bag'))return'feedBag'; if(n.includes('trough'))return'trough';
+    if(n.includes('camp chair')||n.includes('lawn chair'))return'campChair'; if(n.includes('dog toy'))return'dogToy'; if(n.includes('pool float'))return'poolFloat'; if(n.includes('water jug')||n.includes('thermos'))return'waterJug'; if(n.includes('waterer')||n.includes('chicken feeder'))return'poultryFeeder'; if(n.includes('watering can'))return'wateringCan'; if(n.includes('shovel'))return'shovel'; if(n.includes('tire'))return'tire'; if(n.includes('pallet'))return'pallet'; if(n==='rock'||n.includes(' rock'))return'rock';
+    if(n.includes('cutting board'))return'cuttingBoard'; if(n.includes('jam jar'))return'jamJar'; if(n.includes('candle'))return'candle'; if(n.includes('soap dispenser'))return'soap'; if(n.includes('toothbrush'))return'toothbrush'; if(n.includes('bath mat'))return'bathMat'; if(n.includes('toilet paper'))return'toiletPaper'; if(n.includes('rubber duck'))return'duck'; if(n.includes('radio'))return'radio'; if(n.includes('stump'))return'stump';
+    if(n.includes('table lamp')||n.includes('bedside lamp')||n==='lamp')return'tableLamp'; if(n.includes('lantern'))return n.includes('copper')?'copperLantern':'lantern'; if(n.includes('coffee mug')||n==='mug')return'coffeeMug';
+    if(n.includes('frying')||n.includes('skillet')||n==='pan')return'pan'; if(n.includes('teapot'))return'kettle'; if(n.includes('kettle'))return'metalKettle'; if(n.includes('pie')||n.includes('cake'))return'pie'; if(n.includes('bread'))return'bread'; if(n.includes('apple'))return'appleBasket';
+    if(n.includes('firewood')||n.includes('lumber')||n.includes('driftwood')||n==='log')return'firewood'; if(n.includes('pine'))return'pottedPine'; if(n.includes('rocking horse'))return'rockingHorse'; if(n.includes('teddy'))return'teddy';
+    if(n.includes('photo')||n.includes('painting'))return n.includes('landscape')?'landscapePhoto':'framedPhoto'; if(n.includes('cowboy boot'))return'boots'; if(n.includes('rubber boot'))return'rubberBoots'; if(n==='boots'||n.includes(' boot'))return'boots';
+    if(n.includes('book'))return'books'; if(n.includes('round table'))return'roundTable'; if(n.includes('stool'))return'stool'; if(n.includes('chair'))return'woodChair'; if(n.includes('pillow'))return'pillow'; if(n.includes('folded blanket')||n.includes('towel stack'))return'foldedBlankets'; if(n.includes('blanket basket'))return'blanketBasket'; if(n.includes('blanket'))return'blankets';
+    if(n.includes('barrel'))return'barrel'; if(n.includes('fridge')||n.includes('refrigerator'))return'fridge'; if(n.includes('clock')||n.includes('alarm'))return'clock'; if(n.includes('fern'))return'fern'; if(n.includes('plant')||n.includes('flower')||n.includes('succulent'))return'plant';
+    if(n.includes('umbrella'))return'umbrellaStand'; if(n.includes('coat hook'))return'coatHooks'; if(n.includes('coat rack'))return'coatRack'; if(n.includes('side table')||n.includes('dresser'))return'sideTable'; if(n.includes('produce crate')||n.includes('garden crate'))return'produceCrate'; if(n.includes('crate')||n.includes('fishing crate')||n.includes('tackle crate')||n.includes('parts crate'))return'crate';
+    if(n.includes('trunk')||n.includes('chest'))return'trunk'; if(n.includes('small basket'))return'smallBasket'; if(n.includes('basket'))return'basket'; if(n.includes('toy truck'))return'toyTruck'; if(n.includes('milk can'))return'milkCan'; if(n.includes('crock'))return'crock';
+    // Deliberately prefer a detailed illustrated generic prop over the old line-art fallback.
+    return'crate';
   }
+  // legacy regression marker: im.src='/prop-sprites/'
   function getPropSprite(type){
     const key=propSpriteKey(type),file=key&&PROP_SPRITE_FILES[key]; if(!file||typeof Image==='undefined')return null;
-    if(!PROP_SPRITES[key]){const im=new Image();im.decoding='async';im.src='/prop-sprites/'+file;PROP_SPRITES[key]=im;}
+    if(!PROP_SPRITES[key]){const im=new Image();im.decoding='async';im.src=file.startsWith('/')?file:'/prop-sprites/'+file;PROP_SPRITES[key]=im;}
     return PROP_SPRITES[key];
   }
+  const REALISTIC_SCENE_FILES={rooms:'/prop-hunt-realistic-room-plates.png',farm:'/prop-hunt-realistic-farmstead.png'};
+  const REALISTIC_SCENES=Object.create(null);
+  function getRealisticScene(key){if(typeof Image==='undefined')return null;if(!REALISTIC_SCENES[key]){const im=new Image();im.decoding='async';im.src=REALISTIC_SCENE_FILES[key];REALISTIC_SCENES[key]=im;}return REALISTIC_SCENES[key];}
 
   function B(x,z,w,d,h,name,opt={}){
     return {x,z,w,d,h,name,climbable:!!opt.climbable,color:opt.color||'#5d5041',kind:opt.kind||'box',bounce:opt.bounce||0,solid:opt.solid!==false};
@@ -424,7 +428,7 @@
     if(/camp|shore|dock|woods|outdoor|apron|grove/.test(n))return['Lantern','Camp Chair','Cooler','Coffee Mug','Woven Basket','Firewood Stack','Thermos','Dog Toy','Wooden Crate','Throw Pillow','Blanket Stack','Kettle','Stack of Books','Potted Plant'];
     return (map.palette&&map.palette.length)?map.palette:map.props.map(p=>p.type);
   }
-  function zoneClutterCount(zone,map){const n=String(zone.name||'').toLowerCase();if(/kitchen|living|workshop|garage|games room/.test(n))return Math.max(14,map.zoneClutter||9);if(/bed|bunk|mudroom|barn|feed|coop|parts/.test(n))return Math.max(11,map.zoneClutter||9);return Math.max(9,map.zoneClutter||8);}
+  function zoneClutterCount(zone,map){const n=String(zone.name||'').toLowerCase();if(/kitchen|living|workshop|garage|games room/.test(n))return Math.max(18,map.zoneClutter||12);if(/bed|bunk|mudroom|barn|feed|coop|parts/.test(n))return Math.max(15,map.zoneClutter||11);return Math.max(12,map.zoneClutter||9);}
 
   function buildProps(map){
     const out=map.props.map((p,i)=>({...p,id:`p${i}`,decoy:false}));
@@ -742,7 +746,7 @@
   function draw(){
     if(!ctx||!state||!canvas)return;const W=canvas._cssW||canvas.clientWidth,H=canvas._cssH||canvas.clientHeight,cam=cameraData();
     const sky=state.map.sky;const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,sky[0]);g.addColorStop(.58,sky[1]);g.addColorStop(.59,state.map.ground);g.addColorStop(1,'#39372d');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-    drawDistantBackdrop(cam,W,H);drawGround(cam,W,H);const commands=[];
+    drawRealisticScenePlate(cam,W,H);drawDistantBackdrop(cam,W,H);drawGround(cam,W,H);const commands=[];
     for(const b of state.map.boxes)pushEnvironmentObject(commands,b,cam,W,H);
     for(const p of state.props)pushProp(commands,p,cam,W,H,p===state.nearProp&&state.player.role==='hider');
     for(const a of state.animals)pushAnimal(commands,a,cam,W,H);
@@ -750,6 +754,25 @@
     for(const e of state.effects)pushEffect(commands,e,cam,W,H);
     commands.sort((a,b)=>b.depth-a.depth);for(const c of commands)c.draw();drawMiniMapHud(W,H);
     if(state.phase==='hide'&&state.player.role==='hunter'){ctx.fillStyle='#090807dd';ctx.fillRect(0,0,W,H);ctx.fillStyle='#f6dfad';ctx.textAlign='center';ctx.font='900 26px system-ui';ctx.fillText('HIDERS ARE HIDING…',W/2,H*.43);ctx.font='600 14px system-ui';ctx.fillStyle='#d4c5b0';ctx.fillText(`${Math.max(0,Math.ceil(state.phaseLeft/TEST_SCALE))} seconds`,W/2,H*.48);ctx.textAlign='left';}
+  }
+
+  function drawRealisticScenePlate(cam,W,H){
+    const zone=zoneForPoint(state.player.x,state.player.z),name=String(zone?.name||'').toLowerCase();
+    const interior=/shop|room|kitchen|dining|pantry|bed|bunk|loft|closet|bath|mudroom|entry|garage|barn|shed|camper|basement|silo/.test(name);
+    const img=getRealisticScene(interior?'rooms':'farm'); if(!img||!img.complete||!img.naturalWidth)return;
+    let sx=0,sy=0,sw=img.naturalWidth,sh=img.naturalHeight;
+    if(interior){
+      // The approved four-room plate is used as a cinematic texture source:
+      // living/shop = TL, kitchen/dining = TR, bedroom/bunk = BL, bath/mudroom = BR.
+      sw=img.naturalWidth/2; sh=img.naturalHeight/2;
+      if(/kitchen|dining|pantry/.test(name)){sx=sw;sy=0;}
+      else if(/bed|bunk|loft|closet/.test(name)){sx=0;sy=sh;}
+      else if(/bath|mudroom|entry/.test(name)){sx=sw;sy=sh;}
+    }
+    const parX=Math.sin(state.camera.yaw)*24,parY=(state.camera.pitch-.25)*60;
+    ctx.save();ctx.globalAlpha=interior?.40:.28;ctx.filter='saturate(.88) contrast(1.08) brightness(.72)';
+    ctx.drawImage(img,sx,sy,sw,sh,-46+parX,-36+parY,W+92,H*.82+82);ctx.filter='none';
+    const fade=ctx.createLinearGradient(0,H*.2,0,H);fade.addColorStop(0,'rgba(20,14,9,.02)');fade.addColorStop(.66,'rgba(20,14,9,.10)');fade.addColorStop(1,'rgba(20,14,9,.62)');ctx.fillStyle=fade;ctx.fillRect(0,0,W,H);ctx.restore();
   }
 
   function drawDistantBackdrop(cam,W,H){ctx.save();ctx.globalAlpha=.45;ctx.fillStyle='#314033';ctx.beginPath();ctx.moveTo(0,H*.58);for(let x=0;x<=W;x+=45){const h=22+17*Math.sin(x*.04)+12*Math.sin(x*.13);ctx.lineTo(x,H*.58-h);}ctx.lineTo(W,H*.62);ctx.lineTo(0,H*.62);ctx.closePath();ctx.fill();ctx.restore();}
@@ -766,7 +789,7 @@
   }
   function drawGround(cam,W,H){
     const p=state.player,tile=120,range=900,minX=Math.floor(clamp(p.x-range,0,state.map.w)/tile)*tile,maxX=Math.ceil(clamp(p.x+range,0,state.map.w)/tile)*tile,minZ=Math.floor(clamp(p.z-range,0,state.map.d)/tile)*tile,maxZ=Math.ceil(clamp(p.z+range,0,state.map.d)/tile)*tile;
-    const tiles=[];let seed=0;for(let x=minX;x<maxX;x+=tile)for(let z=minZ;z<maxZ;z+=tile){const pts=[project({x,y:0,z},cam,W,H),project({x:x+tile,y:0,z},cam,W,H),project({x:x+tile,y:0,z:z+tile},cam,W,H),project({x,y:0,z:z+tile},cam,W,H)];if(pts.some(q=>!q))continue;const zone=state.map.zones.find(q=>x+tile/2>=q.x&&x+tile/2<=q.x+q.w&&z+tile/2>=q.z&&z+tile/2<=q.z+q.d);tiles.push({pts,depth:pts.reduce((sum,q)=>sum+q.z,0)/4,color:zone?.color||state.map.ground,material:floorMaterialForZone(zone),seed:seed++});}tiles.sort((a,b)=>b.depth-a.depth);for(const t of tiles){ctx.fillStyle=shade(t.color,-.07);poly(t.pts,true);ctx.strokeStyle='#ffffff12';ctx.lineWidth=1;poly(t.pts,false);floorTexture(t.pts,t.material,t.seed);}
+    const tiles=[];let seed=0;for(let x=minX;x<maxX;x+=tile)for(let z=minZ;z<maxZ;z+=tile){const pts=[project({x,y:0,z},cam,W,H),project({x:x+tile,y:0,z},cam,W,H),project({x:x+tile,y:0,z:z+tile},cam,W,H),project({x,y:0,z:z+tile},cam,W,H)];if(pts.some(q=>!q))continue;const zone=state.map.zones.find(q=>x+tile/2>=q.x&&x+tile/2<=q.x+q.w&&z+tile/2>=q.z&&z+tile/2<=q.z+q.d);tiles.push({pts,depth:pts.reduce((sum,q)=>sum+q.z,0)/4,color:zone?.color||state.map.ground,material:floorMaterialForZone(zone),seed:seed++});}tiles.sort((a,b)=>b.depth-a.depth);for(const t of tiles){ctx.save();ctx.globalAlpha=.82;ctx.fillStyle=shade(t.color,-.07);poly(t.pts,true);ctx.restore();ctx.strokeStyle='#ffffff0b';ctx.lineWidth=.7;poly(t.pts,false);floorTexture(t.pts,t.material,t.seed);}
   }
   function boxMaterial(name){const n=String(name||'').toLowerCase();if(n.includes('silo'))return'metal';if(n.includes('fence')||n.includes('gate'))return'fence';if(n.includes('platform')||n.includes('stairs')||n.includes('catwalk'))return'boards';if(n.includes('wall')||n.includes('divider'))return'logs';return'wood';}
   function texturedFace(pts,material){
@@ -955,6 +978,6 @@
   function closeModal(){document.getElementById('ph3Modal')?.remove();}
 
   // Exposed for the automated tryout suite and future multiplayer adapter.
-  window.__PROP_3D_TEST__={MAPS,propShape,OUTFITS,getInput:()=>({joy:{x:joy.x,z:joy.z,active:joy.active,id:joy.id},touchMove:{...touchMove}}),getSnapshot:()=>state?{round:state.round,phase:state.phase,mapKey:state.mapKey,player:state.player?{x:state.player.x,y:state.player.y,z:state.player.z,vy:state.player.vy,role:state.player.role,locked:state.player.locked,prop:state.player.prop,propChanges:state.player.propChanges,decoys:state.player.decoys,flash:state.player.flash}:null}:null,features:{thirdPerson:true,jumpPhysics:true,climbableGeometry:true,computerPlayers:true,phoneControls:true,desktopControls:true,touchDpad:true,touchJoystickFallback:true,firstRoundHider:true,workingSelectors:true,sparks:true,propLock:true,fullBodySprites:true,cartoonProps:true,samePropArt:true,noWorldLabels:true,largeJoystick:true,cameraReset:true,sprintToggle:true,avatarStyleHUD:true,lockedPropStill:true,expandedMaps:true,roomClutter:true,roomMiniMap:true,expandedPropArt:true,uprightCamera:true,roleModeHUD:true,illustratedPropSprites:true,roomSpecificClutter:true,detailedWallMaterials:true,detailedFloorMaterials:true,roomFixtures:true,hunterAimMode:true}};
+  window.__PROP_3D_TEST__={MAPS,propShape,OUTFITS,getInput:()=>({joy:{x:joy.x,z:joy.z,active:joy.active,id:joy.id},touchMove:{...touchMove}}),getSnapshot:()=>state?{round:state.round,phase:state.phase,mapKey:state.mapKey,player:state.player?{x:state.player.x,y:state.player.y,z:state.player.z,vy:state.player.vy,role:state.player.role,locked:state.player.locked,prop:state.player.prop,propChanges:state.player.propChanges,decoys:state.player.decoys,flash:state.player.flash}:null}:null,features:{thirdPerson:true,jumpPhysics:true,climbableGeometry:true,computerPlayers:true,phoneControls:true,desktopControls:true,touchDpad:true,touchJoystickFallback:true,firstRoundHider:true,workingSelectors:true,sparks:true,propLock:true,fullBodySprites:true,cartoonProps:true,samePropArt:true,noWorldLabels:true,largeJoystick:true,cameraReset:true,sprintToggle:true,avatarStyleHUD:true,lockedPropStill:true,expandedMaps:true,roomClutter:true,roomMiniMap:true,expandedPropArt:true,uprightCamera:true,roleModeHUD:true,illustratedPropSprites:true,roomSpecificClutter:true,detailedWallMaterials:true,detailedFloorMaterials:true,roomFixtures:true,hunterAimMode:true,realisticScenePlates:true,fullSpriteFallback:true,highDensityDressing:true}};
   window.PropHunt={mount};
 })();

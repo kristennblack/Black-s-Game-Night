@@ -1,40 +1,27 @@
-# Black Family Game Night v1.8.0-prop-redesign-test
+# Black Family Game Night v1.10.0-prop-visual-test
 
-This test release is a **deep Prop Hunt presentation/renderer redesign**. The goal is to move the browser game much closer to the approved cozy, detailed Prop Hunt concepts instead of continuing to decorate the old prototype renderer.
+This test build carries forward v1.9 Family Sabotage and all prior game fixes, with a deep visual overhaul of Family Prop Hunt.
 
-## Prop Hunt v1.8
+## Prop Hunt visual overhaul
 
-### Camera and role clarity
-- Corrected the camera basis that could render the world inverted.
-- Added an explicit **YOU ARE A HIDER / YOU ARE A HUNTER** banner and **HIDING MODE / SHOOTING MODE** ribbon.
-- Hiders and hunters now receive different action clusters rather than one ambiguous control set.
-- Hunter AIM tightens the third-person camera/FOV.
+- Uses the approved cozy rustic room artwork as cinematic scene plates behind the live 3D collision world.
+- Adds a second illustrated prop library for workshop, farm, campsite and bathroom objects that previously fell back to simple Canvas outlines.
+- Every Prop Hunt prop now resolves to an image sprite; unmatched objects deliberately fall back to a detailed illustrated crate rather than line art.
+- Decoys and disguises use the exact same sprite renderer as normal scenery.
+- Room clutter density is increased so the expanded v1.7 maps read as furnished, believable spaces rather than empty geometry.
+- Detailed wood/gravel/grass/water-edge floor materials and log/metal/fence wall materials remain active.
+- Upright third-person camera, HIDER/HUNTER mode HUD, phone joystick, jump/sprint, aim/shoot, lock, flash and decoy controls remain active.
 
-### Illustrated props
-- Added a 44-image rustic/cartoon prop sprite library derived from the approved Prop Hunt art direction.
-- Scenery and player disguises use the same sprite lookup, so a disguised object matches the ordinary world object.
-- Procedural drawing remains only as fallback for object types that do not yet have a dedicated sprite.
+## Included
 
-### Richer rooms and buildings
-- Room-specific object palettes populate kitchens, bedrooms, bathrooms, mudrooms, shops, barns, campsites and outdoor areas differently.
-- Clutter density is substantially higher in major rooms.
-- Structural faces now receive log/plank/fence/metal detailing.
-- Ground/floors now receive wood, gravel, grass, earth or water-edge treatment based on the area.
-- Added fixed room dressing/fixtures so large rooms read as furnished spaces rather than geometry boxes.
+- Original 18 synchronized multiplayer games
+- Family Mystery
+- Family Prop Hunt v1.10 visual test
+- John's Birthday Seat
+- Family Sabotage v1.9 local/computer test
+- Full family avatar/style library and per-bot character/style/difficulty controls
 
-### Retained expansion
-- Keeps all of the larger v1.7 maps, named areas, AREA indicator and player-only minimap.
-- Keeps full-body family characters, avatar-style HUD, phone joystick/D-pad, jump/climb, sprint, camera reset, flash, decoy and prop lock.
+## Important test note
 
-## Other retained work
-- Family Mystery v1.6 deduction/board/mobile upgrades.
-- Cribbage phone layout and detailed scoring review.
-- Global suit + high-to-low card sorting.
-- Avatar packs and per-bot character/style/difficulty setup.
-- Black Family Lodge birthday home and animated fireplace.
+Prop Hunt, Family Mystery, Birthday Seat and Family Sabotage are still local/computer game engines in this branch; the original 18 games remain the synchronized online multiplayer set.
 
-## Verification
-
-`npm run check` passes **193 / 193 automated tests** with **0 failures**.
-
-Prop Hunt is still a custom browser 2.5D/third-person renderer rather than a fully modelled WebGL game. v1.8 substantially improves the renderer, artwork, HUD, material treatment and world dressing while preserving the existing game rules and family systems.

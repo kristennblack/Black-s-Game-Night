@@ -1,63 +1,24 @@
-BLACK FAMILY GAME NIGHT v1.8.0-prop-redesign-test
-PROP HUNT DELUXE REDESIGN TEST BUILD
-
-WHAT THIS BUILD IS FOR
-This test release is focused on making Prop Hunt finally read and play like the approved concept instead of a prototype. It keeps the expanded v1.7 maps, Family Mystery v1.6 improvements, Cribbage phone fixes, global card sorting, avatar packs, bots and the birthday Lodge home.
+BLACK FAMILY GAME NIGHT v1.10.0 - PROP HUNT VISUAL TEST
 
 UPLOAD
-1. Keep the hidden .git folder in your existing project checkout.
-2. Replace the tracked project files with everything in this package.
-3. Commit and push to the same branch Cloudflare deploys.
-4. Let Cloudflare deploy normally.
-5. On phones, close/reopen the site once after deployment if the old service-worker cache is still visible. This build uses the fresh v1.8 cache name.
+- Use the full-replacement ZIP for this version.
+- Preserve your existing .git folder if replacing files in the connected GitHub repository.
+- Commit and push the replacement files; Cloudflare can keep using the existing project connection.
 
-PROP HUNT - TEST THIS FIRST
-1. CAMERA / ORIENTATION
-   - The world must be upright. Floors stay below the player and ceilings/walls stay above.
-   - Drag the camera around and use CAMERA RESET.
-   - As a hunter, try AIM and confirm the camera tightens instead of flipping.
+TEST PROP HUNT FIRST
+1. Open Family Prop Hunt on a phone.
+2. Start Papa's Farm + Shop Complex as a Hider.
+3. Confirm the world is upright and the background/rooms look like the approved cozy rustic design rather than flat geometry.
+4. Walk through several rooms and check that furniture/clutter is dense.
+5. Become at least 8 different props, especially: gas can, toolbox, bucket, hay bale, cooler, wheelbarrow, lamp and crate.
+6. Drop a DECOY and confirm it looks exactly like the prop/disguise, not a wireframe or labeled box.
+7. LOCK and verify the disguise stays perfectly still while the camera can move.
+8. Test a Hunter round: SHOOT / AIM / RELOAD and confirm the mode is clearly labeled SHOOTING MODE.
+9. Test joystick, D-pad, jump, sprint and camera reset.
 
-2. ROLE CLARITY
-   - Hider rounds must clearly say YOU ARE A HIDER and HIDING MODE.
-   - Hunter rounds must clearly say YOU ARE A HUNTER and SHOOTING MODE.
-   - Hiders should see PROP / FLASH / DECOY / LOCK controls.
-   - Hunters should see SHOOT / RELOAD / AIM controls.
-   - Hunter crosshair should only appear while hunting.
-
-3. MOVEMENT
-   - Test the large analog joystick on a phone.
-   - Test D-pad backup, JUMP, SPRINT and CAMERA RESET.
-   - Walk through doors and around furniture; try stepping/jumping onto reasonable low objects.
-
-4. PROPS
-   - Rooms now use a 44-image illustrated prop sprite library instead of relying on labelled boxes.
-   - Look for lamps, lanterns, mugs, kettles, pie/bread, apple baskets, firewood, plants, rocking horse, teddy bear, framed photos, boots, books, tables, chairs, pillows, blankets, barrels, fridge, trunks, baskets, milk cans and more.
-   - Become several props. Your disguise should use the SAME illustrated artwork as the normal scenery object.
-   - Lock as a prop and rotate the camera; the disguise itself should remain still.
-
-5. ROOMS / BUILDINGS
-   - Walls and structures now have visible log/plank/fence/metal material treatment.
-   - Floors change by area: wood, gravel, grass, earth or water-edge treatment.
-   - Rooms receive specific clutter instead of one generic scatter list.
-   - Check that kitchens look like kitchens, bedrooms like bedrooms, workshops like workshops, barns like barns, etc.
-   - Fixed room dressing/fixtures should help spaces feel furnished rather than empty boxes.
-
-6. EXPANDED MAPS
-   - Papa's Farm + Shop Complex: shop, barn, workshop annex, garage, parts room, mezzanine/loft, farmhouse living room/kitchen, basement, silo, fields and animal yard.
-   - Camper/Campsite: camper, pine-grove campsites, utility/storage, group campsite, boat launch, dock and woods trail.
-   - Acreage/Backyard: garage, driveway/front yard, play yard, orchard/woodlot, goat barn, back field/trailer lane and dugout dock.
-   - Farmyard/Animal Pens: tractor shed, feed shed, goat barn/loft, pig barn/wallow, coop/hatchery, silo/grain room and pasture/equipment yard.
-   - AREA chip should update while moving between named sections.
-   - Mini-map shows your own position only; it must not expose opponents.
-
-RECHECK RETAINED WORK
-- Family Mystery: movement-cost markers, grouped notebook, case history, suspect pull-in rule, phone action tray and accusation confirmation.
-- Cribbage: reachable phone GO / Score / Continue controls, pegging cards and scoring-combination review.
-- Normal card hands: suit grouped and high-to-low sorting.
-- Human + computer character/style/difficulty selectors.
-- Birthday Lodge home and animated fireplace.
-
-IMPORTANT
-- The original 18 room games are synchronized online multiplayer.
-- Family Mystery, Prop Hunt and Birthday Seat are still local/computer test engines in this build.
-- Prop Hunt is a custom browser 2.5D/third-person renderer. This release makes its camera, HUD, illustrated props, room materials and world dressing much closer to the approved design, but it is not yet a fully modelled WebGL/console-style 3D engine.
+VISUAL TARGET
+- Rich warm cabin/farm lighting
+- Illustrated 3D-ish props with texture and shadows
+- No outline-only placeholder props
+- Detailed walls/floors/room dressing
+- Same art for scenery, disguise and decoy
