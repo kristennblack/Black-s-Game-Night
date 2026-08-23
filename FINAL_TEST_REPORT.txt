@@ -1,41 +1,18 @@
-BLACK FAMILY GAME NIGHT v1.2.4-launch
+BLACK FAMILY GAME NIGHT v1.2.6-test
 FINAL AUTOMATED TEST REPORT
 
-RESULT
-143 / 143 tests passed
-0 failures
+Result: PASS
+Tests: 150 / 150 passing
+Failures: 0
 
-SYNTAX / PACKAGE CHECKS
-PASS worker.mjs
-PASS gameEngine.mjs
-PASS extraGames.mjs
-PASS public/app.js
-PASS public/prop-hunt-3d.js
-PASS public/birthday-climb.js
+v1.2.6-specific coverage:
+- Cribbage phone table uses the real small viewport height instead of forcing a 760px board.
+- GO, Score Hand, and Continue counting actions are mirrored into a large phone-only action strip directly above the player's hand.
+- Cribbage cards, pegging sequence, running count, crib discard controls, and end-of-hand scoring review remain present.
+- Standard playing-card hands use the shared card sorter throughout the original card games.
+- Suit grouping order: Spades, Hearts, Diamonds, Clubs, then Jokers/no-suit cards.
+- Within each suit, rank order is high to low: Ace, King, Queen, Jack, 10 through 2.
+- Existing v1.2.5 Prop Hunt, avatar packs, Birthday Seat, Lodge, computer-player, invite-link, and multiplayer regression tests remain passing.
+- JavaScript syntax checks pass for the Worker, both game engines, app.js, Prop Hunt, and Birthday Seat.
 
-V1.2.4 AVATAR PACK CHECKS
-PASS all 12 approved family avatar packs are present
-PASS all 13 family members/pets have an image in every pack
-PASS 156 new family-pack avatar image files verified
-PASS family-pack manifest version is 1.2.4-launch
-PASS human character selector exposes original looks + approved packs
-PASS John retains all 16 existing looks + approved packs
-PASS computer-player character/style/difficulty values persist through Worker state
-PASS Home > Avatars exposes the approved pack gallery
-
-RETAINED REGRESSION COVERAGE
-PASS all 18 original games create, seat, ready and start
-PASS all 18 original games can start solo using Easy/Medium/Hard computer players
-PASS room persistence / Durable Object adapter
-PASS room-preserving game switching
-PASS share/join paths
-PASS cabin home and animated fire
-PASS Cribbage pegging visibility and end-of-hand scoring review
-PASS Prop Hunt setup/movement/jump control code paths
-PASS Birthday Seat 32-step course and family runner roster
-PASS Family Mystery board / movement / clue UI checks
-
-COMMAND
-npm run check
-
-See FINAL_TEST_OUTPUT.tap for the complete TAP output.
+Full TAP/check output is included in FINAL_TEST_OUTPUT.tap.

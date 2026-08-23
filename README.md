@@ -1,64 +1,29 @@
-# Black Family Game Night v1.2.4-launch
+# Black Family Game Night v1.2.6-test
 
 Private family game-night web app for phones and computers.
 
-## What changed in v1.2.4
+## What changed in v1.2.5
 
-### Approved family avatar packs are now selectable
+### Family Prop Hunt visual + control rebuild
 
-The newest approved avatar artwork is now wired into the live multiplayer character closet instead of only being stored as reference art.
+The Prop Hunt engine has been rebuilt around the approved third-person cabin look instead of the earlier placeholder boxes and circular face markers.
 
-For each of the 13 family characters and pets, the build includes these 12 additional selectable packs:
+- **Actual joystick bug fixed:** the joystick math was attempting to modify `const` values, which threw a browser error on every drag. It now uses mutable coordinates and has been verified with a real headless-browser touch gesture.
+- Added an explicit iPhone/Safari touch fallback in addition to Pointer Events.
+- The small arrow pad remains available as a redundant movement control on phones.
+- Family players now render as the packaged **full-body 3D family sprites**, not circular head portraits.
+- Hiders disappear into their disguise exactly as expected.
+- World props are no longer labelled cubes. They render as illustrated cartoon objects such as mugs, buckets, oil/gas cans, toolboxes, welding helmets, shop vacs, crates, stools/chairs, sawhorses, hay bales, wheelbarrows, rocks, stumps, firewood/logs, lanterns, coolers, tires, flower pots, watering cans, barrels, troughs, pallets, dog toys, feed bags, pool floats, shovels and animal feeders.
+- **The scenery prop and disguised-player prop use the same renderer**, so if you become a gas can, you look like the same cartoon gas can that was already sitting in the map.
+- Large scenery now has recognizable illustrated forms too, including tractors, motorcycles, fireplaces, furniture, beds/bunks, workbenches/tables, shelving, trucks, tents, BBQs, hot tubs/pools, trampolines, boats, trailers, trees, sheds/shops, hay stacks, sea cans and climbing platforms.
+- Floating world-name labels were removed.
+- The approved Prop Hunt scene and art-pack references are included in the build for continued visual tuning.
 
-- Anime
-- Western
-- Rich
-- Homeless
-- Country
-- Chinese-inspired
-- African American-inspired
-- Native American-inspired
-- South Asian-inspired
-- Korean-inspired
-- Superhero
-- Criminal Crew
+### Approved family avatar packs remain selectable
 
-That is **156 newly packaged family avatar images** (12 packs x 13 characters/pets), plus the matching full-pack review sheets.
+The 12 v1.2.4 family packs remain wired into the live multiplayer avatar system for all 13 family characters and pets: Anime, Western, Rich, Homeless, Country, Chinese-inspired, African American-inspired, Native American-inspired, South Asian-inspired, Korean-inspired, Superhero, and Criminal Crew. The existing Cute/Goofy/Rugged/Glam looks and John's 16 looks remain available too.
 
-The existing artwork remains available:
-
-- Non-John family characters keep Cute, Goofy, Rugged and Glam.
-- John keeps all 16 existing Birthday Boy looks.
-- All original non-family avatar characters remain in the game.
-
-### Character-first selector
-
-The lobby still uses the approved flow:
-
-1. Choose a character.
-2. See only that character's available looks.
-3. Choose the avatar look and colours.
-4. Use Back to Characters to switch people/pets.
-
-For family characters, the approved style packs are displayed in their own section beneath the original looks.
-
-### Computer players can use the avatar packs
-
-Host controls now include a separate **Avatar style** selector for every computer player.
-
-A computer can therefore be configured independently, for example:
-
-- Papa / Criminal Crew / Hard
-- Gunner / Superhero / Easy
-- Kristen / Chinese-inspired / Medium
-
-Changing a computer's character refreshes the available style list for that character. Bot difficulty remains Easy / Medium / Hard and does not change the no-cheating hidden-information rules.
-
-### Home Avatar destination
-
-The cabin home's Avatars button now opens a gallery showing the family roster plus all 12 approved style-pack sheets.
-
-## Kept from v1.2.3
+## Other retained updates
 
 ### Cribbage
 
@@ -89,7 +54,7 @@ The cabin home's Avatars button now opens a gallery showing the family roster pl
 
 The 18 original room games are synchronized multiplayer. **Create & Share** creates a private room and shares its exact join URL, and active rooms retain Share Invite / Copy Link controls.
 
-Family Mystery, Family Prop Hunt and John's Birthday Seat have direct Share Game links, but their gameplay state is still local to each device in v1.2.4. They are not yet synchronized between separate devices.
+Family Mystery, Family Prop Hunt and John's Birthday Seat have direct Share Game links, but their gameplay state is still local to each device in v1.2.5. They are not yet synchronized between separate devices.
 
 ## Validation
 
@@ -97,4 +62,16 @@ Run:
 
     npm run check
 
-The v1.2.4 test release passes **143 / 143 automated checks** with zero failures, including new checks for every approved avatar-pack file, human selection wiring, the home Avatar gallery, and computer-player character/style/difficulty persistence.
+The v1.2.5 test release passes **147 / 147 automated checks** with zero failures. A separate browser interaction smoke test also verified a real touch joystick gesture moved the player more than 100 world units, JUMP produced positive vertical velocity, and PROP successfully transformed the player into a nearby illustrated object.
+
+## v1.2.6-test
+
+Phone-focused Cribbage polish and global hand sorting:
+
+- Cribbage now sizes its table to the small mobile viewport rather than enforcing the old 760px minimum.
+- GO, manual score, and count-continue actions are mirrored into a large action strip immediately above the hand on narrow screens.
+- The phone Cribbage board, pegging area, count review, and hand use more compact dimensions while retaining the full gameplay information.
+- Standard playing-card hands are grouped Spades, Hearts, Diamonds, Clubs and sorted Ace-to-2 within each suit.
+- Custom non-standard decks retain category grouping while numeric ranks sort high-to-low.
+- All prior v1.2.5 Prop Hunt, avatar, multiplayer, Lodge, and Birthday Seat work is retained.
+- Automated regression status: 150/150 passing.

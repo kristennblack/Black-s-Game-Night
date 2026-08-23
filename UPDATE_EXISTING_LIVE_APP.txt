@@ -1,36 +1,22 @@
-BLACK FAMILY GAME NIGHT v1.2.4-launch
+BLACK FAMILY GAME NIGHT v1.2.5-test
+FULL REPLACEMENT UPDATE
 
-V1.2.4 AVATAR PACK CHANGES
-- 12 approved family avatar packs are now selectable, not just stored as art.
-- All 13 family characters/pets have every new pack.
-- Human players choose character -> avatar style -> colours.
-- Computer players can be assigned character + avatar style + Easy/Medium/Hard.
-- Home > Avatars shows the approved pack gallery.
-- Existing Cute/Goofy/Rugged/Glam, John 16-look set and original characters are preserved.
+MAIN CHANGE
+Family Prop Hunt has been rebuilt around the approved third-person cartoon look.
 
-UPDATE EXISTING LIVE APP
+- Fixed the actual joystick failure that caused drag input to throw a browser error.
+- Added redundant Pointer Event + iPhone/Safari touch handling.
+- Full-body family characters replace circular head markers during gameplay.
+- Environmental props are recognizable illustrated objects rather than labelled cubes.
+- Hider disguises use the exact same prop art as the map object they copy.
+- Key scenery/landmarks have illustrated shapes instead of plain labelled blocks.
+- Approved Prop Hunt scene/art reference files are included for future refinement.
 
-Use this package as a full replacement of the tracked project files while preserving the repository's hidden .git directory.
+All prior v1.2.4 avatar packs, Cribbage changes, Birthday Seat, Lodge, original games, computer-player settings and invite/share features are retained.
 
-KEEP
-- Existing Git repository / history
-- Existing Cloudflare project connection
-- Existing production branch
+TEST STATUS
+147 / 147 automated checks passing.
+Real browser touch smoke test passed joystick movement, jump and prop transformation.
 
-REPLACE
-- Tracked project files with the contents of this package
-
-V1.2.3 CHANGES
-- Cribbage now shows every pegging play with owner and running total.
-- Cribbage end-of-hand review shows all cards and highlights exact scoring combinations.
-- Crib discard selection has a large persistent Send Selected Cards button.
-- Legacy top-down Prop Hunt code removed so only the third-person engine mounts.
-- Prop Hunt character/outfit/start selectors repaired.
-- Prop Hunt round one starts the human as a hider for immediately usable controls.
-- Prop Hunt phone D-pad added alongside joystick.
-- Prop Hunt WASD, jump, PROP selection and touch movement browser-smoke-tested.
-- Prop Hunt jump buffering makes near-landing jump taps more forgiving.
-- Existing Lodge, Birthday Seat, Mystery, bot-character setup and share links retained.
-- Fresh v1.2.3 service-worker cache.
-
-After pushing, test the production URL on at least one phone and one desktop browser.
+DEPLOYMENT
+Use this package as a full replacement of tracked project files while preserving the existing hidden .git folder, then commit and push to main. The new service-worker cache is black-family-game-night-v125-test.

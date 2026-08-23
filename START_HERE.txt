@@ -1,108 +1,49 @@
-BLACK FAMILY GAME NIGHT v1.2.4-launch
-FULL REPLACEMENT TEST PACKAGE
+BLACK FAMILY GAME NIGHT v1.2.6-test
+PHONE CRIBBAGE + GLOBAL CARD SORT TEST BUILD
 
-WHAT TO TEST FIRST
+USE THIS ZIP AS A FULL REPLACEMENT OF THE PREVIOUS TEST BUILD.
+Keep your repository's hidden .git folder, replace the tracked project files with this build, commit, and push to main for the existing Cloudflare deployment.
 
-1. NEW FAMILY AVATAR PACKS
-   - Open any original multiplayer game and enter the lobby.
-   - Choose a family member or dog.
-   - Confirm the original looks still appear first.
-   - Confirm the APPROVED FAMILY PACKS section appears below them.
-   - Test several new looks, including Superhero, Criminal Crew, Korean-inspired, Rich and Western.
-   - Confirm the preview changes to the selected family member/pet and selected pack.
-   - Press Back to Characters and confirm you can switch to another person or dog.
+WHAT CHANGED IN v1.2.6
 
-   NEW PACKS INCLUDED FOR ALL 13 FAMILY CHARACTERS/PETS:
-   Anime
-   Western
-   Rich
-   Homeless
-   Country
-   Chinese-inspired
-   African American-inspired
-   Native American-inspired
-   South Asian-inspired
-   Korean-inspired
-   Superhero
-   Criminal Crew
+CRIBBAGE ON PHONES
+- The Cribbage game table now uses the phone's actual small viewport height instead of forcing the older 760px-tall layout.
+- The board, starter/crib zone, pegging display, and hand are compressed on narrow screens so more remains visible at once.
+- GO is no longer buried in the sidebar below the game table.
+- When GO is legal, a large GO button appears directly above your hand.
+- Manual Score Hand / Continue counting actions use the same reachable phone action strip.
+- Safe-area spacing is included for iPhone bottom controls.
+- The crib discard SEND SELECTED CARDS control remains above the hand.
+- End-of-hand scoring review and highlighted scoring combinations remain included.
 
-2. COMPUTER AVATAR SELECTION
-   - As host, choose a Computer character.
-   - The Avatar style selector should become active.
-   - Choose a style and Easy / Medium / Hard.
-   - Add the computer.
-   - Confirm its avatar at the table uses that chosen style.
-   - Change the computer character and style, press Save, and confirm both update.
+CARD SORTING
+All normal playing-card hands shown through the shared game UI now sort automatically:
+1. Spades
+2. Hearts
+3. Diamonds
+4. Clubs
+5. Jokers / no-suit cards
 
-3. HOME AVATARS BUTTON
-   - From the cabin home screen, press AVATARS.
-   - Confirm the family roster is visible.
-   - Confirm all 12 approved style-pack review sheets are shown below it.
+Inside each suit the cards run:
+Ace, King, Queen, Jack, 10, 9, 8, 7, 6, 5, 4, 3, 2.
 
-4. CRIBBAGE - PEGGING VISIBILITY
-   - Start a 2-player Cribbage game.
-   - Discard two cards to the crib.
-   - Confirm the selected count is visible above your cards.
-   - Confirm the large SEND SELECTED CARDS TO CRIB button stays visible.
-   - During pegging, every card played should remain in the center play area for the current count.
-   - Each play should show who laid it and the running count after that card.
-   - Pair / 15 / 31 / run points should be identified when scored.
+This applies to the shared hand rendering used by the classic trick-taking games and extra card games such as Cribbage, Euchre, 31, Poker, President, Prairie Pots, Burn Logs, and other normal-card hands. Custom non-standard decks keep their own category grouping, with numeric ranks ordered high to low.
 
-5. CRIBBAGE - END-OF-HAND COUNT
-   - Finish pegging.
-   - Confirm the counted hand remains visible with the starter card.
-   - Under HOW THE POINTS ARE MADE, tap each scoring line.
-   - The exact cards making that pair, 15, run, flush or nobs score should highlight.
+RETAINED FROM v1.2.5
+- Rebuilt Prop Hunt touch joystick / jump / illustrated prop work.
+- Full family avatar style packs and bot avatar selection.
+- Birthday Seat rebuild.
+- Animated Lodge fireplace and working home navigation.
+- Share/invite links and original online multiplayer games.
 
-6. FAMILY PROP HUNT
-   - Open New Family Games > Family Prop Hunt.
-   - Choose a character and outfit and start the match.
-   - Round 1 should make you a HIDER so controls can be tested immediately.
+TEST STATUS
+150 / 150 automated tests passing.
+0 failures.
+See FINAL_TEST_REPORT.txt and FINAL_TEST_OUTPUT.tap.
 
-   COMPUTER:
-     WASD = move
-     drag/right-drag = camera
-     Space = jump
-     E = prop
-     C = decoy
-     Q = flash
-     X = lock/unlock
-     R = reload
-
-   PHONE/TABLET:
-     left joystick OR arrow pad = move
-     drag the game view = camera
-     JUMP = jump
-     PROP = disguise as a nearby valid prop
-     FLASH / DECOY / LOCK = hider abilities
-
-7. REGRESSION CHECKS
-   - Approved cabin home screen is still present and the fire moves.
-   - Home-screen buttons still navigate.
-   - John's Birthday Seat still has the visible full-body runner and 32-step climb.
-   - Original multiplayer rooms still support Easy / Medium / Hard computer players.
-   - Invite/share links remain available.
-
-AUTOMATED VALIDATION
-143 / 143 tests passing
-0 failures
-
-DEPLOYMENT
-
-1. Keep the hidden .git folder in the existing GitHub repository.
-2. Replace the tracked project files with everything in this package.
-3. Commit with a message such as:
-   Black Family Game Night v1.2.4 - approved avatar packs
-4. Push to main.
-5. The existing Cloudflare deployment should rebuild automatically.
-6. If a device still shows the previous build, hard-refresh once. The service-worker cache is:
-   black-family-game-night-v124-launch
-
-Cloudflare settings remain:
-Build command: blank / None
-Deploy command: npx wrangler deploy
-Root directory: /
-Production branch: main
-
-IMPORTANT ONLINE NOTE
-The 18 original room games are synchronized multiplayer. Family Mystery, Prop Hunt and Birthday Seat are currently local/computer-play engines. Their Share Game links open the correct mode for another person, but these three newer game states are not yet synchronized between devices.
+PHONE TEST I RECOMMEND FIRST
+1. Open Cribbage on an iPhone-sized screen.
+2. Confirm the bottom hand is fully visible.
+3. Play until you have no legal pegging card and confirm the large GO button appears directly above your hand.
+4. Confirm the pegging cards/running count remain visible while choosing a card.
+5. Check several games and verify each standard hand groups suits and runs high to low.
