@@ -1,131 +1,63 @@
-BLACK FAMILY GAME NIGHT v2.0.0 - PROP HUNT TRUE 3D ALPHA
-==========================================================
+BLACK FAMILY GAME NIGHT v1.3.0-real3d
 
-WHY THIS BUILD EXISTS
----------------------
-The previous Prop Hunt renderer was a custom Canvas2D software renderer. It
-stored positions in x/y/z, but it still drew characters and props as flat
-billboards. That is why the game could show giant wall slabs, flat characters
-that all appeared to face one direction, pasted-looking props, and a camera
-that sometimes lost the player.
+DEEP FAMILY PROP HUNT REBUILD
 
-v2.0 replaces the Prop Hunt presentation layer with a real WebGL / Three.js
-scene while preserving the Prop Hunt game rules, family roster, controls,
-expanded maps, bots and Family Sabotage.
+This is one substantial replacement package, not a chain of small launch versions. It keeps the existing Black Family Lodge and original games, but replaces the Prop Hunt pseudo-3D foundation with real WebGL 3D and a dedicated real-time multiplayer room.
 
-WHAT IS TRUE 3D NOW
--------------------
-* PerspectiveCamera and WebGLRenderer instead of manual 2D projection.
-* Real mesh walls, floors, fences, furniture and building structures.
-* Textured wood, stone, grass, gravel, earth, metal, fabric, plaid and hay.
-* Standard 3D lighting, fog, shadows and room lighting.
-* Volumetric 3D scenery props instead of line-art rectangles.
-* The exact same 3D prop factory is used for world props, disguises and decoys.
-* Full 3D family character rigs with body, head, arms and legs.
-* Characters rotate toward their actual movement/yaw instead of always facing
-  the same direction.
-* Walking limb animation is driven by actual movement.
-* Dogs have their own volumetric 3D rigs.
-* Hunters visibly carry a modeled 3D prop-zapper.
-* Hunter shots originate from the true 3D camera direction.
-* Third-person camera collision pulls the camera in before a wall blocks you.
-* The local player stays centered/readable in the third-person view.
-* Farm animals are actual 3D scene objects.
+WHAT TO TEST FIRST
 
-PLAYER / DISGUISE READABILITY
------------------------------
-The gameplay HUD now explicitly shows:
-* YOU + your selected family character.
-* VISIBLE FAMILY CHARACTER when you are not disguised.
-* DISGUISED AS <PROP NAME> after transforming.
-* MOBILE DISGUISE or LOCKED & STILL.
-* Hunters see their 3D prop-zapper and current magazine count.
-* AREA continues to show the room/zone you are standing in.
-* A small player-only map shows YOUR location and facing direction without
-  exposing opponents.
+1. LODGE -> FAMILY PROP HUNT
+   - On the Lodge game shelf, press Play on Family Prop Hunt.
+   - A private Prop Hunt room should be created automatically.
+   - Use Copy Invite Link or Share Link and join from a second phone/browser.
+   - Both players should appear in the same Prop Hunt lobby.
+   - Choose family characters, press Ready, add computers if wanted, then start.
 
-HOW TO TEST PROP HUNT
----------------------
-After deploying, open:
-  /new-games.html?game=prop
+2. PAPA'S SHOP 3D FOUNDATION
+   - Walk around a family character from front, side and behind. Their front must not billboard toward the camera.
+   - Put one player behind a solid wall. The other player must not render through it.
+   - Back the camera toward a wall. It must move closer instead of passing outside the building.
+   - Walk into walls and closed windows. They must block movement.
+   - Shoot toward a player behind a wall/window. The first world surface should take the ray hit.
+   - Walk/run/turn/jump and test acceleration, gravity and landing.
+   - Jump into a reasonable ledge/crate/tractor surface and confirm automatic mantling without a Climb button.
+   - Try moving into another player and confirm the bodies separate instead of ghosting through each other.
 
-Recommended phone test:
-1. Choose a family character and start Papa's Farm + Shop Complex.
-2. Confirm the gameplay status line says:
-     TRUE 3D WEBGL ACTIVE
-   If it does, the new renderer loaded successfully.
-3. Rotate the camera and walk around another character. The character should be
-   volumetric and turn/animate with movement rather than behaving like a card.
-4. Walk close to walls and furniture. The camera should pull inward instead of
-   letting a giant wall cover the whole screen.
-5. Watch the YOU/status panel and confirm you can always tell who you are and
-   which room you are in.
-6. Become several props. Confirm the status changes to DISGUISED AS <PROP> and
-   that your disguise is a real 3D object.
-7. Drop decoys and compare them with the real scenery prop and your disguise.
-   They should all use the same 3D object family.
-8. Lock and unlock your disguise.
-9. Play a hunter round. Confirm the 3D prop-zapper is visible and the HUD says
-   SHOOTING MODE / hunter mode, with ammo and reload controls.
-10. Test jump, sprint, camera reset, joystick, D-pad and camera drag.
+3. CHARACTERS / DOGS / WEAPONS
+   - Humans are actual 3D mesh bodies with front/back/side volume and articulated limbs.
+   - Hunters carry a 3D prop-zapper attached to the hand rig.
+   - Aim should zoom the camera and keep the crosshair/weapon direction readable.
+   - Kelsi, Molly and Gunner use quadruped bodies, four legs/paws, heads/ears/tails and a backpack-mounted zapper.
 
-DESKTOP CONTROLS
-----------------
-WASD       Move
-Mouse      Camera / aim
-Left click Shoot when hunter
-Right click Aim when hunter
-Space      Jump
-Shift      Sprint
-R          Reload
-E          Change / become prop
-Q          Flash
-C          Decoy
-X          Lock / unlock
+4. PROP GAMEPLAY
+   - Hider disguises use actual 3D prop meshes.
+   - Health stays with the player when changing disguise.
+   - Prop changes, 10 decoys and flash refresh behavior should match the locked rules.
+   - Decoys are shot-ray surfaces.
+   - In Family Chaos, caught hiders join the hunters.
 
-IMPORTANT ALPHA NOTE
---------------------
-Three.js is currently loaded from the jsDelivr CDN the first time Prop Hunt
-starts. The game keeps the older renderer as a safe fallback if WebGL/Three.js
-cannot load.
+5. OTHER GAMES
+   - Confirm the original Lodge games still create/join/start normally.
+   - Family Mystery and John's Birthday Seat should remain available.
 
-This environment could run the full code/test suite but could not fetch the CDN
-module inside its local browser sandbox. Therefore the TRUE 3D renderer has NOT
-been visually browser-tested here. The deployment/phone test above is required.
+CONTROLS
+COMPUTER: WASD move, drag game view to look, Space jump/auto-mantle, Shift sprint. On-screen Aim/Shoot/Prop/Flash/Decoy/Lock controls remain available.
+PHONE/TABLET: left joystick to move, drag the 3D view to look, Aim/Zoom, Shoot, Jump/Auto-Mantle, Sprint toggle, Prop, Flash, Decoy and Lock buttons.
 
-If you see TRUE 3D WEBGL ACTIVE, the new renderer is running.
-If that message does not appear and the old flat/cardboard look returns, the
-CDN import was blocked or failed. The next action would be to vendor Three.js
-inside the project so the app has no external runtime dependency.
+DEPLOYMENT
+This package has NOT been deployed automatically.
 
-OTHER GAMES
------------
-* Family Sabotage remains in the build and keeps its v1.9 local/computer mode.
-* Family Mystery improvements remain.
-* Original room-based multiplayer games remain intact.
-* Cribbage mobile fixes and global card sorting remain.
-* Birthday Seat and avatar/style systems remain.
-* The approved birthday cabin home screen remains.
+For the existing GitHub/Cloudflare app:
+1. Keep the hidden .git folder in the existing repository.
+2. Replace tracked project files with this package.
+3. Commit, for example: Black Family Game Night v1.3.0 - real 3D Prop Hunt rebuild
+4. Push main.
+5. Existing Cloudflare Git deployment should run `npx wrangler deploy`.
 
-AUTOMATED TEST STATUS
----------------------
-209 / 209 tests pass.
-0 failures.
+Cloudflare settings:
+Build command: blank / None
+Deploy command: npx wrangler deploy
+Root directory: /
+Production branch: main
 
-The v2-specific tests cover:
-* WebGL layer loading order.
-* Real Three.js scene/camera/renderer architecture.
-* Volumetric 3D props used by scenery, disguises and decoys.
-* Articulated 3D family character rigs.
-* 3D prop-zapper.
-* Camera collision and third-person player visibility.
-* Player/disguise/location HUD.
-* Textured materials, lights and shadows.
-* 3D animals.
-* Fresh v2 service-worker cache and WebGL asset registration.
-
-UPLOAD
-------
-This is a FULL REPLACEMENT ALPHA package. Preserve the repository's hidden
-.git folder, replace the tracked project files with this package, commit and
-push to main using the same GitHub/Cloudflare process as prior builds.
+Wrangler now includes a v2 Durable Object migration for the new PropHuntRoom class. Do not remove the existing v1 GameHub migration.

@@ -1,7 +1,7 @@
 {
   "name": "Black Family Game Night",
   "short_name": "Black Game Night",
-  "description": "Black Family Game Night launch build with 18 private multiplayer classics, Family Mystery, 3D Family Prop Hunt, John\u2019s Birthday Seat, computer players, family avatars, chat and shareable room links.",
+  "description": "Black Family Game Night with 18 private multiplayer classics, real-time WebGL Family Prop Hunt, Family Mystery, John's Birthday Seat, family characters, computer players, chat and shareable room links.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#e8dfcc",

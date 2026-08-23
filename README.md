@@ -1,40 +1,50 @@
-# Black Family Game Night v2.0.0-prop-true3d-alpha
+# Black Family Game Night v1.3.0-real3d
 
-This alpha keeps the full v1.9 game collection, including Family Sabotage, and replaces the visual presentation layer of **Family Prop Hunt** with a real WebGL / Three.js 3D renderer.
+This version keeps the Black Family Lodge and the existing game collection, while rebuilding **Family Prop Hunt** on a real WebGL 3D foundation.
 
-## Why v2 exists
+## Prop Hunt rebuild
+- Replaced the old Canvas 2D software-projection renderer with Three.js WebGL.
+- Added a close third-person PerspectiveCamera, aim zoom, camera-wall collision, real depth buffering, shadows, fog and 3D raycast shooting.
+- Rebuilt family players as all-angle hierarchical 3D mesh rigs. Faces exist on the front of the head only, so approaching from behind shows the back of the character.
+- Rebuilt Kelsi, Molly and Gunner as quadruped 3D rigs with articulated legs, paws, heads, ears, tails, harnesses and backpack-mounted prop-zappers.
+- Human prop-zappers are 3D mesh weapons attached to the hand rig with recoil, muzzle origin, tracers and impact effects.
+- Added velocity-based walking/running, acceleration/deceleration, gravity, jumping, landing, step-up, automatic mantle and ceiling clearance.
+- Added player-body separation so characters do not simply pass through each other.
+- Disguises are actual 3D meshes with prop-sized player collision/camera height while health carries between disguise changes.
+- Solid walls and windows participate in world collision and raycasts. Windows remain transparent but are physically solid.
+- Shooting and hunter AI line-of-sight stop at world geometry.
+- Decoys and wandering animals now participate in shot raycasts instead of being visually present but intangible to shots.
 
-The prior Prop Hunt engine tracked x/y/z coordinates but rendered the world through Canvas2D projection. That architecture produced the issues visible in phone testing: large flat wall slabs, paper-like characters, props that looked pasted onto the floor, limited character turning and poor local-player readability.
+## Maps
+All four family maps now use true 3D scene geometry. Papa's Shop is the reference vertical slice and includes a constructed shop/barn shell, doors/windows, ceiling/roof visuals, rafters, work areas, tractor, motorcycle, fireplace, Papa's yellow chair, climbable clutter and barn animals.
 
-The v2 renderer keeps the proven Prop Hunt rules/input/state engine and changes the renderer instead of trying to keep polishing the old projection system.
+Camper / Campsite, Backyard + Fire Pit and Goat / Farm use the same WebGL world/collision system and retain their locked family landmarks.
 
-## Prop Hunt true-3D layer
+## Real-time multiplayer
+Prop Hunt now has its own Cloudflare Durable Object room (`PROP_HUNT`) rather than running only as a local human-plus-bots simulation.
 
-- real `THREE.Scene`, `PerspectiveCamera` and `WebGLRenderer`
-- third-person camera collision against walls/buildings
-- volumetric walls, furniture, structures and environmental props
-- textured wood, stone, metal, earth, grass, gravel, fabric, plaid and hay materials
-- fog, room lights, ACES tone mapping and soft shadows
-- 3D family character rigs that rotate and animate with movement
-- dog-specific 3D rigs
-- modeled 3D hunter prop-zapper
-- 3D farm animals
-- one shared 3D prop factory for scenery, player disguises and decoys
-- explicit local-player, disguise, lock-state, ammo and room HUD
-- player-only location/facing minimap
+- One private Durable Object per Prop Hunt room.
+- SQLite-backed lobby and match state.
+- Hibernatable WebSockets for player/bot movement snapshots and live actions.
+- Remote movement interpolation.
+- Host-managed map/mode/computer players.
+- Ready/start flow, reconnect with the same player token, six-round scoring and map rotation.
+- The Lodge's Prop Hunt **Play** and **Share Link** actions create a real private Prop Hunt room.
 
-The existing four expanded Prop Hunt worlds and their room/clutter definitions are reused, so this is a renderer replacement rather than a gameplay reset.
+The original `GAME_HUB` and all 18 existing online games remain separate so the Prop Hunt real-time loop does not disturb the turn-based games.
 
-## Family Sabotage
+## Testing
+Run:
 
-Family Sabotage from v1.9 remains included with its secret Family Crew / Fixer / Saboteur roles, tasks, fake tasks, service vents, sabotages, emergency meetings, chat, voting, ghosts and bots.
+```bash
+npm run check
+```
 
-## Test status
+Current result: **143 / 143 automated tests passing**.
 
-`npm run check` passes **209 / 209 tests**.
+The Prop Hunt tests now cover real geometry/camera math, wall ray hits, auto-mantle, ceiling clearance, role rotation, snapshot sanitation, Durable Object room creation/join/ready/start, WebGL renderer requirements and removal of the old Canvas 2D renderer.
 
-## Alpha runtime note
+## Important runtime note
+The WebGL client loads Three.js `0.185.1` from jsDelivr when Prop Hunt starts. Prop Hunt therefore requires an internet connection, which is already required for its private real-time multiplayer room. The rest of the Lodge remains packaged as before.
 
-The Three.js module is currently imported from jsDelivr at runtime. The old renderer remains as a fallback. Because this build environment cannot fetch the CDN from its local browser sandbox, the real WebGL scene still needs a post-deploy phone/browser visual check.
-
-When the true 3D renderer is active, the Prop Hunt status strip reads **TRUE 3D WEBGL ACTIVE**. If it does not, the CDN import did not load and the next engineering step is to vendor Three.js locally in the project.
+See `FAMILY_GAME_ART_BIBLE.md` and `PROP_HUNT_REAL3D_ARCHITECTURE.md` for the locked visual and technical rules going forward.

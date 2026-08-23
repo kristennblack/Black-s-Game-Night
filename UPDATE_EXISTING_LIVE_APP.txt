@@ -1,3 +1,26 @@
-BLACK FAMILY GAME NIGHT v1.5.0-polish-test
+BLACK FAMILY GAME NIGHT v1.3.0-real3d
+UPDATE EXISTING LIVE APP
 
-Use this as a full replacement of the tracked files in the existing repository. Do not remove the hidden .git folder. Commit and push normally so the existing Cloudflare connection deploys the new version.
+Use this package as a full replacement of tracked project files while preserving the repository's hidden .git directory.
+
+KEEP
+- Existing Git repository/history
+- Existing Cloudflare project connection
+- Existing production branch
+- Existing GAME_HUB Durable Object migration/binding
+- All existing Lodge games and assets unless this package contains their updated version
+
+REPLACE / ADD
+- Replace tracked project files with this package.
+- Add propHuntRoom.mjs and public/prop-hunt-core.mjs.
+- Use the updated worker.mjs and wrangler.jsonc so Prop Hunt routes to its dedicated PROP_HUNT Durable Object.
+
+MAJOR CHANGES
+- Real WebGL Prop Hunt renderer instead of Canvas software projection.
+- All-angle 3D human/dog rigs and skeleton-attached prop-zappers.
+- Real wall/window/ceiling collision, camera obstruction and raycast occlusion.
+- Deeper movement with acceleration, gravity, jump/land, step-up and automatic mantle.
+- Dedicated live Prop Hunt multiplayer room with WebSocket snapshots/interpolation.
+- Fresh v1.3.0 service-worker cache.
+
+After pushing, smoke-test the exact production URL on at least one phone and one desktop browser before calling the build final.

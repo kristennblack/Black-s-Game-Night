@@ -1,3 +1,5 @@
+import { PropHuntRoom } from './propHuntRoom.mjs';
+export { PropHuntRoom };
 import crypto from 'node:crypto';
 import {
   GAME_TYPES, buildScrewSchedule, generateFuckSchedule,
@@ -84,20 +86,6 @@ function switchRoomGame(room,gameType){
   room.chat.push({id:crypto.randomUUID(),playerId:'system',name:'Game Lodge',text:`Host moved the group to ${gameName(gameType)}.`,at:now()});
 }
 
-function restartRoomGame(room){
-  if(room.game.phase!=='gameOver')throw new Error('Play Again is available after the game ends');
-  for(const p of room.players.values()){p.ready=true;p.bid=null;p.tricks=0;p.score=0;p.continued=false;p.hand=[];p.eliminated=false}
-  room.game={phase:'lobby',roundIndex:-1,schedule:[],handSize:0,dealerId:null,dealerCeremony:null,biddingOrder:[],bidTurnId:null,bidActionCount:0,highBid:null,highBidderId:null,contract:null,fourAndOut:false,biddingTeam:null,teamScores:{A:0,B:0},trump:null,trumpPlays:[],capturedByTeam:{A:[],B:[]},smearAwards:null,gameValues:null,turnPlayerId:null,leaderId:null,currentTrick:[],lastTrick:null,roundResults:null,winnerIds:[],history:[],extra:null};
-  if(isExtraGame(room.gameType)){startExtraGame(room);return}
-  const joined=[...room.players.values()],order=playerOrder(room);
-  if(room.gameType===GAME_TYPES.SMEAR&&joined.length!==4)throw new Error('Smear requires exactly 4 players');
-  if(room.gameType!==GAME_TYPES.SMEAR&&joined.length<2)throw new Error('Need at least 2 players');
-  room.game.schedule=room.gameType===GAME_TYPES.SMEAR?[{handSize:6,trump:null,powerRank:null,source:null}]:room.gameType===GAME_TYPES.FUCK?generateFuckSchedule(room.settings.roundCount,order.length):buildScrewSchedule(order.length);
-  if(room.gameType===GAME_TYPES.SMEAR){room.game.teamScores={A:0,B:0};const dealerId=randomDealer(order);room.game.dealerId=dealerId;room.game.dealerCeremony={type:'random',dealerId,sequence:[],createdAt:now()}}
-  else{const ceremony=firstDealerCeremony(order,room.gameType);room.game.dealerId=ceremony.dealerId;room.game.dealerCeremony={type:'jack',...ceremony,createdAt:now()}}
-  startRound(room,0);
-}
-
 function botPersonaForAvatar(avatar){return BOT_PERSONAS.find(([,key])=>key===String(avatar||'').toLowerCase())||null}
 function uniqueBotName(room,baseName,ignoreId=null){
   const used=new Set([...room.players.values()].filter(p=>p.id!==ignoreId).map(p=>p.name));
@@ -105,23 +93,21 @@ function uniqueBotName(room,baseName,ignoreId=null){
   if(!used.has(`${baseName} Computer`))return `${baseName} Computer`;
   let n=2;while(used.has(`${baseName} Computer ${n}`))n++;return `${baseName} Computer ${n}`;
 }
-function makeBot(room,difficulty='medium',requestedAvatar=null,outfitVariant=0,requestedVariant=null){
+function makeBot(room,difficulty='medium',requestedAvatar=null){
   if(room.players.size>=room.maxSeats)throw new Error('Room is full');
   let persona=botPersonaForAvatar(requestedAvatar);
   if(!persona){const used=new Set([...room.players.values()].map(p=>p.avatar));persona=BOT_PERSONAS.find(([,avatar])=>!used.has(avatar))||BOT_PERSONAS[room.players.size%BOT_PERSONAS.length]}
   const [baseName,avatar]=persona,diff=normalizeDifficulty(difficulty),id=crypto.randomUUID(),name=uniqueBotName(room,baseName);
-  const bot={id,token:null,name,avatar,variant:requestedVariant==null?(avatar==='john'?1:0):Math.max(0,Math.min(40,Number(requestedVariant)||0)),outfitVariant:Math.max(0,Math.min(7,Number(outfitVariant)||0)),color:BOT_COLORS[room.players.size%BOT_COLORS.length],seat:null,ready:true,connected:true,bid:null,tricks:0,score:0,continued:false,hand:[],eliminated:false,isBot:true,botDifficulty:diff};
+  const bot={id,token:null,name,avatar,variant:avatar==='john'?1:0,outfitVariant:0,color:BOT_COLORS[room.players.size%BOT_COLORS.length],seat:null,ready:true,connected:true,bid:null,tricks:0,score:0,continued:false,hand:[],eliminated:false,isBot:true,botDifficulty:diff};
   if(assignOpenSeat(room,bot)==null)throw new Error('No open seat available');
   room.players.set(id,bot);
   room.chat.push({id:crypto.randomUUID(),playerId:'system',name:'Game Lodge',text:`${name} joined as a ${diff} computer player using ${baseName}.`,at:now()});
   return bot;
 }
-function updateBot(room,targetId,{difficulty,avatar,variant,outfitVariant}={}){
+function updateBot(room,targetId,{difficulty,avatar}={}){
   const bot=room.players.get(String(targetId||''));if(!bot||!bot.isBot)throw new Error('Computer player not found');
   if(difficulty!=null)bot.botDifficulty=normalizeDifficulty(difficulty);
-  if(avatar!=null){const persona=botPersonaForAvatar(avatar);if(!persona)throw new Error('Unknown computer character');const [baseName,key]=persona;bot.avatar=key;if(variant==null)bot.variant=key==='john'?1:0;bot.name=uniqueBotName(room,baseName,bot.id)}
-  if(variant!=null)bot.variant=Math.max(0,Math.min(40,Number(variant)||0));
-  if(outfitVariant!=null)bot.outfitVariant=Math.max(0,Math.min(7,Number(outfitVariant)||0));
+  if(avatar!=null){const persona=botPersonaForAvatar(avatar);if(!persona)throw new Error('Unknown computer character');const [baseName,key]=persona;bot.avatar=key;bot.variant=key==='john'?1:0;bot.outfitVariant=0;bot.name=uniqueBotName(room,baseName,bot.id)}
   bot.ready=true;return bot;
 }
 function cardRankScore(c){
@@ -244,13 +230,12 @@ async function handleApi(request){
   if(u.pathname==='/api/profile'&&request.method==='POST'){if(!p)return fail('Player not found',401);if(room.game.phase!=='lobby')return fail('Profile locked after start');p.name=(b.name||p.name).slice(0,24);p.avatar=b.avatar||p.avatar;p.variant=Number(b.variant??p.variant);p.outfitVariant=Number(b.outfitVariant??p.outfitVariant??0);p.color=b.color||p.color;p.ready=false;broadcast(room);return jsonResponse({ok:true})}
   if(u.pathname==='/api/seat'&&request.method==='POST'){if(!p)return fail('Player not found',401);if(room.game.phase!=='lobby')return fail('Seats are locked');const seat=Number(b.seat);if(!Number.isInteger(seat)||seat<0||seat>=room.maxSeats)return fail('Invalid seat');if([...room.players.values()].some(x=>x.id!==p.id&&x.seat===seat))return fail('Seat occupied');p.seat=seat;p.ready=false;broadcast(room);return jsonResponse({ok:true})}
   if(u.pathname==='/api/removePlayer'&&request.method==='POST'){if(!host(room,b.hostToken))return fail('Host only',403);if(room.game.phase!=='lobby')return fail('Players can only be removed before the game starts');const target=room.players.get(String(b.targetId||''));if(!target)return fail('Player not found');if(target.id===room.hostPlayerId)return fail('The host cannot remove themselves');room.players.delete(target.id);broadcast(room);return jsonResponse({ok:true})}
-  if(u.pathname==='/api/addBot'&&request.method==='POST'){if(!host(room,b.hostToken))return fail('Host only',403);if(room.game.phase!=='lobby')return fail('Computers can only be added before the game starts');try{const bot=makeBot(room,b.difficulty,b.avatar,b.outfitVariant,b.variant);broadcast(room);return jsonResponse({ok:true,playerId:bot.id,difficulty:bot.botDifficulty,avatar:bot.avatar,variant:bot.variant,outfitVariant:bot.outfitVariant})}catch(err){return fail(err.message)}}
-  if(u.pathname==='/api/updateBot'&&request.method==='POST'){if(!host(room,b.hostToken))return fail('Host only',403);if(room.game.phase!=='lobby')return fail('Computers can only be changed before the game starts');try{const bot=updateBot(room,b.targetId,{difficulty:b.difficulty,avatar:b.avatar,variant:b.variant,outfitVariant:b.outfitVariant});broadcast(room);return jsonResponse({ok:true,playerId:bot.id,difficulty:bot.botDifficulty,avatar:bot.avatar,variant:bot.variant,outfitVariant:bot.outfitVariant})}catch(err){return fail(err.message)}}
+  if(u.pathname==='/api/addBot'&&request.method==='POST'){if(!host(room,b.hostToken))return fail('Host only',403);if(room.game.phase!=='lobby')return fail('Computers can only be added before the game starts');try{const bot=makeBot(room,b.difficulty,b.avatar);broadcast(room);return jsonResponse({ok:true,playerId:bot.id,difficulty:bot.botDifficulty,avatar:bot.avatar})}catch(err){return fail(err.message)}}
+  if(u.pathname==='/api/updateBot'&&request.method==='POST'){if(!host(room,b.hostToken))return fail('Host only',403);if(room.game.phase!=='lobby')return fail('Computers can only be changed before the game starts');try{const bot=updateBot(room,b.targetId,{difficulty:b.difficulty,avatar:b.avatar});broadcast(room);return jsonResponse({ok:true,playerId:bot.id,difficulty:bot.botDifficulty,avatar:bot.avatar})}catch(err){return fail(err.message)}}
   if(u.pathname==='/api/botTick'&&request.method==='POST'){if(!host(room,b.hostToken))return fail('Host only',403);try{const result=tickBot(room);if(result&&result!=='advanced'){broadcast(room);if(typeof result==='object'&&result.trickComplete)scheduleTrickAdvance(room,result)}return jsonResponse({ok:true,acted:!!result})}catch(err){return fail(err.message)}}
   if(u.pathname==='/api/ready'&&request.method==='POST'){if(!p)return fail('Player not found',401);if(room.game.phase!=='lobby')return fail('Game already started');const ready=!!b.ready;if(ready&&p.seat==null&&assignOpenSeat(room,p)==null)return fail('No open seat available');p.ready=ready;broadcast(room);return jsonResponse({ok:true,seat:p.seat})}
   if(u.pathname==='/api/settings'&&request.method==='POST'){if(!host(room,b.hostToken))return fail('Host only',403);if(room.game.phase!=='lobby')return fail('Settings locked after start');if(isExtraGame(room.gameType)){applyExtraSettings(room,b)}else if(room.gameType===GAME_TYPES.FUCK){const n=Number(b.roundCount);if(!Number.isInteger(n)||n<1||n>100)return fail('Choose 1 to 100 rounds');room.settings.roundCount=n}broadcast(room);return jsonResponse({ok:true})}
   if(u.pathname==='/api/switchGame'&&request.method==='POST'){if(!host(room,b.hostToken))return fail('Host only',403);try{switchRoomGame(room,String(b.gameType||''));broadcast(room);return jsonResponse({ok:true,gameType:room.gameType})}catch(err){return fail(err.message)}}
-  if(u.pathname==='/api/restart'&&request.method==='POST'){if(!host(room,b.hostToken))return fail('Host only',403);try{restartRoomGame(room);if(isExtraGame(room.gameType))broadcast(room);return jsonResponse({ok:true})}catch(err){return fail(err.message)}}
   if(u.pathname==='/api/start'&&request.method==='POST'){
     if(!host(room,b.hostToken))return fail('Host only',403);const joined=[...room.players.values()];if(joined.some(x=>!x.ready))return fail('Everyone must be Ready');try{assignOpenSeats(room)}catch(err){return fail(err.message)}if(isExtraGame(room.gameType)){try{startExtraGame(room);broadcast(room);return jsonResponse({ok:true})}catch(err){return fail(err.message)}}
     if(room.gameType===GAME_TYPES.SMEAR&&joined.length!==4)return fail('Smear requires exactly 4 players');if(room.gameType!==GAME_TYPES.SMEAR&&joined.length<2)return fail('Need at least 2 players');const order=playerOrder(room);
@@ -278,6 +263,17 @@ export class GameHub {
 export default {
   async fetch(request,env){
     const url=new URL(request.url);
+    if(url.pathname.startsWith('/api/prop/')){
+      let roomId=url.searchParams.get('room');
+      if(url.pathname==='/api/prop/create'&&request.method==='POST'){
+        roomId=safeId(8);
+        const routed=new URL(request.url);routed.searchParams.set('room',roomId);
+        const stub=env.PROP_HUNT.getByName(roomId);
+        return stub.fetch(new Request(routed.toString(),request));
+      }
+      if(!roomId)return jsonResponse({error:'Missing Prop Hunt room id'},400);
+      return env.PROP_HUNT.getByName(roomId).fetch(request);
+    }
     if(url.pathname==='/healthz'||url.pathname.startsWith('/api/')){
       const id=env.GAME_HUB.idFromName('black-family-game-night');
       return env.GAME_HUB.get(id).fetch(request);

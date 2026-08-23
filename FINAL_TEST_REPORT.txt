@@ -1,48 +1,41 @@
-BLACK FAMILY GAME NIGHT v2.0.0-prop-true3d-alpha
-FINAL AUTOMATED TEST REPORT
-===============================================
+Black Family Game Night v1.3.0-real3d
+Date: 2026-08-23
 
-RESULT: PASS
-TOTAL TESTS: 209
-PASSED: 209
-FAILED: 0
+RESULT: 143 / 143 automated tests passing
 
-Static/runtime syntax checks passed for:
-- worker.mjs
-- gameEngine.mjs
-- extraGames.mjs
-- public/app.js
-- public/prop-hunt-webgl.js
-- public/prop-hunt-3d.js
-- public/family-sabotage.js
-- public/birthday-climb.js
+NEW PROP HUNT FOUNDATION COVERAGE
+- A wall AABB is mathematically hit before a target behind it.
+- Third-person camera distance is shortened by intervening world geometry.
+- Solid walls block character movement.
+- Jump input can trigger automatic mantle on a climbable ledge within the allowed height.
+- Solid ceilings stop upward head movement.
+- Hunter assignment rotates across rounds and scales to two hunters in larger rooms.
+- Network movement snapshots are clamped/sanitized.
+- Server hit acceptance validates hunter -> live hider and maximum range.
+- Prop Hunt source requires WebGLRenderer, PerspectiveCamera, Raycaster, tone mapping and shadows.
+- Prop Hunt source explicitly contains no Canvas 2D getContext('2d') renderer.
+- Human and dog 3D hierarchy builders and skeleton-attached weapons are present.
+- Segmented walls, windows, collision-backed glass and ceilings are present.
+- Shooting and bot sight both raycast against world geometry.
+- Mobile/desktop actions include Aim, Shoot, Jump/Auto-Mantle, Sprint, Prop, Flash, Decoy, Lock and joystick movement.
+- Lodge creates a dedicated private Prop Hunt room rather than opening local-only play.
+- Dedicated PropHuntRoom create/join/ready/start flow is exercised with an in-memory SQLite-compatible test context.
+- Cloudflare configuration includes the PROP_HUNT binding, PropHuntRoom SQLite migration and observability.
+- PropHuntRoom uses Durable Object hibernatable WebSocket primitives and SQL persistence.
 
-New v2 true-3D Prop Hunt regression coverage includes:
-- Three.js WebGL layer is loaded before the Prop Hunt gameplay engine
-- volumetric prop factory is shared by scenery, disguises and decoys
-- articulated 3D human/dog family rigs
-- characters use actor yaw/turning instead of fixed billboard orientation
-- modeled 3D hunter prop-zapper
-- true 3D camera ray used for hunter shooting
-- third-person perspective camera with wall/camera collision
-- explicit YOU / disguise / locked / ammo status HUD
-- player-only map with own position/facing direction
-- textured wood/stone/grass/gravel/earth/metal/fabric/hay materials
-- real lights, fog, tone mapping and shadow maps
-- 3D farm animals
-- fresh v2 service-worker cache and WebGL asset registration
+REGRESSION COVERAGE RETAINED
+- All 18 original multiplayer games create, join, seat, ready and start.
+- All 18 original games can launch solo with Easy/Medium/Hard computer players.
+- Existing card/trick/extra-game rules and privacy tests.
+- Existing GameHub persistence and room state.
+- Chat, reactions, avatars, game switching, share links and private hands.
+- Family Mystery board/movement coverage.
+- John's Birthday Seat coverage.
+- Lodge cabin and animated-fire coverage.
 
-All 201 prior v1.9 and historical tests remain passing.
+STATIC VALIDATION
+- All project .js and .mjs files pass Node syntax validation.
+- wrangler.jsonc parses as valid JSON and contains both Durable Object bindings/migrations.
 
-VISUAL RUNTIME VERIFICATION NOTE
---------------------------------
-The automated suite verifies code structure, game integration, state wiring and
-syntax. The local execution environment could not fetch the external jsDelivr
-Three.js module, so the real WebGL scene could not be visually rendered in the
-local headless browser here.
-
-After deployment, Prop Hunt should display the message:
-  TRUE 3D WEBGL ACTIVE
-when the new renderer loads successfully. If that message is absent and the
-older flat renderer appears, the CDN import failed and Three.js should be
-vendored locally in the next pass.
+RUNTIME QA NOTE
+A GPU/browser WebGL gameplay session could not be executed to completion inside this container because the available headless Chromium process did not complete reliably. The package therefore has strong source/unit/integration coverage but should still receive the normal production smoke test on one desktop browser and one phone after deployment, especially for GPU/WebGL rendering, touch feel and cross-device WebSocket latency.

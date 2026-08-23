@@ -1,13 +1,22 @@
-CLOUDFLARE BUILD SETTINGS
-=========================
+CLOUDFLARE BUILD SETTINGS - v1.3.0-real3d
+=========================================
 Build command:   None / blank
 Deploy command:  npx wrangler deploy
 Root directory:  /
 Production branch: main
 
+DURABLE OBJECTS
+- Existing binding: GAME_HUB -> GameHub
+- New Prop Hunt binding: PROP_HUNT -> PropHuntRoom
+- Migration v1: GameHub (retain)
+- Migration v2: PropHuntRoom (new SQLite class)
+
+OBSERVABILITY
+wrangler.jsonc enables Workers observability/logs plus sampled traces.
+
 FOR THE EXISTING LIVE APP
-- Keep the current Black-s-Game-Night GitHub repository.
-- Replace the repository project files with this v1.0.7 full package, keeping the hidden .git folder.
-- Commit and Push origin in GitHub Desktop.
-- Cloudflare is already connected and should deploy automatically.
-- Do not disconnect/reconnect Cloudflare unless the existing Git integration is actually broken.
+- Keep the existing GitHub repository and hidden .git folder.
+- Replace tracked project files with this v1.3.0 package.
+- Commit and Push origin.
+- Cloudflare should deploy from the existing Git integration.
+- Do not disconnect/reconnect Cloudflare unless the existing integration is actually broken.

@@ -32,14 +32,14 @@ test('computer player controls exist globally with three difficulties',()=>{
   for(const t of ['addBot','updateBot','botTick','botCharacter','botDifficulty','botCharacterOptions'])assert.ok(app.includes(t)||worker.includes(t),t);
 });
 
-test('computer opponents remain available where intended while Birthday Seat is human-only',()=>{
+test('all three new games support solo play with computer opponents',()=>{
   for(const t of ['Empty seats are filled by computer family characters','Default computer difficulty','Computer detectives','runBotTurn'])assert.ok(ng.includes(t),`Mystery bot support missing: ${t}`);
-  assert.ok(bc.includes('bots:false'));
-  assert.ok(bc.includes('Human racers only · no computers'));
+  for(const t of ['computer','difficulty','bot'])assert.ok(ng.toLowerCase().includes(t),`new-games bot option missing: ${t}`);
+  assert.ok(bc.includes('bots:true'));
 });
 
 test("John's Birthday Seat is included as a playable 3D platform game",()=>{
   assert.ok(app.includes("John's Birthday Seat"));
   assert.ok(ng.includes('screen-birthday'));
-  for(const t of ['course','stages','thirdPerson:true','fullBodySprites:true','eightLevels:true','landscapeOnly:true','joystick:true','jumpOnly:true','bots:false','visibleGoal:true','birthday seat'])assert.ok(bc.toLowerCase().includes(t.toLowerCase()),t);
+  for(const t of ['course','stages','thirdPerson:true','fullBodySprites:true','jump:true','bots:true','botCharacters:true','visibleGoal:true','birthday seat'])assert.ok(bc.toLowerCase().includes(t.toLowerCase()),t);
 });
