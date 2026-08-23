@@ -14,7 +14,7 @@ function makeHub(){const storage=new MemoryStorage();const ctx={storage,waitUnti
 
 test('v1.2.5 packages all 12 approved family avatar packs for all 13 family characters and pets',async()=>{
   const manifest=JSON.parse(await readFile(new URL('../public/avatars/family-packs/manifest.json',import.meta.url),'utf8'));
-  assert.equal(manifest.version,'1.6.0-prop-mystery-test');
+  assert.equal(manifest.version,'1.8.0-prop-redesign-test');
   assert.deepEqual(Object.keys(manifest.styles),packs);
   for(const pack of packs){
     assert.equal(Object.keys(manifest.styles[pack].avatars).length,13,pack);

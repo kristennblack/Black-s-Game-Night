@@ -1,28 +1,43 @@
-Black Family Game Night v1.6.0-prop-mystery-test
-Final automated verification
+Black Family Game Night v1.8.0-prop-redesign-test
+FINAL TEST REPORT
 
-RESULT: 180 / 180 tests passed
+Result: 193 / 193 automated tests passing
 Failures: 0
-Cancelled: 0
-Skipped: 0
 
-Verified in this pass:
-- Syntax checks for worker, game engine, extra-game engine, main app, Prop Hunt and Birthday Seat JavaScript.
-- Existing Cloudflare room/game adapter behavior remains covered.
-- Existing v1.5 tabletop/home/avatar polish remains covered.
-- Existing v1.2.6 mobile Cribbage and global card-sorting regressions remain covered.
-- Prop Hunt contains one active engine and all four approved family maps.
-- Prop Hunt retains the large joystick, explicit phone touch path, D-pad, camera sensitivity/reset, sprint and jump systems.
-- Prop Hunt uses full-body family movement art and style-aware setup/HUD art.
-- Prop Hunt scenery and disguises use the shared cartoon-prop rendering path.
-- Locked disguised players use a still rendering path.
-- Family Mystery reachable spaces display movement costs.
-- Family Mystery includes phone action controls plus FIT / ME / zoom / pan board navigation.
-- Family Mystery notebook is grouped into Suspects, Objects and Locations.
-- Public Case History intentionally excludes the privately revealed card.
-- Suggested suspects are moved into the room according to the standard deduction-game convention.
-- Final accusation includes a confirmation step and full solution-card reveal.
-- Illustrated rooms, moving standees, secret passages and private disproof remain present.
+Primary v1.8 Prop Hunt redesign verified:
+- Correct upright camera basis (forward x right = up) fixes the inverted/upside-down presentation at the projection level.
+- Hunter AIM mode changes camera distance/FOV without reversing the camera.
+- Explicit role HUD: YOU ARE A HIDER / YOU ARE A HUNTER.
+- Explicit mode ribbon: HIDING MODE / SHOOTING MODE.
+- Hider-only actions: PROP, FLASH, DECOY, LOCK.
+- Hunter-only actions: SHOOT, RELOAD, AIM.
+- Hunter crosshair is role/phase specific.
+- Large phone joystick, D-pad backup, jump, sprint and camera reset are retained.
+- 44 illustrated prop sprite files are present and wired into both scenery and disguises.
+- Prop sprites are included in the service-worker asset cache.
+- Room-specific prop palettes and increased clutter counts are present.
+- Walls/structures use log, plank/wood, fence and metal material detailing.
+- Floors use room/location-specific wood, gravel, grass, earth and water-edge detailing.
+- Fixed room-dressing fixtures are present.
+- Expanded v1.7 maps and AREA/minimap navigation are retained.
+- Full-body family character rendering and selected avatar-style HUD are retained.
 
-NOTE
-Automated tests validate source integrity, state/API logic and expected UI/gameplay hooks. Final touch feel, camera comfort and layout should still be play-tested on the actual phones/computers the family will use.
+Retained regression coverage:
+- Family Mystery v1.6 board, movement, notebook, case history and phone UI improvements.
+- Cribbage phone GO / Score / Continue controls, visible pegging play and scoring review.
+- Global suit + high-to-low card sorting.
+- Avatar packs and computer character/style/difficulty controls.
+- Original 18 room games and Cloudflare adapter.
+- Lodge home / birthday artwork and animated fireplace.
+
+Command executed:
+npm run check
+
+Automated suite result:
+193 tests
+193 pass
+0 fail
+0 cancelled
+0 skipped
+
+Archive integrity is checked separately after packaging.

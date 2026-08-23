@@ -1,44 +1,63 @@
-BLACK FAMILY GAME NIGHT v1.6.0-prop-mystery-test
+BLACK FAMILY GAME NIGHT v1.8.0-prop-redesign-test
+PROP HUNT DELUXE REDESIGN TEST BUILD
 
-PROP HUNT + FAMILY MYSTERY TEST BUILD
+WHAT THIS BUILD IS FOR
+This test release is focused on making Prop Hunt finally read and play like the approved concept instead of a prototype. It keeps the expanded v1.7 maps, Family Mystery v1.6 improvements, Cribbage phone fixes, global card sorting, avatar packs, bots and the birthday Lodge home.
 
 UPLOAD
 1. Keep the hidden .git folder in your existing project checkout.
-2. Replace the tracked project files with this package.
-3. Commit and push to the same branch Cloudflare currently deploys.
+2. Replace the tracked project files with everything in this package.
+3. Commit and push to the same branch Cloudflare deploys.
 4. Let Cloudflare deploy normally.
-5. On phones, refresh once after deployment if an older service-worker shell is still visible.
+5. On phones, close/reopen the site once after deployment if the old service-worker cache is still visible. This build uses the fresh v1.8 cache name.
 
-TEST PROP HUNT FIRST
-- Pick a family character and avatar style.
-- Add computer players and choose their character/style/difficulty.
-- Start as a hider and confirm the left joystick moves continuously while held/dragged.
-- Test the D-pad backup, Jump, Sprint and Camera Reset.
-- Drag the main play area to rotate/look around.
-- Transform with PROP and compare your disguise to the same scenery object.
-- Lock the prop and confirm the disguise stops moving while the camera still moves.
-- Try Flash and Decoy.
-- Jump/climb onto low scenery and try the larger climbable routes.
-- Try all four maps: Papa's Shop, Camper / Campsite, Backyard + Fire Pit, Farmyard / Animal Pens.
+PROP HUNT - TEST THIS FIRST
+1. CAMERA / ORIENTATION
+   - The world must be upright. Floors stay below the player and ceilings/walls stay above.
+   - Drag the camera around and use CAMERA RESET.
+   - As a hunter, try AIM and confirm the camera tightens instead of flipping.
 
-TEST FAMILY MYSTERY
-- Start with one human plus computer detectives if desired.
-- Roll and confirm glowing legal destinations show gold movement-cost numbers.
-- Pan/zoom the board and use FIT and ME.
-- On a phone, confirm the sticky turn-action bar stays easy to reach.
-- Enter a room and make a suggestion.
-- Confirm the suggested family character is pulled into the room.
-- Confirm Case History shows the suggestion/disprover but never names the private card shown.
-- Check the grouped notebook: Suspects / Objects / Locations.
-- Try a secret shortcut/passsage when available.
-- Try a final accusation and confirm the game asks before locking it.
-- If correct, confirm all three solution cards are revealed.
+2. ROLE CLARITY
+   - Hider rounds must clearly say YOU ARE A HIDER and HIDING MODE.
+   - Hunter rounds must clearly say YOU ARE A HUNTER and SHOOTING MODE.
+   - Hiders should see PROP / FLASH / DECOY / LOCK controls.
+   - Hunters should see SHOOT / RELOAD / AIM controls.
+   - Hunter crosshair should only appear while hunting.
 
-RECHECK
-- Cribbage on a phone: GO / Score / Continue should remain reachable above the hand.
-- Standard card hands should sort by suit and highest-to-lowest rank.
-- Cabin home buttons/fireplace.
-- Avatar and computer-player selectors.
+3. MOVEMENT
+   - Test the large analog joystick on a phone.
+   - Test D-pad backup, JUMP, SPRINT and CAMERA RESET.
+   - Walk through doors and around furniture; try stepping/jumping onto reasonable low objects.
+
+4. PROPS
+   - Rooms now use a 44-image illustrated prop sprite library instead of relying on labelled boxes.
+   - Look for lamps, lanterns, mugs, kettles, pie/bread, apple baskets, firewood, plants, rocking horse, teddy bear, framed photos, boots, books, tables, chairs, pillows, blankets, barrels, fridge, trunks, baskets, milk cans and more.
+   - Become several props. Your disguise should use the SAME illustrated artwork as the normal scenery object.
+   - Lock as a prop and rotate the camera; the disguise itself should remain still.
+
+5. ROOMS / BUILDINGS
+   - Walls and structures now have visible log/plank/fence/metal material treatment.
+   - Floors change by area: wood, gravel, grass, earth or water-edge treatment.
+   - Rooms receive specific clutter instead of one generic scatter list.
+   - Check that kitchens look like kitchens, bedrooms like bedrooms, workshops like workshops, barns like barns, etc.
+   - Fixed room dressing/fixtures should help spaces feel furnished rather than empty boxes.
+
+6. EXPANDED MAPS
+   - Papa's Farm + Shop Complex: shop, barn, workshop annex, garage, parts room, mezzanine/loft, farmhouse living room/kitchen, basement, silo, fields and animal yard.
+   - Camper/Campsite: camper, pine-grove campsites, utility/storage, group campsite, boat launch, dock and woods trail.
+   - Acreage/Backyard: garage, driveway/front yard, play yard, orchard/woodlot, goat barn, back field/trailer lane and dugout dock.
+   - Farmyard/Animal Pens: tractor shed, feed shed, goat barn/loft, pig barn/wallow, coop/hatchery, silo/grain room and pasture/equipment yard.
+   - AREA chip should update while moving between named sections.
+   - Mini-map shows your own position only; it must not expose opponents.
+
+RECHECK RETAINED WORK
+- Family Mystery: movement-cost markers, grouped notebook, case history, suspect pull-in rule, phone action tray and accusation confirmation.
+- Cribbage: reachable phone GO / Score / Continue controls, pegging cards and scoring-combination review.
+- Normal card hands: suit grouped and high-to-low sorting.
+- Human + computer character/style/difficulty selectors.
+- Birthday Lodge home and animated fireplace.
 
 IMPORTANT
-The original 18 room games are synchronized online multiplayer. Family Mystery, Prop Hunt and Birthday Seat are still local/computer test engines and are not yet synchronized live across separate phones/computers.
+- The original 18 room games are synchronized online multiplayer.
+- Family Mystery, Prop Hunt and Birthday Seat are still local/computer test engines in this build.
+- Prop Hunt is a custom browser 2.5D/third-person renderer. This release makes its camera, HUD, illustrated props, room materials and world dressing much closer to the approved design, but it is not yet a fully modelled WebGL/console-style 3D engine.

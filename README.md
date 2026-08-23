@@ -1,56 +1,40 @@
-# Black Family Game Night v1.6.0-prop-mystery-test
+# Black Family Game Night v1.8.0-prop-redesign-test
 
-Private family game-night web app test build focused on a deeper **Family Prop Hunt** and **Family Mystery** experience while retaining the v1.5 visual/tabletop polish, v1.2.6 phone Cribbage fixes, global card sorting, cabin home, avatar packs, bots and the original synchronized multiplayer games.
+This test release is a **deep Prop Hunt presentation/renderer redesign**. The goal is to move the browser game much closer to the approved cozy, detailed Prop Hunt concepts instead of continuing to decorate the old prototype renderer.
 
-## Prop Hunt overhaul
+## Prop Hunt v1.8
 
-- One active third-person Prop Hunt engine, with the older conflicting prototype removed.
-- Full-body family movement figures in the world instead of circular head markers.
-- Approved avatar-style portraits in setup/HUD; Country, Rustic and Rich use their approved themed full-body movement sprites when available.
-- Larger analog phone joystick with explicit touch handling, D-pad backup, Jump, Sprint, Camera Reset, Prop, Flash, Decoy, Lock/Unlock and Shoot controls.
-- Desktop movement remains WASD + mouse/camera controls.
-- Jump buffer, coyote-time forgiveness, gravity, landing, collision, low-object stepping, climbable geometry and trampoline/bounce behavior.
-- Illustrated/cartoon prop renderer for environmental items, with the same renderer used when a hider transforms into that item.
-- Locked disguised players remain visually still while the camera can move independently.
-- Four family maps remain: Papa's Shop, Camper / Campsite, Backyard + Fire Pit, and Farmyard / Animal Pens.
-- Six-round family rules remain: 30-second hide, 3-minute hunt, 3 additional prop changes, 10 decoys, one flash per disguise and three-hit health.
-- Easy / Medium / Hard computer players remain supported without hidden-information cheating.
+### Camera and role clarity
+- Corrected the camera basis that could render the world inverted.
+- Added an explicit **YOU ARE A HIDER / YOU ARE A HUNTER** banner and **HIDING MODE / SHOOTING MODE** ribbon.
+- Hiders and hunters now receive different action clusters rather than one ambiguous control set.
+- Hunter AIM tightens the third-person camera/FOV.
 
-## Family Mystery overhaul
+### Illustrated props
+- Added a 44-image rustic/cartoon prop sprite library derived from the approved Prop Hunt art direction.
+- Scenery and player disguises use the same sprite lookup, so a disguised object matches the ordinary world object.
+- Procedural drawing remains only as fallback for object types that do not yet have a dedicated sprite.
 
-- Illustrated family-room board and full-body moving family standees retained from the polished tabletop branch.
-- Legal destinations now display the exact movement cost after a dice roll.
-- FIT, ME, zoom and pan controls make the large board easier to navigate on phones.
-- Sticky phone action tray keeps Roll, Suggest, Accuse and End Turn controls reachable.
-- Detective notebook is grouped into Suspects, Objects and Locations.
-- Seen/revealed cards are marked automatically; players can also flag suspicious possibilities.
-- Public Case History records each suggestion and who disproved it, while keeping the actual privately shown card secret.
-- Standard suggestion movement is supported: a suggested suspect is pulled into the room and may make a suggestion from there on their own turn without first rolling out.
-- Secret family shortcuts/passages remain available from supported rooms.
-- Final accusations now have a confirmation screen before locking the answer.
-- Correct accusations reveal the full three-card case file: suspect, object and location.
-- Wrong accusers leave the active turn rotation but still participate when they must disprove a suggestion.
-- Easy / Medium / Hard computer detectives continue to use only information they are legally allowed to know.
+### Richer rooms and buildings
+- Room-specific object palettes populate kitchens, bedrooms, bathrooms, mudrooms, shops, barns, campsites and outdoor areas differently.
+- Clutter density is substantially higher in major rooms.
+- Structural faces now receive log/plank/fence/metal detailing.
+- Ground/floors now receive wood, gravel, grass, earth or water-edge treatment based on the area.
+- Added fixed room dressing/fixtures so large rooms read as furnished spaces rather than geometry boxes.
 
-## Other retained improvements
+### Retained expansion
+- Keeps all of the larger v1.7 maps, named areas, AREA indicator and player-only minimap.
+- Keeps full-body family characters, avatar-style HUD, phone joystick/D-pad, jump/climb, sprint, camera reset, flash, decoy and prop lock.
 
-- Phone-focused Cribbage layout with accessible GO / Score Hand / Continue actions above the player's cards.
-- Pegging cards remain visible, and end-of-hand scoring can show/highlight the exact scoring combinations.
-- Shared standard-card sorting: Spades, Hearts, Diamonds, Clubs; Ace through 2 within each suit.
-- Approved family avatar/style packs and per-computer character/look/difficulty setup.
-- Detailed lodge home and animated fireplace.
-- The original 18 room games retain their synchronized Cloudflare multiplayer flow and shareable room links.
+## Other retained work
+- Family Mystery v1.6 deduction/board/mobile upgrades.
+- Cribbage phone layout and detailed scoring review.
+- Global suit + high-to-low card sorting.
+- Avatar packs and per-bot character/style/difficulty setup.
+- Black Family Lodge birthday home and animated fireplace.
 
-## Multiplayer status
+## Verification
 
-The original 18 room games are the synchronized cross-device online games. Family Mystery, Family Prop Hunt and John's Birthday Seat are still the newer local/computer test engines; their share links open the correct game, but their live game state is not yet synchronized between separate devices.
+`npm run check` passes **193 / 193 automated tests** with **0 failures**.
 
-## Verify
-
-Run:
-
-```sh
-npm run check
-```
-
-The packaged v1.6.0 test build passed **180 / 180 automated tests**.
+Prop Hunt is still a custom browser 2.5D/third-person renderer rather than a fully modelled WebGL game. v1.8 substantially improves the renderer, artwork, HUD, material treatment and world dressing while preserving the existing game rules and family systems.

@@ -1,5 +1,5 @@
 const app=document.querySelector('#app');
-const APP_VERSION='1.6.0-prop-mystery-test';
+const APP_VERSION='1.8.0-prop-redesign-test';
 if('serviceWorker'in navigator)window.addEventListener('load',async()=>{try{const reg=await navigator.serviceWorker.register('/sw.js',{updateViaCache:'none'});reg.update().catch(()=>{})}catch{}});
 
 const GAME={SCREW:'screw',FUCK:'fuck',SMEAR:'smear',CAMPFIRE:'campfire',TRAIL:'trail',PRAIRIE:'prairie',BURN_LOGS:'burnlogs',DECK_SWEEP:'decksweep',CRIBBAGE:'cribbage',MARBLES:'marbles',EUCHRE:'euchre',THIRTY_ONE:'thirtyone',GOLF:'golf',CRAZY_EIGHTS:'crazy8',MITTS:'mitts',POKER:'poker',PRESIDENT:'president',LAST_HAVEN:'lasthaven'};

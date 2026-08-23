@@ -1,9 +1,9 @@
 {
   "name": "black-family-game-night",
-  "version": "1.6.0-prop-mystery-test",
+  "version": "1.8.0-prop-redesign-test",
   "private": true,
   "type": "module",
-  "description": "Black Family Game Night v1.6.0 test - Prop Hunt controls/art overhaul plus deeper Family Mystery board and deduction UX, while retaining v1.5 polish and v1.2.6 mobile/card fixes.",
+  "description": "Black Family Game Night v1.8.0 test - deep Prop Hunt camera/HUD/room/prop-art redesign using the approved cozy detailed layout, retaining v1.7 expanded maps and prior fixes.",
   "scripts": {
     "test": "node --test",
     "check": "node --check worker.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check public/app.js && node --check public/prop-hunt-3d.js && node --check public/birthday-climb.js && node --test",
