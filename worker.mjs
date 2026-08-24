@@ -1,5 +1,6 @@
 import { PropHuntRoom } from './propHuntRoom.mjs';
-export { PropHuntRoom };
+import { IslandLifeRoom } from './islandLifeRoom.mjs';
+export { PropHuntRoom, IslandLifeRoom };
 import crypto from 'node:crypto';
 import {
   GAME_TYPES, buildScrewSchedule, generateFuckSchedule,
@@ -263,6 +264,16 @@ export class GameHub {
 export default {
   async fetch(request,env){
     const url=new URL(request.url);
+    if(url.pathname.startsWith('/api/island/')){
+      let roomId=url.searchParams.get('room');
+      if(url.pathname==='/api/island/create'&&request.method==='POST'){
+        roomId=safeId(8);
+        const routed=new URL(request.url);routed.searchParams.set('room',roomId);
+        return env.ISLAND_LIFE.getByName(roomId).fetch(new Request(routed.toString(),request));
+      }
+      if(!roomId)return jsonResponse({error:'Missing Island Life room id'},400);
+      return env.ISLAND_LIFE.getByName(roomId).fetch(request);
+    }
     if(url.pathname.startsWith('/api/prop/')){
       let roomId=url.searchParams.get('room');
       if(url.pathname==='/api/prop/create'&&request.method==='POST'){

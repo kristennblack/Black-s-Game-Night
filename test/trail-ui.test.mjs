@@ -10,6 +10,6 @@ test('Trail Trouble has a square race board with Camp zones, Safe Trails, Home, 
   for(const token of ['.trail-real-board.advanced','.trail-safe-hole','.trail-camp-zone','.trail-board-viewport','.trail-table-cards','.trail-marker.selected'])assert.ok(css.includes(token),`missing CSS ${token}`);
 });
 
-test('Trail Trouble remains available in the v1.3.0 real-3D package',()=>{
-  assert.ok(app.includes("const APP_VERSION='1.3.0-real3d'"));
+test('Trail Trouble remains available in the v2.0.0 Studio Realism package',()=>{
+  assert.ok(app.includes("const APP_VERSION='2.0.0-studio-realism'"));
 });

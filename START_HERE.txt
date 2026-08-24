@@ -1,63 +1,120 @@
-BLACK FAMILY GAME NIGHT v1.3.0-real3d
+BLACK FAMILY GAME NIGHT v2.0.0-studio-realism
 
-DEEP FAMILY PROP HUNT REBUILD
+PURPOSE
+This is the Studio Realism milestone. It keeps the existing game collection and pushes the three free-moving 3D games toward a production-style architecture: optional authored GLB characters, semantic animation, better multiplayer interpolation, weather/water/terrain, interactive homes, selective physics, surface-aware sound and cinematic polish.
 
-This is one substantial replacement package, not a chain of small launch versions. It keeps the existing Black Family Lodge and original games, but replaces the Prop Hunt pseudo-3D foundation with real WebGL 3D and a dedicated real-time multiplayer room.
+3D GAMES IN THIS PASS
+1. Family Prop Hunt
+2. Family Island Life
+3. John's Birthday Seat
+
+IMPORTANT AUTHORED-MODEL NOTE
+The runtime is ready to load proper skinned GLB/GLTF family characters, dogs, props and furniture, but bespoke family GLB files are NOT included yet. The model manifest is intentionally empty and the procedural all-angle rigs remain the current fallback.
 
 WHAT TO TEST FIRST
 
-1. LODGE -> FAMILY PROP HUNT
-   - On the Lodge game shelf, press Play on Family Prop Hunt.
-   - A private Prop Hunt room should be created automatically.
-   - Use Copy Invite Link or Share Link and join from a second phone/browser.
-   - Both players should appear in the same Prop Hunt lobby.
-   - Choose family characters, press Ready, add computers if wanted, then start.
+A. CORE MOVEMENT / CAMERA
+- Walk at half joystick and full joystick. Half input should actually move slower.
+- Accelerate, brake, reverse and sprint. Motion should not start/stop like a teleported chess piece.
+- Test short-tap and held jumps, coyote-time edge jumps, landings and mantles.
+- Push the camera into walls and doorways. It must remain inside playable geometry.
+- Use CAM/LB/C to change shoulder. Prop Hunt aim may temporarily use the clearer shoulder without changing the saved preference.
+- Confirm CTRL look sensitivity, invert-Y and handedness persist between the three games.
+- Confirm SND volume/mute also persists.
 
-2. PAPA'S SHOP 3D FOUNDATION
-   - Walk around a family character from front, side and behind. Their front must not billboard toward the camera.
-   - Put one player behind a solid wall. The other player must not render through it.
-   - Back the camera toward a wall. It must move closer instead of passing outside the building.
-   - Walk into walls and closed windows. They must block movement.
-   - Shoot toward a player behind a wall/window. The first world surface should take the ray hit.
-   - Walk/run/turn/jump and test acceleration, gravity and landing.
-   - Jump into a reasonable ledge/crate/tractor surface and confirm automatic mantling without a Climb button.
-   - Try moving into another player and confirm the bodies separate instead of ghosting through each other.
+B. SURFACE SOUND
+Listen to steps/landings on several materials. Grass, dirt, sand, gravel, concrete, wood and metal should not all use identical filtering.
 
-3. CHARACTERS / DOGS / WEAPONS
-   - Humans are actual 3D mesh bodies with front/back/side volume and articulated limbs.
-   - Hunters carry a 3D prop-zapper attached to the hand rig.
-   - Aim should zoom the camera and keep the crosshair/weapon direction readable.
-   - Kelsi, Molly and Gunner use quadruped bodies, four legs/paws, heads/ears/tails and a backpack-mounted zapper.
+C. FAMILY PROP HUNT
+- Test all four maps from normal player height.
+- Put an enemy behind an opaque wall. No body, name or outline should leak through.
+- Fire at a wall with an enemy behind it. The wall must remain the first raycast hit.
+- Walk/run/aim/fire as a human and a dog. The weapon attachment should recoil with the body.
+- Observe a remote player if possible. Movement should use buffered snapshots instead of chasing each network packet directly.
+- Transform and place decoys. Health/collision/game rules must remain unchanged from the locked design.
 
-4. PROP GAMEPLAY
-   - Hider disguises use actual 3D prop meshes.
-   - Health stays with the player when changing disguise.
-   - Prop changes, 10 decoys and flash refresh behavior should match the locked rules.
-   - Decoys are shot-ray surfaces.
-   - In Family Chaos, caught hiders join the hunters.
+D. FAMILY ISLAND LIFE
+- Walk from village to forest, meadow, rock area, residential coast and marina.
+- Look at terrain around shops/homes. It should have gentle variation without poking through buildings.
+- Inspect water at the beach. It should have moving waves and restrained shoreline foam.
+- Wait for weather changes or leave the game running long enough to observe light/fog/rain changes.
+- Watch ambient family visitors route around structures. They should not walk through shop walls.
+- In rain, visitors should more often choose sheltered/social destinations.
+- Enter your home and test furniture actions: sit/relax/watch/bathe/wash/work/cook/wardrobe/light/sleep where applicable.
+- Try using furniture from too far away. Server should reject it.
+- Try sleeping in another person's bed. Server should reject it.
+- Toggle a lamp. Its persistent furniture state should change the actual point light.
+- Nudge loose coconuts/balls. Small props may move; structural furniture must not.
 
-5. OTHER GAMES
-   - Confirm the original Lodge games still create/join/start normally.
-   - Family Mystery and John's Birthday Seat should remain available.
+E. JOHN'S BIRTHDAY SEAT
+- Confirm runners are real 3D human/dog rigs, not flat sprites.
+- Test moving platforms. They must carry the rider.
+- Listen for surface-differentiated foot/landing feedback through the themed sections.
+- Check checkpoint camera sweeps. After a normal sweep, camera should return to gameplay framing.
+- Finish the race. The terminal victory camera may remain cinematic while the actual 3D runner celebrates.
 
-CONTROLS
-COMPUTER: WASD move, drag game view to look, Space jump/auto-mantle, Shift sprint. On-screen Aim/Shoot/Prop/Flash/Decoy/Lock controls remain available.
-PHONE/TABLET: left joystick to move, drag the 3D view to look, Aim/Zoom, Shoot, Jump/Auto-Mantle, Sprint toggle, Prop, Flash, Decoy and Lock buttons.
+F. ANIMATION / SEMANTIC ACTIONS
+In Island Life, compare:
+- cook
+- carry
+- chop
+- mine
+- dig
+- water
+- cast
+- reel
+- sleep
+- dance
+They should not all collapse to the same generic arm movement.
 
-DEPLOYMENT
-This package has NOT been deployed automatically.
+For dogs, look for distinct pant/shake/lie/sniff/sit/work-style behavior where used.
 
-For the existing GitHub/Cloudflare app:
-1. Keep the hidden .git folder in the existing repository.
+G. MULTIPLAYER
+- Use two devices if possible.
+- Run/turn/jump past each other in Prop Hunt and Island Life.
+- Watch the REMOTE player, not only your own player.
+- Remote motion should look smoother and should not jump because server wall-clock timestamps differ from the local animation clock.
+
+H. REAL-DEVICE VISUAL SIGNOFF
+Capture screenshots or a short screen recording of:
+1. human front / side / back
+2. dog walking and turning
+3. Papa's Shop interior
+4. Camper exterior/interior area
+5. Farm animals/structures
+6. Island Life village plaza
+7. beach/water shoreline
+8. home interior with furniture
+9. weather or dusk/night if available
+10. Birthday Seat workshop/campsite/farm/party summit
+
+A passing automated suite is NOT visual signoff. If the game still looks too procedural on a phone, the next visual leap is to provide/author the GLB assets described in AUTHORED_3D_ASSET_GUIDE.md.
+
+AUTOMATED VALIDATION
+Run:
+  npm run check
+
+The frozen release output is in FINAL_TEST_REPORT.txt.
+
+CLOUDFLARE
+This package does not deploy itself.
+The current wrangler configuration keeps GameHub, PropHuntRoom and IslandLifeRoom as separate SQLite Durable Objects.
+The service-worker cache for this release is:
+  black-family-game-night-v200-studio-realism
+
+DEPLOYMENT THROUGH THE EXISTING REPOSITORY
+1. Keep the existing .git directory.
 2. Replace tracked project files with this package.
-3. Commit, for example: Black Family Game Night v1.3.0 - real 3D Prop Hunt rebuild
-4. Push main.
-5. Existing Cloudflare Git deployment should run `npx wrangler deploy`.
+3. Commit, for example:
+   Black Family Game Night v2.0.0 - Studio Realism
+4. Push to main.
+5. Allow the existing Cloudflare workflow to rebuild.
+6. Hard refresh once on phones/tablets so the v2 service-worker cache takes control.
 
-Cloudflare settings:
-Build command: blank / None
-Deploy command: npx wrangler deploy
-Root directory: /
-Production branch: main
-
-Wrangler now includes a v2 Durable Object migration for the new PropHuntRoom class. Do not remove the existing v1 GameHub migration.
+READ NEXT
+- STUDIO_REALISM_ARCHITECTURE.md
+- AUTHORED_3D_ASSET_GUIDE.md
+- 3D_GAMEPLAY_FUNCTIONALITY_AND_DESIGN_STANDARD.md
+- 3D_GAME_QA_MATRIX.md
+- FAMILY_GAME_ART_BIBLE.md
+- FINAL_TEST_REPORT.txt

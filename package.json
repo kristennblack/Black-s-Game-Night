@@ -1,12 +1,12 @@
 {
   "name": "black-family-game-night",
-  "version": "1.3.0",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
-  "description": "Black Family Game Night v1.3.0 - real WebGL Family Prop Hunt rebuild with dedicated realtime multiplayer, retained Lodge collection, Family Mystery and John's Birthday Seat.",
+  "description": "Black Family Game Night v2.0.0 - Studio Realism: authored 3D asset pipeline, semantic skeletal animation, richer procedural actions, weather, water, NPC routines, interactive homes, selective physics, WebAudio and cinematic polish across all 3D games.",
   "scripts": {
     "test": "node --test",
-    "check": "node --check worker.mjs && node --check propHuntRoom.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check public/app.js && node --check public/prop-hunt-core.mjs && node --check public/prop-hunt-3d.js && node --check public/birthday-climb.js && node --test",
+    "check": "node --check worker.mjs && node --check propHuntRoom.mjs && node --check islandLifeRoom.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check public/app.js && node --check public/prop-hunt-core.mjs && node --check public/shared-3d-art-kit.mjs && node --check public/shared-3d-gameplay.mjs && node --check public/shared-3d-studio.mjs && node --check public/prop-hunt-3d.js && node --check public/island-life-core.mjs && node --check public/island-life.js && node --check public/birthday-climb.js && node --check public/sw.js && node --test",
     "deploy": "wrangler deploy"
   },
   "devDependencies": {

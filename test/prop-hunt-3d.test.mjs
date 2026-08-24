@@ -10,6 +10,8 @@ import {PropHuntRoom} from '../propHuntRoom.mjs';
 const html=await readFile(new URL('../public/new-games.html',import.meta.url),'utf8');
 const js=await readFile(new URL('../public/prop-hunt-3d.js',import.meta.url),'utf8');
 const css=await readFile(new URL('../public/prop-hunt-3d.css',import.meta.url),'utf8');
+const artjs=await readFile(new URL('../public/shared-3d-art-kit.mjs',import.meta.url),'utf8');
+const gameplayjs=await readFile(new URL('../public/shared-3d-gameplay.mjs',import.meta.url),'utf8');
 const app=await readFile(new URL('../public/app.js',import.meta.url),'utf8');
 const worker=await readFile(new URL('../worker.mjs',import.meta.url),'utf8');
 const wrangler=await readFile(new URL('../wrangler.jsonc',import.meta.url),'utf8');
@@ -80,21 +82,28 @@ test('network snapshots are clamped and server hit registration requires hunter-
 
 test('Prop Hunt is a real WebGL scene instead of the old Canvas 2D projection',()=>{
   assert.ok(html.includes('/prop-hunt-3d.js'));assert.ok(html.includes('/prop-hunt-3d.css'));
-  for(const token of ['new THREE.WebGLRenderer','THREE.PerspectiveCamera','new THREE.Raycaster','THREE.ACESFilmicToneMapping','shadowMap.enabled=true'])assert.ok(js.includes(token),token);
+  for(const token of ['new THREE.WebGLRenderer','THREE.PerspectiveCamera','new THREE.Raycaster','configureRendererForRealism'])assert.ok(js.includes(token),token);
+  for(const token of ['THREE.ACESFilmicToneMapping','renderer.shadowMap.enabled'])assert.ok(gameplayjs.includes(token),`shared renderer: ${token}`);
   assert.doesNotMatch(js,/getContext\(['"]2d['"]\)/);
   assert.doesNotMatch(js,/drawCharacter|software-3D renderer/i);
 });
 
-test('all-angle humans, quadruped dogs and skeleton-attached weapons are built as 3D mesh hierarchies',()=>{
-  for(const token of ['buildHumanRig','buildDogRig','buildGun','rightArm.hand.add(weaponAnchor)','SphereGeometry','CylinderGeometry','BoxGeometry','tailPivot','backpack','weaponAnchor'])assert.ok(js.toLowerCase().includes(token.toLowerCase()),token);
-  assert.ok(js.includes("face.position.set(0,1.82,-.205)"),'face should exist only on the front of the 3D head');
-  assert.ok(js.includes("g.name=`human-${person.id}`"));
-  assert.ok(js.includes("g.name=`dog-${person.id}`"));
+test('all-angle humans, quadruped dogs and skeleton-attached weapons are built as detailed 3D mesh hierarchies',()=>{
+  for(const token of ['buildHumanRig','buildDogRig','buildPropZapper','weaponAnchor','upperBody','leftArm','rightArm','leftLeg','rightLeg','tailPivot','SphereGeometry','CylinderGeometry'])assert.ok(artjs.includes(token),token);
+  assert.ok(artjs.includes("face.position.set(0,.94,-.204)"),'face details should exist only on the front of the 3D head');
+  assert.ok(artjs.includes('const weapon=buildPropZapper(.68)'));
+  assert.ok(artjs.includes('const weapon=buildPropZapper(.46)'));
+  assert.ok(js.includes('return art.buildHumanRig'));assert.ok(js.includes('return art.buildDogRig'));
 });
 
-test('buildings have actual segmented walls, windows, ceilings and collision-backed glass',()=>{
-  for(const token of ['wallX(','wallZ(','window glass','shop ceiling','barn ceiling','camper ceiling','cameraObstructionDistance'])assert.ok(js.includes(token),token);
-  for(const landmark of ['Tractor','Motorcycle',"Papa's chair",'Bunks','Trampoline','Sea can','Goat stair'])assert.ok(js.includes(landmark),landmark);
+test('shared art kit supplies textured materials and detailed objects instead of grey-box landmarks',()=>{
+  for(const token of ['CanvasTexture','paintedWood','concrete','gravel','galvanized','fabric','leather','glass','buildWorkbench','buildToolChest','buildShelving','buildDrillPress','buildAirCompressor','buildWeldingCart','buildTractor','buildMotorcycle','buildFireplace','buildPapaChair','buildBarnStall','createPropMesh'])assert.ok(artjs.includes(token),token);
+  assert.ok(js.includes("const ART_URL='/shared-3d-art-kit.mjs'"));
+});
+
+test('buildings have actual segmented walls, windows, ceilings and detailed landmark assets',()=>{
+  for(const token of ['wallX(','wallZ(','window glass','shop ceiling','barn ceiling','camper ceiling'])assert.ok(js.includes(token),token);assert.ok(gameplayjs.includes('cameraObstructionDistance'));assert.ok(js.includes('/shared-3d-gameplay.mjs'));
+  for(const landmark of ['buildTractor','buildMotorcycle','buildPapaChair','Upper bunk','buildTrampoline','buildSeaCan','Goat stair'])assert.ok((js+artjs).includes(landmark),landmark);
 });
 
 test('raycast shooting and bot sight use world geometry so walls block both shots and detection',()=>{
@@ -115,8 +124,8 @@ test('Lodge creates a dedicated real-time Prop Hunt room instead of sending play
   assert.ok(app.includes("if(key==='prophunt')return createPropHuntRoom(false)"));
   assert.ok(worker.includes("url.pathname.startsWith('/api/prop/')"));
   assert.ok(worker.includes('env.PROP_HUNT.getByName(roomId)'));
-  assert.ok(wrangler.includes('"name": "PROP_HUNT"'));
-  assert.ok(wrangler.includes('"class_name": "PropHuntRoom"'));
+  const config=JSON.parse(wrangler);
+  assert.ok(config.durable_objects.bindings.some(b=>b.name==='PROP_HUNT'&&b.class_name==='PropHuntRoom'));
 });
 
 test('dedicated Prop Hunt room creates, joins, readies and starts a six-round synchronized match',async()=>{

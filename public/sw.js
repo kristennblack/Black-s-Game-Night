@@ -1,11 +1,5 @@
-const CACHE='black-family-game-night-v130-real3d';
-const SHELL=['/','/styles.css','/app.js','/new-games.html','/prop-hunt-3d.css','/prop-hunt-3d.js','/prop-hunt-core.mjs','/birthday-climb.css','/birthday-climb.js','/home-cabin-approved.png','/family-3d-lineup-approved.png','/manifest.webmanifest','/icon-192.png','/icon-512.png'];
+const CACHE='black-family-game-night-v200-studio-realism';
+const SHELL=['/','/styles.css','/app.js','/new-games.html','/prop-hunt-3d.css','/prop-hunt-3d.js','/prop-hunt-core.mjs','/shared-3d-art-kit.mjs','/shared-3d-gameplay.mjs','/shared-3d-studio.mjs','/models/manifest.json','/birthday-climb.css','/birthday-climb.js','/island-life.html','/island-life.css','/island-life.js','/island-life-core.mjs','/home-cabin-approved.png','/family-3d-lineup-approved.png','/manifest.webmanifest','/icon-192.png','/icon-512.png'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
-self.addEventListener('fetch',event=>{
-  const url=new URL(event.request.url);
-  if(event.request.method!=='GET'||url.pathname.startsWith('/api/')) return;
-  event.respondWith(fetch(event.request).then(response=>{
-    const copy=response.clone(); void caches.open(CACHE).then(c=>c.put(event.request,copy)); return response;
-  }).catch(()=>caches.match(event.request).then(r=>r||caches.match('/'))));
-});
+self.addEventListener('fetch',event=>{const url=new URL(event.request.url);if(event.request.method!=='GET'||url.pathname.startsWith('/api/'))return;event.respondWith(fetch(event.request).then(response=>{const copy=response.clone();void caches.open(CACHE).then(c=>c.put(event.request,copy));return response}).catch(()=>caches.match(event.request).then(r=>r||caches.match('/'))))});

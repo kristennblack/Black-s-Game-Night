@@ -41,5 +41,5 @@ test('all three new games support solo play with computer opponents',()=>{
 test("John's Birthday Seat is included as a playable 3D platform game",()=>{
   assert.ok(app.includes("John's Birthday Seat"));
   assert.ok(ng.includes('screen-birthday'));
-  for(const t of ['course','stages','thirdPerson:true','fullBodySprites:true','jump:true','bots:true','botCharacters:true','visibleGoal:true','birthday seat'])assert.ok(bc.toLowerCase().includes(t.toLowerCase()),t);
+  for(const t of ['course','stages','thirdPerson:true','realWebGL:true','allAngleRigs:true','jump:true','jumpBuffer:true','coyoteTime:true','bots:true','botCharacters:true','visibleGoal:true','new THREE.WebGLRenderer','createThirdPersonCamera','birthday seat'])assert.ok(bc.toLowerCase().includes(t.toLowerCase()),t);assert.doesNotMatch(bc,/getContext\(['"]2d['"]\)|software-3D/i);
 });

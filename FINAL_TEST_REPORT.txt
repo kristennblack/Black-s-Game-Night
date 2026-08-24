@@ -1,41 +1,73 @@
-Black Family Game Night v1.3.0-real3d
-Date: 2026-08-23
+Black Family Game Night v2.0.0-studio-realism
+Final validation date: 2026-08-23 (user local date)
 
-RESULT: 143 / 143 automated tests passing
+RESULT: 190 / 190 automated tests passing
+FULL npm run check: PASS
 
-NEW PROP HUNT FOUNDATION COVERAGE
-- A wall AABB is mathematically hit before a target behind it.
-- Third-person camera distance is shortened by intervening world geometry.
-- Solid walls block character movement.
-- Jump input can trigger automatic mantle on a climbable ledge within the allowed height.
-- Solid ceilings stop upward head movement.
-- Hunter assignment rotates across rounds and scales to two hunters in larger rooms.
-- Network movement snapshots are clamped/sanitized.
-- Server hit acceptance validates hunter -> live hider and maximum range.
-- Prop Hunt source requires WebGLRenderer, PerspectiveCamera, Raycaster, tone mapping and shadows.
-- Prop Hunt source explicitly contains no Canvas 2D getContext('2d') renderer.
-- Human and dog 3D hierarchy builders and skeleton-attached weapons are present.
-- Segmented walls, windows, collision-backed glass and ceilings are present.
-- Shooting and bot sight both raycast against world geometry.
-- Mobile/desktop actions include Aim, Shoot, Jump/Auto-Mantle, Sprint, Prop, Flash, Decoy, Lock and joystick movement.
-- Lodge creates a dedicated private Prop Hunt room rather than opening local-only play.
-- Dedicated PropHuntRoom create/join/ready/start flow is exercised with an in-memory SQLite-compatible test context.
-- Cloudflare configuration includes the PROP_HUNT binding, PropHuntRoom SQLite migration and observability.
-- PropHuntRoom uses Durable Object hibernatable WebSocket primitives and SQL persistence.
+SYNTAX / SOURCE CHECKS PASSED
+- worker.mjs
+- propHuntRoom.mjs
+- islandLifeRoom.mjs
+- gameEngine.mjs
+- extraGames.mjs
+- public/app.js
+- public/prop-hunt-core.mjs
+- public/shared-3d-art-kit.mjs
+- public/shared-3d-gameplay.mjs
+- public/shared-3d-studio.mjs
+- public/prop-hunt-3d.js
+- public/island-life-core.mjs
+- public/island-life.js
+- public/birthday-climb.js
+- public/sw.js
+
+NEW v2 STUDIO REALISM COVERAGE
+1. Shared Studio Realism feature manifest is available to all three 3D games.
+2. Authored model manifest is fallback-safe while bespoke GLBs are absent.
+3. Semantic animation names resolve to authored clip aliases.
+4. Network SnapshotBuffer stores local receive time separately from server source time.
+5. Buffered interpolation and short extrapolation remain bounded.
+6. Island NPC pathfinding routes around blockers and avoids diagonal corner cutting.
+7. Weather and NPC routine selection are deterministic for the same seed/time segment.
+8. Tropical heightfield remains restrained around central village and residential building zones.
+9. Furniture actions remain server-authorized by home, item, proximity and use type.
+10. Stateful lamps persist with the furniture piece and control the actual home light.
+11. Shared water exposes shoreline-foam parameters.
+12. Shared WebAudio supports surface-specific foot/landing filtering.
+13. Prop Hunt, Island Life and Birthday Seat each classify practical footstep surfaces.
+14. Selective physics and cinematic recovery remain shared studio features.
+15. Expanded semantic procedural action poses include cook/carry/tool/fishing/sleep/dance behaviors.
+16. Dog semantic behavior includes pant/shake/lie-down paths.
+17. Authored skinned model loading uses a skeleton-aware clone path.
+18. Authored rig sockets support right hand, left hand, head and back attachment concepts.
 
 REGRESSION COVERAGE RETAINED
-- All 18 original multiplayer games create, join, seat, ready and start.
-- All 18 original games can launch solo with Easy/Medium/Hard computer players.
-- Existing card/trick/extra-game rules and privacy tests.
-- Existing GameHub persistence and room state.
-- Chat, reactions, avatars, game switching, share links and private hands.
-- Family Mystery board/movement coverage.
-- John's Birthday Seat coverage.
-- Lodge cabin and animated-fire coverage.
+- Lodge / room creation / join / seating / ready / start flows.
+- Original tabletop/card game logic and interaction tests.
+- Family Mystery illustrated board and movement presentation.
+- Prop Hunt real WebGL renderer, four maps, occlusion, collision, shooting, disguises, mantling and multiplayer room behavior.
+- Island Life persistence, money, jobs, stores, homes, decoration, foraging, crafting, needs and dedicated room behavior.
+- Birthday Seat real WebGL course, moving-platform carry, jump behavior, checkpoints and live 3D finish.
+- Shared controls, gamepad, mobile joystick, camera shoulder, control preferences, attention/contact animation and performance governor.
+- Living Worlds and Embodied Realism scene/animation regressions.
 
-STATIC VALIDATION
-- All project .js and .mjs files pass Node syntax validation.
-- wrangler.jsonc parses as valid JSON and contains both Durable Object bindings/migrations.
+CLOUDFLARE CONFIG REVIEW
+- wrangler.jsonc parses successfully.
+- compatibility_date: 2026-08-23.
+- nodejs_compat enabled.
+- observability logs/traces configured.
+- GameHub, PropHuntRoom and IslandLifeRoom remain separate Durable Object bindings.
+- SQLite migrations remain defined for all three classes.
+- Prop Hunt and Island Life use the hibernatable Durable Object WebSocket pattern with acceptWebSocket and serialized attachments.
 
-RUNTIME QA NOTE
-A GPU/browser WebGL gameplay session could not be executed to completion inside this container because the available headless Chromium process did not complete reliably. The package therefore has strong source/unit/integration coverage but should still receive the normal production smoke test on one desktop browser and one phone after deployment, especially for GPU/WebGL rendering, touch feel and cross-device WebSocket latency.
+WRANGLER DRY-RUN NOTE
+A direct `npx wrangler deploy --dry-run` could not complete in this execution container because node_modules is not installed and the npx dependency fetch timed out. No deployment was attempted. The source/config/test validation above completed successfully.
+
+IMPORTANT VISUAL LIMITATION
+This environment cannot provide final iPhone/WebGL GPU visual signoff. Automated tests validate code contracts, not attractiveness, animation polish or sustained mobile frame rate.
+
+IMPORTANT AUTHORED-ASSET LIMITATION
+The v2 authored GLB/GLTF pipeline is implemented, but bespoke skinned family/dog GLB model files are not included yet. `public/models/manifest.json` intentionally keeps those model categories empty, so the detailed procedural rigs remain the visible fallback.
+
+FINAL PACKAGE
+The archive-integrity result and SHA-256 are recorded in BUILD_MANIFEST_v2.0.0-studio-realism.txt after packaging.

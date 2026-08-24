@@ -16,7 +16,7 @@ test('multiplayer lobby exposes per-bot family character and difficulty editing'
 });
 
 test('Birthday Seat is a full-body vertical obby with readable route and visible throne goal',()=>{
-  for(const t of ['/characters3d/','32 climbable steps','Moving Gift','Cake Bounce','JOHN\'S BIRTHDAY SEAT','fullBodySprites:true','movingPlatforms:true','visibleGoal:true','drawNextArrow']) assert.ok(bc.includes(t),t);
+  for(const t of ['/characters3d/','32 climbable steps','Moving Gift','Cake Bounce','JOHN\'S BIRTHDAY SEAT','realWebGL:true','allAngleRigs:true','movingPlatforms:true','visibleGoal:true','game.nextArrow','buildHumanRig','buildDogRig','jumpBuffer:true','gamepad:true']) assert.ok(bc.includes(t),t);assert.ok(bc.includes('fullBodySprites:false'));
 });
 
 test('3D games let the host select computer family characters',()=>{
