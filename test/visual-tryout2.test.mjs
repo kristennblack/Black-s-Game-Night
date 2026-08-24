@@ -10,7 +10,7 @@ test('Family Mystery uses illustrated rooms, glowing movement blocks and avatar 
   assert.match(html,/glowing floor block/);
 });
 
-test('Lodge home uses a detailed cabin scene with animated fire',()=>{
-  for(const token of ['approved-home-scene','home-cabin-approved.png','approved-fire','home-hotspot']) assert.ok(app.includes(token),token);
-  for(const token of ['homeFlameA','homeGlow','emberRise']) assert.ok(css.includes(token),token);
+test('Lodge home uses a responsive cabin hero, approved John crop and restrained ambient motion',()=>{
+  for(const token of ['lodge-hero','john-home-approved.jpg','home-title-lockup','home-feature-strip']) assert.ok(app.includes(token),token);assert.ok(css.includes('home-cabin-background.jpg'));
+  for(const token of ['home-firelight','homeFirelight','prefers-reduced-motion']) assert.ok(css.includes(token),token);
 });

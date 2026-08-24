@@ -1,52 +1,35 @@
-BLACK FAMILY GAME NIGHT - PHASE E1 CONTINUITY STAGING TEST CANDIDATE
-Build: 3D-STAGING-PHASE-E1-02
-Package: 3.0.1-staging-phase-e1-02
+BLACK FAMILY GAME NIGHT
+STAGING BUILD: 3D-STAGING-PHASE-E2-UX-03
+PACKAGE VERSION: 3.0.1-staging-phase-e2-ux-03
 
-THIS IS NOT A FINAL RELEASE.
-Real-device WebGL, avatar appearance, animation, controls, collision feel, camera feel, map quality and Cloudflare deployment remain subject to the Phase E2 phone test.
+PURPOSE
+This is the combined E2/UX staging candidate requested after phone testing.
+It preserves the accepted E1 gameplay-continuity repairs while adding:
+- immediate legal tap-to-play for the normal Screw Your Buddy / Fuck Your Buddy / Smear card table flow
+- complete vertical round score sheets for Screw Your Buddy and Fuck Your Buddy
+- a rebuilt responsive cabin home screen using an explicit approved John reference crop
+- reduced home motion and improved typography/spacing/card hierarchy
+- cleaner mobile 3D controls and hidden QA/dev warnings during standard play
+- tighter per-game camera framing without replacing the repaired movement/collision architecture
 
-READ FIRST
-- PHASE_E1_CONTINUITY_REPORT.md  What was restored after the 243 -> 214 continuity investigation
-- PHASE_E_STAGING_REPORT.md      Full avatar/map/deployment audit and limitations
-- DEVICE_QA_ISSUE_TEMPLATE.md    Narrow repair record for each device failure
-- FINAL_TEST_REPORT.txt          Automated/static result
-- BUILD_MANIFEST.txt             Build/cache/config summary
+IMPORTANT 3D ART TRUTH
+This package DOES NOT claim that the current family models or environments are finished production artwork.
+The current repository still lacks the proper authored, skinned, animation-ready family models and authored environment art required for the requested final visual standard. Existing runtime/procedural fallbacks remain only so gameplay can run.
+See 3D_ASSET_PRODUCTION_PLAN.md and PAPA_SHOP_VERTICAL_SLICE_ASSET_SPEC.md.
 
-VISIBLE BUILD CHECK
-Every real-time 3D game should display: 3D-STAGING-PHASE-E1-02
-If that exact identifier is not visible, do not trust the test because an old cached build may be running.
+VALIDATION
+- npm run check: 229 / 229 tests PASS
+- npm run build: 110 PASS, 2 WARN, 0 FAIL
+- production GLB integrity audit: PASS for all 10 packaged GLBs
+- actual Cloudflare deployment: UNVERIFIED in this environment (Wrangler unavailable)
+- final rendered home/3D composition: VISUAL RESULT UNVERIFIED in this environment; the Chromium compositor could not complete a reliable headless render
+- real-phone QA: REQUIRED
 
-DIAGNOSTICS
-Append ?qa3d=1 to a URL with no query parameters, or &qa3d=1 when parameters already exist.
-A small QA button can also open/close diagnostics in the game.
+KNOWN DECLARED WARNINGS
+1. Three.js 0.185.1 / addon runtime CDN dependency remains.
+2. Wrangler executable is unavailable here, so actual Cloudflare staging deployment is UNVERIFIED.
 
-FOUR INTENDED 3D EXPERIENCES
-1. Family Prop Hunt
-2. Family Island Life
-3. John's Birthday Seat
-4. Family Mystery - 3D BOARD GAME - NOT YET IMPLEMENTED TO INTENDED VISUAL STANDARD
-
-The current Family Mystery HTML/CSS/standee presentation is incomplete relative to the intended realistic dimensional 3D board-game design. It is not being converted during E1/E2.
-
-STAGING DEPLOY
-1. npm install
-2. npm run check    (expect 221/221 PASS)
-3. npm run build    (expect 108 PASS, 2 warnings, 0 failures)
-4. npm run deploy:staging
-5. Use the staging URL printed by Wrangler.
-
-QA URL PATTERNS
-- <STAGING_BASE>/new-games.html?game=prophunt&qa3d=1
-- <STAGING_BASE>/island-life.html?qa3d=1
-- <STAGING_BASE>/new-games.html?game=birthday&qa3d=1
-
-IMPORTANT LIMITATIONS
-- Automated regression: 221/221 PASS.
-- Historical Phase D 243/243 test source was not persisted and cannot be claimed as recreated exactly.
-- Phase E static validation: 108 PASS, 2 warnings, 0 failures.
-- Actual Wrangler deployment in this build runner: UNVERIFIED.
-- Real phone/WebGL visual signoff: UNVERIFIED.
-- Core Three.js/GLTFLoader/SkeletonUtils remain exact-version CDN runtime dependencies in this runner.
-- Only John and Gunner have packaged character GLBs; neither has a glTF skin or authored clips.
-- Every other required family member remains REAL 3D AVATAR ASSET MISSING and uses a procedural runtime rig for staging.
-- Current real-time environments remain primarily procedural/generated visual geometry; that is not finished production art.
+NEXT STEP
+Deploy ONLY as staging. Confirm the visible build ID is exactly:
+3D-STAGING-PHASE-E2-UX-03
+Then use PHONE_QA_E2_UX_CHECKLIST.md.

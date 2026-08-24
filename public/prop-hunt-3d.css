@@ -30,3 +30,16 @@
 @media(max-width:700px){.ph3d-qa{top:56px;left:7px;font-size:8px;max-width:68%;padding:6px 7px}}
 .ph3d-reset-view{position:absolute;right:14px;top:112px;z-index:9;border:1px solid #ffffff2b;background:#2b2118d9;color:#ffe7b0;border-radius:999px;padding:7px 10px;font-size:9px;font-weight:900;letter-spacing:.04em;backdrop-filter:blur(7px);box-shadow:0 5px 14px #0006;touch-action:manipulation;-webkit-tap-highlight-color:transparent}.ph3d-reset-view:active{transform:scale(.96);filter:brightness(1.2)}
 @media(max-width:700px){.ph3d-reset-view{top:126px;right:10px;padding:6px 9px}}
+
+/* Phase E2/UX-03: mobile player HUD cleanup. QA remains available with ?qa3d=1. */
+.ph3d-shoulder,.ph3d-reset-view{width:34px;height:34px;padding:0;display:grid;place-items:center;font-size:15px;line-height:1;letter-spacing:0}
+@media(max-width:700px){
+ .ph3d-camera-help{display:none!important}
+ .ph3d-shoulder{top:58px;right:8px;width:32px;height:32px;padding:0}
+ .ph3d-reset-view{top:96px;right:8px;width:32px;height:32px;padding:0}
+ .ph3d-actions{right:max(8px,env(safe-area-inset-right));bottom:max(10px,env(safe-area-inset-bottom));gap:6px}
+ .ph3d-act{height:48px;min-width:54px;padding:4px 6px;font-size:8px;border-radius:14px;box-shadow:0 5px 13px #0006}
+ .ph3d-joystick{left:max(9px,env(safe-area-inset-left));bottom:max(10px,env(safe-area-inset-bottom));width:100px;height:100px}
+ .ph3d-stick{width:42px;height:42px;left:29px;top:29px}
+ .ph3d-prop-prompt{bottom:116px;max-width:64vw;text-align:center}
+}

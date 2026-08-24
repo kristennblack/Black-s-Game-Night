@@ -68,8 +68,8 @@ export function applyControlPreferences(cameraRig,layoutTarget,prefs=loadControl
  */
 export function mountControlPreferences(host,cameraRig,{layoutTarget=host,top='112px'}={}){
   if(typeof document==='undefined'||!host)return()=>{};
-  const styleId='g3d-shared-control-style';if(!document.getElementById(styleId)){const st=document.createElement('style');st.id=styleId;st.textContent=`.g3d-control-button{position:absolute;right:14px;z-index:19;border:1px solid #ffffff35;border-radius:999px;background:#11120fbd;color:#fff;padding:7px 10px;font:900 9px/1 system-ui,sans-serif;letter-spacing:.06em;backdrop-filter:blur(7px);box-shadow:0 5px 14px #0006;touch-action:manipulation}.g3d-control-button:active{transform:scale(.96)}.g3d-control-panel{position:absolute;right:14px;z-index:50;width:min(280px,calc(100% - 28px));padding:12px;border:1px solid #ffffff32;border-radius:16px;background:#121310f2;color:#fff;box-shadow:0 16px 38px #0009;backdrop-filter:blur(12px);font:600 11px/1.35 system-ui,sans-serif}.g3d-control-panel[hidden]{display:none}.g3d-control-panel strong{display:block;font-size:12px;margin-bottom:8px}.g3d-control-panel label{display:grid;grid-template-columns:1fr auto;gap:9px;align-items:center;margin:9px 0}.g3d-control-panel input[type=range]{grid-column:1/-1;width:100%;accent-color:#d8b867}.g3d-control-panel input[type=checkbox]{width:20px;height:20px;accent-color:#d8b867}.g3d-control-panel .g3d-row{display:flex;gap:7px;justify-content:flex-end;margin-top:10px}.g3d-control-panel button{border:1px solid #ffffff28;border-radius:10px;background:#2a2a25;color:#fff;padding:7px 9px;font-weight:800}.g3d-control-panel small{display:block;color:#cfc8bc;margin-top:4px}@media(max-width:700px){.g3d-control-button{right:10px;padding:6px 9px}.g3d-control-panel{right:10px;width:min(270px,calc(100% - 20px))}}`;document.head.appendChild(st)}
-  const button=document.createElement('button');button.type='button';button.className='g3d-control-button no-look';button.textContent='CTRL';button.setAttribute('aria-label','3D control settings');button.style.top=top;host.appendChild(button);
+  const styleId='g3d-shared-control-style';if(!document.getElementById(styleId)){const st=document.createElement('style');st.id=styleId;st.textContent=`.g3d-control-button{position:absolute;right:14px;z-index:19;border:1px solid #ffffff35;border-radius:999px;background:#11120fbd;color:#fff;width:34px;height:34px;padding:0;display:grid;place-items:center;font:900 14px/1 system-ui,sans-serif;letter-spacing:.06em;backdrop-filter:blur(7px);box-shadow:0 5px 14px #0006;touch-action:manipulation}.g3d-control-button:active{transform:scale(.96)}.g3d-control-panel{position:absolute;right:14px;z-index:50;width:min(280px,calc(100% - 28px));padding:12px;border:1px solid #ffffff32;border-radius:16px;background:#121310f2;color:#fff;box-shadow:0 16px 38px #0009;backdrop-filter:blur(12px);font:600 11px/1.35 system-ui,sans-serif}.g3d-control-panel[hidden]{display:none}.g3d-control-panel strong{display:block;font-size:12px;margin-bottom:8px}.g3d-control-panel label{display:grid;grid-template-columns:1fr auto;gap:9px;align-items:center;margin:9px 0}.g3d-control-panel input[type=range]{grid-column:1/-1;width:100%;accent-color:#d8b867}.g3d-control-panel input[type=checkbox]{width:20px;height:20px;accent-color:#d8b867}.g3d-control-panel .g3d-row{display:flex;gap:7px;justify-content:flex-end;margin-top:10px}.g3d-control-panel button{border:1px solid #ffffff28;border-radius:10px;background:#2a2a25;color:#fff;padding:7px 9px;font-weight:800}.g3d-control-panel small{display:block;color:#cfc8bc;margin-top:4px}@media(max-width:700px){.g3d-control-button{right:10px;width:32px;height:32px;padding:0}.g3d-control-panel{right:10px;width:min(270px,calc(100% - 20px))}}`;document.head.appendChild(st)}
+  const button=document.createElement('button');button.type='button';button.className='g3d-control-button no-look';button.textContent='⚙';button.setAttribute('aria-label','3D control settings');button.style.top=top;host.appendChild(button);
   const panel=document.createElement('section');panel.className='g3d-control-panel no-look';panel.hidden=true;panel.style.top=`calc(${top} + 34px)`;panel.innerHTML=`<strong>3D Controls</strong><small>These preferences follow you between Prop Hunt, Island Life and Birthday Seat.</small><label><span>Look sensitivity <b data-g3d-sens></b></span><input data-g3d-range type="range" min="0.65" max="1.5" step="0.05"></label><label><span>Invert vertical look</span><input data-g3d-invert type="checkbox"></label><label><span>Left-handed mobile layout</span><input data-g3d-left type="checkbox"></label><div class="g3d-row"><button type="button" data-g3d-reset>RESET</button><button type="button" data-g3d-close>DONE</button></div>`;host.appendChild(panel);
   const range=panel.querySelector('[data-g3d-range]'),sens=panel.querySelector('[data-g3d-sens]'),invert=panel.querySelector('[data-g3d-invert]'),left=panel.querySelector('[data-g3d-left]');
   let prefs=applyControlPreferences(cameraRig,layoutTarget,loadControlPreferences());
@@ -133,20 +133,20 @@ export const CONTROL_PRESETS=Object.freeze({
   propHunt:{
     walkSpeed:2.75,runSpeed:4.6,groundAccel:16.5,groundBrake:21,airControl:.31,
     jumpSpeed:6.15,gravity:18.5,cameraDistance:4.65,aimDistance:3.05,
-    cameraHeight:1.17,cameraLift:.18,minCameraDistance:1.35,recoveryPitch:.075,shoulder:.48,fov:58,aimFov:49,sprintFov:63,
-    lookSensitivity:.0048,touchLookSensitivity:.0054,minPitch:-.30,maxPitch:.50
+    cameraHeight:1.15,cameraLift:.15,minCameraDistance:1.50,recoveryPitch:.045,shoulder:.46,fov:57,aimFov:49,sprintFov:62,
+    lookSensitivity:.0045,touchLookSensitivity:.0050,minPitch:-.22,maxPitch:.34
   },
   island:{
     walkSpeed:2.55,runSpeed:4.35,groundAccel:15,groundBrake:20,airControl:.3,
-    jumpSpeed:5.9,gravity:18,cameraDistance:4.8,aimDistance:3.35,
-    cameraHeight:1.14,cameraLift:.18,minCameraDistance:1.4,recoveryPitch:.065,shoulder:.20,fov:60,aimFov:55,sprintFov:63,
-    lookSensitivity:.0046,touchLookSensitivity:.0052,minPitch:-.30,maxPitch:.50
+    jumpSpeed:5.9,gravity:18,cameraDistance:5.15,aimDistance:3.5,
+    cameraHeight:1.12,cameraLift:.14,minCameraDistance:1.55,recoveryPitch:.035,shoulder:.18,fov:59,aimFov:54,sprintFov:62,
+    lookSensitivity:.0043,touchLookSensitivity:.0049,minPitch:-.20,maxPitch:.29
   },
   birthday:{
     walkSpeed:3.0,runSpeed:5.0,groundAccel:19,groundBrake:24,airControl:.48,
-    jumpSpeed:6.65,gravity:18.2,cameraDistance:4.55,aimDistance:3.35,
-    cameraHeight:1.15,cameraLift:.16,minCameraDistance:1.35,recoveryPitch:.06,shoulder:.16,fov:61,aimFov:56,sprintFov:66,
-    lookSensitivity:.0048,touchLookSensitivity:.0055,minPitch:-.32,maxPitch:.50
+    jumpSpeed:6.65,gravity:18.2,cameraDistance:4.95,aimDistance:3.55,
+    cameraHeight:1.12,cameraLift:.12,minCameraDistance:1.50,recoveryPitch:.035,shoulder:.14,fov:60,aimFov:55,sprintFov:64,
+    lookSensitivity:.0044,touchLookSensitivity:.0050,minPitch:-.20,maxPitch:.31
   }
 });
 

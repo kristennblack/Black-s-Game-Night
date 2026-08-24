@@ -13,9 +13,9 @@ const [prop,island,birthday,sw,app,manifestText]=await Promise.all([
 const manifest=JSON.parse(manifestText);
 
 test('Phase E staging identifier is explicit and cache-versioned',()=>{
-  assert.equal(STAGING_BUILD_ID,'3D-STAGING-PHASE-E1-02');
+  assert.equal(STAGING_BUILD_ID,'3D-STAGING-PHASE-E2-UX-03');
   assert.ok(app.includes(STAGING_BUILD_ID));
-  assert.ok(sw.includes('black-family-game-night-3d-staging-phase-e1-02'));
+  assert.ok(sw.includes('black-family-game-night-3d-staging-phase-e2-ux-03'));
   assert.ok(sw.includes('/phase-e-qa.mjs'));
 });
 
@@ -25,7 +25,8 @@ test('all three realtime games expose Phase E diagnostics, mobile guards and zoo
     assert.ok(src.includes('mountStagingDiagnostics'));
     assert.ok(src.includes('installInteractionGuards'));
     assert.ok(src.includes('mountZoomButtons'));
-    assert.ok(src.includes('RESET VIEW'));
+    assert.ok(src.includes('Reset camera'));
+    assert.ok(src.includes('resetPlayableView'));
   }
 });
 

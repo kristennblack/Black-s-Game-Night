@@ -56,6 +56,6 @@ test('safe spawn search moves an embedded player into open geometry and recovery
 
 test('all three 3D games expose a visible emergency RESET VIEW and keyboard recovery path',async()=>{
   for(const file of ['../public/prop-hunt-3d.js','../public/island-life.js','../public/birthday-climb.js']){
-    const src=await readFile(new URL(file,import.meta.url),'utf8');assert.ok(src.includes('RESET VIEW'));assert.ok(src.includes('resetPlayableView'));assert.ok(src.includes("KeyR"));assert.ok(src.includes('QA_MODE')||file.includes('prop-hunt'));assert.ok(src.includes('qa3d')||file.includes('prop-hunt'));
+    const src=await readFile(new URL(file,import.meta.url),'utf8');assert.ok(src.includes('Reset camera'));assert.ok(src.includes('>↺</button>'));assert.ok(src.includes('resetPlayableView'));assert.ok(src.includes("KeyR"));assert.ok(src.includes('QA_MODE')||file.includes('prop-hunt'));assert.ok(src.includes('qa3d')||file.includes('prop-hunt'));
   }
 });

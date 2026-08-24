@@ -7,9 +7,9 @@ const ng=await readFile(new URL('../public/new-games.html',import.meta.url),'utf
 const bc=await readFile(new URL('../public/birthday-climb.js',import.meta.url),'utf8');
 const worker=await readFile(new URL('../worker.mjs',import.meta.url),'utf8');
 
-test('approved cabin home art is live with moving fire hotspots',()=>{
-  for(const t of ['home-cabin-approved.png','approved-home-scene','approved-fire','home-hotspot'])assert.ok(app.includes(t),t);
-  for(const t of ['homeFlameA','homeFlameB','homeGlow','afember'])assert.ok(css.includes(t),t);
+test('responsive cabin home uses the approved cabin direction and explicit John reference crop',()=>{
+  for(const t of ['john-home-approved.jpg','lodge-hero','home-john-feature'])assert.ok(app.includes(t),t);assert.ok(css.includes('home-cabin-background.jpg'));
+  for(const t of ['home-firelight','homeFirelight','prefers-reduced-motion'])assert.ok(css.includes(t),t);
 });
 
 test('every game exposes a share or join link path',()=>{

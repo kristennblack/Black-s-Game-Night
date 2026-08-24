@@ -1,44 +1,58 @@
-BLACK FAMILY GAME NIGHT - PHASE E CHANGED / RECONSTRUCTED FILES
-Build: 3D-STAGING-PHASE-E1-02
+PHASE E2/UX-03 CHANGED / NEW FILES RELATIVE TO E1-02
 
-Continuity warning: the accepted Phase D worktree was not persisted, so this is not an exact git diff from Phase D.
-It is the concrete diff/addition set relative to the persisted v3.0.1 source baseline used to reconstruct Phase E.
+NEW
+- 3D_ASSET_PRODUCTION_PLAN.md
+- COMBINED_E2_UX_REPORT.md
+- PAPA_SHOP_VERTICAL_SLICE_ASSET_SPEC.md
+- PHONE_QA_E2_UX_CHECKLIST.md
+- public/home-cabin-background.jpg
+- public/john-home-approved.jpg
+- test/phase-e2-ux.test.mjs
 
-   M BUILD_MANIFEST.txt
-   M FINAL_TEST_OUTPUT.tap
-   M FINAL_TEST_REPORT.txt
-   M START_HERE.txt
-   M VERSION.txt
-   M package.json
-   M public/app.js
-   M public/birthday-climb.js
-   M public/index.html
-   M public/island-life.html
-   M public/island-life.js
-   M public/models/manifest.json
-   M public/new-games.html
-   M public/prop-hunt-3d.js
-   M public/prop-hunt-core.mjs
-   M public/shared-3d-gameplay.mjs
-   M public/shared-3d-studio.mjs
-   M public/sw.js
-   M test/cloudflare-adapter.test.mjs
-   M test/prop-hunt-3d.test.mjs
-   M test/prop-hunt-quality-slice-v210.test.mjs
-   M test/shared-3d-gameplay.test.mjs
-   M test/trail-ui.test.mjs
-  ?? DEVICE_QA_ISSUE_TEMPLATE.md
-  ?? PHASE_E_CHANGED_FILES.txt
-  ?? PHASE_E_STAGING_REPORT.md
-  ?? public/phase-e-qa.mjs
-  ?? test/phase-e-staging.test.mjs
-  ?? tools/phase_e_validate.mjs
-  ?? wrangler.staging.jsonc
+UPDATED BUILD / DOCS
+- START_HERE.txt
+- VERSION.txt
+- package.json
+- FINAL_TEST_OUTPUT.tap
+- BUILD_MANIFEST.txt
+- FINAL_TEST_REPORT.txt
+- PHASE_E_CHANGED_FILES.txt
 
-E1 continuity additions:
-- public/prop-hunt-core.mjs
-- public/prop-hunt-3d.js
+UPDATED APP / HOME / TABLE UX
+- public/app.js
+- public/styles.css
+- public/index.html
+- public/sw.js
+
+UPDATED 3D PRESENTATION / QA UI
+- public/phase-e-qa.mjs
 - public/shared-3d-gameplay.mjs
+- public/shared-3d-studio.mjs
+- public/prop-hunt-3d.js
+- public/prop-hunt-3d.css
 - public/island-life.js
-- test/phase-e1-continuity-recovery.test.mjs
-- PHASE_E1_CONTINUITY_REPORT.md
+- public/island-life.css
+- public/island-life.html
+- public/birthday-climb.js
+- public/birthday-climb.css
+- public/new-games.html
+
+UPDATED TEST EXPECTATIONS / REGRESSION COVERAGE
+- test/cloudflare-adapter.test.mjs
+- test/launch-v120.test.mjs
+- test/phase-e-staging.test.mjs
+- test/prop-hunt-quality-slice-v210.test.mjs
+- test/shared-3d-gameplay.test.mjs
+- test/shared-3d-playability-recovery-v301.test.mjs
+- test/tabletop-polish.test.mjs
+- test/trail-ui.test.mjs
+- test/visual-tryout2.test.mjs
+- tools/phase_e_validate.mjs
+
+DELIBERATELY NOT REWRITTEN
+- gameEngine.mjs
+- extraGames.mjs
+- worker.mjs
+- propHuntRoom.mjs
+- islandLifeRoom.mjs
+- public/prop-hunt-core.mjs

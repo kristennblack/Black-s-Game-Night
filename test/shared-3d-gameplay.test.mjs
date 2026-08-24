@@ -18,7 +18,7 @@ test('all free-moving 3D games share the v2 studio-realism gameplay/control fram
   for(const src of [prop,island,birthday])assert.ok(src.includes('/shared-3d-gameplay.mjs'));
   for(const token of ['createThirdPersonCamera','bindPointerLook','bindVirtualJoystick','readGamepadButtons','applyGamepadLook','createPerformanceGovernor','animateFamilyRig'])assert.ok(gameplay.includes(token),token);
   assert.ok(sw.includes('/shared-3d-gameplay.mjs'));
-  assert.ok(sw.includes('black-family-game-night-3d-staging-phase-e1-02'));
+  assert.ok(sw.includes('black-family-game-night-3d-staging-phase-e2-ux-03'));
 });
 
 test('movement input preserves analog joystick strength and is camera-relative',()=>{
@@ -92,7 +92,7 @@ test('3D control preferences are shared, persistent-capable and exposed in every
   assert.equal(prefs.lookScale,1);assert.equal(prefs.invertY,false);assert.equal(prefs.leftHanded,false);
   for(const token of ['mountControlPreferences','lookScale','invertY','leftHanded','g3d-left-handed'])assert.ok(gameplay.includes(token),token);
   for(const src of [prop,island,birthday])assert.ok(src.includes('mountControlPreferences'));
-  for(const src of [prop,island,birthday])assert.ok(src.includes('CAM ↔'));
+  for(const src of [prop,island,birthday]){assert.ok(src.includes('aria-label="Swap camera shoulder"'));assert.ok(src.includes('>↔</button>'));}
 });
 
 test('camera framework supports shoulder swapping and all three games expose it',()=>{

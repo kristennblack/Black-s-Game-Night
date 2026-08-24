@@ -1,5 +1,5 @@
-export const STAGING_BUILD_ID='3D-STAGING-PHASE-E1-02';
-export const STAGING_APP_VERSION='3.0.1-staging-phase-e1-02';
+export const STAGING_BUILD_ID='3D-STAGING-PHASE-E2-UX-03';
+export const STAGING_APP_VERSION='3.0.1-staging-phase-e2-ux-03';
 
 const fmt=n=>Number.isFinite(Number(n))?Number(n).toFixed(2):'n/a';
 const vec=v=>v?`${fmt(v.x)}, ${fmt(v.y)}, ${fmt(v.z)}`:'n/a';
@@ -7,13 +7,13 @@ const vec=v=>v?`${fmt(v.x)}, ${fmt(v.y)}, ${fmt(v.z)}`:'n/a';
 function ensureStyle(){
   if(typeof document==='undefined'||document.getElementById('g3d-phase-e-style'))return;
   const style=document.createElement('style');style.id='g3d-phase-e-style';style.textContent=`
-  .g3d-staging-badge{position:absolute;top:7px;left:50%;transform:translateX(-50%);z-index:78;pointer-events:none;padding:4px 8px;border:1px solid #ffffff42;border-radius:999px;background:#10120ed9;color:#f0df9f;font:800 8px/1.15 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.035em;white-space:nowrap;box-shadow:0 3px 12px #0008}
+  .g3d-staging-badge{position:absolute;top:7px;left:50%;transform:translateX(-50%);z-index:78;pointer-events:none;padding:4px 8px;border:1px solid #ffffff42;border-radius:999px;background:#10120ed9;color:#f0df9f;font:800 8px/1.15 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.035em;white-space:nowrap;box-shadow:0 3px 12px #0008;opacity:.72}
   .g3d-qa-toggle{position:absolute;top:32px;left:50%;transform:translateX(-50%);z-index:79;border:1px solid #ffffff42;border-radius:999px;background:#12140fe8;color:#fff;padding:6px 9px;font:900 9px/1 system-ui,sans-serif;letter-spacing:.06em;touch-action:manipulation}
   .g3d-qa-panel{position:absolute;top:65px;left:50%;transform:translateX(-50%);z-index:80;width:min(390px,calc(100% - 18px));max-height:48%;overflow:auto;padding:9px 10px;border:1px solid #ffffff3b;border-radius:12px;background:#0d0f0ceb;color:#f6f4ed;box-shadow:0 12px 32px #000a;backdrop-filter:blur(8px);font:700 10px/1.32 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap;pointer-events:auto}
   .g3d-qa-panel[hidden]{display:none}.g3d-dev-warning{position:absolute;top:64px;left:50%;transform:translateX(-50%);z-index:81;width:min(420px,calc(100% - 18px));padding:7px 9px;border:1px solid #f0b06088;border-radius:10px;background:#321c12ed;color:#ffe4c2;font:800 9px/1.3 system-ui,sans-serif;box-shadow:0 8px 22px #0009}.g3d-dev-warning[hidden]{display:none}
-  .g3d-zoom-stack{position:absolute;z-index:25;display:flex;flex-direction:column;gap:6px}.g3d-zoom-stack button{min-width:42px;min-height:38px;border:1px solid #ffffff35;border-radius:12px;background:#11130ed9;color:#fff;font:900 17px/1 system-ui,sans-serif;box-shadow:0 6px 16px #0007;touch-action:manipulation}
+  .g3d-zoom-stack{position:absolute;z-index:25;display:flex;flex-direction:column;gap:6px}.g3d-zoom-stack button{min-width:34px;min-height:34px;border:1px solid #ffffff35;border-radius:12px;background:#11130ed9;color:#fff;font:900 17px/1 system-ui,sans-serif;box-shadow:0 6px 16px #0007;touch-action:manipulation}
   .g3d-phase-e-stage,.g3d-phase-e-stage canvas{touch-action:none!important;overscroll-behavior:none!important;-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
-  @media(max-width:700px){.g3d-staging-badge{font-size:7px;top:5px}.g3d-qa-toggle{top:27px;padding:5px 8px}.g3d-qa-panel{top:56px;max-height:44%}.g3d-dev-warning{top:57px}}
+  @media(max-width:700px){.g3d-staging-badge{font-size:7px;top:5px}.g3d-zoom-stack button{min-width:32px;min-height:32px}.g3d-qa-toggle{top:27px;padding:5px 8px}.g3d-qa-panel{top:56px;max-height:44%}.g3d-dev-warning{top:57px}}
   `;document.head.appendChild(style);
 }
 
@@ -36,19 +36,20 @@ export function emitAssetIssue(detail={}){
 export function mountStagingDiagnostics(host,{gameName='3D Game',getSnapshot=()=>({}),open=false}={}){
   if(typeof document==='undefined'||!host)return{update(){},warnAsset:emitAssetIssue,setRecovery(){},dispose(){},lastAssetError:null,lastRecoveryReason:'none'};
   ensureStyle();
+  const qaMode=!!open||(typeof location!=='undefined'&&new URLSearchParams(location.search).get('qa3d')==='1');
   const badge=document.createElement('div');badge.className='g3d-staging-badge no-look';badge.textContent=STAGING_BUILD_ID;host.appendChild(badge);
-  const button=document.createElement('button');button.type='button';button.className='g3d-qa-toggle no-look';button.textContent='QA';button.setAttribute('aria-label','Toggle staging diagnostics');host.appendChild(button);
-  const panel=document.createElement('pre');panel.className='g3d-qa-panel no-look';panel.hidden=!open;host.appendChild(panel);
+  const button=document.createElement('button');button.type='button';button.className='g3d-qa-toggle no-look';button.textContent='QA';button.setAttribute('aria-label','Toggle staging diagnostics');button.hidden=!qaMode;host.appendChild(button);
+  const panel=document.createElement('pre');panel.className='g3d-qa-panel no-look';panel.hidden=!qaMode;host.appendChild(panel);
   const warning=document.createElement('div');warning.className='g3d-dev-warning no-look';warning.hidden=true;host.appendChild(warning);
   let lastAssetError=null,lastRecoveryReason='none',lastUpdate=0,frames=0,fps=0,fpsAccum=0;
-  button.onclick=()=>{panel.hidden=!panel.hidden};
-  const onAsset=e=>{lastAssetError=e.detail||null;warning.textContent=`DEV ASSET WARNING: ${lastAssetError?.file||lastAssetError?.asset||'unknown'} | fallback used: ${lastAssetError?.fallbackUsed?'YES':'NO'} | ${lastAssetError?.error||''}`;warning.hidden=false;setTimeout(()=>{warning.hidden=true},9000)};
+  button.onclick=()=>{if(!qaMode)return;panel.hidden=!panel.hidden;if(panel.hidden)warning.hidden=true};
+  const onAsset=e=>{lastAssetError=e.detail||null;if(!qaMode)return;warning.textContent=`DEV ASSET WARNING: ${lastAssetError?.file||lastAssetError?.asset||'unknown'} | fallback used: ${lastAssetError?.fallbackUsed?'YES':'NO'} | ${lastAssetError?.error||''}`;warning.hidden=false;setTimeout(()=>{warning.hidden=true},9000)};
   window.addEventListener('bfg:3d-asset-warning',onAsset);
   function warnAsset(detail){return emitAssetIssue(detail)}
   function setRecovery(reason){if(reason)lastRecoveryReason=String(reason)}
   function update(dt=0,now=performance.now()){
     if(dt>0){frames++;fpsAccum+=dt;if(fpsAccum>=.75){fps=frames/fpsAccum;frames=0;fpsAccum=0}}
-    if(now-lastUpdate<180&&!panel.hidden)return;lastUpdate=now;
+    if(panel.hidden)return;if(now-lastUpdate<180)return;lastUpdate=now;
     const s=getSnapshot?.()||{},cam=s.camera||{},player=s.player||{},rig=s.cameraRig||{};
     if(rig.lastRecoveryReason&&rig.lastRecoveryReason!==lastRecoveryReason)lastRecoveryReason=rig.lastRecoveryReason;
     const lines=[

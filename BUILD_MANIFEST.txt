@@ -1,47 +1,40 @@
-BLACK FAMILY GAME NIGHT - PHASE E1 CONTINUITY STAGING
+BLACK FAMILY GAME NIGHT
+BUILD MANIFEST
 
-Visible build ID: 3D-STAGING-PHASE-E1-02
-Package version: 3.0.1-staging-phase-e1-02
-Service worker cache: black-family-game-night-3d-staging-phase-e1-02
-Cloudflare staging Worker name: black-family-game-night-phase-e-staging
+Build ID: 3D-STAGING-PHASE-E2-UX-03
+Package version: 3.0.1-staging-phase-e2-ux-03
+Cloudflare staging worker name: black-family-game-night-phase-e-staging
 Static asset directory: ./public
-Static binding: ASSETS
 SPA fallback: single-page-application
 
-PURPOSE
-Real-device proof build for the repaired player/avatar/animation/controls/collision/camera/zoom/map foundation, with known Phase D continuity regressions restored. No scenery/game-mode redesign.
+Primary staging pages:
+- /                       Home / table games
+- /new-games.html         Family Mystery, Prop Hunt, Birthday Seat
+- /island-life.html       Island Life
 
-AUTOMATED RESULT
-- npm run check: 221/221 PASS
-- Phase E1 continuity tests: 7/7 PASS
-- npm run build: 108 PASS, 2 WARNINGS, 0 FAILURES
-- production GLB integrity audit: PASS
+QA query:
+- append ?qa3d=1 to a live 3D game URL when diagnostic overlays are intentionally required
 
-CONTINUITY NOTE
-The historical Phase D worktree reported 243/243 but was never packaged. Its 37 Phase-D-only test cases cannot be recovered exactly. This package does not pretend 221 is the same suite; it restores the known lost Phase D behaviors identified in the E1 forensic audit.
+New E2/UX assets:
+- /john-home-approved.jpg
+- /home-cabin-background.jpg
 
-WARNINGS
-1. Three.js 0.185.1 plus GLTFLoader/SkeletonUtils still load from public CDNs. Exact-version local package retrieval was blocked by this runner's network/DNS path.
-2. Wrangler executable is unavailable locally. Actual Cloudflare dry-run/deploy is UNVERIFIED.
+Core authored/packaged GLB paths currently present:
+- /models/characters/john.glb
+- /models/dogs/gunner.glb
+- /models/props/prop-zapper.glb
+- /models/props/tractor.glb
+- /models/props/motorcycle.glb
+- /models/furniture/papa-chair.glb
+- /models/furniture/fireplace.glb
+- /models/furniture/workbench.glb
+- /models/furniture/tool-chest.glb
+- /models/furniture/shelving.glb
 
-FOUR INTENDED 3D EXPERIENCES
-- Family Prop Hunt - third-person real-time 3D
-- Family Island Life - third-person real-time 3D
-- John's Birthday Seat - third-person real-time obstacle/platform 3D
-- Family Mystery - 3D BOARD GAME - NOT YET IMPLEMENTED TO INTENDED VISUAL STANDARD
+ART STATUS WARNING
+The GLBs above validate technically but the current repository-generated John/Gunner/prop/environment visuals are not being represented as finished authored production art. See the production plan documents.
 
-Family Mystery must eventually use the shared proper family avatar/animation assets with board-specific movement/camera controls. It must not inherit free WASD/jump/shooting controls.
-
-PACKAGED GLB ASSETS
-- /public/models/characters/john.glb
-- /public/models/dogs/gunner.glb
-- /public/models/props/prop-zapper.glb
-- /public/models/props/tractor.glb
-- /public/models/props/motorcycle.glb
-- /public/models/furniture/papa-chair.glb
-- /public/models/furniture/fireplace.glb
-- /public/models/furniture/workbench.glb
-- /public/models/furniture/tool-chest.glb
-- /public/models/furniture/shelving.glb
-
-Procedural geometry is not classified as finished production art.
+Validation summary:
+- npm run check: 229/229
+- npm run build: 110 pass, 2 warning, 0 fail
+- GLB audit: PASS 10/10
