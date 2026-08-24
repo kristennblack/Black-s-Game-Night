@@ -1,3 +1,25 @@
+# Black Family Game Night — Phase G Papa's Shop Vertical Slice 05
+
+**Build ID:** `GAME-NIGHT-STAGING-PHASE-G-PAPA-VSLICE-05`
+
+This staging candidate is deliberately narrow. It keeps the accepted E1/Phase F gameplay and platform repairs, then replaces the Papa's Shop visual path with a dedicated vertical-slice asset pipeline:
+
+- `public/models/characters/john-production-skinned.glb` — skinned John GLB with one humanoid skin, named sockets, embedded approved face/plaid/denim textures and 14 embedded semantic animation clips.
+- `public/models/environments/papa-shop-barn-production.glb` — dedicated shop + attached barn render asset aligned to the accepted Papa's Shop gameplay layout.
+- `public/models/sets/papa-shop-production-props.glb` — dedicated chair/fireplace/tractor/motorcycle/workbench/shelving/tool-chest/clutter set.
+- Papa's Shop retains the existing simplified gameplay colliders while the old visible blockout is hidden after the vertical-slice GLBs load.
+- Mobile camera input now includes right-side touch look and two-finger camera zoom while keeping Reset View and the repaired obstruction/recovery foundation.
+
+The fixed QA proof image `PAPA_SHOP_VERTICAL_SLICE_PHONE_RENDER.png` is generated from the packaged GLBs. It is an **offline phone-aspect asset render, not a real-device capture**. Real-browser and real-phone visual/performance signoff remain required.
+
+## Art-production truth
+
+This environment does not contain Blender, Maya, or another full DCC authoring package, and no installable 3D-authoring plugin is available here. The Phase G files are therefore the strongest self-contained technical vertical slice that can be produced in this environment: real GLB files, real skinning data, real embedded animation clips and dedicated render meshes rather than runtime Three.js mannequin assembly. Their geometry is still locally code-authored/algorithmic, so **this package does not claim studio-final hand-modeled character or environment art**. The source/reference target for John remains `JOHN_16_LOOKS_REFERENCE.jpg` and the approved family lineup.
+
+See `PHASE_G_PAPA_VERTICAL_SLICE_REPORT.md`, `ASSET_PROVENANCE_PHASE_G.md`, and `PHONE_QA_PHASE_G_PAPA_VSLICE_05.md`.
+
+---
+
 # Black Family Game Night - v3.0.1 Playability Recovery
 
 **Current priority:** shared third-person playability. Real-device screenshots showed camera/spawn collapse in Prop Hunt, Family Island Life and Birthday Seat. This release fixes camera initialization, obstruction solving, safe spawn/recovery and adds RESET VIEW before further art production.

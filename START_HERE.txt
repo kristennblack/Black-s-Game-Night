@@ -1,6 +1,6 @@
 BLACK FAMILY GAME NIGHT
-STAGING BUILD: GAME-NIGHT-STAGING-PHASE-F-PLATFORM-04
-PACKAGE VERSION: 3.0.1-staging-phase-f-platform-04
+STAGING BUILD: GAME-NIGHT-STAGING-PHASE-G-PAPA-VSLICE-05
+PACKAGE VERSION: 3.0.1-staging-phase-g-papa-vslice-05
 
 PURPOSE
 This staging candidate preserves the E1 continuity foundation and E2/UX repairs, then adds:
@@ -40,5 +40,5 @@ DEPLOY STAGING
 4. Run npm run build and expect 0 failures.
 5. Run npm run deploy:staging.
 6. Do not overwrite production during QA.
-7. Confirm the screen build ID is exactly GAME-NIGHT-STAGING-PHASE-F-PLATFORM-04.
+7. Confirm the screen build ID is exactly GAME-NIGHT-STAGING-PHASE-G-PAPA-VSLICE-05.
 8. Follow PHONE_QA_PHASE_F_PLATFORM_04.md.

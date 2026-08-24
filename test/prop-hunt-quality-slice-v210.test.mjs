@@ -49,7 +49,7 @@ test('small Papa shop props can be deliberately placed on surfaces instead of ev
 });
 
 test('quality slice keeps deliberate third-person framing, navigation and an opt-in phone QA HUD',()=>{
-  for(const token of ['cameraDistance:4.65','aimDistance:3.05','minCameraDistance:1.50','maxPitch:.34','groundAccel:16.5','groundBrake:21'])assert.ok(gameplay.includes(token),token);
+  for(const token of ['cameraDistance:5.05','aimDistance:3.35','minCameraDistance:1.68','maxPitch:.25','groundAccel:16.5','groundBrake:21'])assert.ok(gameplay.includes(token),token);
   assert.ok(prop.includes('createNavigationGrid'));assert.ok(prop.includes('function botMoveToward'));
   assert.ok(prop.includes("get('qa3d')==='1'"));assert.ok(prop.includes('updateQaHud'));assert.ok(css.includes('.ph3d-qa'));
 });

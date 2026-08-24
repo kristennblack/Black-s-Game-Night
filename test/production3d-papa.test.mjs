@@ -15,7 +15,7 @@ async function assertGlb(rel,minBytes){
 }
 
 test('Papa production slice ships real GLB binaries for benchmark characters and hero props',async()=>{
-  await assertGlb('models/characters/john.glb',350_000);
+  await assertGlb('models/characters/john-production-skinned.glb',900_000);
   await assertGlb('models/dogs/gunner.glb',220_000);
   await assertGlb('models/props/prop-zapper.glb',15_000);
   await assertGlb('models/props/tractor.glb',45_000);
@@ -28,7 +28,7 @@ test('Papa production slice ships real GLB binaries for benchmark characters and
 });
 
 test('production manifest calibrates John and Gunner to gameplay-scale authored models',()=>{
-  assert.equal(manifest.version,2);
+  assert.equal(manifest.version,3);
   assert.ok(manifest.characters.john.production);assert.ok(Math.abs(manifest.characters.john.referenceHeight-1.82)<.001);
   assert.ok(manifest.dogs.gunner.production);assert.ok(Math.abs(manifest.dogs.gunner.referenceHeight-1.08)<.001);
   assert.equal(manifest.props.tractor.production,true);assert.equal(manifest.props.motorcycle.production,true);
@@ -44,7 +44,9 @@ test('authored named rigs can use procedural animation until bespoke clips arriv
 });
 
 test('Papa high-attention hero kit is asynchronously replaced by authored visuals while colliders remain',()=>{
-  assert.ok(prop.includes('upgradePapaHeroAssets(w)'));
+  assert.ok(prop.includes('upgradePapaProductionSlice(w)'));
+  assert.ok(prop.includes("assets.loadEnvironment('papaShop'"));
+  assert.ok(prop.includes("assets.loadSet('papaShopProps'"));
   for(const token of ['heroFallbacks.tractor','heroFallbacks.motorcycle','heroFallbacks.fireplace','heroFallbacks.workbench','heroFallbacks.toolChest','heroFallbacks.shelving'])assert.ok(prop.includes(token),token);
   for(const token of ["assets.loadProp('tractor'","assets.loadProp('motorcycle'","assets.loadFurniture('papaChair'","assets.loadFurniture('fireplace'","assets.loadFurniture('workbench'","assets.loadFurniture('toolChest'","assets.loadFurniture('shelving'"])assert.ok(prop.includes(token),token);
   assert.ok(prop.includes('o.userData.productionHero=true'));

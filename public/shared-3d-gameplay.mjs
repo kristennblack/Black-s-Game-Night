@@ -132,9 +132,9 @@ export function consumeMotionEvents(actor){
 export const CONTROL_PRESETS=Object.freeze({
   propHunt:{
     walkSpeed:2.75,runSpeed:4.6,groundAccel:16.5,groundBrake:21,airControl:.31,
-    jumpSpeed:6.15,gravity:18.5,cameraDistance:4.65,aimDistance:3.05,
-    cameraHeight:1.15,cameraLift:.15,minCameraDistance:1.50,recoveryPitch:.045,shoulder:.46,fov:57,aimFov:49,sprintFov:62,
-    lookSensitivity:.0045,touchLookSensitivity:.0050,minPitch:-.22,maxPitch:.34
+    jumpSpeed:6.15,gravity:18.5,cameraDistance:5.05,aimDistance:3.35,
+    cameraHeight:1.18,cameraLift:.17,minCameraDistance:1.68,recoveryPitch:.035,shoulder:.42,fov:58,aimFov:50,sprintFov:62,
+    lookSensitivity:.00425,touchLookSensitivity:.00465,minPitch:-.16,maxPitch:.25
   },
   island:{
     walkSpeed:2.55,runSpeed:4.35,groundAccel:15,groundBrake:20,airControl:.3,
@@ -406,12 +406,14 @@ export function createThirdPersonCamera(THREE,camera,core,presetName='island',op
   return {state,cfg,rotate,zoom,swapShoulder,recenter,kick,reset,update};
 }
 
-export function bindPointerLook(element,cameraRig,{ignoreSelector='button,select,input,a,.no-look'}={}){
-  let id=null,lastX=0,lastY=0,moved=false;
-  const down=e=>{if(e.pointerType==='mouse'&&e.button!==0)return;if(e.target?.closest?.(ignoreSelector))return;id=e.pointerId;lastX=e.clientX;lastY=e.clientY;moved=false;element.setPointerCapture?.(id)};
-  const move=e=>{if(e.pointerId!==id)return;const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;if(Math.abs(dx)+Math.abs(dy)>1)moved=true;cameraRig.rotate(dx,dy,{touch:e.pointerType!=='mouse'})};
-  const up=e=>{if(e.pointerId===id)id=null};
-  element.addEventListener('pointerdown',down);element.addEventListener('pointermove',move);element.addEventListener('pointerup',up);element.addEventListener('pointercancel',up);
+export function bindPointerLook(element,cameraRig,{ignoreSelector='button,select,input,a,.no-look',rightHalfTouch=true,pinchScale=.012}={}){
+  const points=new Map();let activeLook=null,lastX=0,lastY=0,lastPinch=0,pinching=false;
+  const eligible=e=>{if(e.pointerType==='mouse'&&e.button!==0)return false;if(e.target?.closest?.(ignoreSelector))return false;if(rightHalfTouch&&e.pointerType!=='mouse'){const r=element.getBoundingClientRect();if(e.clientX<r.left+r.width*.42&&points.size===0)return false}return true};
+  const pinchDistance=()=>{const a=[...points.values()];return a.length<2?0:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)};
+  const down=e=>{if(!eligible(e))return;points.set(e.pointerId,{x:e.clientX,y:e.clientY,type:e.pointerType});element.setPointerCapture?.(e.pointerId);if(points.size===1){activeLook=e.pointerId;lastX=e.clientX;lastY=e.clientY;pinching=false}else if(points.size>=2){activeLook=null;lastPinch=pinchDistance();pinching=true;e.preventDefault?.()}};
+  const move=e=>{if(!points.has(e.pointerId))return;points.set(e.pointerId,{x:e.clientX,y:e.clientY,type:e.pointerType});if(points.size>=2){const d=pinchDistance();if(lastPinch>0&&d>0){const delta=d-lastPinch;cameraRig.zoom(-delta*pinchScale)}lastPinch=d;pinching=true;e.preventDefault?.();return}if(activeLook===e.pointerId&&!pinching){const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;cameraRig.rotate(dx,dy,{touch:e.pointerType!=='mouse'})}};
+  const up=e=>{if(!points.has(e.pointerId))return;points.delete(e.pointerId);if(points.size===1){const [rid,p]=points.entries().next().value;activeLook=rid;lastX=p.x;lastY=p.y;pinching=false;lastPinch=0}else if(points.size===0){activeLook=null;pinching=false;lastPinch=0}};
+  element.addEventListener('pointerdown',down);element.addEventListener('pointermove',move,{passive:false});element.addEventListener('pointerup',up);element.addEventListener('pointercancel',up);
   const wheel=e=>cameraRig.zoom(Math.sign(e.deltaY)*.35);element.addEventListener('wheel',wheel,{passive:true});
   return ()=>{element.removeEventListener('pointerdown',down);element.removeEventListener('pointermove',move);element.removeEventListener('pointerup',up);element.removeEventListener('pointercancel',up);element.removeEventListener('wheel',wheel)};
 }

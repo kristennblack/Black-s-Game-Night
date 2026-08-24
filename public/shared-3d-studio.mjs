@@ -25,11 +25,13 @@ export const hashString=(s='')=>{let h=2166136261;for(let i=0;i<s.length;i++){h^
 export function seededRandom(seed=1){let s=(Number(seed)>>>0)||1;return()=>{s=(Math.imul(s,1664525)+1013904223)>>>0;return s/4294967296}}
 
 export const DEFAULT_MODEL_MANIFEST=Object.freeze({
-  version:2,
-  characters:{john:{file:'/models/characters/john.glb',games:['propHunt','islandLife','birthdaySeat']}},
+  version:3,
+  characters:{john:{file:'/models/characters/john-production-skinned.glb',scale:.991826,production:true,rig:'skinned-humanoid',referenceHeight:1.82,animations:['Idle','Walk','Run','Turn_Left','Turn_Right','Jump','Fall','Land','Aim','Fire','Hit_Reaction','Wave','Celebrate','Sit'],games:['propHunt','islandLife','birthdaySeat']}},
   dogs:{gunner:{file:'/models/dogs/gunner.glb',games:['propHunt','islandLife','birthdaySeat']}},
   props:{propZapper:{file:'/models/props/prop-zapper.glb',games:['propHunt']},tractor:{file:'/models/props/tractor.glb',games:['propHunt']},motorcycle:{file:'/models/props/motorcycle.glb',games:['propHunt']}},
-  furniture:{papaChair:{file:'/models/furniture/papa-chair.glb',games:['propHunt']},fireplace:{file:'/models/furniture/fireplace.glb',games:['propHunt']},workbench:{file:'/models/furniture/workbench.glb',games:['propHunt']},toolChest:{file:'/models/furniture/tool-chest.glb',games:['propHunt']},shelving:{file:'/models/furniture/shelving.glb',games:['propHunt']}}
+  furniture:{papaChair:{file:'/models/furniture/papa-chair.glb',games:['propHunt']},fireplace:{file:'/models/furniture/fireplace.glb',games:['propHunt']},workbench:{file:'/models/furniture/workbench.glb',games:['propHunt']},toolChest:{file:'/models/furniture/tool-chest.glb',games:['propHunt']},shelving:{file:'/models/furniture/shelving.glb',games:['propHunt']}},
+  environments:{papaShop:{file:'/models/environments/papa-shop-barn-production.glb',production:true,games:['propHunt']}},
+  sets:{papaShopProps:{file:'/models/sets/papa-shop-production-props.glb',production:true,games:['propHunt']}}
 });
 
 /**
@@ -74,7 +76,7 @@ export function createAuthoredAssetPipeline(THREE,{manifestUrl='/models/manifest
   }
   const has=(category,id)=>!!entry(category,id)?.file&&!failed.has(`${category}:${id}`);
   const reportMissing=(category,id,{fallbackUsed=true,context='runtime character'}={})=>{const e=entry(category,id);return report({kind:'missing-authored-asset',asset:`${category}:${id}`,category,id,file:e?.file||null,error:`REAL 3D AVATAR ASSET MISSING for ${context}`,fallbackUsed})};
-  return {ensureManifest,setManifest:m=>{manifest=m||DEFAULT_MODEL_MANIFEST},getManifest:()=>manifest,entry,has,load,loadCharacter:(id,o)=>load('characters',id,o),loadDog:(id,o)=>load('dogs',id,o),loadProp:(id,o)=>load('props',id,o),loadFurniture:(id,o)=>load('furniture',id,o),reportMissing,getLastError:()=>lastError,failed};
+  return {ensureManifest,setManifest:m=>{manifest=m||DEFAULT_MODEL_MANIFEST},getManifest:()=>manifest,entry,has,load,loadCharacter:(id,o)=>load('characters',id,o),loadDog:(id,o)=>load('dogs',id,o),loadProp:(id,o)=>load('props',id,o),loadFurniture:(id,o)=>load('furniture',id,o),loadEnvironment:(id,o)=>load('environments',id,o),loadSet:(id,o)=>load('sets',id,o),reportMissing,getLastError:()=>lastError,failed};
 }
 
 export function findRigNode(root,names=[]){const targets=names.map(canonicalName);let exact=null,fuzzy=null;root?.traverse?.(o=>{const n=canonicalName(o.name||'');if(!n)return;if(!exact&&targets.includes(n))exact=o;else if(!fuzzy&&targets.some(t=>n.endsWith(t)||n.includes(t)))fuzzy=o});return exact||fuzzy}

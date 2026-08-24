@@ -1,12 +1,29 @@
 {
-  "version": 2,
+  "version": 3,
   "characters": {
     "john": {
-      "file": "/models/characters/john.glb",
-      "scale": 0.8493,
+      "file": "/models/characters/john-production-skinned.glb",
+      "scale": 0.991826,
       "production": true,
-      "rig": "named-jointed-human",
+      "rig": "skinned-humanoid",
       "referenceHeight": 1.82,
+      "animations": [
+        "Idle",
+        "Walk",
+        "Run",
+        "Turn_Left",
+        "Turn_Right",
+        "Jump",
+        "Fall",
+        "Land",
+        "Aim",
+        "Fire",
+        "Hit_Reaction",
+        "Wave",
+        "Celebrate",
+        "Sit"
+      ],
+      "sourceReference": "/JOHN_16_LOOKS_REFERENCE.jpg",
       "games": [
         "propHunt",
         "islandLife",
@@ -94,6 +111,28 @@
       "games": [
         "propHunt"
       ]
+    }
+  },
+  "environments": {
+    "papaShop": {
+      "file": "/models/environments/papa-shop-barn-production.glb",
+      "scale": 1.0,
+      "production": true,
+      "games": [
+        "propHunt"
+      ],
+      "layoutContract": "papa-blockout-v1"
+    }
+  },
+  "sets": {
+    "papaShopProps": {
+      "file": "/models/sets/papa-shop-production-props.glb",
+      "scale": 1.0,
+      "production": true,
+      "games": [
+        "propHunt"
+      ],
+      "layoutContract": "papa-blockout-v1"
     }
   }
 }

@@ -63,14 +63,14 @@ test('standard 3D play hides developer warnings and QA controls unless qa3d mode
 });
 
 test('3D phone cleanup keeps core recovery while using more readable per-game camera framing',()=>{
-  for(const token of ['propHunt:{','minCameraDistance:1.50','maxPitch:.34','island:{','cameraDistance:5.15','maxPitch:.29','birthday:{','cameraDistance:4.95','maxPitch:.31'])assert.ok(gameplay.includes(token),token);
+  for(const token of ['propHunt:{','cameraDistance:5.05','minCameraDistance:1.68','maxPitch:.25','island:{','cameraDistance:5.15','maxPitch:.29','birthday:{','cameraDistance:4.95','maxPitch:.31'])assert.ok(gameplay.includes(token),token);
   for(const src of [prop,island,birthday]){
     assert.ok(src.includes('resetPlayableView'));
     assert.ok(src.includes('mountZoomButtons'));
     assert.ok(src.includes('aria-label="Swap camera shoulder"'));
     assert.ok(src.includes('>↺</button>'));
   }
-  assert.ok(sw.includes('black-family-game-night-staging-phase-f-platform-04'));
+  assert.ok(sw.includes('black-family-game-night-staging-phase-g-papa-vslice-05'));
   assert.ok(sw.includes('/john-home-approved.jpg'));
   assert.ok(sw.includes('/home-cabin-background.jpg'));
 });

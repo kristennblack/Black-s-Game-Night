@@ -1,8 +1,8 @@
 BLACK FAMILY GAME NIGHT
 BUILD MANIFEST
 
-Build ID: GAME-NIGHT-STAGING-PHASE-F-PLATFORM-04
-Package version: 3.0.1-staging-phase-f-platform-04
+Build ID: GAME-NIGHT-STAGING-PHASE-G-PAPA-VSLICE-05
+Package version: 3.0.1-staging-phase-g-papa-vslice-05
 Cloudflare staging worker name: black-family-game-night-phase-e-staging
 Static asset directory: ./public
 SPA fallback: single-page-application
