@@ -1,120 +1,100 @@
-BLACK FAMILY GAME NIGHT v2.0.0-studio-realism
+# Black Family Game Night v3.0.0 Production3D Papa Alpha
 
-PURPOSE
-This is the Studio Realism milestone. It keeps the existing game collection and pushes the three free-moving 3D games toward a production-style architecture: optional authored GLB characters, semantic animation, better multiplayer interpolation, weather/water/terrain, interactive homes, selective physics, surface-aware sound and cinematic polish.
+This is the first **asset-first production 3D vertical slice**. It is intentionally focused on Family Prop Hunt -> Papa's Shop.
 
-3D GAMES IN THIS PASS
-1. Family Prop Hunt
-2. Family Island Life
-3. John's Birthday Seat
+The goal is not to claim the entire game collection is now visually finished. The goal is to test a different production pipeline that can actually close the gap between the approved concept art and live gameplay.
 
-IMPORTANT AUTHORED-MODEL NOTE
-The runtime is ready to load proper skinned GLB/GLTF family characters, dogs, props and furniture, but bespoke family GLB files are NOT included yet. The model manifest is intentionally empty and the procedural all-angle rigs remain the current fallback.
+## What is different from v2.1
 
-WHAT TO TEST FIRST
+High-attention visuals are now baked GLB assets instead of being created only from runtime Three.js primitive constructors.
 
-A. CORE MOVEMENT / CAMERA
-- Walk at half joystick and full joystick. Half input should actually move slower.
-- Accelerate, brake, reverse and sprint. Motion should not start/stop like a teleported chess piece.
-- Test short-tap and held jumps, coyote-time edge jumps, landings and mantles.
-- Push the camera into walls and doorways. It must remain inside playable geometry.
-- Use CAM/LB/C to change shoulder. Prop Hunt aim may temporarily use the clearer shoulder without changing the saved preference.
-- Confirm CTRL look sensitivity, invert-Y and handedness persist between the three games.
-- Confirm SND volume/mute also persists.
+### Production character assets
 
-B. SURFACE SOUND
-Listen to steps/landings on several materials. Grass, dirt, sand, gravel, concrete, wood and metal should not all use identical filtering.
+- John: `/public/models/characters/john.glb`
+  - calibrated to the 1.82 m gameplay body
+  - true front / side / back geometry
+  - named articulated joints and hand/back sockets
+  - plaid clothing geometry, boots, belt, hair and beard volume
+  - curved approved-reference facial texture mapped to the real 3D head surface
+- Gunner: `/public/models/dogs/gunner.glb`
+  - calibrated to the 1.08 m large-dog gameplay profile
+  - quadruped joint hierarchy and backpack socket
+  - curved approved-reference facial/fur texture mapped to the real 3D head
 
-C. FAMILY PROP HUNT
-- Test all four maps from normal player height.
-- Put an enemy behind an opaque wall. No body, name or outline should leak through.
-- Fire at a wall with an enemy behind it. The wall must remain the first raycast hit.
-- Walk/run/aim/fire as a human and a dog. The weapon attachment should recoil with the body.
-- Observe a remote player if possible. Movement should use buffered snapshots instead of chasing each network packet directly.
-- Transform and place decoys. Health/collision/game rules must remain unchanged from the locked design.
+The reference texture is NOT a camera-facing billboard. Walking behind either character still shows actual rear geometry.
 
-D. FAMILY ISLAND LIFE
-- Walk from village to forest, meadow, rock area, residential coast and marina.
-- Look at terrain around shops/homes. It should have gentle variation without poking through buildings.
-- Inspect water at the beach. It should have moving waves and restrained shoreline foam.
-- Wait for weather changes or leave the game running long enough to observe light/fog/rain changes.
-- Watch ambient family visitors route around structures. They should not walk through shop walls.
-- In rain, visitors should more often choose sheltered/social destinations.
-- Enter your home and test furniture actions: sit/relax/watch/bathe/wash/work/cook/wardrobe/light/sleep where applicable.
-- Try using furniture from too far away. Server should reject it.
-- Try sleeping in another person's bed. Server should reject it.
-- Toggle a lamp. Its persistent furniture state should change the actual point light.
-- Nudge loose coconuts/balls. Small props may move; structural furniture must not.
+### Production hero assets in Papa's Shop
 
-E. JOHN'S BIRTHDAY SEAT
-- Confirm runners are real 3D human/dog rigs, not flat sprites.
-- Test moving platforms. They must carry the rider.
-- Listen for surface-differentiated foot/landing feedback through the themed sections.
-- Check checkpoint camera sweeps. After a normal sweep, camera should return to gameplay framing.
-- Finish the race. The terminal victory camera may remain cinematic while the actual 3D runner celebrates.
+- prop-zapper
+- tractor
+- old motorcycle
+- Papa's tattered yellow chair
+- stone fireplace
+- workbench
+- rolling tool chest
+- loaded shelving
 
-F. ANIMATION / SEMANTIC ACTIONS
-In Island Life, compare:
-- cook
-- carry
-- chop
-- mine
-- dig
-- water
-- cast
-- reel
-- sleep
-- dance
-They should not all collapse to the same generic arm movement.
+The visible GLB is swapped over the existing gameplay collider/fallback. Art replacement therefore cannot silently change wall, shooting, climbing or collision rules.
 
-For dogs, look for distinct pant/shake/lie/sniff/sit/work-style behavior where used.
+## Important limitation
 
-G. MULTIPLAYER
-- Use two devices if possible.
-- Run/turn/jump past each other in Prop Hunt and Island Life.
-- Watch the REMOTE player, not only your own player.
-- Remote motion should look smoother and should not jump because server wall-clock timestamps differ from the local animation clock.
+John and Gunner are now baked GLB benchmark assets, but they are still project-authored stylized meshes generated from our production builder. They are **not yet final Blender-sculpted, continuously skinned studio characters with a full bespoke animation library**.
 
-H. REAL-DEVICE VISUAL SIGNOFF
-Capture screenshots or a short screen recording of:
-1. human front / side / back
-2. dog walking and turning
-3. Papa's Shop interior
-4. Camper exterior/interior area
-5. Farm animals/structures
-6. Island Life village plaza
-7. beach/water shoreline
-8. home interior with furniture
-9. weather or dusk/night if available
-10. Birthday Seat workshop/campsite/farm/party summit
+This build exists to answer the next practical question on the phone:
 
-A passing automated suite is NOT visual signoff. If the game still looks too procedural on a phone, the next visual leap is to provide/author the GLB assets described in AUTHORED_3D_ASSET_GUIDE.md.
+> Does the asset-first GLB approach materially improve likeness, silhouette and scene quality enough that we should continue the production pipeline?
 
-AUTOMATED VALIDATION
+If yes, the next step is to replace the benchmark John/Gunner meshes with fully sculpted/skinned source assets while keeping the same manifest, sockets, semantic animation and gameplay interfaces.
+
+## Test Papa's Shop first
+
+1. Start Family Prop Hunt.
+2. Select **Papa's Shop**.
+3. Use John as a hunter if possible.
+4. Append `?qa3d=1` for one diagnostic run.
+5. Check these views:
+   - John front at normal camera distance
+   - John side
+   - John from directly behind
+   - John aiming and firing
+   - Gunner walking from the side and rear
+   - shop doorway looking toward the tractor/workbench
+   - fireplace/Papa-chair corner
+   - motorcycle from the side
+   - exterior looking back at the shop and rural horizon
+
+## Pass/fail rules
+
+A production asset does not pass because it loaded.
+
+It passes only if:
+
+- it is obviously more believable than the procedural fallback;
+- John reads as John rather than Generic Man;
+- Gunner reads as Gunner rather than Generic Dog;
+- there is no front-facing billboard illusion from side/rear views;
+- weapon and sockets stay attached through movement/aiming;
+- GLB hero props align with the existing collision footprint;
+- camera/walls/occlusion remain correct;
+- performance remains usable on the actual phone.
+
+See:
+
+- `PRODUCTION_3D_PAPA_ARCHITECTURE.md`
+- `PRODUCTION_3D_ASSET_QA.md`
+- `PROP_HUNT_PAPA_SHOP_VISUAL_QA.md`
+
+## Validation
+
 Run:
-  npm run check
 
-The frozen release output is in FINAL_TEST_REPORT.txt.
+```bash
+npm run assets:audit
+npm run check
+```
 
-CLOUDFLARE
-This package does not deploy itself.
-The current wrangler configuration keeps GameHub, PropHuntRoom and IslandLifeRoom as separate SQLite Durable Objects.
-The service-worker cache for this release is:
-  black-family-game-night-v200-studio-realism
+The build does not deploy itself. Keep the existing Git repository, replace the tracked files, commit/push, and let the existing Cloudflare deployment rebuild.
 
-DEPLOYMENT THROUGH THE EXISTING REPOSITORY
-1. Keep the existing .git directory.
-2. Replace tracked project files with this package.
-3. Commit, for example:
-   Black Family Game Night v2.0.0 - Studio Realism
-4. Push to main.
-5. Allow the existing Cloudflare workflow to rebuild.
-6. Hard refresh once on phones/tablets so the v2 service-worker cache takes control.
+Service-worker cache:
 
-READ NEXT
-- STUDIO_REALISM_ARCHITECTURE.md
-- AUTHORED_3D_ASSET_GUIDE.md
-- 3D_GAMEPLAY_FUNCTIONALITY_AND_DESIGN_STANDARD.md
-- 3D_GAME_QA_MATRIX.md
-- FAMILY_GAME_ART_BIBLE.md
-- FINAL_TEST_REPORT.txt
+`black-family-game-night-v300-production3d-papa-alpha`

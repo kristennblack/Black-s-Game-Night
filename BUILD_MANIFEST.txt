@@ -1,55 +1,17 @@
-BLACK FAMILY GAME NIGHT v2.0.0-studio-realism
+BLACK FAMILY GAME NIGHT v3.0.0-production3d-papa-alpha
+Generated: 2026-08-24 UTC
+Automated tests: 201 / 201 passing
+Service worker cache: black-family-game-night-v300-production3d-papa-alpha
 
-Release type: full replacement package
-Runtime marker: 2.0.0-studio-realism
-package.json version: 2.0.0
-Shared gameplay version: 2.0.0
-Shared Studio version: 2.0.0
-Service worker cache: black-family-game-night-v200-studio-realism
-Final automated result: 190 / 190 passing
-
-Authored asset state:
-- GLB/GLTF pipeline: implemented
-- skeleton-aware skinned clone path: implemented
-- semantic authored animation mixer: implemented
-- model manifest: intentionally empty until real authored files exist
-- procedural all-angle fallback: active
-
-Core v2 additions:
-- authored model pipeline and sockets
-- semantic authored/procedural animation
-- procedural face states and grounding helpers
-- local-time network snapshot buffering
-- NPC A* pathfinding and routines
-- Island weather
-- heightfield terrain
-- shader water and shoreline foam
-- interactive server-authorized furniture
-- persistent home lamp state
-- selective small-object physics
-- surface-aware WebAudio
-- shared SND preferences
-- cinematic camera system
-
-No Cloudflare deployment is performed by this package.
-
-KEY SOURCE SHA-256
-c7adbe9245d197709dd1cb06cb4b45aa7c547c3bb4c21363139ec654548a0473  VERSION.txt
-4b8829cd2b33146df6f0c2b6ad4ae5e822c6e0c77c687d30e90605fa69e3f413  package.json
-ca7e14ebfaaa77da05c17bd8b7882cc09453f3ae18411ea9657d8b587585c2de  wrangler.jsonc
-0eec08ea3d698f8aa48f1cf258b1eec4e16c65d790a2e335cbf39cb199e034b8  worker.mjs
-2ca72273cc6d719a6da282959a5e654661768c311e73f149a3bb3d7f3808bdf9  propHuntRoom.mjs
-7f606f7d1c5626c1b1bb786e4edb4915b849f4aa8162c874a6d85ce279621522  islandLifeRoom.mjs
-0a92c8af03791c91303284a7098c133ef51ac1f03922706e0777296ea9990ccd  public/app.js
-1d812b542fe701391f4d00cb11a7ad66bbeba5a66d6d69ea325cb7c1259a90db  public/shared-3d-art-kit.mjs
-ca5a79143f46aa33b7bae288822252adfaa7f34e48d29bd69d11fa2dc934c378  public/shared-3d-gameplay.mjs
-1391df58f0dc64d33b21a4c73f41d9c2a7b631ee9985cd051ee73778643edfbb  public/shared-3d-studio.mjs
-d71a8df8c9e002ad354d8eb7daa3afd951f0087341c877a6dba9243083b7a772  public/prop-hunt-3d.js
-1f6e7cc3c869742b3d34c87541616bc26d9c864014397429a04583dd59d1ca3a  public/island-life.js
-78f351923c1c2fda241cff6de8874b8ab221ad73036163a46c4591f47a476b4c  public/birthday-climb.js
-fa0e600a30c69e7fb6b5fec6583b5a929204635ee45be7f761bfd3d20b8a8a7f  public/sw.js
-ab09082d59786f2ad7b761b319b12e4423eee43a18ce195dacd407bc9e888c73  public/models/manifest.json
-fc7ba7477a4c36782b1c364de6f44bb0222da9043910ba1dc4d66b967ad85471  FINAL_TEST_OUTPUT.tap
-89325e4e172c505a29e9d7a03e42625d3750560d88d50e082b04fa5f0804fa00  FINAL_TEST_REPORT.txt
-73eeec2ef4e90aa627e4003e948f429f2c0a76b755c729270c805df329108ba4  STUDIO_REALISM_ARCHITECTURE.md
-5eb433e42f0121dbfa6becee3fc984b1ce7544486bd285b7b076bc7a7cd91933  AUTHORED_3D_ASSET_GUIDE.md
+Production asset SHA-256:
+fd80751e4df24e1588c7e47b8fefeeb633c0c3c5c8aa95ca098c9a40ac57937f  public/models/characters/john.glb
+6d0aa88aa47625d90ea492f1c46366cfffff9300635ea582b7c3e1156a403548  public/models/dogs/gunner.glb
+8ab969de8da9233215f5439a0a0704ec985bc3244654b24ac99f6eef58d7bbed  public/models/props/prop-zapper.glb
+c374ad3fce39531e696969e5414580b98e1b774848491b8355529aef2d06c6bc  public/models/props/tractor.glb
+0377cda07e1488817ca2b93758792fe7f73a219d5ea48534d1db953d50df1680  public/models/props/motorcycle.glb
+35f49d979692875ea2032b6c5cd6410b3bc05bbaeeee3d5a675f35dd61700a79  public/models/furniture/papa-chair.glb
+ea7cd28b4714675b79e5b2a7daf1f846b40a8c1feb6a8b805bc2df5ed41bee62  public/models/furniture/fireplace.glb
+c110b9bed5429e9c6bc902686abd9e9fbe8be7fd12c0d536a45e6f5986f5f05d  public/models/furniture/workbench.glb
+cb109545f1dd2b3a19ed9dafb61bc516bc147f652b45060fa0646efccf6c9a86  public/models/furniture/tool-chest.glb
+6bae4b8f47140344636f3be765f38d55eed694f3680d3ab9caa4f9df475c65f8  public/models/furniture/shelving.glb
+53139c51578b137d34cdfdd2e8b24e3c0ab3f5fd2834083e9add8693563cacae  public/models/manifest.json

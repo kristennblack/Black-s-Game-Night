@@ -1,6 +1,6 @@
 /*
  * Black Family Game Night - Family Prop Hunt
- * v2.0.0-studio-realism
+ * v3.0.0-production3d-papa-alpha
  *
  * Real WebGL third-person renderer. No Canvas 2D character projection is used.
  * Characters, dogs, buildings, props and weapons are actual 3D scene objects.
@@ -19,6 +19,7 @@
   const personById=id=>family().find(p=>p.id===id)||family()[0];
   const isDog=p=>!!p?.dog||['kelsi','molly','gunner'].includes(p?.id);
   const TEST_SCALE=location.search.includes('test=1') ? .03 : 1;
+  const QA_MODE=new URLSearchParams(location.search).get('qa3d')==='1';
   const CDN_NOTICE='Three.js 0.185.1';
 
   let root=null,THREE=null,core=null,art=null,gameplay=null,studio=null,assets=null,audio=null,loadPromise=null,game=null,raf=0,lastFrame=0;
@@ -30,18 +31,39 @@
   const setup={charId:'john',outfit:0,count:6,mode:'classic',mapKey:'papa',botConfigs:[]};
 
   const OUTFITS={
-    john:{top:0x6e3340,legs:0x34506b,boots:0x4a2e1d,hair:0x3a2a20,skin:0xd3a477,label:'plaid shirt, jeans, cowboy boots'},
+    john:{top:0x79372f,pattern:'plaid',legs:0x34506b,boots:0x4a2e1d,hair:0x3a2a20,skin:0xd3a477,label:'plaid shirt, jeans, cowboy boots'},
     kristen:{top:0xc7b69d,legs:0x35516d,boots:0x6a4a34,hair:0x5b3e2e,skin:0xd6ab83,label:'T-shirt and jeans'},
     holly:{top:0x7c8794,legs:0x59677b,boots:0x4d433a,hair:0x6a4a34,skin:0xe0b58d,label:'hoodie and baggy jeans'},
     elizabeth:{top:0xc57f8f,legs:0xc5a273,boots:0xeee2d2,hair:0x74523e,skin:0xe2b991,label:'tank top and shorts'},
     vanessa:{top:0xa87b55,legs:0x47617c,boots:0x5a3824,hair:0x4f382c,skin:0xd8aa82,label:'western look'},
     logan:{top:0x53616e,legs:0x3b5067,boots:0x3a342e,hair:0x4b382d,skin:0xd7aa82,label:'hoodie and jeans'},
     james:{top:0x567692,legs:0x46617c,boots:0x4d392b,hair:0xaaa49b,skin:0xcfa078,label:'denim shirt and jeans'},
-    dorothy:{top:0x9a6d82,legs:0x8f6377,boots:0x5a4038,hair:0xb7a79a,skin:0xd3a47e,label:'flowy dress'},
+    dorothy:{top:0x9a6d82,pattern:'floral',legs:0x8f6377,boots:0x5a4038,hair:0xb7a79a,skin:0xd3a47e,label:'flowy dress'},
     nana:{top:0xa97d83,legs:0x444a51,boots:0x47392f,hair:0xc0b3a8,skin:0xd0a17b,label:'leggings and shirt'},
     papa:{top:0x7b6a4e,legs:0x3f5870,boots:0x4c3525,hair:0x9d9287,skin:0xca9b75,label:'shirt and jeans'},
-    kelsi:{fur:0xc69a69,accent:0xf2dfc3,label:'dog'},molly:{fur:0xd1a77f,accent:0xf0e0cc,label:'dog'},gunner:{fur:0x81705f,accent:0x5b4a3e,label:'dog'}
+    kelsi:{fur:0x9a6436,accent:0xd9b27a,label:'golden dog with pink collar'},molly:{fur:0xb7793f,accent:0xe3bd84,label:'golden dog, tongue out'},gunner:{fur:0xcbb994,accent:0xeee4cf,label:'large cream/tan farm dog'}
   };
+
+
+  // Visual scale is calibrated against the actual procedural rig height instead of
+  // guessing at 1.0.  This keeps the mesh, doorway scale, camera target and collider
+  // describing the same-sized body.  `proportions` only changes silhouette ratios.
+  const PROP_HUNT_BODY_PROFILES={
+    john:{scale:.875,height:1.82,radius:.34,proportions:{bodyWidth:1.05,hipWidth:1.03,headScale:1.00}},
+    kristen:{scale:.851,height:1.77,radius:.32,proportions:{bodyWidth:.97,hipWidth:.98,headScale:1.02}},
+    holly:{scale:.683,height:1.42,radius:.27,proportions:{bodyWidth:.88,hipWidth:.89,headScale:1.13}},
+    elizabeth:{scale:.702,height:1.46,radius:.27,proportions:{bodyWidth:.89,hipWidth:.90,headScale:1.12}},
+    vanessa:{scale:.861,height:1.79,radius:.32,proportions:{bodyWidth:.98,hipWidth:.99,headScale:1.01}},
+    logan:{scale:.875,height:1.82,radius:.32,proportions:{bodyWidth:.95,hipWidth:.94,headScale:1.01}},
+    james:{scale:.841,height:1.75,radius:.33,proportions:{bodyWidth:1.04,hipWidth:1.02,headScale:1.02}},
+    dorothy:{scale:.813,height:1.69,radius:.31,proportions:{bodyWidth:.98,hipWidth:1.00,headScale:1.03}},
+    nana:{scale:.788,height:1.64,radius:.30,proportions:{bodyWidth:.96,hipWidth:.98,headScale:1.04}},
+    papa:{scale:.832,height:1.73,radius:.33,proportions:{bodyWidth:1.07,hipWidth:1.04,headScale:1.02}},
+    kelsi:{scale:.765,height:.90,radius:.38,proportions:{headScale:1.03,bodyLength:1.00}},
+    molly:{scale:.782,height:.92,radius:.39,proportions:{headScale:1.02,bodyLength:1.02}},
+    gunner:{scale:.918,height:1.08,radius:.46,proportions:{headScale:1.09,bodyLength:1.08}}
+  };
+  const bodyProfile=id=>PROP_HUNT_BODY_PROFILES[id]||{scale:.875,height:1.82,radius:.33,proportions:{}};
 
   const PROP_DEFS={
     'Bucket':{kind:'cylinder',w:.42,d:.42,h:.48,color:0x77818a},
@@ -175,17 +197,17 @@
     const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:'high-performance'});gameplay.configureRendererForRealism(renderer,THREE,{exposure:1.18,pixelRatio:Math.min(2,devicePixelRatio||1)});
     const scene=new THREE.Scene();scene.background=new THREE.Color(0xa8c3cf);scene.fog=new THREE.Fog(0xa2b7bd,48,105);
     const camera=new THREE.PerspectiveCamera(60,1,.07,180);const clock=new THREE.Clock();
-    game={renderer,scene,camera,clock,mapKey,world:null,actors:[],actorsById:new Map(),player:null,keys,feed:[],effects:[],decoys:[],cameraYaw:Math.PI,cameraPitch:.18,cameraDistance:3.65,cameraActualDistance:3.65,shotCooldown:0,recoil:0,round:roomState.round||1,lastNetworkSend:0,startedAt:performance.now(),nearProp:null,controlDisposers:[],padPrev:{},padAim:false,padSprint:false};
+    game={renderer,scene,camera,clock,mapKey,world:null,actors:[],actorsById:new Map(),player:null,keys,feed:[],effects:[],decoys:[],cameraYaw:Math.PI,cameraPitch:.18,cameraDistance:3.65,cameraActualDistance:3.65,shotCooldown:0,recoil:0,round:roomState.round||1,lastNetworkSend:0,startedAt:performance.now(),nearProp:null,controlDisposers:[],padPrev:{},padAim:false,padSprint:false,qa:{frames:0,accum:0,fps:0,lastHud:0}};
     game.cameraRig=gameplay.createThirdPersonCamera(THREE,camera,core,'propHunt',{yaw:Math.PI,pitch:.18});
     game.performance=gameplay.createPerformanceGovernor(renderer,{targetFps:55,minPixelRatio:.82,maxPixelRatio:Math.min(2,devicePixelRatio||1)});
     game.motionFx=art.createMotionFxSystem(scene,{color:mapKey==='camp'?0xc8b793:mapKey==='farm'?0xa88c68:0xb1a28d,max:24});
     game.cinematic=studio.createCinematicCamera(game.cameraRig);audio.setAmbience(mapKey==='camp'?{birds:.22,water:.28,wind:.18}:mapKey==='farm'?{birds:.3,wind:.25}:{birds:.12,wind:.08});
-    game.world=buildWorld(mapKey);spawnActors();bindControls();game.cinematic.start({duration:1.15,distance:5.15,pitch:.21,yawOffset:.28});onResize();addFeed('Real 3D renderer active. Walls now occlude players through the depth buffer.');if(network)addFeed('Dedicated live Prop Hunt room connected.');lastFrame=performance.now();loop(lastFrame);
+    game.world=buildWorld(mapKey);game.nav=studio.createNavigationGrid({minX:game.world.bounds.minX,maxX:game.world.bounds.maxX,minZ:game.world.bounds.minZ,maxZ:game.world.bounds.maxZ,cellSize:.72,isBlocked:(x,z)=>!!core.blockingCollider(x,z,.34,0,1.55,game.world.colliders)});spawnActors();bindControls();game.cinematic.start({duration:1.15,distance:5.35,pitch:.2,yawOffset:.24});onResize();addFeed('Prop Hunt quality slice active: real depth, navigation, camera collision and all-angle rigs.');if(network)addFeed('Dedicated live Prop Hunt room connected.');lastFrame=performance.now();loop(lastFrame);
   }
 
   function disposeRoot(){if(game?.controlDisposers)for(const off of game.controlDisposers){try{off?.()}catch{}}try{game?.motionFx?.dispose?.()}catch{}if(game?.renderer){try{game.renderer.dispose()}catch{}}game=null;}
 
-  function gameShell(){return `<div class="ph3d-shell"><section id="ph3Stage" class="ph3d-stage"><canvas id="ph3Canvas" class="ph3d-canvas"></canvas><div class="ph3d-top"><span id="ph3Role" class="ph3d-chip role"></span><span id="ph3Phase" class="ph3d-chip map"></span><span id="ph3Health" class="ph3d-chip health"></span></div><div id="ph3Crosshair" class="ph3d-crosshair"></div><button id="phShoulder" class="ph3d-shoulder no-look" aria-label="Swap camera shoulder" title="Swap camera shoulder">CAM ↔</button><div id="ph3Hit" class="ph3d-hit">x</div><div id="ph3Flash" class="ph3d-flash"></div><div id="ph3Prompt" class="ph3d-prop-prompt"></div><div class="ph3d-camera-help">Drag to look · left stick/WASD moves · Shift/SPRINT runs · hold AIM/right mouse for shoulder aim · C/LB or CAM swaps shoulder · CTRL adjusts sensitivity/handedness · short jump taps stay low · jump auto-mantles ledges.</div><div class="ph3d-controls"><div id="phJoy" class="ph3d-joystick"><div id="phStick" class="ph3d-stick"></div></div><div class="ph3d-actions"><button id="phAim" class="ph3d-act aim">AIM</button><button id="phShoot" class="ph3d-act primary">SHOOT</button><button id="phJump" class="ph3d-act jump">JUMP</button><button id="phSprint" class="ph3d-act sprint">SPRINT</button><button id="phProp" class="ph3d-act prop">PROP</button><button id="phFlashBtn" class="ph3d-act flash">FLASH</button><button id="phDecoy" class="ph3d-act">DECOY</button><button id="phLock" class="ph3d-act lock">LOCK</button></div></div></section><aside class="ph3d-side"><div class="ph3d-mini"><h3>Loadout</h3><div id="ph3Load" class="ph3d-readout"></div></div><div class="ph3d-mini"><h3>3D status</h3><div class="ph3d-legend"><span>Real depth</span><span>Camera collision</span><span>All-angle rigs</span><span>Raycast hits</span></div></div><div class="ph3d-mini"><h3>Family feed</h3><div id="ph3Feed" class="ph3d-feed"></div></div></aside></div>`;}
+  function gameShell(){return `<div class="ph3d-shell"><section id="ph3Stage" class="ph3d-stage"><canvas id="ph3Canvas" class="ph3d-canvas"></canvas>${QA_MODE?'<pre id=\"ph3Qa\" class=\"ph3d-qa\"></pre>':''}<div class="ph3d-top"><span id="ph3Role" class="ph3d-chip role"></span><span id="ph3Phase" class="ph3d-chip map"></span><span id="ph3Health" class="ph3d-chip health"></span></div><div id="ph3Crosshair" class="ph3d-crosshair"></div><button id="phShoulder" class="ph3d-shoulder no-look" aria-label="Swap camera shoulder" title="Swap camera shoulder">CAM ↔</button><div id="ph3Hit" class="ph3d-hit">x</div><div id="ph3Flash" class="ph3d-flash"></div><div id="ph3Prompt" class="ph3d-prop-prompt"></div><div class="ph3d-camera-help">Drag to look · left stick/WASD moves · Shift/SPRINT runs · hold AIM/right mouse for shoulder aim · C/LB or CAM swaps shoulder · CTRL adjusts sensitivity/handedness · short jump taps stay low · jump auto-mantles ledges.</div><div class="ph3d-controls"><div id="phJoy" class="ph3d-joystick"><div id="phStick" class="ph3d-stick"></div></div><div class="ph3d-actions"><button id="phAim" class="ph3d-act aim">AIM</button><button id="phShoot" class="ph3d-act primary">SHOOT</button><button id="phJump" class="ph3d-act jump">JUMP</button><button id="phSprint" class="ph3d-act sprint">SPRINT</button><button id="phProp" class="ph3d-act prop">PROP</button><button id="phFlashBtn" class="ph3d-act flash">FLASH</button><button id="phDecoy" class="ph3d-act">DECOY</button><button id="phLock" class="ph3d-act lock">LOCK</button></div></div></section><aside class="ph3d-side"><div class="ph3d-mini"><h3>Loadout</h3><div id="ph3Load" class="ph3d-readout"></div></div><div class="ph3d-mini"><h3>3D status</h3><div class="ph3d-legend"><span>Real depth</span><span>Camera collision</span><span>All-angle rigs</span><span>Raycast hits</span></div></div><div class="ph3d-mini"><h3>Family feed</h3><div id="ph3Feed" class="ph3d-feed"></div></div></aside></div>`;}
 
   class WorldBuilder{
     constructor(scene,key){this.scene=scene;this.key=key;this.group=new THREE.Group();this.group.name=`world-${key}`;scene.add(this.group);this.colliders=[];this.raycastMeshes=[];this.props=[];this.npcs=[];this.spawn={x:4,z:4};this.bounds={minX:0,maxX:20,minZ:0,maxZ:14};}
@@ -218,7 +240,7 @@
       this.box({x:x-thick*.56,z:(z0+z1)/2,y:.02,w:.05,d:z1-z0,h:.12,material:art.material('wood',0x4e3929,{seed:8}),solid:false});
     }
     roofPanel(x,z,w,d,y,rotZ,color=0x4b4036){const mesh=this.box({x,z,y,w,d,h:.16,material:art.material('paintedMetal',color,{seed:14}),name:'roof',solid:false});mesh.rotation.z=rotZ;return mesh;}
-    addProp(type,x,z,rot=0){const d=propDef(type),mesh=art.createPropMesh(type,d);mesh.position.set(x,0,z);mesh.rotation.y=rot;this.group.add(mesh);const rec={id:`prop-${this.props.length}`,type,x,z,y:0,w:d.w,d:d.d,h:d.h,mesh,def:d};this.props.push(rec);mesh.userData.worldProp=rec;if(d.solid){const c={x,z,y:0,w:d.w,d:d.d,h:d.h,solid:true,climbable:!!d.climbable,walkableTop:!!d.climbable,name:type,mesh};this.colliders.push(c);rec.collider=c;mesh.traverse(o=>{if(o.isMesh){o.userData.worldCollider=c;this.raycastMeshes.push(o)}})}else mesh.traverse(o=>{if(o.isMesh)this.raycastMeshes.push(o)});return rec;}
+    addProp(type,x,z,rot=0,y=0){const d=propDef(type),mesh=art.createPropMesh(type,d);mesh.position.set(x,y,z);mesh.rotation.y=rot;this.group.add(mesh);const rec={id:`prop-${this.props.length}`,type,x,z,y,w:d.w,d:d.d,h:d.h,mesh,def:d};this.props.push(rec);mesh.userData.worldProp=rec;if(d.solid){const c={x,z,y,w:d.w,d:d.d,h:d.h,solid:true,climbable:!!d.climbable,walkableTop:!!d.climbable,name:type,mesh};this.colliders.push(c);rec.collider=c;mesh.traverse(o=>{if(o.isMesh){o.userData.worldCollider=c;this.raycastMeshes.push(o)}})}else mesh.traverse(o=>{if(o.isMesh)this.raycastMeshes.push(o)});return rec;}
   }
 
   function baseLighting(scene,night=false){const hemi=new THREE.HemisphereLight(night?0x7b89a7:0xc5dbea,night?0x302f30:0x665d4c,night?1.0:1.45);scene.add(hemi);const ambient=new THREE.AmbientLight(night?0x8996b2:0xfff5df,night?.18:.24);scene.add(ambient);const sun=new THREE.DirectionalLight(night?0xffd2aa:0xfff1d2,night?2.0:3.0);sun.position.set(-11,18,10);gameplay.configureShadowCastingLight(sun,{mapSize:2048,left:-28,right:28,top:28,bottom:-28,near:.5,far:55});scene.add(sun);}
@@ -226,24 +248,45 @@
   function addFence(w,x,z,length,axis='x'){return art.buildFence(w,x,z,length,axis)}
 
   function buildWorld(key){
-    baseLighting(game.scene,key==='acreage');let w;if(key==='camp')w=buildCamp();else if(key==='acreage')w=buildAcreage();else if(key==='farm')w=buildFarm();else w=buildPapa();game.scene.add(w.group);return w;
+    baseLighting(game.scene,key==='acreage');let w;if(key==='camp')w=buildCamp();else if(key==='acreage')w=buildAcreage();else if(key==='farm')w=buildFarm();else w=buildPapa();game.scene.add(w.group);if(key==='papa')queueMicrotask(()=>upgradePapaHeroAssets(w));return w;
   }
 
   function buildPapa(){
     const w=new WorldBuilder(game.scene,'papa');w.bounds={minX:.2,maxX:19.2,minZ:.2,maxZ:13.8};w.spawn={x:5.2,z:11.2};
     w.floor(9.7,7.0,19.1,13.6,0x6e6758,-.055,'gravel');
+    // The playable floor no longer visually ends at the map boundary.  A non-colliding
+    // rural horizon sits outside the game space and gives exterior views actual depth.
+    art.buildRuralBackdrop(w,{centerX:9.7,centerZ:7.0,radius:33,treeColor:0x334b38,fieldColor:0x68734c,farFieldColor:0x817957,buildingColor:0x62564b});
+    art.buildCloudLayer(w,{x:9.7,z:7,y:15,radius:15,count:7});
     w.floor(6.6,5.1,11,7.8,0x77736b,-.02,'concrete');w.floor(14.6,5.2,5.2,6.3,0x675a49,-.02,'dirt');w.floor(5.2,10.7,9.6,3.3,0x756f64,-.025,'gravel');
+    // Worn tire paths and a slightly darker apron keep the outside from reading as one flat sheet.
+    const track=art.material('gravel',0x514d45,{seed:171});for(const x of [3.25,5.1,6.95])w.box({x,z:11.55,y:-.006,w:.34,d:3.45,h:.012,material:track,solid:false,castShadow:false,name:'worn tire track'});
     const wall=0x6f5944;w.wallX(1.2,1.1,12.1,2.95,[{from:3.0,to:4.25,sill:1.15,h:1.05,glass:true},{from:8.0,to:9.3,sill:1.1,h:1.1,glass:true}],wall);w.wallZ(1.1,1.2,9.0,2.95,[{from:4.0,to:5.2,sill:1.15,h:1.05,glass:true}],wall);w.wallX(9.0,1.1,12.1,2.95,[{from:4.8,to:8.45,sill:0,h:2.5},{from:10.35,to:11.25,sill:0,h:2.18}],wall);w.wallZ(12.1,1.2,8.2,2.95,[{from:4.15,to:6.0,sill:0,h:2.5}],wall);
     const barnWall=0x5f5140;w.wallX(2.1,12.1,17.3,2.72,[{from:13.0,to:14.1,sill:1.1,h:1.0,glass:true}],barnWall);w.wallZ(17.3,2.1,8.25,2.72,[{from:4.2,to:5.35,sill:0,h:2.15}],barnWall);w.wallX(8.25,12.1,17.3,2.72,[{from:13.7,to:16.2,sill:0,h:2.25}],barnWall);
     w.box({x:6.6,z:5.1,y:2.88,w:11,d:7.8,h:.07,material:art.material('paintedWood',0x625546,{seed:19}),name:'shop ceiling',solid:true});w.roofPanel(4.05,5.1,5.8,8.3,3.14,.19,0x4c433c);w.roofPanel(9.15,5.1,5.8,8.3,3.14,-.19,0x4c433c);
     w.box({x:14.7,z:5.2,y:2.66,w:5.2,d:6.3,h:.07,material:art.material('paintedWood',0x5f5244,{seed:20}),name:'barn ceiling',solid:true});w.roofPanel(13.5,5.2,3,6.7,2.9,.17,0x50473f);w.roofPanel(15.9,5.2,3,6.7,2.9,-.17,0x50473f);
+    art.buildExteriorTrim(w,{x:6.6,z:5.1,width:11,depth:7.8,height:2.95,roofY:3.02,color:0xd3c3aa});art.buildExteriorTrim(w,{x:14.7,z:5.2,width:5.2,depth:6.3,height:2.72,roofY:2.76,color:0xc7b69d});
+    // Exterior siding battens and chimney add scale cues when the camera is outside.
+    const batten=art.material('paintedWood',0x5f4b3c,{seed:173});for(let x=1.45;x<11.9;x+=.64){w.box({x,z:1.085,y:.08,w:.025,d:.025,h:2.72,material:batten,solid:false,name:'front siding batten'});w.box({x,z:9.115,y:.08,w:.025,d:.025,h:2.72,material:batten,solid:false,name:'rear siding batten'})}for(let z=1.55;z<8.8;z+=.64)w.box({x:1.085,z,y:.08,w:.025,d:.025,h:2.72,material:batten,solid:false,name:'side siding batten'});
+    const chimneyStone=art.material('stone',0x665d54,{seed:175});w.box({x:10.82,z:7.34,y:2.72,w:.52,d:.52,h:1.18,material:chimneyStone,solid:false,name:'fireplace chimney'});w.box({x:10.82,z:7.34,y:3.87,w:.64,d:.64,h:.11,material:art.material('paintedMetal',0x383b3a,{seed:176}),solid:false,name:'chimney cap'});
+    const ridge=art.material('paintedMetal',0x383c3b,{seed:177});w.box({x:6.6,z:5.1,y:3.62,w:.18,d:8.38,h:.08,material:ridge,solid:false,name:'shop roof ridge cap'});w.box({x:14.7,z:5.2,y:3.31,w:.16,d:6.72,h:.08,material:ridge,solid:false,name:'barn roof ridge cap'});
     const rafter=art.material('wood',0x5d4633,{seed:11});for(let x=1.8;x<11.8;x+=1.25){w.box({x,z:5.1,y:2.62,w:.09,d:7.35,h:.13,material:rafter,name:'shop rafter',solid:false});}for(let x=12.5;x<17.2;x+=1.15)w.box({x,z:5.2,y:2.45,w:.09,d:6.0,h:.12,material:rafter,name:'barn rafter',solid:false});
     art.buildOverheadLight(w,3.5,4.8,2.62);art.buildOverheadLight(w,7.2,4.8,2.62);art.buildOverheadLight(w,10.1,4.8,2.62);art.buildOverheadLight(w,14.7,4.8,2.42);
+    art.buildLampPost(w,5.35,10.25,2.3,{warm:true,activeLight:true,intensity:.42,distance:4.4});
     art.buildCeilingFan(w,5.35,5.15,2.68,.92);art.buildToolRack(w,2.0,2.22,Math.PI/2);art.buildCabinet(w,10.85,2.5,0,{width:1.0,height:1.75,color:0x545d5e});art.buildAmbientParticles(w,{x:6.4,z:5.0,y:.45,width:9.5,depth:6.7,height:2.1,count:42,kind:'dust'});
-    art.buildSwingDoor(w,4.8,9.0,0,{width:1.0,height:2.4,color:0x6b513d,openDistance:2.5,label:'Shop door'});art.buildSwingDoor(w,12.1,4.15,Math.PI/2,{width:1.05,height:2.35,color:0x67503c,openDistance:2.6,label:'Barn passage'});art.buildSwingDoor(w,17.3,4.2,Math.PI/2,{width:1.05,height:2.08,color:0x5b4939,openDistance:2.6,label:'Barn door'});art.buildWallPoster(w,2.0,1.33,1.68,0,{width:.78,height:1.0,color:0x6d5442,accent:0xe1b957});art.buildWallPoster(w,11.98,7.2,1.45,-Math.PI/2,{width:.64,height:.82,color:0x455a5a,accent:0xd29d63});
-    art.buildWorkbench(w,4.25,2.78);art.buildToolChest(w,7.45,2.78);art.buildShelving(w,10.3,3.05,0,{width:1.55,height:2.25,depth:.66});
+    art.buildOverheadDoor(w,6.625,9.0,0,{width:3.55,height:2.48,color:0xa8a39a,open:.94,label:'Main shop overhead door'});art.buildSwingDoor(w,10.35,9.0,0,{width:.88,height:2.16,color:0x6b513d,openDistance:2.3,label:'Shop man door'});art.buildSwingDoor(w,12.1,5.08,Math.PI/2,{width:1.0,height:2.32,color:0x67503c,openDistance:2.4,label:'Barn passage'});art.buildSwingDoor(w,17.3,4.75,Math.PI/2,{width:1.0,height:2.06,color:0x5b4939,openDistance:2.4,label:'Barn door'});art.buildWallPoster(w,2.0,1.33,1.68,0,{width:.78,height:1.0,color:0x6d5442,accent:0xe1b957});art.buildWallPoster(w,11.98,7.2,1.45,-Math.PI/2,{width:.64,height:.82,color:0x455a5a,accent:0xd29d63});
+    w.heroFallbacks={};
+    w.heroFallbacks.workbench=art.buildWorkbench(w,4.25,2.78);
+    w.heroFallbacks.toolChest=art.buildToolChest(w,7.45,2.78);
+    w.heroFallbacks.shelving=art.buildShelving(w,10.3,3.05,0,{width:1.55,height:2.25,depth:.66});
     art.buildDrillPress(w,2.15,6.1);art.buildAirCompressor(w,10.35,4.55,Math.PI/2);art.buildWeldingCart(w,8.85,4.4);art.buildLadder(w,11.58,7.0,Math.PI/2,2.25);
-    buildTractor(w,4.25,6.75);buildMotorcycle(w,7.75,6.65);art.buildLumberStack(w,2.75,8.0,0,{width:2.75,height:.58,depth:.78});buildFireplace(w,10.85,7.26,0);buildPapaChair(w,9.35,8.0,-.12);
+    art.buildFloorDrain(w,6.35,5.35,.08,{size:.46});art.buildOilStain(w,4.28,6.82,.28,{radius:.72,opacity:.18});art.buildOilStain(w,7.76,6.67,-.18,{radius:.44,opacity:.2});art.buildHoseReel(w,1.28,5.95,1.45,Math.PI/2);art.buildWallConduit(w,11.93,3.0,1.4,-Math.PI/2,{height:1.85,width:.82});
+    w.heroFallbacks.tractor=buildTractor(w,4.25,6.75);
+    w.heroFallbacks.motorcycle=buildMotorcycle(w,7.75,6.65);
+    art.buildLumberStack(w,2.75,8.0,0,{width:2.75,height:.58,depth:.78});
+    w.heroFallbacks.fireplace=buildFireplace(w,10.85,7.26,0);
+    w.heroFallbacks.papaChair=buildPapaChair(w,9.35,8.0,-.12);
+    art.buildShopSideTable(w,10.08,8.14,-.05,{width:.7,depth:.52});art.buildTireStack(w,10.85,10.65,.12,{count:3,radius:.3});
     art.buildCrate(w,8.85,4.75,.08,{width:.82,height:.5,depth:.7,name:'Step crate'});art.buildCrate(w,9.15,5.45,-.1,{width:1.0,height:.82,depth:.78,name:'Parts crate'});art.buildCrate(w,10.65,5.7,.05,{width:.78,height:1.06,depth:.68,name:'Shelf step'});
     art.buildBarnStall(w,13.6,4.25,0,{width:2.15,depth:1.95});art.buildBarnStall(w,15.85,4.25,0,{width:2.05,depth:1.95});art.buildBarnStall(w,14.7,6.45,Math.PI,{width:3.8,depth:1.25});
     art.buildFence(w,14.6,3.35,3.5,'x');art.buildFence(w,14.6,6.2,3.5,'x');art.buildFence(w,16.05,4.8,2.8,'z');
@@ -251,8 +294,32 @@
     const panel=art.material('paintedMetal',0x6b7779,{seed:4});w.box({x:1.25,z:7.2,y:1.05,w:.05,d:.5,h:.75,material:panel,solid:false,name:'Electrical panel'});for(let i=0;i<4;i++)w.box({x:1.21,z:7.05+i*.09,y:1.25,w:.02,d:.05,h:.08,material:art.material('paintedMetal',0x343b3c),solid:false});
     for(const [x,z,s] of [[18.1,1.2,.82],[18.25,8.8,.72],[.55,11.9,.68]])addTree(w,x,z,s);
     for(const [x,z,s] of [[.7,10.5,.75],[18.35,10.2,.9],[18.2,3.2,.72],[1.0,12.8,.8]])art.buildBush(w,x,z,s,0x465f3e);for(const [x,z] of [[2.0,12.8],[6.7,12.9],[11.5,12.8],[17.9,11.4]])art.buildGrassPatch(w,x,z,.9,{count:10});art.buildRockCluster(w,18.0,12.35,.9);art.buildNoticeBoard(w,1.9,12.4,.08,{titleColor:0x596b68});art.buildMailbox(w,6.2,13.0,Math.PI,{color:0x655b4f});art.buildAmbientBirds(w,{x:10,z:9,y:7,radius:5.5,count:4});
-    [['Bucket',2.2,3.8],['Bucket',2.55,4.2],['Oil Jug',2.85,3.95],['Toolbox',6.1,4.3],['Welding Helmet',6.9,4.25],['Gas Can',8.1,3.65],['Shop Vac',8.55,3.8],['Coffee Mug',10.4,6.2],['Beer Case',9.75,6.35],['Stool',8.7,7.95],['Coffee Mug',10.1,8.05],['Sawhorse',5.55,8.1],['Extension Cord',6.35,8.42],['Feed Bucket',12.85,7.2],['Hay Bale',13.65,7.25],['Wheelbarrow',15.9,7.0],['Feed Bucket',15.2,4.9],['Garbage Can',16.45,5.7],['Parts Crate',2.1,11.65],['Gas Can',4.25,11.6],['Toolbox',6.25,11.7],['Lumber',8.0,11.2]].forEach(([t,x,z],i)=>w.addProp(t,x,z,i*.31));
+    [['Bucket',2.2,3.8],['Bucket',2.55,4.2],['Oil Jug',2.85,3.95],['Toolbox',6.1,4.3],['Gas Can',8.1,3.65],['Shop Vac',8.55,3.8],['Beer Case',9.75,6.35],['Stool',8.7,7.95],['Sawhorse',5.55,8.1],['Extension Cord',6.35,8.42],['Feed Bucket',12.85,7.2],['Hay Bale',13.65,7.25],['Wheelbarrow',15.9,7.0],['Feed Bucket',15.2,4.9],['Garbage Can',16.45,5.7],['Parts Crate',2.1,11.65],['Gas Can',4.25,11.6],['Toolbox',6.25,11.7],['Lumber',8.0,11.2],['Firewood',10.95,8.15]].forEach(([t,x,z],i)=>w.addProp(t,x,z,i*.31));
+    // Small props belong on surfaces, not mysteriously on the concrete floor.
+    w.addProp('Welding Helmet',8.84,4.4,.18,.73);w.addProp('Coffee Mug',10.78,7.15,.08,1.93);w.addProp('Coffee Mug',10.08,8.14,-.15,.72);
     addNpcAnimal(w,'pig',13.65,4.45);addNpcAnimal(w,'pig',15.75,4.5);addNpcAnimal(w,'goat',13.55,6.75);addNpcAnimal(w,'goat',15.7,6.82);return w;
+  }
+
+  async function upgradePapaHeroAssets(w){
+    if(!w||w.key!=='papa'||!w.heroFallbacks)return;
+    const hideFallback=g=>g?.traverse?.(o=>{if(o.isMesh)o.visible=false});
+    const install=(obj,fallback)=>{if(!obj||!fallback)return;obj.position.copy(fallback.position);obj.rotation.copy(fallback.rotation);obj.userData.productionHero=true;obj.traverse?.(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;o.userData.productionHero=true;w.raycastMeshes.push(o)}});hideFallback(fallback);w.group.add(obj)};
+    try{
+      await assets.ensureManifest();
+      const [tractor,motorcycle,chair,fireplace,workbench,toolChest,shelving]=await Promise.all([
+        assets.loadProp('tractor',{fallback:null}),
+        assets.loadProp('motorcycle',{fallback:null}),
+        assets.loadFurniture('papaChair',{fallback:null}),
+        assets.loadFurniture('fireplace',{fallback:null}),
+        assets.loadFurniture('workbench',{fallback:null}),
+        assets.loadFurniture('toolChest',{fallback:null}),
+        assets.loadFurniture('shelving',{fallback:null})
+      ]);
+      install(tractor,w.heroFallbacks.tractor);install(motorcycle,w.heroFallbacks.motorcycle);install(chair,w.heroFallbacks.papaChair);
+      install(fireplace,w.heroFallbacks.fireplace);install(workbench,w.heroFallbacks.workbench);install(toolChest,w.heroFallbacks.toolChest);install(shelving,w.heroFallbacks.shelving);
+      w.productionHeroes={tractor,motorcycle,chair,fireplace,workbench,toolChest,shelving};
+      if(Object.values(w.productionHeroes).some(Boolean))addFeed('Papa\'s Shop production assets loaded: authored hero kit plus gameplay colliders.');
+    }catch(e){console.warn('Papa production hero asset upgrade skipped',e)}
   }
 
   function buildCamp(){
@@ -339,25 +406,47 @@
     const players=roomState.players,spawn=game.world.spawn;players.forEach((p,i)=>{const actor=createActor(p,i,spawn);game.actors.push(actor);game.actorsById.set(p.id,actor);if(p.id===roomState.viewerId)game.player=actor});if(!game.player)game.player=game.actors[0];game.cameraYaw=game.player.yaw;
   }
   function createActor(p,index,spawn){
-    const person=personById(p.avatar),dog=isDog(person),angle=index/playerCountSafe()*Math.PI*2,r=1.2+Math.floor(index/6)*.7;const actor={id:p.id,person,isBot:!!p.isBot,difficulty:p.difficulty||'medium',role:p.role||'hider',health:p.health??3,alive:p.alive!==false,prop:p.prop||null,propChanges:p.propChanges??3,decoys:p.decoys??10,flash:p.flash!==false,locked:false,x:spawn.x+Math.cos(angle)*r,z:spawn.z+Math.sin(angle)*r,y:0,yaw:Math.PI,pitch:0,vx:0,vy:0,vz:0,radius:dog ? .4 : .33,height:dog ? .98 : 1.82,grounded:true,mantle:null,anim:'idle',animTime:Math.random()*2,recoil:0,netTarget:null,netBuffer:new studio.SnapshotBuffer({delayMs:92,maxExtrapolateMs:85}),lastShot:0,ai:{timer:0,target:null,detected:null,changeTimer:5+Math.random()*5,decoyTimer:4+Math.random()*8}};
+    const person=personById(p.avatar),dog=isDog(person),profile=bodyProfile(person.id),angle=index/playerCountSafe()*Math.PI*2,r=1.2+Math.floor(index/6)*.7;const actor={id:p.id,person,isBot:!!p.isBot,difficulty:p.difficulty||'medium',role:p.role||'hider',health:p.health??3,alive:p.alive!==false,prop:p.prop||null,propChanges:p.propChanges??3,decoys:p.decoys??10,flash:p.flash!==false,locked:false,x:spawn.x+Math.cos(angle)*r,z:spawn.z+Math.sin(angle)*r,y:0,yaw:Math.PI,pitch:0,vx:0,vy:0,vz:0,radius:profile.radius,height:profile.height,visualScale:profile.scale,grounded:true,mantle:null,anim:'idle',animTime:Math.random()*2,recoil:0,netTarget:null,netBuffer:new studio.SnapshotBuffer({delayMs:92,maxExtrapolateMs:85}),lastShot:0,ai:{timer:0,target:null,detected:null,changeTimer:5+Math.random()*5,decoyTimer:4+Math.random()*8,path:[],pathIndex:0,pathTimer:0,pathGoal:null}};
     actor.rig=dog?buildDogRig(person,actor.role):buildHumanRig(person,actor.role);actor.rig.userData.actor=actor;game.scene.add(actor.rig);applyActorVisual(actor);actor.rig.position.set(actor.x,actor.y,actor.z);actor.rig.rotation.y=actor.yaw;queueMicrotask(()=>tryUpgradeAuthoredActor(actor));return actor;
   }
   function playerCountSafe(){return Math.max(1,roomState?.players?.length||1);}
 
   function buildHumanRig(person,role){
-    const style=OUTFITS[person.id]||OUTFITS.john;return art.buildHumanRig(style,{id:person.id,role});
+    const style=OUTFITS[person.id]||OUTFITS.john,profile=bodyProfile(person.id);return art.buildHumanRig(style,{id:person.id,role,scale:profile.scale,proportions:profile.proportions});
   }
   function buildDogRig(person,role){
-    const style=OUTFITS[person.id]||OUTFITS.gunner;return art.buildDogRig(style,{id:person.id,role});
+    const style=OUTFITS[person.id]||OUTFITS.gunner,profile=bodyProfile(person.id);return art.buildDogRig(style,{id:person.id,role,scale:profile.scale,proportions:profile.proportions});
   }
   function buildGun(scale=.68){return art.buildPropZapper(scale);}
-  async function tryUpgradeAuthoredActor(actor){try{await assets.ensureManifest();const dog=isDog(actor.person),entry=assets.entry(dog?'dogs':'characters',actor.person.id);if(!entry?.file||!game?.actorsById?.has(actor.id))return;const rig=await(dog?assets.loadDog(actor.person.id,{fallback:null}):assets.loadCharacter(actor.person.id,{fallback:null}));if(!rig||!game?.actorsById?.has(actor.id))return;rig.position.copy(actor.rig.position);rig.rotation.copy(actor.rig.rotation);const weapon=await assets.loadProp('propZapper',{fallback:()=>art.buildPropZapper(dog?.46:.62)});if(weapon){studio.attachToRigSocket(rig,weapon,{socket:dog?'back':'rightHand',position:dog?[0,.08,.04]:[0,-.02,-.08],rotation:dog?[0,0,0]:[-Math.PI/2,0,Math.PI],scale:dog?.7:.85});rig.userData.parts={...(rig.userData.parts||{}),weapon}}tagActorMeshes(rig);const old=actor.rig;actor.rig=rig;actor.rig.userData.actor=actor;actor.authored=true;actor.animMixer=new studio.SemanticAnimationMixer(THREE,rig,rig.userData.authoredAnimations||[]);game.scene.add(rig);game.scene.remove(old);applyActorVisual(actor)}catch(e){console.warn('Authored Prop Hunt actor upgrade skipped',e)}}
+  async function tryUpgradeAuthoredActor(actor){
+    try{
+      await assets.ensureManifest();
+      const dog=isDog(actor.person),entry=assets.entry(dog?'dogs':'characters',actor.person.id);
+      if(!entry?.file||(entry.games&&!entry.games.includes('propHunt'))||!game?.actorsById?.has(actor.id))return;
+      const rig=await(dog?assets.loadDog(actor.person.id,{fallback:null}):assets.loadCharacter(actor.person.id,{fallback:null}));
+      if(!rig||!game?.actorsById?.has(actor.id))return;
+      rig.position.copy(actor.rig.position);rig.rotation.copy(actor.rig.rotation);
+      const parts=studio.bindAuthoredRigParts(rig,{kind:dog?'dog':'human'})||{};
+      const productionSocket=studio.findRigNode(rig,[dog?'backSocket':'rightHandSocket']);
+      const weapon=await assets.loadProp('propZapper',{fallback:()=>art.buildPropZapper(dog?.46:.62)});
+      if(weapon){
+        const socket=productionSocket?.name||(dog?'back':'rightHand');
+        studio.attachToRigSocket(rig,weapon,{socket,position:productionSocket?[0,0,0]:(dog?[0,.08,.04]:[0,-.02,-.08]),rotation:productionSocket?[0,0,0]:(dog?[0,0,0]:[-Math.PI/2,0,Math.PI]),scale:dog?.34:.55});
+        parts.weapon=weapon;parts.weaponAnchor=productionSocket||parts.weaponAnchor;rig.userData.parts=parts;
+      }
+      tagActorMeshes(rig);
+      const old=actor.rig;actor.rig=rig;actor.rig.userData.actor=actor;actor.authored=true;
+      actor.hasAuthoredClips=studio.hasAuthoredAnimationClips(rig);
+      actor.animMixer=actor.hasAuthoredClips?new studio.SemanticAnimationMixer(THREE,rig,rig.userData.authoredAnimations||[]):null;
+      game.scene.add(rig);game.scene.remove(old);applyActorVisual(actor);
+    }catch(e){console.warn('Authored Prop Hunt actor upgrade skipped',e)}
+  }
 
   function tagActorMeshes(g){g.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;o.userData.actorHit=true}});}
 
   function applyActorVisual(actor){
     if(actor.prop){if(actor.propMesh)actor.rig.remove(actor.propMesh);actor.rig.traverse(o=>{if(o!==actor.rig)o.visible=false});const m=createPropMesh(actor.prop);actor.propMesh=m;actor.rig.add(m);const d=propDef(actor.prop);actor.height=d.h;actor.radius=Math.max(.18,Math.min(.55,Math.max(d.w,d.d)*.45));}
-    else{if(actor.propMesh){actor.rig.remove(actor.propMesh);actor.propMesh=null}actor.rig.traverse(o=>o.visible=true);const dog=isDog(actor.person);actor.height=dog ? .98 : 1.82;actor.radius=dog ? .4 : .33;const parts=actor.rig.userData.parts;if(parts?.weapon)parts.weapon.visible=actor.role==='hunter';}
+    else{if(actor.propMesh){actor.rig.remove(actor.propMesh);actor.propMesh=null}actor.rig.traverse(o=>o.visible=true);const profile=bodyProfile(actor.person.id);actor.height=profile.height;actor.radius=profile.radius;const parts=actor.rig.userData.parts;if(parts?.weapon)parts.weapon.visible=actor.role==='hunter';}
   }
 
   function bindControls(){
@@ -380,7 +469,7 @@
   function onKeyUp(e){keys[e.code]=false;if(e.code==='Space')input.jumpHeld=false;}
   function onResize(){if(!game?.renderer)return;const c=game.renderer.domElement,r=c.getBoundingClientRect();game.renderer.setSize(Math.max(320,r.width),Math.max(360,r.height),false);game.camera.aspect=Math.max(.5,r.width/Math.max(1,r.height));game.camera.updateProjectionMatrix();}
 
-  function loop(now){if(!game)return;const dt=Math.min(.04,Math.max(.001,(now-lastFrame)/1000));lastFrame=now;update(dt,now);game.performance?.sample(dt);game.renderer.render(game.scene,game.camera);raf=requestAnimationFrame(loop);}
+  function loop(now){if(!game)return;const dt=Math.min(.04,Math.max(.001,(now-lastFrame)/1000));lastFrame=now;update(dt,now);game.performance?.sample(dt);if(QA_MODE)updateQaHud(dt,now);game.renderer.render(game.scene,game.camera);raf=requestAnimationFrame(loop);}
   function update(dt,now){
     if(!game.player)return;
     // Gamepad support is sampled at frame rate so aiming and movement feel analog instead of menu-like.
@@ -388,6 +477,17 @@
     if(pad.jump&&!game.padPrev.jump)input.jumpQueued=true;if(pad.shoulder&&!game.padPrev.shoulder)game.cameraRig?.swapShoulder();if(pad.shoot&&!game.padPrev.shoot)shoot();game.padAim=pad.aim;game.padSprint=pad.sprint;game.padJumpHeld=pad.jump;game.padPrev=pad;
     game.cameraYaw=game.cameraRig.state.yaw;game.cameraPitch=game.cameraRig.state.pitch;
     game.shotCooldown=Math.max(0,(game.shotCooldown||0)-dt);game.cinematic?.update(dt);audio?.update(dt);updatePhase();updatePlayer(dt);updateBots(dt);updateRemoteActors(dt);updateActorVisuals(dt);updateNpcs(dt);updateEffects(dt);updateCamera(dt);updateHud();if(network&&now-game.lastNetworkSend>100){sendNetworkSnapshots();game.lastNetworkSend=now}
+  }
+
+  function updateQaHud(dt,now){
+    const q=game?.qa;if(!q)return;q.frames++;q.accum+=dt;if(q.accum>=.5){q.fps=Math.round(q.frames/q.accum);q.frames=0;q.accum=0}if(now-(q.lastHud||0)<250)return;q.lastHud=now;const a=game.player,info=game.renderer.info.render,el=root.querySelector('#ph3Qa');if(!el||!a)return;el.textContent=[
+      `QA · ${game.mapKey} · ${q.fps||'--'} fps`,
+      `pos ${a.x.toFixed(2)}, ${a.y.toFixed(2)}, ${a.z.toFixed(2)}  yaw ${a.yaw.toFixed(2)}`,
+      `anim ${a.anim}  grounded ${a.grounded?'yes':'no'}  prop ${a.prop||'none'}`,
+      `camera ${game.cameraActualDistance.toFixed(2)}  actors ${game.actors.length}  colliders ${game.world.colliders.length}`,
+      `draw ${info.calls}  tris ${info.triangles}  lines ${info.lines}`,
+      `net ${network?'live':'solo'}  nav ${a.ai?.path?.length||0}  asset ${a.authored?(a.hasAuthoredClips?'GLB+clips':'GLB+joints'):'procedural'}`
+    ].join('\n');
   }
 
   function updatePhase(){
@@ -401,7 +501,7 @@
 
   function updatePlayer(dt){
     const a=game.player;if(!a.alive)return;if(a.locked&&a.prop){a.vx=a.vz=0;animateMantle(a,dt);return}
-    {const oldYaw=a.yaw;a.yaw=game.cameraYaw;let d=a.yaw-oldYaw;while(d>Math.PI)d-=Math.PI*2;while(d<-Math.PI)d+=Math.PI*2;a.turnRate=d/Math.max(dt,.001)}a.pitch=game.cameraPitch;if(a.mantle){animateMantle(a,dt);return}
+    {const oldYaw=a.yaw,targetYaw=game.cameraYaw,aiming=input.aim||game.padAim;a.yaw=gameplay.dampAngle(a.yaw,targetYaw,aiming?28:18,dt);let d=a.yaw-oldYaw;while(d>Math.PI)d-=Math.PI*2;while(d<-Math.PI)d+=Math.PI*2;a.turnRate=d/Math.max(dt,.001)}a.pitch=game.cameraPitch;if(a.mantle){animateMantle(a,dt);return}
     const intent=gameplay.movementIntent(keys,joy,game.cameraYaw),sprint=gameplay.wantsSprint(keys,input,{sprint:game.padSprint},intent);
     const preset=game.cameraRig.cfg;gameplay.smoothVelocity(a,intent,sprint?preset.runSpeed:preset.walkSpeed,dt,{accel:preset.groundAccel,brake:preset.groundBrake,airControl:preset.airControl});
     gameplay.updateJumpMemory(a,dt,input.jumpQueued);gameplay.consumeBufferedJump(a,preset.jumpSpeed);gameplay.applyVariableJump(a,input.jumpHeld||game.padJumpHeld);
@@ -427,9 +527,16 @@
   function updateBots(dt){
     for(const a of game.actors){if(!a.isBot||!a.alive)continue;if(network&&!roomState.isHost)continue;if(a.mantle){animateMantle(a,dt);continue}a.ai.timer-=dt;a.ai.changeTimer-=dt;a.ai.decoyTimer-=dt;const enemies=game.actors.filter(b=>b.alive&&b.role!==a.role);if(a.role==='hunter'&&roomState.phase==='hunt')botHunter(a,enemies,dt);else if(a.role==='hider')botHider(a,enemies,dt);else wanderBot(a,dt);resolveActorOverlap(a);a.vy-=18*dt;{const nextY=a.y+a.vy*dt,ceiling=a.vy>0?core.ceilingBottom(a.x,a.z,a.radius,a.y,a.height,nextY,game.world.colliders):null;if(ceiling!=null){a.y=ceiling-a.height-.015;a.vy=0}else a.y=nextY}const support=core.supportHeight(a.x,a.z,a.radius,game.world.colliders,a.y+.08,.46);if(a.y<=support){a.y=support;a.vy=0;a.grounded=true}else a.grounded=false;a.rig.position.set(a.x,a.y,a.z);a.rig.rotation.y=a.yaw;}
   }
-  function botHunter(a,enemies,dt){let target=a.ai.detected;if(!target||!target.alive||!hasLineOfSight(a,target)){target=enemies.filter(e=>e.role==='hider').sort((u,v)=>core.dist2(a,u)-core.dist2(a,v)).find(e=>core.dist2(a,e)<9&&hasLineOfSight(a,e));a.ai.detected=target||null}if(target){const dx=target.x-a.x,dz=target.z-a.z,d=Math.hypot(dx,dz)||1;a.yaw=Math.atan2(dx,-dz);if(d>2.1)moveActor(a,dx/d*3.5*dt,dz/d*3.5*dt,false);a.anim=d>2.1?'run':'aim';if(d<8&&hasLineOfSight(a,target)&&performance.now()-a.lastShot>(a.difficulty==='hard'?350:a.difficulty==='easy'?900:600)){a.lastShot=performance.now();botShoot(a,target)}}else wanderBot(a,dt);}
-  function botHider(a,hunters,dt){if(!a.prop){const p=nearestProp(a,3.2);if(p)applyDisguise(a,p.type,false)}const hunter=[...hunters].sort((u,v)=>core.dist2(a,u)-core.dist2(a,v))[0],danger=hunter?core.dist2(a,hunter):999;if(danger<4.2){a.locked=false;const dx=a.x-hunter.x,dz=a.z-hunter.z,l=Math.hypot(dx,dz)||1;a.yaw=Math.atan2(dx,-dz);moveActor(a,dx/l*3.6*dt,dz/l*3.6*dt,true);a.anim='run';if(a.flash&&danger<2.7)useFlash(a,false)}else{a.locked=!!a.prop;a.anim='idle';if(!a.prop)wanderBot(a,dt)}}
-  function wanderBot(a,dt){if(a.ai.timer<=0||!a.ai.target){a.ai.timer=2+Math.random()*3;a.ai.target={x:clamp(a.x+(Math.random()-.5)*7,game.world.bounds.minX+.8,game.world.bounds.maxX-.8),z:clamp(a.z+(Math.random()-.5)*7,game.world.bounds.minZ+.8,game.world.bounds.maxZ-.8)}}const dx=a.ai.target.x-a.x,dz=a.ai.target.z-a.z,l=Math.hypot(dx,dz)||1;if(l>.35){a.yaw=Math.atan2(dx,-dz);moveActor(a,dx/l*1.7*dt,dz/l*1.7*dt,false);a.anim='walk'}else a.anim='idle';}
+  function botMoveToward(a,target,speed,dt,{jump=false,repath=.55}={}){
+    if(!target)return false;const ai=a.ai||(a.ai={}),goalChanged=!ai.pathGoal||Math.hypot((ai.pathGoal.x||0)-target.x,(ai.pathGoal.z||0)-target.z)>.8;ai.pathTimer=(ai.pathTimer||0)-dt;
+    if(goalChanged||ai.pathTimer<=0||!ai.path?.length||ai.pathIndex>=ai.path.length){ai.pathTimer=repath;ai.pathGoal={x:target.x,z:target.z};ai.path=game.nav?.findPath?.({x:a.x,z:a.z},target,{maxNodes:1200})||[];ai.pathIndex=Math.min(1,Math.max(0,ai.path.length-1));}
+    let node=ai.path?.[ai.pathIndex]||target;if(Math.hypot(node.x-a.x,node.z-a.z)<.38&&ai.pathIndex<(ai.path?.length||0)-1){ai.pathIndex++;node=ai.path[ai.pathIndex]||target}
+    const dx=node.x-a.x,dz=node.z-a.z,l=Math.hypot(dx,dz)||1;if(l<.08)return false;a.yaw=gameplay.dampAngle(a.yaw,Math.atan2(dx,-dz),12,dt);moveActor(a,dx/l*speed*dt,dz/l*speed*dt,jump);return true;
+  }
+
+  function botHunter(a,enemies,dt){let target=a.ai.detected;if(!target||!target.alive||!hasLineOfSight(a,target)){target=enemies.filter(e=>e.role==='hider').sort((u,v)=>core.dist2(a,u)-core.dist2(a,v)).find(e=>core.dist2(a,e)<9&&hasLineOfSight(a,e));a.ai.detected=target||null}if(target){const dx=target.x-a.x,dz=target.z-a.z,d=Math.hypot(dx,dz)||1;if(d>2.1)botMoveToward(a,target,3.5,dt,{repath:.28});else a.yaw=gameplay.dampAngle(a.yaw,Math.atan2(dx,-dz),16,dt);a.anim=d>2.1?'run':'aim';if(d<8&&hasLineOfSight(a,target)&&performance.now()-a.lastShot>(a.difficulty==='hard'?350:a.difficulty==='easy'?900:600)){a.lastShot=performance.now();botShoot(a,target)}}else wanderBot(a,dt);}
+  function botHider(a,hunters,dt){if(!a.prop){const p=nearestProp(a,3.2);if(p)applyDisguise(a,p.type,false)}const hunter=[...hunters].sort((u,v)=>core.dist2(a,u)-core.dist2(a,v))[0],danger=hunter?core.dist2(a,hunter):999;if(danger<4.2){a.locked=false;const dx=a.x-hunter.x,dz=a.z-hunter.z,l=Math.hypot(dx,dz)||1,escape={x:clamp(a.x+dx/l*4.4,game.world.bounds.minX+.5,game.world.bounds.maxX-.5),z:clamp(a.z+dz/l*4.4,game.world.bounds.minZ+.5,game.world.bounds.maxZ-.5)};botMoveToward(a,escape,3.6,dt,{jump:true,repath:.32});a.anim='run';if(a.flash&&danger<2.7)useFlash(a,false)}else{a.locked=!!a.prop;a.anim='idle';if(!a.prop)wanderBot(a,dt)}}
+  function wanderBot(a,dt){if(a.ai.timer<=0||!a.ai.target){a.ai.timer=2+Math.random()*3;a.ai.target={x:clamp(a.x+(Math.random()-.5)*7,game.world.bounds.minX+.8,game.world.bounds.maxX-.8),z:clamp(a.z+(Math.random()-.5)*7,game.world.bounds.minZ+.8,game.world.bounds.maxZ-.8)}}const dx=a.ai.target.x-a.x,dz=a.ai.target.z-a.z,l=Math.hypot(dx,dz)||1;if(l>.35){botMoveToward(a,a.ai.target,1.7,dt,{repath:.85});a.anim='walk'}else a.anim='idle';}
   function botShoot(a,target){if(!hasLineOfSight(a,target))return;const acc=a.difficulty==='hard' ? .88 : a.difficulty==='easy' ? .5 : .7;if(Math.random()>acc)return;registerHit(a,target);}
   function hasLineOfSight(a,b){const origin=new THREE.Vector3(a.x,a.y+a.height*.72,a.z),target=new THREE.Vector3(b.x,b.y+b.height*.58,b.z),dir=target.clone().sub(origin),dist=dir.length();dir.normalize();const ray=new THREE.Raycaster(origin,dir,.05,dist);const hits=ray.intersectObjects(game.world.raycastMeshes,true);return !hits.length||hits[0].distance>=dist-.25;}
 
@@ -440,7 +547,7 @@
   function sendNetworkSnapshots(){if(!ws||ws.readyState!==1)return;const sendActor=a=>ws.send(JSON.stringify({type:'snapshot',playerId:a.id,snapshot:{x:a.x,y:a.y,z:a.z,yaw:a.yaw,pitch:a.pitch,vx:a.vx,vy:a.vy,vz:a.vz,anim:a.anim,prop:a.prop,locked:a.locked,seq:Math.floor(performance.now())}}));sendActor(game.player);if(roomState.isHost)for(const a of game.actors)if(a.isBot)sendActor(a);}
 
   function propSurfaceAt(a){if(game?.mapKey==='camp')return Math.abs(a?.z||0)>9?'sand':'dirt';if(game?.mapKey==='farm')return'dirt';if(game?.mapKey==='acreage')return Math.abs(a?.x||0)<8&&Math.abs(a?.z||0)<8?'wood':'grass';if(game?.mapKey==='papa')return Math.abs(a?.x||0)<10&&Math.abs(a?.z||0)<9?'concrete':'gravel';return'default'}
-  function updateActorVisuals(dt){for(const a of game.actors){if(!a.alive){a.rig.visible=false;continue}a.recoil=Math.max(0,(a.recoil||0)-dt*7);a.rig.visible=!(a===game.player&&a.cameraHidden);let focus=null;if(a===game.player){const dir=new THREE.Vector3();game.camera.getWorldDirection(dir);focus={x:a.x+dir.x*6,y:a.y+(isDog(a.person)?.8:1.48)+dir.y*6,z:a.z+dir.z*6}}else if(a.ai?.detected?.alive)focus={x:a.ai.detected.x,y:a.ai.detected.y+a.ai.detected.height*.55,z:a.ai.detected.z};else{const rival=game.actors.filter(o=>o!==a&&o.alive&&o.role!==a.role).sort((u,v)=>core.dist2(a,u)-core.dist2(a,v))[0];if(rival&&core.dist2(a,rival)<5.5)focus={x:rival.x,y:rival.y+rival.height*.55,z:rival.z}}const attention=gameplay.updateAttention(a,dt,focus,{headHeight:isDog(a.person)?.82:1.55,maxDistance:7});if(a.authored&&a.animMixer){let semantic=a.anim||'idle';if(a.role==='hunter'&&(a===game.player?(input.aim||game.padAim):a.ai?.detected))semantic='aim';a.animMixer.play(semantic,{timeScale:clamp(Math.hypot(a.vx||0,a.vz||0)/(semantic==='run'?4.5:2.5),.7,1.35)});a.animMixer.update(dt)}else{gameplay.animateFamilyRig(a,dt,{aim:a===game.player&&(input.aim||game.padAim),recoil:a.recoil||0,lookPitch:a.pitch||0,turnRate:a.turnRate||0,speed:Math.hypot(a.vx||0,a.vz||0),grounded:a.grounded,attention});studio.updateProceduralFace(a,dt,{expression:a.anim==='hit'?'hurt':a.role==='hunter'?'focused':'neutral'});studio.applyFootIK(a,THREE,{heightAt:(x,z)=>core.supportHeight(x,z,a.radius,game.world.colliders,a.y+.1,.5),dt,maxLift:.1})}if(!a.prop&&a.rig.visible)for(const ev of gameplay.consumeMotionEvents(a)){game.motionFx?.emit(a.x,a.y,a.z,{strength:ev.strength,kind:ev.type});if(a===game.player||core.dist2(a,game.player)<8)audio?.oneShot(ev.type==='land'?'land':'step',{volume:ev.type==='land'?.11:.03,pitch:.9+Math.random()*.18,pan:studio.computeStereoPan(game.cameraYaw,game.player,a),surface:propSurfaceAt(a)})}}}
+  function updateActorVisuals(dt){for(const a of game.actors){if(!a.alive){a.rig.visible=false;continue}a.recoil=Math.max(0,(a.recoil||0)-dt*7);a.rig.visible=!(a===game.player&&a.cameraHidden);let focus=null;if(a===game.player){const dir=new THREE.Vector3();game.camera.getWorldDirection(dir);focus={x:a.x+dir.x*6,y:a.y+(isDog(a.person)?.8:1.48)+dir.y*6,z:a.z+dir.z*6}}else if(a.ai?.detected?.alive)focus={x:a.ai.detected.x,y:a.ai.detected.y+a.ai.detected.height*.55,z:a.ai.detected.z};else{const rival=game.actors.filter(o=>o!==a&&o.alive&&o.role!==a.role).sort((u,v)=>core.dist2(a,u)-core.dist2(a,v))[0];if(rival&&core.dist2(a,rival)<5.5)focus={x:rival.x,y:rival.y+rival.height*.55,z:rival.z}}const attention=gameplay.updateAttention(a,dt,focus,{headHeight:isDog(a.person)?.82:1.55,maxDistance:7});if(a.authored&&a.hasAuthoredClips&&a.animMixer){let semantic=a.anim||'idle';if(a.role==='hunter'&&(a===game.player?(input.aim||game.padAim):a.ai?.detected))semantic='aim';a.animMixer.play(semantic,{timeScale:clamp(Math.hypot(a.vx||0,a.vz||0)/(semantic==='run'?4.5:2.5),.7,1.35)});a.animMixer.update(dt)}else{gameplay.animateFamilyRig(a,dt,{aim:a===game.player&&(input.aim||game.padAim),recoil:a.recoil||0,lookPitch:a.pitch||0,turnRate:a.turnRate||0,speed:Math.hypot(a.vx||0,a.vz||0),grounded:a.grounded,attention});studio.updateProceduralFace(a,dt,{expression:a.anim==='hit'?'hurt':a.role==='hunter'?'focused':'neutral'});studio.applyFootIK(a,THREE,{heightAt:(x,z)=>core.supportHeight(x,z,a.radius,game.world.colliders,a.y+.1,.5),dt,maxLift:.1})}if(!a.prop&&a.rig.visible)for(const ev of gameplay.consumeMotionEvents(a)){game.motionFx?.emit(a.x,a.y,a.z,{strength:ev.strength,kind:ev.type});if(a===game.player||core.dist2(a,game.player)<8)audio?.oneShot(ev.type==='land'?'land':'step',{volume:ev.type==='land'?.11:.03,pitch:.9+Math.random()*.18,pan:studio.computeStereoPan(game.cameraYaw,game.player,a),surface:propSurfaceAt(a)})}}}
 
   function updateNpcs(dt){for(const n of game.world.npcs||[]){const ai=n.userData.npc;ai.timer-=dt;ai.phase=(ai.phase||0)+dt;if(ai.timer<=0){ai.timer=1.5+Math.random()*3;ai.tx=ai.baseX+(Math.random()-.5)*1.6;ai.tz=ai.baseZ+(Math.random()-.5)*1.6}let moving=false;if(ai.tx!=null){const dx=ai.tx-n.position.x,dz=ai.tz-n.position.z,l=Math.hypot(dx,dz)||1;if(l>.08){moving=true;n.position.x+=dx/l*.35*dt;n.position.z+=dz/l*.35*dt;n.rotation.y=gameplay.dampAngle(n.rotation.y,Math.atan2(dx,-dz),7,dt)}}n.position.y=(moving?Math.abs(Math.sin(ai.phase*5.5))*.014:Math.sin(ai.phase*1.4)*.006);n.rotation.z=gameplay.damp(n.rotation.z||0,moving?Math.sin(ai.phase*5.5)*.012:0,7,dt)}}
 
@@ -449,7 +556,7 @@
   function updateCamera(dt){
     const a=game.player;if(!a)return;const aim=input.aim||game.padAim,sprinting=gameplay.wantsSprint(keys,input,{sprint:game.padSprint},{strength:Math.min(1,Math.hypot(a.vx,a.vz)/(game.cameraRig.cfg.runSpeed||1))});
     game.cameraRig.state.aim=aim;game.cameraRig.update(a,game.world.colliders,dt,{aim,sprinting,dog:isDog(a.person),height:a.prop?a.height*.55:(isDog(a.person)?.72:1.38),velocity:{x:a.vx,z:a.vz},turnRate:a.turnRate||0,cameraBob:(a._motion?.landing||0)*-.025});
-    game.cameraYaw=game.cameraRig.state.yaw;game.cameraPitch=game.cameraRig.state.pitch;game.cameraActualDistance=game.cameraRig.state.actualDistance;a.cameraHidden=game.cameraActualDistance<.7&&!a.prop;a.yaw=game.cameraYaw;
+    game.cameraYaw=game.cameraRig.state.yaw;game.cameraPitch=game.cameraRig.state.pitch;game.cameraActualDistance=game.cameraRig.state.actualDistance;a.cameraHidden=game.cameraActualDistance<.72&&!a.prop;
   }
 
   function shoot(){const a=game?.player;if(!a||a.role!=='hunter'||!a.alive||roomState.phase!=='hunt'||game.shotCooldown>0)return;game.shotCooldown=.11;a.recoil=.7;audio?.oneShot('zap',{volume:.12,pitch:.92+Math.random()*.12});game.cameraRig?.kick(.028,(Math.random()-.5)*.008,.025);const ray=new THREE.Raycaster();ray.setFromCamera(new THREE.Vector2(0,0),game.camera);ray.far=28;const targets=[...game.world.raycastMeshes];for(const d of game.decoys)d.traverse(o=>{if(o.isMesh&&o.visible)targets.push(o)});for(const n of game.world.npcs||[])n.traverse(o=>{if(o.isMesh&&o.visible)targets.push(o)});for(const b of game.actors)if(b!==a&&b.alive)b.rig.traverse(o=>{if(o.isMesh&&o.visible)targets.push(o)});const hits=ray.intersectObjects(targets,false).filter(h=>h.object.visible);let hitPoint=game.camera.position.clone().add(ray.ray.direction.clone().multiplyScalar(25)),target=null;if(hits.length){const h=hits[0];hitPoint=h.point.clone();let o=h.object;while(o&&o!==game.scene){if(o.userData.actor){target=o.userData.actor;break}if(o.parent?.userData?.actor){target=o.parent.userData.actor;break}o=o.parent}if(!target){let parent=h.object;while(parent){if(parent.userData?.actor){target=parent.userData.actor;break}parent=parent.parent}}}spawnTracer(a,hitPoint);if(target&&target.role==='hider'){registerHit(a,target);showHit();audio?.oneShot('impact',{volume:.08,pitch:.78+Math.random()*.12,pan:studio.computeStereoPan(game.cameraYaw,a,target)})}else{spawnSparks(hitPoint,5);audio?.oneShot('impact',{volume:.045,pitch:1.08+Math.random()*.18,pan:0})}}
@@ -478,6 +585,6 @@
   function modal(html,bind){closeModal();const d=document.createElement('div');d.className='modal-backdrop';d.id='ph3Modal';d.innerHTML=`<div class="modal">${html}</div>`;document.body.appendChild(d);if(bind)bind(d.querySelector('.modal'));}
   function closeModal(){document.getElementById('ph3Modal')?.remove();}
 
-  window.__PROP_HUNT_REAL3D__={version:'2.0.0-studio-realism',renderer:'WebGL',three:'0.185.1',usesDepthBuffer:true,usesCanvas2D:false};
+  window.__PROP_HUNT_REAL3D__={version:'3.0.0-production3d-papa-alpha',renderer:'WebGL',three:'0.185.1',usesDepthBuffer:true,usesCanvas2D:false};
   window.PropHunt={mount,stop};
 })();

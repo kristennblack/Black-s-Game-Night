@@ -107,9 +107,9 @@ export function consumeMotionEvents(actor){
 
 export const CONTROL_PRESETS=Object.freeze({
   propHunt:{
-    walkSpeed:2.8,runSpeed:4.75,groundAccel:18,groundBrake:24,airControl:.32,
-    jumpSpeed:6.3,gravity:18.5,cameraDistance:3.65,aimDistance:2.35,
-    cameraHeight:1.38,shoulder:.48,fov:58,aimFov:48,sprintFov:64,
+    walkSpeed:2.75,runSpeed:4.6,groundAccel:16.5,groundBrake:21,airControl:.31,
+    jumpSpeed:6.15,gravity:18.5,cameraDistance:4.25,aimDistance:2.72,
+    cameraHeight:1.4,shoulder:.52,fov:56,aimFov:47,sprintFov:62,
     lookSensitivity:.0048,touchLookSensitivity:.0054,minPitch:-.42,maxPitch:.66
   },
   island:{
@@ -309,6 +309,7 @@ export function bindVirtualJoystick(element,knob,joy,{deadzone=.08,travel=.34}={
 
 function poseBlend(obj,axis,target,rate,dt){if(!obj)return;obj.rotation[axis]=damp(obj.rotation[axis]||0,target,rate,dt)}
 function posBlend(obj,axis,target,rate,dt){if(!obj)return;obj.position[axis]=damp(obj.position[axis]||0,target,rate,dt)}
+function basePos(obj,axis,fallback=0){if(!obj)return fallback;obj.userData=obj.userData||{};if(!obj.userData._g3dBasePosition)obj.userData._g3dBasePosition={x:obj.position.x||0,y:obj.position.y||0,z:obj.position.z||0};const v=obj.userData._g3dBasePosition[axis];return Number.isFinite(v)?v:fallback}
 function scaleBlend(obj,axis,target,rate,dt){if(!obj)return;obj.scale[axis]=damp(obj.scale[axis]||1,target,rate,dt)}
 
 /**
@@ -342,7 +343,7 @@ export function animateFamilyRig(actor,dt,{aim=false,recoil=0,lookPitch=0,turnRa
   // Sparse fidgets keep long idle moments alive without making characters twitch constantly.
   const fidgetClock=((motion?.idleTime||0)+String(actor.id||'').length*.73)%12.5,idleFidget=!moving&&anim==='idle'&&fidgetClock>10.7?Math.sin((fidgetClock-10.7)/1.8*Math.PI):0;
   // Procedural blink with a long quiet interval. Eyes are separate groups/meshes so only the face closes, never the whole head.
-  const blinkWindow=(actor.animTime+(String(actor.id||'').length*.37))%4.7,blink=blinkWindow>4.55?.08:1;(p.eyes||[]).forEach(e=>scaleBlend(e,'y',blink,35,dt));
+  const blinkWindow=(actor.animTime+(String(actor.id||'').length*.37))%4.7,blink=blinkWindow>4.55?.08:1;actor._blink=blink;(p.eyes||[]).forEach(e=>scaleBlend(e,'y',blink,35,dt));
   const breathing=1+Math.sin(actor.animTime*1.7+(String(actor.id||'').length*.21))*(moving?.003:.009);
   const idleGlance=!moving&&anim==='idle'?Math.sin(actor.animTime*.43+(String(actor.id||'').length*.61))*.065:0,attentionYaw=(attention?.yaw||0)*(attention?.weight??0),attentionPitch=(attention?.pitch||0)*(attention?.weight??0);
   (p.eyes||[]).forEach(e=>{poseBlend(e,'y',attentionYaw*.42,11,dt);poseBlend(e,'x',-attentionPitch*.25,11,dt)});
@@ -350,7 +351,7 @@ export function animateFamilyRig(actor,dt,{aim=false,recoil=0,lookPitch=0,turnRa
   if(p.torso){scaleBlend(p.torso,'y',breathing,6,dt);scaleBlend(p.torso,'x',2-breathing,6,dt)}
   if(dog){
     (p.legs||[]).forEach((leg,i)=>{const diagonal=(leg.front?1:-1)*(leg.side<0?1:-1),s=Math.sin(phase+diagonal*Math.PI*.48)*amount;poseBlend(leg.upper,'x',s,22,dt);poseBlend(leg.lower,'x',Math.max(0,-s)*.72-.09,22,dt)});
-    if(p.body){posBlend(p.body,'y',.58+bob*.55,15,dt);poseBlend(p.body,'z',turnLean*.34,10,dt);poseBlend(p.body,'x',clamp(-accelLean*.55,-.055,.055),10,dt)}if(p.chest){posBlend(p.chest,'y',.62+bob-landing*.018,15,dt);poseBlend(p.chest,'z',turnLean*.55,11,dt)}
+    if(p.body){posBlend(p.body,'y',basePos(p.body,'y',.58)+bob*.55,15,dt);poseBlend(p.body,'z',turnLean*.34,10,dt);poseBlend(p.body,'x',clamp(-accelLean*.55,-.055,.055),10,dt)}if(p.chest){posBlend(p.chest,'y',basePos(p.chest,'y',.62)+bob-landing*.018,15,dt);poseBlend(p.chest,'z',turnLean*.55,11,dt)}
     if(p.tailPivot){poseBlend(p.tailPivot,'x',-.5+Math.sin(actor.animTime*(run?9.5:5.2))*.25,12,dt);poseBlend(p.tailPivot,'y',Math.sin(actor.animTime*3.4)*.18,12,dt)}
     if(p.head){const sniff=!moving&&anim==='idle'&&((motion?.idleTime||0)%7.5)>5.9?Math.sin(((motion?.idleTime||0)-5.9)*2.4)*.14:0;poseBlend(p.head,'y',idleGlance+attentionYaw*.72+Math.sin(actor.animTime*.8)*.025-(motion?.turn||turnRate||0)*.07,10,dt);poseBlend(p.head,'x',clamp(lookPitch,-.25,.25)*.22+attentionPitch*.45+(moving?Math.sin(phase*2)*.014:0)+clamp(-(motion?.vertical||0)*.009,-.07,.07)+sniff,10,dt)}
     (p.ears||[]).forEach((ear,i)=>{poseBlend(ear,'z',(i?-.18:.18)+(moving?Math.sin(phase+i*Math.PI)*(.045+speedFactor*.035):Math.sin(actor.animTime*1.2+i)*.012),10,dt);poseBlend(ear,'x',moving?Math.sin(phase*2+i)*.025:0,10,dt)});
@@ -358,26 +359,26 @@ export function animateFamilyRig(actor,dt,{aim=false,recoil=0,lookPitch=0,turnRa
     if(p.weaponAnchor){
       poseBlend(p.weaponAnchor,'x',recoil*.08,18,dt);
       poseBlend(p.weaponAnchor,'y',moving?Math.sin(phase)*.025:0,12,dt);
-      posBlend(p.weaponAnchor,'y',.98+bob*.4,14,dt);
-      posBlend(p.weaponAnchor,'z',-.05+recoil*.035,18,dt);
+      posBlend(p.weaponAnchor,'y',basePos(p.weaponAnchor,'y',.98)+bob*.4,14,dt);
+      posBlend(p.weaponAnchor,'z',basePos(p.weaponAnchor,'z',-.05)+recoil*.035,18,dt);
     }
     if(anim==='jump'||anim==='fall'){(p.legs||[]).forEach((leg,i)=>{poseBlend(leg.upper,'x',(leg.front?-.28:.22),14,dt);poseBlend(leg.lower,'x',.18,14,dt)})}
-    if(anim==='sit'){if(p.body)posBlend(p.body,'y',.43,12,dt);if(p.chest)posBlend(p.chest,'y',.58,12,dt);(p.legs||[]).forEach(leg=>{poseBlend(leg.upper,'x',leg.front?-.12:.72,14,dt);poseBlend(leg.lower,'x',leg.front?.04:-.55,14,dt)})}
+    if(anim==='sit'){if(p.body)posBlend(p.body,'y',basePos(p.body,'y',.58)-.15,12,dt);if(p.chest)posBlend(p.chest,'y',basePos(p.chest,'y',.62)-.04,12,dt);(p.legs||[]).forEach(leg=>{poseBlend(leg.upper,'x',leg.front?-.12:.72,14,dt);poseBlend(leg.lower,'x',leg.front?.04:-.55,14,dt)})}
     if(anim==='harvest'||anim==='work'||anim==='inspect'||anim==='use'){const paw=Math.max(0,Math.sin(actor.animTime*5));if(p.head)poseBlend(p.head,'x',.18+Math.sin(actor.animTime*2)*.025,12,dt);const front=(p.legs||[]).find(l=>l.front&&l.side>0)||(p.legs||[]).find(l=>l.front);if(front){poseBlend(front.upper,'x',-.42-paw*.22,16,dt);poseBlend(front.lower,'x',.2+paw*.12,16,dt)}}
     if(anim==='eat'||anim==='drink'){if(p.head)poseBlend(p.head,'x',.28+Math.sin(actor.animTime*3.4)*.035,12,dt);if(p.chest)poseBlend(p.chest,'x',.04,10,dt)}
     if(anim==='fish'){if(p.head){poseBlend(p.head,'x',-.05,12,dt);poseBlend(p.head,'y',attentionYaw*.9,12,dt)}if(p.tailPivot)poseBlend(p.tailPivot,'x',-.68+Math.sin(actor.animTime*2.1)*.08,10,dt)}
     if(anim==='wave'){const front=(p.legs||[]).find(l=>l.front&&l.side>0)||(p.legs||[]).find(l=>l.front);if(front){poseBlend(front.upper,'x',-.65,16,dt);poseBlend(front.lower,'x',-.2+Math.sin(actor.animTime*7)*.08,16,dt)}if(p.tailPivot)poseBlend(p.tailPivot,'y',Math.sin(actor.animTime*8)*.38,18,dt)}
-    if(anim==='sleep'||anim==='lie'){if(p.body)posBlend(p.body,'y',.31,14,dt);if(p.chest)posBlend(p.chest,'y',.34,14,dt);if(p.head){posBlend(p.head,'y',.43,14,dt);poseBlend(p.head,'z',.16,10,dt)}(p.legs||[]).forEach(leg=>{poseBlend(leg.upper,'x',leg.front?.3:.6,14,dt);poseBlend(leg.lower,'x',-.45,14,dt)})}
+    if(anim==='sleep'||anim==='lie'){if(p.body)posBlend(p.body,'y',basePos(p.body,'y',.58)-.27,14,dt);if(p.chest)posBlend(p.chest,'y',basePos(p.chest,'y',.62)-.28,14,dt);if(p.head){posBlend(p.head,'y',basePos(p.head,'y',.86)-.43,14,dt);poseBlend(p.head,'z',.16,10,dt)}(p.legs||[]).forEach(leg=>{poseBlend(leg.upper,'x',leg.front?.3:.6,14,dt);poseBlend(leg.lower,'x',-.45,14,dt)})}
     if(anim==='scratch'){const hind=(p.legs||[]).find(l=>!l.front&&l.side>0)||(p.legs||[]).find(l=>!l.front);if(hind){poseBlend(hind.upper,'x',-.9+Math.sin(actor.animTime*12)*.28,20,dt);poseBlend(hind.lower,'x',.65,20,dt)}if(p.head)poseBlend(p.head,'z',-.12,14,dt)}
     if(anim==='shake'){if(p.body)poseBlend(p.body,'z',Math.sin(actor.animTime*24)*.13,28,dt);if(p.chest)poseBlend(p.chest,'z',-Math.sin(actor.animTime*24)*.12,28,dt);if(p.head)poseBlend(p.head,'z',Math.sin(actor.animTime*30)*.25,32,dt);(p.ears||[]).forEach((ear,i)=>poseBlend(ear,'z',(i?-.18:.18)+Math.sin(actor.animTime*30+i)*.22,30,dt))}
-    if(anim==='celebrate'||anim==='dance'){if(p.tailPivot)poseBlend(p.tailPivot,'y',Math.sin(actor.animTime*10)*.52,22,dt);if(p.chest)posBlend(p.chest,'y',.65+Math.abs(Math.sin(actor.animTime*5))*.06,18,dt);const front=(p.legs||[]).filter(l=>l.front);front.forEach((leg,i)=>poseBlend(leg.upper,'x',-.35+Math.sin(actor.animTime*6+i*Math.PI)*.22,18,dt))}
+    if(anim==='celebrate'||anim==='dance'){if(p.tailPivot)poseBlend(p.tailPivot,'y',Math.sin(actor.animTime*10)*.52,22,dt);if(p.chest)posBlend(p.chest,'y',basePos(p.chest,'y',.62)+.03+Math.abs(Math.sin(actor.animTime*5))*.06,18,dt);const front=(p.legs||[]).filter(l=>l.front);front.forEach((leg,i)=>poseBlend(leg.upper,'x',-.35+Math.sin(actor.animTime*6+i*Math.PI)*.22,18,dt))}
     if(anim==='carry'){if(p.head)poseBlend(p.head,'x',.04,10,dt);if(p.tailPivot)poseBlend(p.tailPivot,'x',-.62,12,dt)}
     if(anim==='hit'){if(p.head)poseBlend(p.head,'z',Math.sin(actor.animTime*28)*.16,24,dt);(p.legs||[]).forEach(leg=>poseBlend(leg.upper,'x',-.18,20,dt))}
     return;
   }
   const crouch=anim==='land'?.075:anim==='mantle'?.045:anim==='sit'?.22:anim==='sleep'?.38:0;
-  if(p.hips){posBlend(p.hips,'y',.82+bob-crouch-landing*.025,18,dt);poseBlend(p.hips,'y',(moving?Math.sin(phase)*.025:idleShift*.018),12,dt);poseBlend(p.hips,'z',-turnLean+idleShift*.012,10,dt);poseBlend(p.hips,'x',clamp(-accelLean*.35,-.04,.04),10,dt)}
-  if(p.upperBody){posBlend(p.upperBody,'y',.92+bob*.55-crouch*.25-landing*.02,18,dt);poseBlend(p.upperBody,'z',turnLean+(anim==='hit'?.12:0)-idleShift*.01,10,dt);poseBlend(p.upperBody,'x',anim==='mantle'?.24:anim==='hit'?-.08:(run?.055:0)+accelLean+landing*.055,10,dt);poseBlend(p.upperBody,'y',(moving?-Math.sin(phase)*.018:idleShift*.012)+attentionYaw*.12,10,dt)}
+  if(p.hips){posBlend(p.hips,'y',basePos(p.hips,'y',.82)+bob-crouch-landing*.025,18,dt);poseBlend(p.hips,'y',(moving?Math.sin(phase)*.025:idleShift*.018),12,dt);poseBlend(p.hips,'z',-turnLean+idleShift*.012,10,dt);poseBlend(p.hips,'x',clamp(-accelLean*.35,-.04,.04),10,dt)}
+  if(p.upperBody){posBlend(p.upperBody,'y',basePos(p.upperBody,'y',.92)+bob*.55-crouch*.25-landing*.02,18,dt);poseBlend(p.upperBody,'z',turnLean+(anim==='hit'?.12:0)-idleShift*.01,10,dt);poseBlend(p.upperBody,'x',anim==='mantle'?.24:anim==='hit'?-.08:(run?.055:0)+accelLean+landing*.055,10,dt);poseBlend(p.upperBody,'y',(moving?-Math.sin(phase)*.018:idleShift*.012)+attentionYaw*.12,10,dt)}
   if(p.head){poseBlend(p.head,'x',clamp(lookPitch,-.35,.35)*.28+attentionPitch*.55+(moving?Math.sin(phase*2)*.006:0)+clamp(-(motion?.vertical||0)*.006,-.045,.045),10,dt);poseBlend(p.head,'y',clamp((motion?.turn||turnRate||0)*.065,-.11,.11)+idleGlance+attentionYaw*.72,10,dt);poseBlend(p.head,'z',-turnLean*.22+idleShift*.008,9,dt)}
   if(p.leftLeg&&p.rightLeg){
     let leg=Math.sin(phase)*amount;if(!moving)leg=0;
@@ -390,9 +391,9 @@ export function animateFamilyRig(actor,dt,{aim=false,recoil=0,lookPitch=0,turnRa
   if(p.weaponAnchor){
     poseBlend(p.weaponAnchor,'x',aim?-lookPitch*.18:0,12,dt);
     poseBlend(p.weaponAnchor,'y',moving?Math.sin(phase)*.018:0,12,dt);
-    posBlend(p.weaponAnchor,'y',.32+bob*.6,14,dt);
-    posBlend(p.weaponAnchor,'x',.14+(aim?0:Math.sin(phase)*.006),14,dt);
-    posBlend(p.weaponAnchor,'z',-.28+recoil*.04,18,dt);
+    posBlend(p.weaponAnchor,'y',basePos(p.weaponAnchor,'y',.32)+bob*.6,14,dt);
+    posBlend(p.weaponAnchor,'x',basePos(p.weaponAnchor,'x',.14)+(aim?0:Math.sin(phase)*.006),14,dt);
+    posBlend(p.weaponAnchor,'z',basePos(p.weaponAnchor,'z',-.28)+recoil*.04,18,dt);
   }
   if(p.leftArm&&p.rightArm){
     if(anim==='hit'){

@@ -1,3 +1,26 @@
+# v3.0 Production3D Papa alpha
+
+This is the first **asset-first** Prop Hunt vertical slice. It keeps the proven Lodge/Cloudflare/multiplayer foundation, but begins retiring runtime primitive construction for the objects the player studies most closely. John, Gunner, the prop-zapper, Papa's tractor and Papa's chair now ship as actual GLB files through `public/models/manifest.json`, with procedural visuals retained only as safe fallbacks.
+
+The goal of this release is deliberately narrow: prove on a real phone that authored files plus semantic rig binding close the visual gap before migrating the rest of the family or the other maps. See `PRODUCTION_3D_PAPA_ARCHITECTURE.md` and `PRODUCTION_3D_ASSET_QA.md`.
+
+## What is genuinely new
+
+- baked GLB John benchmark with named body joints, face targets and hand/back sockets,
+- baked GLB Gunner benchmark with a named quadruped hierarchy and backpack socket,
+- GLB prop-zapper, tractor and Papa chair,
+- runtime named-rig binding so GLBs without baked clips still move using the shared animation language,
+- bind-position-relative procedural motion so authored joints are not forced into prototype coordinates,
+- async hero-object replacement while simulation-owned collision stays stable,
+- asset build/audit tools and production-model manifest,
+- phone QA HUD now reports `GLB+joints`, `GLB+clips` or `procedural`.
+
+## Important honesty rule
+
+This is **not yet the final Blender/PlayCanvas production scene**. The benchmark files are project-authored baked articulated GLBs and are a meaningful step beyond runtime greybox geometry, but the final target is still continuously skinned/sculpted family models, authored animation clips and editor-composed environments. Papa's Shop must pass the real-phone checklist before we expand this pipeline to the rest of the family or the other maps.
+
+---
+
 # Black Family Game Night v2.0.0-studio-realism
 
 This is the **Studio Realism** release for the private Black Family Game Night collection. It keeps the real-WebGL movement, camera, scene and embodied-realism work from v1.3 through v1.8, then adds the systems needed to cross the next visual and behavioral ceiling without rewriting the games again.
@@ -39,7 +62,7 @@ v2.0 adds:
 
 ### Important model caveat
 
-The pipeline is real, but this package does **not** pretend bespoke family GLB files already exist. `public/models/manifest.json` intentionally contains empty model categories. Until authored files are supplied, the detailed procedural all-angle characters/dogs remain the visible fallback.
+Historical v2 note: that release intentionally shipped an empty authored-model manifest. v3 now opts John, Gunner and selected Papa's Shop hero assets into the production GLB pipeline while every unconverted family member/object still falls back safely.
 
 See `AUTHORED_3D_ASSET_GUIDE.md` for the exact future handoff standard.
 
@@ -245,7 +268,7 @@ Important behavior includes:
 - environmental ambience,
 - detailed all-angle humans and quadruped dogs.
 
-The runtime marker is now `2.0.0-studio-realism`.
+The package runtime marker is now `2.1.0-prop-hunt-quality-slice`. The shared Studio/gameplay modules remain at their v2.0 API contract because this release is a focused Prop Hunt scene-quality slice.
 
 ### 10. Family Island Life improvements
 
@@ -376,7 +399,7 @@ Coverage now includes the shared 3D movement/control module, analog magnitude, a
 
 This package is a source replacement build. It is **not automatically deployed** by creating the ZIP.
 
-The existing Cloudflare Worker/Durable Object architecture remains in place. v1.7 primarily changes the client-side 3D/gameplay framework and does not introduce a new Durable Object class or migration.
+The existing Cloudflare Worker/Durable Object architecture remains in place. v2.1 is a focused Prop Hunt client/scene quality slice and does not introduce a new Durable Object class or migration.
 
 The 3D clients currently load Three.js from jsDelivr, so the free-moving 3D games require network access unless Three.js is later vendored into the project.
 
@@ -384,6 +407,16 @@ Real-device GPU visual QA is still required before calling the build production-
 
 ## Important art-quality note
 
-v1.7 substantially improves the procedural 3D system, but procedural geometry is still not the final ceiling.
+v2.1 improves the Prop Hunt procedural characters and Papa's Shop scene, but procedural geometry is still not the final likeness ceiling. The authored GLB/GLTF pipeline from v2.0 remains the intended route for bespoke family models.
 
 The next major visual step, when desired, is an authored GLB/GLTF pipeline for hero family characters, dogs, vehicles and signature objects. That art upgrade should plug into the shared semantic animation/control contracts instead of replacing the game systems again.
+
+---
+
+## v3.0 Production3D Papa alpha
+
+The current production experiment is documented in `PRODUCTION_3D_PAPA_ARCHITECTURE.md` and `PRODUCTION_3D_ASSET_QA.md`.
+
+This slice keeps the v2/v2.1 gameplay and Cloudflare foundation, but moves Papa's Shop high-attention visuals into baked GLB assets. John and Gunner include calibrated named-joint rigs plus curved approved-reference face textures that stay attached to genuine 3D head geometry. Papa's Shop also swaps authored GLB visuals for the prop-zapper, tractor, motorcycle, Papa chair, fireplace, workbench, tool chest and shelving while preserving gameplay colliders underneath.
+
+The build remains a visual alpha until it passes the real-device QA checklist. Other 3D maps are not visually signed off by this release.

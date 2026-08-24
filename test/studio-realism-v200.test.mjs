@@ -23,10 +23,12 @@ test('v2 Studio Realism module exposes the cross-game realism foundation',()=>{
   for(const src of [prop,island,birthday])assert.ok(src.includes('/shared-3d-studio.mjs'));
 });
 
-test('authored-model manifest is intentionally fallback-safe until bespoke GLBs are supplied',()=>{
-  assert.equal(manifest.version,1);
-  assert.deepEqual(manifest.characters,{});assert.deepEqual(manifest.dogs,{});assert.deepEqual(manifest.props,{});assert.deepEqual(manifest.furniture,{});
-  for(const token of ['createAuthoredAssetPipeline','cloneAuthored','SkeletonUtils.js','loadCharacter','loadDog','attachToRigSocket','SemanticAnimationMixer'])assert.ok(studio.includes(token),token);
+test('authored-model manifest is fallback-safe and may opt high-attention assets into production GLBs',()=>{
+  assert.ok(manifest.version>=1);
+  assert.equal(manifest.characters?.john?.file,'/models/characters/john.glb');
+  assert.equal(manifest.dogs?.gunner?.file,'/models/dogs/gunner.glb');
+  assert.equal(manifest.props?.propZapper?.file,'/models/props/prop-zapper.glb');
+  for(const token of ['createAuthoredAssetPipeline','cloneAuthored','SkeletonUtils.js','loadCharacter','loadDog','attachToRigSocket','SemanticAnimationMixer','bindAuthoredRigParts'])assert.ok(studio.includes(token),token);
 });
 
 test('semantic authored animation lookup maps gameplay words to likely clip names',()=>{

@@ -1,7 +1,95 @@
 {
-  "version": 1,
-  "characters": {},
-  "dogs": {},
-  "props": {},
-  "furniture": {}
+  "version": 2,
+  "characters": {
+    "john": {
+      "file": "/models/characters/john.glb",
+      "scale": 0.8493,
+      "production": true,
+      "rig": "named-jointed-human",
+      "referenceHeight": 1.82,
+      "games": [
+        "propHunt"
+      ]
+    }
+  },
+  "dogs": {
+    "gunner": {
+      "file": "/models/dogs/gunner.glb",
+      "scale": 0.7129,
+      "production": true,
+      "rig": "named-jointed-dog",
+      "referenceHeight": 1.08,
+      "games": [
+        "propHunt"
+      ]
+    }
+  },
+  "props": {
+    "propZapper": {
+      "file": "/models/props/prop-zapper.glb",
+      "scale": 1.0,
+      "production": true,
+      "games": [
+        "propHunt"
+      ]
+    },
+    "tractor": {
+      "file": "/models/props/tractor.glb",
+      "scale": 1.0,
+      "production": true,
+      "games": [
+        "propHunt"
+      ]
+    },
+    "motorcycle": {
+      "file": "/models/props/motorcycle.glb",
+      "scale": 1.0,
+      "production": true,
+      "games": [
+        "propHunt"
+      ]
+    }
+  },
+  "furniture": {
+    "papaChair": {
+      "file": "/models/furniture/papa-chair.glb",
+      "scale": 0.98,
+      "production": true,
+      "games": [
+        "propHunt"
+      ]
+    },
+    "fireplace": {
+      "file": "/models/furniture/fireplace.glb",
+      "scale": 1.045,
+      "production": true,
+      "games": [
+        "propHunt"
+      ]
+    },
+    "workbench": {
+      "file": "/models/furniture/workbench.glb",
+      "scale": 1.0,
+      "production": true,
+      "games": [
+        "propHunt"
+      ]
+    },
+    "toolChest": {
+      "file": "/models/furniture/tool-chest.glb",
+      "scale": 1.0,
+      "production": true,
+      "games": [
+        "propHunt"
+      ]
+    },
+    "shelving": {
+      "file": "/models/furniture/shelving.glb",
+      "scale": 0.93,
+      "production": true,
+      "games": [
+        "propHunt"
+      ]
+    }
+  }
 }

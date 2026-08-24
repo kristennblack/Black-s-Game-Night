@@ -78,8 +78,40 @@ export function createAuthoredAssetPipeline(THREE,{manifestUrl='/models/manifest
   return {ensureManifest,setManifest:m=>{manifest=m||DEFAULT_MODEL_MANIFEST},getManifest:()=>manifest,entry,has,load,loadCharacter:(id,o)=>load('characters',id,o),loadDog:(id,o)=>load('dogs',id,o),loadProp:(id,o)=>load('props',id,o),loadFurniture:(id,o)=>load('furniture',id,o),failed};
 }
 
-export function findRigNode(root,names=[]){const targets=names.map(canonicalName);let best=null;root?.traverse?.(o=>{if(best)return;const n=canonicalName(o.name||'');if(targets.includes(n)||targets.some(t=>n.endsWith(t)||n.includes(t)))best=o});return best}
-export function attachToRigSocket(root,obj,{socket='rightHand',position=[0,0,0],rotation=[0,0,0],scale=1}={}){if(!root||!obj)return null;const aliases={rightHand:['righthand','right_hand','hand_r','mixamorigrighthand','r_hand','wrist_r'],leftHand:['lefthand','left_hand','hand_l','mixamoriglefthand','l_hand','wrist_l'],head:['head','mixamorighead','neck_02'],back:['spine2','spine_02','mixamorigspine2','upperchest','chest']}[socket]||[socket],node=findRigNode(root,aliases)||root;node.add(obj);obj.position.set(...position);obj.rotation.set(...rotation);obj.scale.multiplyScalar(scale);obj.userData.rigSocket=socket;return node}
+export function findRigNode(root,names=[]){const targets=names.map(canonicalName);let exact=null,fuzzy=null;root?.traverse?.(o=>{const n=canonicalName(o.name||'');if(!n)return;if(!exact&&targets.includes(n))exact=o;else if(!fuzzy&&targets.some(t=>n.endsWith(t)||n.includes(t)))fuzzy=o});return exact||fuzzy}
+
+/** Map a named authored hierarchy onto the same semantic parts contract used by
+ * procedural rigs.  This lets a GLB become useful immediately, even before it
+ * has authored clips: locomotion, gaze, recoil and contextual poses can drive
+ * its named joints while AnimationMixer remains available when clips arrive. */
+export function bindAuthoredRigParts(root,{kind='human'}={}){
+  if(!root)return null;
+  const node=(...names)=>findRigNode(root,names);
+  if(kind==='dog'){
+    const leg=(prefix,front,side)=>({upper:node(prefix),lower:node(prefix+'Knee'),foot:node(prefix+'Paw'),front,side});
+    const parts={
+      body:node('body'),chest:node('chestPivot','chest'),head:node('head'),jaw:node('jaw'),tongue:node('tongue'),
+      eyes:[node('leftEye'),node('rightEye')].filter(Boolean),ears:[node('leftEar'),node('rightEar')].filter(Boolean),
+      legs:[leg('frontLeft',true,-1),leg('frontRight',true,1),leg('rearLeft',false,-1),leg('rearRight',false,1)].filter(l=>l.upper&&l.lower),
+      tailPivot:node('tail'),weaponAnchor:node('backSocket','back_socket'),weapon:null
+    };
+    root.userData.parts=parts;root.userData.authoredRigKind='dog';return parts;
+  }
+  const parts={
+    hips:node('hips','pelvis'),upperBody:node('upperBody','upper_body','spine2','spine_02','chest'),torso:node('torso'),head:node('head'),face:node('face'),
+    eyes:[node('leftEye'),node('rightEye')].filter(Boolean),brows:[node('leftBrow'),node('rightBrow')].filter(Boolean),mouth:node('mouth'),
+    leftArm:{shoulder:node('leftShoulder','shoulder_l'),elbow:node('leftElbow','elbow_l'),hand:node('leftHand','hand_l')},
+    rightArm:{shoulder:node('rightShoulder','shoulder_r'),elbow:node('rightElbow','elbow_r'),hand:node('rightHand','hand_r')},
+    leftLeg:{hip:node('leftHip','thigh_l'),knee:node('leftKnee','knee_l'),foot:node('leftFoot','foot_l')},
+    rightLeg:{hip:node('rightHip','thigh_r'),knee:node('rightKnee','knee_r'),foot:node('rightFoot','foot_r')},
+    weaponAnchor:node('rightHandSocket','right_hand_socket','rightHand','hand_r'),weapon:null
+  };
+  root.userData.parts=parts;root.userData.authoredRigKind='human';return parts;
+}
+
+export function hasAuthoredAnimationClips(root){return !!root?.userData?.authoredAnimations?.length}
+
+export function attachToRigSocket(root,obj,{socket='rightHand',position=[0,0,0],rotation=[0,0,0],scale=1}={}){if(!root||!obj)return null;const aliases={rightHand:['righthandsocket','right_hand_socket','righthand','right_hand','hand_r','mixamorigrighthand','r_hand','wrist_r'],leftHand:['lefthandsocket','left_hand_socket','lefthand','left_hand','hand_l','mixamoriglefthand','l_hand','wrist_l'],head:['headsocket','head_socket','head','mixamorighead','neck_02'],back:['backsocket','back_socket','spine2','spine_02','mixamorigspine2','upperchest','chest']}[socket]||[socket],node=findRigNode(root,aliases)||root;node.add(obj);obj.position.set(...position);obj.rotation.set(...rotation);obj.scale.multiplyScalar(scale);obj.userData.rigSocket=socket;return node}
 
 export const SEMANTIC_CLIP_ALIASES=Object.freeze({
   idle:['idle','Idle','idle_relaxed','stand'],walk:['walk','Walk','walking'],run:['run','Run','jog','sprint'],backward:['walk_backward','backward'],
@@ -117,7 +149,7 @@ export function updateProceduralFace(actor,dt,{expression=null,speaking=0}={}){
   actor._faceState=actor._faceState||{mouth:0,brow:0,eye:1};actor._faceState.mouth=damp(actor._faceState.mouth,e.mouth*amt+speaking*.16,9,dt);actor._faceState.brow=damp(actor._faceState.brow,e.brow*amt,8,dt);actor._faceState.eye=damp(actor._faceState.eye,e.eye,12,dt);
   if(p.mouth){p.mouth.scale.y=.65+Math.abs(actor._faceState.mouth)*1.7;p.mouth.position.y=-.078+actor._faceState.mouth*.012;p.mouth.rotation.z=actor._faceState.mouth<0?Math.PI:0}
   if(p.brows)for(let i=0;i<p.brows.length;i++){const side=i?1:-1;p.brows[i].position.y=.072+actor._faceState.brow*.035;p.brows[i].rotation.z=side*(-.08-actor._faceState.brow*.28)}
-  if(p.eyes)for(const eye of p.eyes)eye.scale.y=actor._faceState.eye;
+  if(p.eyes)for(const eye of p.eyes)eye.scale.y=actor._faceState.eye*(actor?._blink??1);
 }
 
 /**

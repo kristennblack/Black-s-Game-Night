@@ -44,6 +44,13 @@ export function create3DArtKit(THREE){
       }
       x.globalAlpha=1;
       if(kind==='paintedWood'){x.fillStyle='rgba(255,255,255,.08)';x.fillRect(0,0,256,256)}
+    }else if(kind==='plaid'){
+      // Low-frequency woven plaid survives mobile viewing distance better than tiny UV detail.
+      x.fillStyle=cssColor(color);x.fillRect(0,0,256,256);x.globalAlpha=.42;
+      for(let i=-64;i<320;i+=64){x.fillStyle=shade(color,.22);x.fillRect(i,0,18,256);x.fillStyle=shade(color,-.32);x.fillRect(i+22,0,10,256);x.fillStyle=shade(color,.18);x.fillRect(0,i,256,18);x.fillStyle=shade(color,-.36);x.fillRect(0,i+24,256,9)}
+      x.globalAlpha=.18;x.fillStyle='#f0c36c';for(let i=-64;i<320;i+=64){x.fillRect(i+38,0,4,256);x.fillRect(0,i+39,256,4)}x.globalAlpha=1;
+    }else if(kind==='floral'){
+      x.fillStyle=cssColor(color);x.fillRect(0,0,256,256);for(let i=0;i<80;i++){const xx=r()*256,yy=r()*256,rr=2+r()*4,petal=shade(color,.38+r()*.18);x.fillStyle=petal;for(let q=0;q<5;q++){const a=q/5*TAU;x.beginPath();x.ellipse(xx+Math.cos(a)*rr,yy+Math.sin(a)*rr,rr*.55,rr*.3,a,0,TAU);x.fill()}x.fillStyle=shade(color,-.28);x.beginPath();x.arc(xx,yy,rr*.28,0,TAU);x.fill()}
     }else if(kind==='concrete'){
       for(let i=0;i<1800;i++){const v=r()>.5?255:0;x.fillStyle=`rgba(${v},${v},${v},${.01+r()*.035})`;const s=.5+r()*2;x.fillRect(r()*256,r()*256,s,s)}
       for(let i=0;i<12;i++){x.strokeStyle='rgba(55,45,35,.045)';x.lineWidth=1+r()*3;x.beginPath();x.moveTo(r()*256,r()*256);x.bezierCurveTo(r()*256,r()*256,r()*256,r()*256,r()*256,r()*256);x.stroke()}
@@ -83,7 +90,7 @@ export function create3DArtKit(THREE){
       const i=(yy*size+xx)*4;
       if(channel==='roughness'){
         const grain=Math.sin(xx*.31+seed*.13)*.12+Math.cos(yy*.27+seed*.19)*.1+(r()-.5)*.2;
-        const base={metal:.38,paintedMetal:.58,galvanized:.48,wood:.78,paintedWood:.7,concrete:.94,gravel:.98,dirt:.98,grass:.97,rubber:.95,fabric:.98,leather:.86,stone:.95,hay:.99,plaster:.91,asphalt:.98,skin:.83,hair:.93}[kind]??.82;
+        const base={metal:.38,paintedMetal:.58,galvanized:.48,wood:.78,paintedWood:.7,concrete:.94,gravel:.98,dirt:.98,grass:.97,rubber:.95,fabric:.98,plaid:.98,floral:.98,leather:.86,stone:.95,hay:.99,plaster:.91,asphalt:.98,skin:.83,hair:.93}[kind]??.82;
         const v=Math.round(clamp(base+grain*.18,0,1)*255);d[i]=d[i+1]=d[i+2]=v;d[i+3]=255;
       }else{
         // Tangent-space normal approximation.  Low amplitude is intentional so
@@ -97,7 +104,7 @@ export function create3DArtKit(THREE){
   }
 
   function material(kind='paintedMetal',color=0x777777,opts={}){
-    const rough=opts.roughness??({wood:.74,paintedWood:.66,concrete:.95,gravel:1,dirt:1,metal:.34,paintedMetal:.52,galvanized:.45,rubber:.94,fabric:.96,leather:.84,stone:.94,hay:.98,pegboard:.9,grass:.98,plaster:.9,asphalt:.97,skin:.84,hair:.92,glass:.12}[kind]??.82);
+    const rough=opts.roughness??({wood:.74,paintedWood:.66,concrete:.95,gravel:1,dirt:1,metal:.34,paintedMetal:.52,galvanized:.45,rubber:.94,fabric:.96,plaid:.96,floral:.96,leather:.84,stone:.94,hay:.98,pegboard:.9,grass:.98,plaster:.9,asphalt:.97,skin:.84,hair:.92,glass:.12}[kind]??.82);
     const metal=opts.metalness??({metal:.78,paintedMetal:.28,galvanized:.7}[kind]??0);
     const key=`${kind}:${numColor(color)}:${rough}:${metal}:${opts.emissive||0}:${opts.transparent||false}:${opts.opacity||1}`;
     if(materialCache.has(key))return materialCache.get(key);
@@ -105,7 +112,7 @@ export function create3DArtKit(THREE){
     if(kind==='glass'){
       m=new THREE.MeshPhysicalMaterial({color,roughness:.08,metalness:0,transparent:true,opacity:opts.opacity??.34,transmission:opts.transmission??.36,thickness:.03,ior:1.45,side:THREE.DoubleSide});
     }else{
-      const map=makeTexture(kind,color,opts.seed||1),surfaceKinds=['wood','paintedWood','concrete','gravel','dirt','grass','plaster','asphalt','metal','paintedMetal','galvanized','rubber','fabric','leather','stone','hay','pegboard','skin','hair'];
+      const map=makeTexture(kind,color,opts.seed||1),surfaceKinds=['wood','paintedWood','concrete','gravel','dirt','grass','plaster','asphalt','metal','paintedMetal','galvanized','rubber','fabric','plaid','floral','leather','stone','hay','pegboard','skin','hair'];
       m=new THREE.MeshStandardMaterial({color,map:map||null,roughness:rough,metalness:metal,emissive:opts.emissive||0,emissiveIntensity:opts.emissiveIntensity||0});
       if(map&&surfaceKinds.includes(kind)){m.bumpMap=map;m.bumpScale=opts.bumpScale??(['gravel','stone','concrete'].includes(kind)?.055:.025);m.roughnessMap=makeSurfacePropertyTexture(kind,color,opts.seed||1,'roughness');m.normalMap=makeSurfacePropertyTexture(kind,color,opts.seed||1,'normal');m.normalScale?.set?.(opts.normalScale??.22,opts.normalScale??.22)}
     }
@@ -139,6 +146,35 @@ export function create3DArtKit(THREE){
   }
 
   function shadeHex(c,amt){const cc=new THREE.Color(numColor(c));if(amt>0)cc.lerp(new THREE.Color(0xffffff),amt);else cc.lerp(new THREE.Color(0x000000),-amt);return cc.getHex()}
+
+  function buildFloorDrain(w,x,z,rot=0,{size=.42}={}){
+    const g=new THREE.Group(),steel=material('metal',0x676d6b,{seed:201}),dark=material('rubber',0x242626);
+    g.add(box(size,.018,size,steel,[0,.009,0]));g.add(box(size*.76,.012,size*.76,dark,[0,.021,0]));
+    for(let i=-2;i<=2;i++){g.add(box(size*.62,.01,.022,steel,[0,.029,i*size*.115]));g.add(box(.022,.01,size*.62,steel,[i*size*.115,.029,0]));}
+    g.rotation.y=rot;g.position.set(x,.002,z);w.group.add(g);return g;
+  }
+
+  function buildOilStain(w,x,z,rot=0,{radius=.55,opacity=.26,color=0x26231f}={}){
+    const mat=new THREE.MeshStandardMaterial({color,roughness:1,metalness:0,transparent:true,opacity,depthWrite:false});
+    const g=new THREE.Group();for(let i=0;i<4;i++){const r=radius*(1-i*.13),m=new THREE.Mesh(new THREE.CircleGeometry(r,22),mat.clone());m.material.opacity=opacity*(.75-i*.12);m.rotation.x=-Math.PI/2;m.position.set((i-1.5)*radius*.08,.004+i*.0007,Math.sin(i*1.7)*radius*.08);m.scale.set(1,.7+(i%2)*.12,1);m.castShadow=false;m.receiveShadow=false;g.add(m)}g.rotation.y=rot;g.position.set(x,0,z);w.group.add(g);return g;
+  }
+
+  function buildHoseReel(w,x,z,y=1.35,rot=0,{color=0xa25c37}={}){
+    const g=new THREE.Group(),frame=material('paintedMetal',0x4a5150,{seed:207}),hose=material('rubber',0x232525),paint=material('paintedMetal',color,{seed:209});
+    g.add(box(.58,.62,.08,frame,[0,0,0]));g.add(cylinder(.08,.08,.28,paint,[0,0,-.12],[Math.PI/2,0,0],14));for(const rr of [.22,.17,.12])g.add(torus(rr,.027,hose,[0,0,-.27],[0,0,0]));g.add(tubeBetween([.18,-.12,-.27],[.31,-.72,-.29],.022,hose));g.add(cylinder(.028,.034,.16,material('metal',0x8b918e),[.31,-.8,-.29],[0,0,0],10));g.rotation.y=rot;g.position.set(x,y,z);w.group.add(g);return g;
+  }
+
+  function buildTireStack(w,x,z,rot=0,{count=3,radius=.32}={}){
+    const g=new THREE.Group(),rub=material('rubber',0x1c1e1e),rim=material('metal',0x777c7a);for(let i=0;i<count;i++){const yy=.1+i*.18;g.add(torus(radius,.085,rub,[0,yy,0],[Math.PI/2,0,0]));g.add(cylinder(radius*.38,radius*.38,.035,rim,[0,yy,0],[],14))}g.rotation.y=rot;g.position.set(x,0,z);return addAsset(w,g,{x,z,y:0,w:radius*2.25,d:radius*2.25,h:.18*count+.16,climbable:true,walkableTop:true,name:'Stacked shop tires'});
+  }
+
+  function buildShopSideTable(w,x,z,rot=0,{width=.75,depth=.58}={}){
+    const g=new THREE.Group(),steel=material('paintedMetal',0x4e5656,{seed:215}),wood=material('wood',0x7c5c3e,{seed:217});g.add(box(width,.08,depth,wood,[0,.67,0]));for(const sx of [-width*.4,width*.4])for(const sz of [-depth*.38,depth*.38])g.add(box(.045,.65,.045,steel,[sx,.325,sz]));g.add(box(width*.82,.045,depth*.75,steel,[0,.28,0]));g.rotation.y=rot;g.position.set(x,0,z);return addAsset(w,g,{x,z,y:0,w:width,d:depth,h:.72,climbable:true,walkableTop:true,name:'Shop side table'});
+  }
+
+  function buildWallConduit(w,x,z,y=1.35,rot=0,{height=1.9,width=.9}={}){
+    const g=new THREE.Group(),metal=material('metal',0x8e928d),boxMat=material('paintedMetal',0x686f6d,{seed:223});for(const sx of [-width*.38,0,width*.38])g.add(cylinder(.018,.018,height,metal,[sx,0,0],[],8));g.add(box(width,.42,.08,boxMat,[0,-height*.36,0]));for(let i=0;i<4;i++)g.add(box(.11,.055,.015,material('rubber',i===0?0xb05b4b:0x303536),[-.28+i*.18,-height*.36,-.05]));g.rotation.y=rot;g.position.set(x,y,z);w.group.add(g);return g;
+  }
 
   function buildWorkbench(w,x,z,rot=0){
     const g=new THREE.Group(),wood=material('wood',0x8d6742,{seed:19}),darkWood=material('wood',0x5c422f,{seed:23}),steel=material('galvanized',0x6f7372,{seed:3});
@@ -406,6 +442,63 @@ export function create3DArtKit(THREE){
     g.position.set(x,0,z);return addAsset(w,g,{x,z,y:0,w:.55*s,d:.55*s,h:2.45*s,name:'Tree'});
   }
 
+  /** Visual segmented overhead shop door for a true garage-sized opening. */
+  function buildOverheadDoor(w,x,z,rot=0,{width=3.4,height=2.45,color=0xb8b2a7,open=.9,label='Overhead door'}={}){
+    const g=new THREE.Group(),panelMat=material('paintedMetal',color,{seed:181}),frame=material('paintedMetal',0x4d5353,{seed:183}),rail=material('metal',0x787e7d,{seed:185});
+    const raised=clamp(open,0,1),visibleH=Math.max(.12,height*(1-raised));
+    // Side tracks remain visible even when the door is fully raised.
+    for(const sx of [-width/2-.055,width/2+.055])g.add(box(.065,height+.15,.075,rail,[sx,(height+.15)/2,0]));
+    g.add(box(width+.18,.085,.08,frame,[0,height+.04,0]));
+    if(visibleH>.14){
+      const segs=Math.max(1,Math.round(visibleH/.38)),segH=visibleH/segs;
+      for(let i=0;i<segs;i++){const yy=height-visibleH+(i+.5)*segH;g.add(box(width,Math.max(.06,segH-.022),.055,panelMat,[0,yy,0]));}
+    }
+    // Raised panels sit just inside the ceiling on horizontal tracks.
+    if(raised>.08){const depth=Math.max(.45,height*.78*raised);for(let i=0;i<5;i++)g.add(box(width,.045,depth/5-.018,panelMat,[0,height+.02,-(i+.5)*depth/5]));for(const sx of [-width/2+.12,width/2-.12])g.add(box(.045,.045,depth,rail,[sx,height+.09,-depth/2]));}
+    g.position.set(x,0,z);g.rotation.y=rot;g.userData.architectureLabel=label;w.group.add(g);return g;
+  }
+
+  /**
+   * Visual-only rural horizon used by the family maps.  It deliberately lives
+   * outside the playable collider bounds so the player sees fields, tree lines,
+   * utility buildings and sky depth instead of the finite game floor ending in fog.
+   * None of these meshes are raycast or collision targets.
+   */
+  function buildRuralBackdrop(w,{centerX=10,centerZ=7,radius=34,treeColor=0x38533d,fieldColor=0x6f7a4f,farFieldColor=0x8a8056,buildingColor=0x65594d}={}){
+    const g=new THREE.Group(),field=material('grass',fieldColor,{seed:141}),farField=material('grass',farFieldColor,{seed:143}),treeMat=material('paintedWood',treeColor,{seed:145,roughness:.98}),trunk=material('wood',0x4b382a,{seed:147}),shed=material('paintedWood',buildingColor,{seed:149}),roof=material('paintedMetal',0x494b48,{seed:151});
+    const ground=new THREE.Mesh(new THREE.CircleGeometry(radius,48),field);ground.rotation.x=-Math.PI/2;ground.position.set(centerX,-.09,centerZ);ground.receiveShadow=true;g.add(ground);
+    const ring=new THREE.Mesh(new THREE.RingGeometry(radius*.52,radius*.96,48),farField);ring.rotation.x=-Math.PI/2;ring.position.set(centerX,-.085,centerZ);ring.receiveShadow=true;g.add(ring);
+    const treeLine=new THREE.Group();
+    for(let i=0;i<42;i++){
+      const a=i/42*TAU,r=radius*(.70+(i%5)*.025),h=2.8+(i%7)*.22,x=centerX+Math.cos(a)*r,z=centerZ+Math.sin(a)*r;
+      const t=new THREE.Group();t.add(cylinder(.07,.12,h*.42,trunk,[0,h*.21,0],[],8));
+      const crown=mesh(new THREE.ConeGeometry(.65+(i%3)*.12,h*.72,7),treeMat,[0,h*.62,0]);t.add(crown);t.position.set(x,0,z);treeLine.add(t);
+    }
+    g.add(treeLine);
+    // A couple of very low-detail distant outbuildings give the horizon scale.
+    for(const [x,z,rot,scale] of [[centerX-radius*.54,centerZ-radius*.27,.18,1],[centerX+radius*.50,centerZ+radius*.18,-.22,.8]]){
+      const b=new THREE.Group();b.add(box(3.8*scale,1.8*scale,2.5*scale,shed,[0,.9*scale,0]));
+      const r=box(4.2*scale,.16*scale,2.9*scale,roof,[0,1.88*scale,0],[0,0,.12]);b.add(r);b.position.set(x,0,z);b.rotation.y=rot;g.add(b);
+    }
+    // Utility poles break up an otherwise perfectly even tree line.
+    const poleMat=material('wood',0x51402f,{seed:153}),wireMat=material('rubber',0x242626),polePoints=[[centerX-radius*.23,centerZ-radius*.69],[centerX+radius*.05,centerZ-radius*.72],[centerX+radius*.33,centerZ-radius*.66]];
+    for(const [x,z] of polePoints){const pole=new THREE.Group();pole.add(cylinder(.045,.065,4.2,poleMat,[0,2.1,0],[],8));pole.add(box(.8,.055,.055,poleMat,[0,3.62,0]));pole.position.set(x,0,z);g.add(pole)}
+    for(let i=0;i<polePoints.length-1;i++){const [ax,az]=polePoints[i],[bx,bz]=polePoints[i+1];for(const off of [-.22,.22]){const curve=new THREE.QuadraticBezierCurve3(new THREE.Vector3(ax+off,3.62,az),new THREE.Vector3((ax+bx)/2+off,3.25,(az+bz)/2),new THREE.Vector3(bx+off,3.62,bz));const line=new THREE.Mesh(new THREE.TubeGeometry(curve,16,.012,5,false),wireMat);line.castShadow=false;g.add(line)}}
+    g.position.y=0;w.group.add(g);return g;
+  }
+
+  /** Architectural finish pieces for procedural buildings. */
+  function buildExteriorTrim(w,{x,z,width,depth,height=2.9,color=0xe1d3bd,roofY=3.0}={}){
+    const g=new THREE.Group(),trim=material('paintedWood',color,{seed:161}),metal=material('paintedMetal',0x555b59,{seed:163});
+    const hx=width/2,hz=depth/2;
+    for(const sx of [-hx,hx])for(const sz of [-hz,hz])g.add(box(.075,height,.075,trim,[sx,height/2,sz]));
+    // Eaves and gutters are visual only.  They add believable thickness to the silhouette.
+    g.add(box(width+.24,.065,.11,trim,[0,roofY,-hz-.06]));g.add(box(width+.24,.065,.11,trim,[0,roofY,hz+.06]));
+    g.add(box(.055,.055,depth+.18,trim,[-hx-.06,roofY,0]));g.add(box(.055,.055,depth+.18,trim,[hx+.06,roofY,0]));
+    g.add(cylinder(.035,.035,height*.85,metal,[hx+.10,height*.43,hz+.07],[],8));
+    g.position.set(x,0,z);w.group.add(g);return g;
+  }
+
   function buildPropZapper(scale=1){
     const g=new THREE.Group(),body=material('paintedMetal',0x59636a,{seed:5}),dark=material('rubber',0x202427),accent=material('paintedMetal',0x98533e,{seed:7}),steel=material('metal',0x929794),energy=new THREE.MeshStandardMaterial({color:0x77c7d0,emissive:0x37a9b7,emissiveIntensity:1.8,roughness:.24,metalness:.18});
     g.add(box(.18,.18,.38,body,[0,0,-.08]));g.add(box(.15,.17,.23,dark,[0,-.02,.24],[.1,0,0]));g.add(box(.09,.27,.12,dark,[0,-.19,.02],[-.18,0,0]));
@@ -415,11 +508,11 @@ export function create3DArtKit(THREE){
   }
 
   function buildHumanRig(style={},opts={}){
-    const g=new THREE.Group(),id=opts.id||'person',skin=material('skin',style.skin||0xd3a47f,{roughness:.83}),top=material('fabric',style.top||0x6e3340,{seed:hashString(id)}),legs=material('fabric',style.legs||0x3c536b,{seed:hashString(id)+2}),boots=material('leather',style.boots||0x493728,{seed:hashString(id)+4}),hairM=material('hair',style.hair||0x433027,{roughness:.93}),dark=material('rubber',0x26211e),belt=material('leather',0x493626,{seed:3});g.name=`human-${id}`;
+    const g=new THREE.Group(),id=opts.id||'person',skin=material('skin',style.skin||0xd3a47f,{roughness:.83}),top=material(style.pattern||'fabric',style.top||0x6e3340,{seed:hashString(id)}),legs=material('fabric',style.legs||0x3c536b,{seed:hashString(id)+2}),boots=material('leather',style.boots||0x493728,{seed:hashString(id)+4}),hairM=material('hair',style.hair||0x433027,{roughness:.93}),dark=material('rubber',0x26211e),belt=material('leather',0x493626,{seed:3});g.name=`human-${id}`;
     const hips=new THREE.Group();hips.position.y=.82;g.add(hips);const pelvis=sphere(.28,legs,[0,.02,0],[1.03,.55,.78]);hips.add(pelvis);hips.add(box(.48,.07,.28,belt,[0,.16,0]));
     const upperBody=new THREE.Group();upperBody.position.y=.92;g.add(upperBody);const torso=sphere(.47,top,[0,.31,0],[.64,.82,.46]);upperBody.add(torso);upperBody.add(box(.54,.19,.31,top,[0,.03,0]));
     const neck=cylinder(.075,.09,.12,skin,[0,.72,0]);upperBody.add(neck);const head=sphere(.225,skin,[0,.94,0],[.93,1.03,.92]);upperBody.add(head);
-    for(const sx of [-.205,.205])upperBody.add(sphere(.048,skin,[sx,.94,0],[.55,1,.65]));
+    const ears=[];for(const sx of [-.205,.205]){const ear=sphere(.048,skin,[sx,.94,0],[.55,1,.65]);ears.push(ear);upperBody.add(ear)}
     const hair=sphere(.229,hairM,[0,1.005,.014],[.96,.62,.95]);upperBody.add(hair);if(['vanessa','elizabeth','holly','dorothy'].includes(id)){for(const sx of [-.18,.18])upperBody.add(capsule(.055,.3,hairM,[sx,.78,.09],[0,0,.05*sx],[.75,1,.75]));}
     const face=new THREE.Group(),eyes=[],brows=[],eyeWhite=material('paintedMetal',0xf3eee4,{roughness:.52});face.position.set(0,.94,-.204);for(const sx of [-.072,.072]){const eye=new THREE.Group();eye.position.set(sx,.035,-.012);eye.add(sphere(.026,eyeWhite,[0,0,0],[1,.72,.48]));eye.add(sphere(.011,dark,[0,-.001,-.021],[1,.95,.55]));eyes.push(eye);face.add(eye);const brow=box(.055,.012,.012,hairM,[sx,.072,-.01],[0,0,sx>0?-.08:.08]);brows.push(brow);face.add(brow)}const nose=mesh(new THREE.ConeGeometry(.025,.06,10),skin,[0,-.005,-.04],[-Math.PI/2,0,0]);face.add(nose);const mouth=box(.082,.012,.012,material('paintedMetal',0x7d493f),[0,-.078,-.02]);face.add(mouth);const lowerLip=box(.062,.008,.009,material('paintedMetal',0x9b6258),[0,-.088,-.022]);face.add(lowerLip);upperBody.add(face);
     // Clothing construction: collar, placket, pocket and belt buckle give the body readable front/back orientation at gameplay distance.
@@ -427,21 +520,66 @@ export function create3DArtKit(THREE){
     upperBody.add(box(.14,.035,.018,trim,[-.075,.63,-.255],[0,0,-.32]));upperBody.add(box(.14,.035,.018,trim,[.075,.63,-.255],[0,0,.32]));
     upperBody.add(box(.022,.28,.015,trim,[0,.45,-.258]));upperBody.add(box(.15,.12,.015,trim,[.17,.39,-.258]));
     hips.add(box(.07,.085,.025,material('metal',0xb8a56f),[0,.17,-.155]));
+    // Family-specific silhouette cues.  These stay genuinely three-dimensional:
+    // nothing here billboards toward the camera, so the back/side view remains honest.
+    const glassesMat=material('paintedMetal',0x3d3935,{roughness:.34}),silver=material('metal',0x9c9b94),denim=material('fabric',0x4b6680,{seed:hashString(id)+31});
+    const addGlasses=()=>{for(const sx of [-.072,.072]){const lens=torus(.036,.007,glassesMat,[sx,.985,-.213],[Math.PI/2,0,0]);upperBody.add(lens)}upperBody.add(box(.055,.008,.012,glassesMat,[0,.985,-.221]));};
+    const addFacialHair=(full=false)=>{upperBody.add(box(.115,.032,.015,hairM,[0,.895,-.216]));if(full){upperBody.add(capsule(.022,.16,hairM,[-.082,.875,-.193],[0,0,-.28],[.9,1,.8]));upperBody.add(capsule(.022,.16,hairM,[.082,.875,-.193],[0,0,.28],[.9,1,.8]));upperBody.add(box(.13,.05,.014,hairM,[0,.835,-.19]));}};
+    const addLongBackHair=(length=.48)=>{for(const sx of [-.17,-.07,.07,.17])upperBody.add(capsule(.052,length,hairM,[sx,.75,.13],[.12,0,sx*.18],[.86,1,.78]));};
+    const addHood=()=>{const hood=torus(.24,.065,trim,[0,.64,.13],[Math.PI/2,0,0],Math.PI*1.35);upperBody.add(hood);};
+    if(id==='john'){addFacialHair(true);upperBody.add(box(.18,.025,.012,material('paintedMetal',0xc49352),[0,.18,-.265]));}
+    if(id==='james'){addGlasses();addFacialHair(false);upperBody.add(box(.31,.018,.012,denim,[0,.48,-.262]));}
+    if(id==='papa'){
+      addFacialHair(false);const hat=new THREE.Group(),felt=material('fabric',0x70543a,{seed:72});hat.add(cylinder(.19,.21,.11,felt,[0,.04,0],[],18));hat.add(cylinder(.31,.31,.028,felt,[0,-.005,0],[],24));hat.position.set(0,1.18,0);upperBody.add(hat);
+    }
+    if(id==='kristen'){addLongBackHair(.58);}
+    if(id==='vanessa'){addLongBackHair(.52);addHood();}
+    if(id==='logan'){
+      addHood();for(const [xx,yy,zz] of [[-.14,1.09,.01],[-.05,1.13,-.01],[.05,1.13,0],[.14,1.08,.02],[-.1,1.02,-.12],[.1,1.02,-.12]])upperBody.add(sphere(.055,hairM,[xx,yy,zz],[1,.8,1]));
+    }
+    if(id==='holly'){
+      addHood();for(const sx of [-.14,.14]){upperBody.add(sphere(.07,hairM,[sx,1.15,.01]));upperBody.add(capsule(.026,.16,hairM,[sx,.98,.08],[.15,0,sx>0?-.12:.12]));}
+    }
+    if(id==='elizabeth'){upperBody.add(sphere(.09,hairM,[0,1.18,.04],[1,.8,1]));}
+    if(id==='dorothy'){
+      addGlasses();addLongBackHair(.42);const skirt=mesh(new THREE.CylinderGeometry(.37,.5,.78,20,1,true),top,[0,.18,0]);skirt.position.y=.22;g.add(skirt);
+    }
+    if(id==='nana'){addGlasses();for(const sx of [-.12,.12])upperBody.add(capsule(.045,.23,hairM,[sx,1.0,.07],[.18,0,sx*.15],[.9,1,.9]));}
     const arm=(side)=>{const shoulder=new THREE.Group();shoulder.position.set(side*.34,.52,0);const shoulderCap=sphere(.09,top,[0,0,0]);shoulder.add(shoulderCap);const upper=cylinder(.065,.075,.38,top,[0,-.19,0]);shoulder.add(upper);const elbow=new THREE.Group();elbow.position.y=-.38;shoulder.add(elbow);const cuff=cylinder(.057,.062,.045,trim,[0,-.025,0]);elbow.add(cuff);const lower=cylinder(.052,.062,.34,skin,[0,-.17,0]);elbow.add(lower);const hand=sphere(.068,skin,[0,-.36,0],[.88,1,.8]);elbow.add(hand);const thumb=sphere(.025,skin,[side*.055,-.35,-.02],[.7,1,.7]);elbow.add(thumb);upperBody.add(shoulder);return{shoulder,elbow,hand,thumb}};
     const leg=(side)=>{const hip=new THREE.Group();hip.position.set(side*.145,.83,0);const upper=cylinder(.082,.096,.42,legs,[0,-.21,0]);hip.add(upper);const knee=new THREE.Group();knee.position.y=-.42;hip.add(knee);const lower=cylinder(.07,.08,.39,legs,[0,-.195,0]);knee.add(lower);const foot=new THREE.Group();foot.position.set(0,-.41,-.06);foot.add(box(.17,.12,.26,boots,[0,0,-.04]));foot.add(sphere(.085,boots,[0,-.005,-.15],[1,.72,1.2]));knee.add(foot);g.add(hip);return{hip,knee,foot}};
     const leftArm=arm(-1),rightArm=arm(1),leftLeg=leg(-1),rightLeg=leg(1);
     for(const L of [leftLeg,rightLeg])L.foot.add(box(.17,.025,.27,material('rubber',0x292826),[0,-.072,-.04]));
+    // Shape proportions are separate from height. This prevents children from
+    // reading as miniature adults and lets older/broader family members retain
+    // recognisable silhouettes from the side and rear while collision stays exact.
+    const proportions=opts.proportions||{},bodyWidth=clamp(Number(proportions.bodyWidth)||1,.82,1.16),hipWidth=clamp(Number(proportions.hipWidth)||1,.84,1.14),headScale=clamp(Number(proportions.headScale)||1,.9,1.18);
+    upperBody.scale.x=bodyWidth;hips.scale.x=hipWidth;leftLeg.hip.position.x=-.145*hipWidth;rightLeg.hip.position.x=.145*hipWidth;
+    if(headScale!==1){head.scale.multiplyScalar(headScale);hair.scale.multiplyScalar(headScale);face.scale.multiplyScalar(headScale);face.position.z=-.204-(headScale-1)*.18;for(const ear of ears){ear.scale.multiplyScalar(headScale);ear.position.x*=headScale;ear.position.y=.94+(headScale-1)*.03}}
     const weaponAnchor=new THREE.Group();weaponAnchor.position.set(.14,.32,-.28);upperBody.add(weaponAnchor);const weapon=buildPropZapper(.68);weaponAnchor.add(weapon);weapon.visible=opts.role==='hunter';
-    g.userData.parts={hips,upperBody,torso,head,face,eyes,brows,mouth,lowerLip,hair,leftArm,rightArm,leftLeg,rightLeg,weaponAnchor,weapon};g.userData.rigKind='procedural-human';tagRig(g);return g;
+    const visualScale=Math.max(.6,Math.min(1.25,Number(opts.scale)||1));g.scale.setScalar(visualScale);g.userData.visualScale=visualScale;g.userData.proportions={bodyWidth,hipWidth,headScale};g.userData.parts={hips,upperBody,torso,head,face,eyes,brows,mouth,lowerLip,hair,leftArm,rightArm,leftLeg,rightLeg,weaponAnchor,weapon};g.userData.rigKind='procedural-human';tagRig(g);return g;
   }
 
   function buildDogRig(style={},opts={}){
     const g=new THREE.Group(),id=opts.id||'dog',fur=material('hair',style.fur||0x81705f,{roughness:.94}),accent=material('hair',style.accent||0xc7aa89,{roughness:.92}),dark=material('rubber',0x26221f),harnessM=material('fabric',0x385253,{seed:6});g.name=`dog-${id}`;
     const chest=sphere(.35,fur,[0,.62,-.12],[1.0,.9,1.05]);g.add(chest);const body=capsule(.27,.48,fur,[0,.58,.18],[Math.PI/2,0,0],[1.0,1.0,1.05]);g.add(body);const haunch=sphere(.31,fur,[0,.58,.45],[1.02,.9,1.0]);g.add(haunch);const neck=capsule(.15,.22,fur,[0,.73,-.4],[.42,0,0]);g.add(neck);const head=sphere(.27,fur,[0,.86,-.58],[.95,1,.94]);g.add(head);const muzzle=sphere(.15,accent,[0,.8,-.82],[.82,.62,1.1]);g.add(muzzle);g.add(sphere(.052,dark,[0,.82,-.95],[1,.8,1]));const jaw=new THREE.Group();jaw.position.set(0,.77,-.84);jaw.add(sphere(.11,accent,[0,0,0],[.82,.38,1]));const tongue=box(.055,.012,.11,material('fabric',0xc97878),[0,-.045,-.075],[.2,0,0]);tongue.visible=false;jaw.add(tongue);g.add(jaw);const eyes=[];for(const sx of [-.105,.105]){const eye=sphere(.024,dark,[sx,.9,-.8]);eyes.push(eye);g.add(eye)}
     const ears=[];for(const sx of [-.18,.18]){const earPivot=new THREE.Group();earPivot.position.set(sx,1.04,-.54);const ear=mesh(new THREE.ConeGeometry(.09,.28,10),fur,[0,0,0],[.1,0,sx<0?.28:-.28]);earPivot.add(ear);g.add(earPivot);ears.push(earPivot)}
+    // Individual dog identity cues, still fully 3D from every angle.
+    const collar=material('fabric',id==='kelsi'?0x9d466c:id==='molly'?0x496a7f:0x4e5c4f,{seed:hashString(id)+51});
+    g.add(torus(.165,.022,collar,[0,.75,-.39],[Math.PI/2,0,0]));
+    const tag=material('metal',0xb99a52);g.add(sphere(.035,tag,[0,.69,-.55],[1,.75,.35]));
+    if(id==='molly')tongue.visible=true;
+    if(id==='kelsi'){
+      const bandana=mesh(new THREE.ConeGeometry(.16,.26,3),material('fabric',0xa14770,{seed:63}),[0,.67,-.48],[Math.PI,0,0]);g.add(bandana);
+    }
+    if(id==='gunner'){
+      const patch=material('hair',style.accent||0xd7c4a4,{roughness:.96});g.add(sphere(.24,patch,[0,.64,-.16],[.78,.62,.72]));g.add(sphere(.1,patch,[-.11,.89,-.75],[.85,.55,.62]));
+    }
     const legs=[];for(const sx of [-.23,.23])for(const zz of [-.23,.35]){const upperPivot=new THREE.Group();upperPivot.position.set(sx,.48,zz);const upper=cylinder(.052,.065,.28,fur,[0,-.14,0]);upperPivot.add(upper);const lowerPivot=new THREE.Group();lowerPivot.position.y=-.28;upperPivot.add(lowerPivot);const lower=cylinder(.045,.052,.25,fur,[0,-.125,0]);lowerPivot.add(lower);lowerPivot.add(sphere(.07,accent,[0,-.27,-.02],[1,.55,1.3]));g.add(upperPivot);legs.push({upper:upperPivot,lower:lowerPivot,front:zz<0,side:sx<0?-1:1})}
     const tailPivot=new THREE.Group();tailPivot.position.set(0,.68,.68);const tail=capsule(.035,.38,fur,[0,.18,.08],[-.55,0,0],[1,1,1]);tailPivot.add(tail);g.add(tailPivot);
-    g.add(box(.58,.11,.48,harnessM,[0,.88,.08]));g.add(box(.66,.08,.08,harnessM,[0,.69,-.1]));g.add(box(.13,.12,.035,material('metal',0xb8a56f),[0,.91,-.245]));const weaponAnchor=new THREE.Group();weaponAnchor.position.set(0,.98,-.05);g.add(weaponAnchor);const weapon=buildPropZapper(.46);weaponAnchor.add(weapon);weapon.visible=opts.role==='hunter';g.userData.parts={body,chest,head,muzzle,jaw,tongue,eyes,ears,legs,tailPivot,weaponAnchor,weapon};g.userData.rigKind='procedural-dog';tagRig(g);return g;
+    g.add(box(.58,.11,.48,harnessM,[0,.88,.08]));g.add(box(.66,.08,.08,harnessM,[0,.69,-.1]));g.add(box(.13,.12,.035,material('metal',0xb8a56f),[0,.91,-.245]));const weaponAnchor=new THREE.Group();weaponAnchor.position.set(0,.98,-.05);g.add(weaponAnchor);const weapon=buildPropZapper(.46);weaponAnchor.add(weapon);weapon.visible=opts.role==='hunter';
+    const proportions=opts.proportions||{},headScale=clamp(Number(proportions.headScale)||1,.92,1.16),bodyLength=clamp(Number(proportions.bodyLength)||1,.92,1.12);
+    head.scale.multiplyScalar(headScale);muzzle.scale.multiplyScalar(headScale);jaw.scale.multiplyScalar(headScale);body.scale.y*=bodyLength;haunch.position.z+=(bodyLength-1)*.22;tailPivot.position.z+=(bodyLength-1)*.28;for(const leg of legs)if(!leg.front)leg.upper.position.z+=(bodyLength-1)*.25;for(const eye of eyes){eye.position.x*=headScale;eye.position.z-=Math.max(0,headScale-1)*.03}for(const ear of ears){ear.position.x*=headScale;ear.position.z-=Math.max(0,headScale-1)*.025}
+    const visualScale=Math.max(.65,Math.min(1.35,Number(opts.scale)||1));g.scale.setScalar(visualScale);g.userData.visualScale=visualScale;g.userData.proportions={headScale,bodyLength};g.userData.parts={body,chest,head,muzzle,jaw,tongue,eyes,ears,legs,tailPivot,weaponAnchor,weapon};g.userData.rigKind='procedural-dog';tagRig(g);return g;
   }
 
   function tagRig(g){g.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;o.userData.actorHit=true}})}
@@ -544,6 +682,6 @@ export function create3DArtKit(THREE){
 
   return {
     material,makeTexture,addRaycast,addCollider,addAsset,tubeBetween,box,sphere,cylinder,capsule,torus,
-    slatWall,buildWorkbench,buildToolChest,buildShelving,buildLumberStack,buildCrate,buildTractor,buildMotorcycle,buildFireplace,buildPapaChair,buildDrillPress,buildAirCompressor,buildWeldingCart,buildLadder,buildOverheadLight,buildBarnStall,buildPicnicTable,buildBBQ,buildTruck,buildTent,buildCampfire,buildTrailer,buildBoat,buildTrampoline,buildPool,buildHotTub,buildSeaCan,buildFence,buildGrassPatch,buildBush,buildRockCluster,buildBench,buildPlanter,buildLampPost,buildCeilingFan,buildToolRack,buildCabinet,buildStringLights,buildAmbientParticles,buildFountain,buildBeachUmbrella,buildMarketStall,buildNoticeBoard,buildMailbox,buildPartyArch,buildAmbientBirds,buildDetailedTree,buildSwingDoor,buildWallPoster,buildCloudLayer,buildButterflies,buildPropZapper,buildHumanRig,buildDogRig,createPropMesh,createMotionFxSystem,animateFire,animateAmbience,shadeHex
+    slatWall,buildFloorDrain,buildOilStain,buildHoseReel,buildTireStack,buildShopSideTable,buildWallConduit,buildWorkbench,buildToolChest,buildShelving,buildLumberStack,buildCrate,buildTractor,buildMotorcycle,buildFireplace,buildPapaChair,buildDrillPress,buildAirCompressor,buildWeldingCart,buildLadder,buildOverheadLight,buildBarnStall,buildPicnicTable,buildBBQ,buildTruck,buildTent,buildCampfire,buildTrailer,buildBoat,buildTrampoline,buildPool,buildHotTub,buildSeaCan,buildFence,buildGrassPatch,buildBush,buildRockCluster,buildBench,buildPlanter,buildLampPost,buildCeilingFan,buildToolRack,buildCabinet,buildStringLights,buildAmbientParticles,buildFountain,buildBeachUmbrella,buildMarketStall,buildNoticeBoard,buildMailbox,buildPartyArch,buildAmbientBirds,buildDetailedTree,buildSwingDoor,buildOverheadDoor,buildWallPoster,buildCloudLayer,buildButterflies,buildRuralBackdrop,buildExteriorTrim,buildPropZapper,buildHumanRig,buildDogRig,createPropMesh,createMotionFxSystem,animateFire,animateAmbience,shadeHex
   };
 }

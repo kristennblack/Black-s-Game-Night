@@ -1,13 +1,15 @@
 {
   "name": "black-family-game-night",
-  "version": "2.0.0",
+  "version": "3.0.0-production3d-papa.0",
   "private": true,
   "type": "module",
-  "description": "Black Family Game Night v2.0.0 - Studio Realism: authored 3D asset pipeline, semantic skeletal animation, richer procedural actions, weather, water, NPC routines, interactive homes, selective physics, WebAudio and cinematic polish across all 3D games.",
+  "description": "Black Family Game Night v3.0 Production3D Papa alpha - first asset-first vertical slice with baked GLB John and Gunner rigs, authored prop-zapper/tractor/Papa chair, semantic named-joint fallback animation, and Papa's Shop visual QA; other games remain on the v2 Studio baseline.",
   "scripts": {
     "test": "node --test",
     "check": "node --check worker.mjs && node --check propHuntRoom.mjs && node --check islandLifeRoom.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check public/app.js && node --check public/prop-hunt-core.mjs && node --check public/shared-3d-art-kit.mjs && node --check public/shared-3d-gameplay.mjs && node --check public/shared-3d-studio.mjs && node --check public/prop-hunt-3d.js && node --check public/island-life-core.mjs && node --check public/island-life.js && node --check public/birthday-climb.js && node --check public/sw.js && node --test",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "assets:build": "python tools/build_production_assets.py",
+    "assets:audit": "python tools/audit_production_assets.py"
   },
   "devDependencies": {
     "wrangler": "4.125.0"
