@@ -18,7 +18,7 @@ test('all free-moving 3D games share the v2 studio-realism gameplay/control fram
   for(const src of [prop,island,birthday])assert.ok(src.includes('/shared-3d-gameplay.mjs'));
   for(const token of ['createThirdPersonCamera','bindPointerLook','bindVirtualJoystick','readGamepadButtons','applyGamepadLook','createPerformanceGovernor','animateFamilyRig'])assert.ok(gameplay.includes(token),token);
   assert.ok(sw.includes('/shared-3d-gameplay.mjs'));
-  assert.ok(sw.includes('black-family-game-night-3d-staging-phase-e2-ux-03'));
+  assert.ok(sw.includes('black-family-game-night-staging-phase-f-platform-04'));
 });
 
 test('movement input preserves analog joystick strength and is camera-relative',()=>{

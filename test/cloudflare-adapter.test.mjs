@@ -122,8 +122,8 @@ test('Launch assets advertise the Phase E staging build and use a fresh service-
   const {readFile}=await import('node:fs/promises');
   const appSource=await readFile(new URL('../public/app.js',import.meta.url),'utf8');
   const swSource=await readFile(new URL('../public/sw.js',import.meta.url),'utf8');
-  assert.match(appSource,/APP_VERSION='3D-STAGING-PHASE-E2-UX-03'/);
-  assert.match(swSource,/black-family-game-night-3d-staging-phase-e2-ux-03/);
+  assert.match(appSource,/APP_VERSION='GAME-NIGHT-STAGING-PHASE-F-PLATFORM-04'/);
+  assert.match(swSource,/black-family-game-night-staging-phase-f-platform-04/);
 });
 
 
@@ -264,7 +264,7 @@ test('Avatar picker is character-first and reveals only the selected character l
   assert.match(appSource,/Choose your character/);
   assert.match(appSource,/selectedLookPicker\(selected,me\)/);
   assert.match(appSource,/Choose \$\{esc\(selected\[1\]/);
-  assert.match(appSource,/Choose your colours/);
+  assert.match(appSource,/Choose your player colour/);
   assert.doesNotMatch(appSource,/avatar-style-grid/);
   assert.match(cssSource,/\.character-choice-grid/);
   assert.match(cssSource,/\.look-grid/);

@@ -10,3 +10,6 @@
 /* Phase E2/UX-03: compact platforming utilities and keep route view clear. */
 .bc-shoulder,.bc-reset-view{width:34px;height:34px;padding:0;display:grid;place-items:center;font-size:15px;line-height:1;letter-spacing:0}
 @media(max-width:640px){.bc-shoulder{top:58px;right:8px;width:32px;height:32px;padding:0}.bc-reset-view{top:96px;right:8px;width:32px;height:32px;padding:0}.bc-help{display:none!important}}
+
+/* Phase F Platform 04: universal match-end choices */
+.bc-win-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.bc-win-actions .btn{min-height:46px}@media(max-width:620px){.bc-win-actions{grid-template-columns:1fr}}

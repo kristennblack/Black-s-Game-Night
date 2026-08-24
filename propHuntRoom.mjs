@@ -90,6 +90,7 @@ export class PropHuntRoom {
       if(path==='/api/prop/updateBot'&&request.method==='POST')return this.updateBot(request);
       if(path==='/api/prop/removeBot'&&request.method==='POST')return this.removeBot(request);
       if(path==='/api/prop/start'&&request.method==='POST')return this.start(request);
+      if(path==='/api/prop/rematch'&&request.method==='POST')return this.rematch(request);
       if(path==='/api/prop/ws')return this.connectWebSocket(request,url);
       return json({error:'Unknown Prop Hunt route'},404);
     }catch(err){console.error(JSON.stringify({message:'prop hunt room error',path,error:err instanceof Error?err.message:String(err)}));return json({error:err instanceof Error?err.message:'Prop Hunt server error'},500)}
@@ -129,6 +130,9 @@ export class PropHuntRoom {
   }
   async start(request){
     if(!this.room)return json({error:'Room not found'},404);const b=await request.json().catch(()=>({}));if(!hostOk(this.room,b.hostToken))return json({error:'Host only'},403);if(this.room.phase!=='lobby')return json({error:'Already started'},409);if(this.room.players.length<2)return json({error:'Add at least one family member or computer player'},409);if(this.room.players.some(p=>!p.isBot&&!p.ready))return json({error:'Every real player must be Ready'},409);this.room.round=1;this.room.wins={hiders:0,hunters:0};this.startRound();return json({ok:true});
+  }
+  async rematch(request){
+    if(!this.room)return json({error:'Room not found'},404);const b=await request.json().catch(()=>({}));if(!hostOk(this.room,b.hostToken))return json({error:'Host only'},403);if(this.room.phase!=='matchEnd')return json({error:'Match is not complete'},409);this.room.round=1;this.room.wins={hiders:0,hunters:0};this.room.roundResult=null;for(const p of this.room.players){p.health=3;p.alive=true;p.prop=null;p.propChanges=3;p.decoys=10;p.flash=true;p.live=null;p.score={hiderWins:0,hunterWins:0}}this.startRound();return json({ok:true});
   }
 
   connectWebSocket(request,url){

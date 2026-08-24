@@ -8,7 +8,7 @@ const ph=await readFile(new URL('../public/prop-hunt-3d.js',import.meta.url),'ut
 const ng=await readFile(new URL('../public/new-games.html',import.meta.url),'utf8');
 
 test('home image buttons navigate to real destinations instead of dead hotspots',()=>{
-  for(const t of ['data-home-action=\"games\"','data-home-action=\"lodge\"','openHomePanel','Leaderboards','Avatars & outfits','News & updates','How to play','Invite friends']) assert.ok(app.includes(t),t);
+  for(const t of ['data-home-action=\"games\"','data-home-action=\"lodge\"','openHomePanel','Leaderboards','Avatars','Requests','How to Play','Invite']) assert.ok(app.includes(t),t);
 });
 
 test('multiplayer lobby exposes per-bot family character and difficulty editing',()=>{

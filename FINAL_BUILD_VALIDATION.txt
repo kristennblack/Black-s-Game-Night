@@ -1,8 +1,4 @@
-
-> black-family-game-night@3.0.1-staging-phase-e2-ux-03 build
-> node tools/phase_e_validate.mjs
-
-PHASE E STATIC BUILD VALIDATION - 3D-STAGING-PHASE-E2-UX-03
+PLATFORM STAGING BUILD VALIDATION - GAME-NIGHT-STAGING-PHASE-F-PLATFORM-04
 PASS exists: public
 PASS exists: public/index.html
 PASS exists: public/new-games.html
@@ -113,6 +109,12 @@ PASS GLBs present: 10
 PASS JavaScript modules present: 11
 PASS staging cache/version markers are consistent
 PASS staging diagnostics module precached
+PASS Smear six-card hand is rendered during bidding
+PASS persistent Avatar Hub profile flow present
+PASS Requests and shared Leaderboards routes/UI present
+PASS shared room rematch/end-of-game flow present
+PASS Trail Trouble five-card hand and gesture board controls present
+PASS future authored GLB primary-clothing tint contract present
 WARN core 3D CDN dependency remains (public/_deep3d_qa.html: Three.js, public/birthday-climb.js: Three.js, public/island-life.js: Three.js, public/prop-hunt-3d.js: Three.js, public/shared-3d-studio.mjs: Three addon)
 WARN Wrangler executable unavailable: actual Cloudflare deployment remains UNVERIFIED
-SUMMARY: 110 pass, 2 warning, 0 fail
+SUMMARY: 116 pass, 2 warning, 0 fail

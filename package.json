@@ -1,9 +1,9 @@
 {
   "name": "black-family-game-night",
-  "version": "3.0.1-staging-phase-e2-ux-03",
+  "version": "3.0.1-staging-phase-f-platform-04",
   "private": true,
   "type": "module",
-  "description": "Black Family Game Night Phase E staging test candidate. Real-device WebGL gameplay, avatar likeness, controls, camera feel and visual quality remain unverified until phone QA.",
+  "description": "Black Family Game Night Phase F platform staging candidate: Smear six-card bidding hand, rematch flow, Avatar Hub, Requests, Leaderboards, interactive tutorials, and Trail Trouble five-card/gesture repair. 3D authored-art gaps and final visual/device QA remain unresolved.",
   "scripts": {
     "test": "node --test",
     "check": "node --check worker.mjs && node --check propHuntRoom.mjs && node --check islandLifeRoom.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check public/app.js && node --check public/prop-hunt-core.mjs && node --check public/shared-3d-art-kit.mjs && node --check public/shared-3d-gameplay.mjs && node --check public/shared-3d-studio.mjs && node --check public/prop-hunt-3d.js && node --check public/island-life-core.mjs && node --check public/island-life.js && node --check public/birthday-climb.js && node --check public/phase-e-qa.mjs && node --check public/sw.js && node --test",

@@ -35,6 +35,10 @@ const BOT_PERSONAS=[
 ];
 const BOT_COLORS=['#9b3e3a','#305c9b','#2f6b4f','#95752a','#6c468f','#287878','#b5672f','#8b6d55','#171717','#a86d7b','#82b978','#83afe2','#e2bf54'];
 const normalizeDifficulty=d=>BOT_DIFFICULTIES.has(String(d||'').toLowerCase())?String(d).toLowerCase():'medium';
+const requestCategories=new Set(['New Game','Fix a Game','Improvement','Bug','Other']);
+const profileIdFrom=b=>String(b?.profileId||'').trim().slice(0,80)||null;
+const playerProfile=(b,nameFallback='Player')=>({profileId:profileIdFrom(b),name:String(b?.name||nameFallback).trim().slice(0,24)||nameFallback,avatar:String(b?.avatar||'').trim()||defaultAvatarForName(b?.name||nameFallback),variant:Number(b?.variant??defaultVariantForName(b?.name||nameFallback)),outfitVariant:Number(b?.outfitVariant||0),color:String(b?.color||'#2f6b4f')});
+function freshGameState(){return {phase:'lobby',roundIndex:-1,schedule:[],handSize:0,dealerId:null,dealerCeremony:null,biddingOrder:[],bidTurnId:null,bidActionCount:0,highBid:null,highBidderId:null,contract:null,fourAndOut:false,biddingTeam:null,teamScores:{A:0,B:0},trump:null,trumpPlays:[],capturedByTeam:{A:[],B:[]},smearAwards:null,gameValues:null,turnPlayerId:null,leaderId:null,currentTrick:[],lastTrick:null,roundResults:null,winnerIds:[],history:[],extra:null,matchId:null,resultRecorded:false};}
 
 function playerOrder(room){return [...room.players.values()].filter(p=>p.seat!=null).sort((a,b)=>a.seat-b.seat).map(p=>p.id)}
 function assignOpenSeat(room,p){if(p.seat!=null)return p.seat;const used=new Set([...room.players.values()].filter(x=>x.id!==p.id&&x.seat!=null).map(x=>x.seat));for(let i=0;i<room.maxSeats;i++)if(!used.has(i)){p.seat=i;return i}return null}
@@ -53,7 +57,7 @@ function publicState(room,viewerToken=null){
   return {
     id:room.id,createdAt:room.createdAt,revision:room.revision||0,phase:g.phase,gameType:room.gameType,gameName:gameName(room.gameType),settings:room.settings,
     players,maxSeats:room.maxSeats,viewerId:viewer?.id||null,hostPlayerId:room.hostPlayerId,
-    game:{phase:g.phase,roundIndex:g.roundIndex,roundNumber:g.roundIndex+1,totalRounds:room.gameType===GAME_TYPES.SMEAR?null:g.schedule.length,handSize:g.handSize,trump:(room.gameType===GAME_TYPES.SMEAR?g.trump:round?.trump)||null,powerRank:round?.powerRank||null,schedule:g.schedule,dealerId:g.dealerId,dealerCeremony:g.dealerCeremony,biddingOrder:g.biddingOrder,bidTurnId:g.bidTurnId,turnPlayerId:g.turnPlayerId,leaderId:g.leaderId,currentTrick:g.currentTrick,lastTrick:g.lastTrick,roundResults:g.roundResults,winnerIds:g.winnerIds,history:g.history,legalCardIds:legal,hand:viewer?viewer.hand:[],forbiddenBid:forbidden,teamScores:g.teamScores||null,highBid:g.highBid??null,highBidderId:g.highBidderId||null,contract:g.contract??null,fourAndOut:!!g.fourAndOut,biddingTeam:g.biddingTeam||null,smearAwards:g.smearAwards||null,gameValues:g.gameValues||null,extra:isExtraGame(room.gameType)&&g.extra?extraPublicState(room,viewer):null},
+    game:{phase:g.phase,matchId:g.matchId||null,roundIndex:g.roundIndex,roundNumber:g.roundIndex+1,totalRounds:room.gameType===GAME_TYPES.SMEAR?null:g.schedule.length,handSize:g.handSize,trump:(room.gameType===GAME_TYPES.SMEAR?g.trump:round?.trump)||null,powerRank:round?.powerRank||null,schedule:g.schedule,dealerId:g.dealerId,dealerCeremony:g.dealerCeremony,biddingOrder:g.biddingOrder,bidTurnId:g.bidTurnId,turnPlayerId:g.turnPlayerId,leaderId:g.leaderId,currentTrick:g.currentTrick,lastTrick:g.lastTrick,roundResults:g.roundResults,winnerIds:g.winnerIds,history:g.history,legalCardIds:legal,hand:viewer?viewer.hand:[],forbiddenBid:forbidden,teamScores:g.teamScores||null,highBid:g.highBid??null,highBidderId:g.highBidderId||null,contract:g.contract??null,fourAndOut:!!g.fourAndOut,biddingTeam:g.biddingTeam||null,smearAwards:g.smearAwards||null,gameValues:g.gameValues||null,extra:isExtraGame(room.gameType)&&g.extra?extraPublicState(room,viewer):null},
     chat:room.chat.slice(-80),reaction:room.reaction
   };
 }
@@ -62,19 +66,19 @@ function serializeRoom(room){return {...room,subscribers:undefined,reaction:null
 function restoreRoom(raw){
   const gameType=raw.gameType||GAME_TYPES.SCREW;
   const restored={...raw,revision:Number(raw.revision||0),gameType,settings:{roundCount:10,...extraDefaults(gameType),...raw.settings},maxSeats:raw.maxSeats||maxSeatsFor(gameType),subscribers:new Set(),reaction:null,players:new Map((raw.players||[]).map(p=>[p.id,{...p,connected:p.isBot?true:false}]))};
-  restored.game={schedule:[],history:[],...restored.game};
+  restored.game={...freshGameState(),...restored.game};
   if(!restored.game.schedule.length&&restored.game.handSizes?.length){restored.game.schedule=restored.game.handSizes.map((handSize,i)=>({handSize,trump:['hearts','clubs','diamonds','spades','none'][i%5],powerRank:null,source:null}))}
   return restored;
 }
 function persistRoom(room){activeHub?.persistRoom(room)}
 function writeEvent(sub,type,payload){try{sub.controller.enqueue(encoder.encode(`event: ${type}\ndata: ${JSON.stringify(payload)}\n\n`));return true}catch{return false}}
-function broadcast(room){room.revision=(room.revision||0)+1;persistRoom(room);for(const sub of [...room.subscribers]){if(!writeEvent(sub,'state',publicState(room,sub.token)))room.subscribers.delete(sub)}}
+function broadcast(room){room.revision=(room.revision||0)+1;persistRoom(room);if(room.game?.phase==='gameOver')activeHub?.maybeRecordCompletedMatch(room);for(const sub of [...room.subscribers]){if(!writeEvent(sub,'state',publicState(room,sub.token)))room.subscribers.delete(sub)}}
 function sendVoiceSignal(room,targetId,payload){for(const sub of [...room.subscribers]){const target=player(room,sub.token);if(target?.id!==targetId)continue;if(!writeEvent(sub,'voice',payload))room.subscribers.delete(sub)}}
 
-function newRoom(hostName='Host',gameType=GAME_TYPES.SCREW){
+function newRoom(hostName='Host',gameType=GAME_TYPES.SCREW,profile={}){
   if(!Object.values(GAME_TYPES).includes(gameType))gameType=GAME_TYPES.SCREW;
-  const id=safeId(),hostToken=token(),pToken=token(),pId=crypto.randomUUID();
-  const room={id,revision:0,gameType,settings:{roundCount:10,...extraDefaults(gameType)},hostToken,hostPlayerId:pId,createdAt:now(),maxSeats:maxSeatsFor(gameType),subscribers:new Set(),chat:[],reaction:null,players:new Map([[pId,{id:pId,token:pToken,name:hostName,avatar:defaultAvatarForName(hostName),variant:defaultVariantForName(hostName),outfitVariant:0,color:'#2f6b4f',seat:null,ready:false,connected:true,bid:null,tricks:0,score:0,continued:false,hand:[],eliminated:false,isBot:false,botDifficulty:null}]]),game:{phase:'lobby',roundIndex:-1,schedule:[],handSize:0,dealerId:null,dealerCeremony:null,biddingOrder:[],bidTurnId:null,bidActionCount:0,highBid:null,highBidderId:null,contract:null,fourAndOut:false,biddingTeam:null,teamScores:{A:0,B:0},trump:null,trumpPlays:[],capturedByTeam:{A:[],B:[]},smearAwards:null,gameValues:null,turnPlayerId:null,leaderId:null,currentTrick:[],lastTrick:null,roundResults:null,winnerIds:[],history:[],extra:null}};
+  const id=safeId(),hostToken=token(),pToken=token(),pId=crypto.randomUUID(),pf=playerProfile({...profile,name:hostName},hostName);
+  const room={id,revision:0,gameType,settings:{roundCount:10,...extraDefaults(gameType)},hostToken,hostPlayerId:pId,createdAt:now(),maxSeats:maxSeatsFor(gameType),subscribers:new Set(),chat:[],reaction:null,players:new Map([[pId,{id:pId,token:pToken,...pf,seat:null,ready:false,connected:true,bid:null,tricks:0,score:0,continued:false,hand:[],eliminated:false,isBot:false,botDifficulty:null}]]),game:freshGameState()};
   rooms.set(id,room);persistRoom(room);return {room,hostToken,playerToken:pToken};
 }
 
@@ -83,7 +87,7 @@ function switchRoomGame(room,gameType){
   const max=maxSeatsFor(gameType);if(room.players.size>max)throw new Error(`${gameName(gameType)} supports a maximum of ${max} players`);
   room.gameType=gameType;room.settings={roundCount:10,...extraDefaults(gameType)};room.maxSeats=max;
   for(const p of room.players.values()){p.seat=null;p.ready=false;p.bid=null;p.tricks=0;p.score=0;p.continued=false;p.hand=[];p.eliminated=false}
-  room.game={phase:'lobby',roundIndex:-1,schedule:[],handSize:0,dealerId:null,dealerCeremony:null,biddingOrder:[],bidTurnId:null,bidActionCount:0,highBid:null,highBidderId:null,contract:null,fourAndOut:false,biddingTeam:null,teamScores:{A:0,B:0},trump:null,trumpPlays:[],capturedByTeam:{A:[],B:[]},smearAwards:null,gameValues:null,turnPlayerId:null,leaderId:null,currentTrick:[],lastTrick:null,roundResults:null,winnerIds:[],history:[],extra:null};
+  room.game=freshGameState();
   room.chat.push({id:crypto.randomUUID(),playerId:'system',name:'Game Lodge',text:`Host moved the group to ${gameName(gameType)}.`,at:now()});
 }
 
@@ -99,7 +103,7 @@ function makeBot(room,difficulty='medium',requestedAvatar=null){
   let persona=botPersonaForAvatar(requestedAvatar);
   if(!persona){const used=new Set([...room.players.values()].map(p=>p.avatar));persona=BOT_PERSONAS.find(([,avatar])=>!used.has(avatar))||BOT_PERSONAS[room.players.size%BOT_PERSONAS.length]}
   const [baseName,avatar]=persona,diff=normalizeDifficulty(difficulty),id=crypto.randomUUID(),name=uniqueBotName(room,baseName);
-  const bot={id,token:null,name,avatar,variant:avatar==='john'?1:0,outfitVariant:0,color:BOT_COLORS[room.players.size%BOT_COLORS.length],seat:null,ready:true,connected:true,bid:null,tricks:0,score:0,continued:false,hand:[],eliminated:false,isBot:true,botDifficulty:diff};
+  const bot={id,token:null,profileId:null,name,avatar,variant:avatar==='john'?1:0,outfitVariant:0,color:BOT_COLORS[room.players.size%BOT_COLORS.length],seat:null,ready:true,connected:true,bid:null,tricks:0,score:0,continued:false,hand:[],eliminated:false,isBot:true,botDifficulty:diff};
   if(assignOpenSeat(room,bot)==null)throw new Error('No open seat available');
   room.players.set(id,bot);
   room.chat.push({id:crypto.randomUUID(),playerId:'system',name:'Game Lodge',text:`${name} joined as a ${diff} computer player using ${baseName}.`,at:now()});
@@ -201,13 +205,25 @@ function finishRound(room){
   if(g.roundIndex>=g.schedule.length-1){const high=Math.max(...order.map(id=>room.players.get(id).score));g.winnerIds=order.filter(id=>room.players.get(id).score===high);g.phase='gameOver'}else g.phase='roundResults';broadcast(room);
 }
 function beginNextRound(room){const order=playerOrder(room);room.game.dealerId=nextClockwise(order,room.game.dealerId);if(room.gameType===GAME_TYPES.SMEAR)room.game.schedule.push({handSize:6,trump:null,powerRank:null,source:null});startRound(room,room.game.roundIndex+1)}
+function startRoomMatch(room,{rematch=false}={}){
+  const joined=[...room.players.values()];
+  if(rematch){for(const p of joined){p.ready=true;p.bid=null;p.tricks=0;p.score=0;p.continued=false;p.hand=[];p.eliminated=false}room.game=freshGameState()}
+  else if(joined.some(x=>!x.ready))throw new Error('Everyone must be Ready');
+  assignOpenSeats(room);room.game.matchId=crypto.randomUUID();room.game.resultRecorded=false;
+  if(isExtraGame(room.gameType)){startExtraGame(room);broadcast(room);return}
+  if(room.gameType===GAME_TYPES.SMEAR&&joined.length!==4)throw new Error('Smear requires exactly 4 players');if(room.gameType!==GAME_TYPES.SMEAR&&joined.length<2)throw new Error('Need at least 2 players');const order=playerOrder(room);
+  room.game.schedule=room.gameType===GAME_TYPES.SMEAR?[{handSize:6,trump:null,powerRank:null,source:null}]:room.gameType===GAME_TYPES.FUCK?generateFuckSchedule(room.settings.roundCount,order.length):buildScrewSchedule(order.length);for(const id of order){room.players.get(id).score=0}
+  if(room.gameType===GAME_TYPES.SMEAR){room.game.teamScores={A:0,B:0};const dealerId=randomDealer(order);room.game.dealerId=dealerId;room.game.dealerCeremony={type:'random',dealerId,sequence:[],createdAt:now()}}else{const ceremony=firstDealerCeremony(order,room.gameType);room.game.dealerId=ceremony.dealerId;room.game.dealerCeremony={type:'jack',...ceremony,createdAt:now()}}startRound(room,0)
+}
 
 async function parseBody(request){try{return await request.json()}catch{return {}}}
 
 async function handleApi(request){
   const u=new URL(request.url);
   if(u.pathname==='/healthz')return jsonResponse({ok:true,rooms:rooms.size,persistence:true});
-  if(u.pathname==='/api/create'&&request.method==='POST'){const b=await parseBody(request),{room,hostToken,playerToken}=newRoom((b.name||'Host').slice(0,24),b.gameType);return jsonResponse({roomId:room.id,hostToken,playerToken,gameType:room.gameType})}
+  if(u.pathname==='/api/create'&&request.method==='POST'){const b=await parseBody(request),{room,hostToken,playerToken}=newRoom((b.name||'Host').slice(0,24),b.gameType,b);return jsonResponse({roomId:room.id,hostToken,playerToken,gameType:room.gameType})}
+  if(u.pathname==='/api/leaderboard'&&request.method==='POST')return jsonResponse(await activeHub.getLeaderboard());
+  if(u.pathname==='/api/requests'&&request.method==='POST'){const b=await parseBody(request);if(b.action==='submit'){try{return jsonResponse({ok:true,request:await activeHub.addRequest(b)})}catch(err){return jsonResponse({error:err.message},400)}}return jsonResponse({requests:await activeHub.getRequests()})}
   if(u.pathname==='/api/state'&&request.method==='GET'){const room=await activeHub.getRoom(u.searchParams.get('room'));if(!room)return jsonResponse({error:'Room not found'},404);return jsonResponse(publicState(room,u.searchParams.get('token')))}
   if(u.pathname==='/api/events'&&request.method==='GET'){
     const room=await activeHub.getRoom(u.searchParams.get('room'));if(!room)return new Response('Room not found',{status:404});
@@ -224,11 +240,11 @@ async function handleApi(request){
   }
   if(u.pathname==='/api/join'&&request.method==='POST'){
     const b=await parseBody(request),room=await activeHub.getRoom(b.roomId);if(!room)return jsonResponse({error:'Room not found'},404);if(room.game.phase!=='lobby')return jsonResponse({error:'Game already started'},409);if(room.players.size>=room.maxSeats)return jsonResponse({error:'Room is full'},409);
-    const id=crypto.randomUUID(),t=token();room.players.set(id,{id,token:t,name:(b.name||'Player').slice(0,24),avatar:b.avatar||defaultAvatarForName(b.name),variant:Number(b.variant??defaultVariantForName(b.name)),outfitVariant:Number(b.outfitVariant||0),color:b.color||'#6c7a89',seat:null,ready:false,connected:true,bid:null,tricks:0,score:0,continued:false,hand:[],eliminated:false,isBot:false,botDifficulty:null});broadcast(room);return jsonResponse({playerToken:t,playerId:id,gameType:room.gameType});
+    const id=crypto.randomUUID(),t=token(),pf=playerProfile(b,'Player');room.players.set(id,{id,token:t,...pf,seat:null,ready:false,connected:true,bid:null,tricks:0,score:0,continued:false,hand:[],eliminated:false,isBot:false,botDifficulty:null});broadcast(room);return jsonResponse({playerToken:t,playerId:id,gameType:room.gameType});
   }
   if(!u.pathname.startsWith('/api/'))return jsonResponse({error:'Unknown route'},404);
   const b=await parseBody(request),room=await activeHub.getRoom(b.roomId);if(!room)return jsonResponse({error:'Room not found'},404);const p=player(room,b.playerToken);const fail=(msg,code=400)=>jsonResponse({error:msg},code);
-  if(u.pathname==='/api/profile'&&request.method==='POST'){if(!p)return fail('Player not found',401);if(room.game.phase!=='lobby')return fail('Profile locked after start');p.name=(b.name||p.name).slice(0,24);p.avatar=b.avatar||p.avatar;p.variant=Number(b.variant??p.variant);p.outfitVariant=Number(b.outfitVariant??p.outfitVariant??0);p.color=b.color||p.color;p.ready=false;broadcast(room);return jsonResponse({ok:true})}
+  if(u.pathname==='/api/profile'&&request.method==='POST'){if(!p)return fail('Player not found',401);if(room.game.phase!=='lobby')return fail('Profile locked after start');p.name=(b.name||p.name).slice(0,24);if(profileIdFrom(b))p.profileId=profileIdFrom(b);p.avatar=b.avatar||p.avatar;p.variant=Number(b.variant??p.variant);p.outfitVariant=Number(b.outfitVariant??p.outfitVariant??0);p.color=b.color||p.color;p.ready=false;broadcast(room);return jsonResponse({ok:true})}
   if(u.pathname==='/api/seat'&&request.method==='POST'){if(!p)return fail('Player not found',401);if(room.game.phase!=='lobby')return fail('Seats are locked');const seat=Number(b.seat);if(!Number.isInteger(seat)||seat<0||seat>=room.maxSeats)return fail('Invalid seat');if([...room.players.values()].some(x=>x.id!==p.id&&x.seat===seat))return fail('Seat occupied');p.seat=seat;p.ready=false;broadcast(room);return jsonResponse({ok:true})}
   if(u.pathname==='/api/removePlayer'&&request.method==='POST'){if(!host(room,b.hostToken))return fail('Host only',403);if(room.game.phase!=='lobby')return fail('Players can only be removed before the game starts');const target=room.players.get(String(b.targetId||''));if(!target)return fail('Player not found');if(target.id===room.hostPlayerId)return fail('The host cannot remove themselves');room.players.delete(target.id);broadcast(room);return jsonResponse({ok:true})}
   if(u.pathname==='/api/addBot'&&request.method==='POST'){if(!host(room,b.hostToken))return fail('Host only',403);if(room.game.phase!=='lobby')return fail('Computers can only be added before the game starts');try{const bot=makeBot(room,b.difficulty,b.avatar);broadcast(room);return jsonResponse({ok:true,playerId:bot.id,difficulty:bot.botDifficulty,avatar:bot.avatar})}catch(err){return fail(err.message)}}
@@ -237,12 +253,8 @@ async function handleApi(request){
   if(u.pathname==='/api/ready'&&request.method==='POST'){if(!p)return fail('Player not found',401);if(room.game.phase!=='lobby')return fail('Game already started');const ready=!!b.ready;if(ready&&p.seat==null&&assignOpenSeat(room,p)==null)return fail('No open seat available');p.ready=ready;broadcast(room);return jsonResponse({ok:true,seat:p.seat})}
   if(u.pathname==='/api/settings'&&request.method==='POST'){if(!host(room,b.hostToken))return fail('Host only',403);if(room.game.phase!=='lobby')return fail('Settings locked after start');if(isExtraGame(room.gameType)){applyExtraSettings(room,b)}else if(room.gameType===GAME_TYPES.FUCK){const n=Number(b.roundCount);if(!Number.isInteger(n)||n<1||n>100)return fail('Choose 1 to 100 rounds');room.settings.roundCount=n}broadcast(room);return jsonResponse({ok:true})}
   if(u.pathname==='/api/switchGame'&&request.method==='POST'){if(!host(room,b.hostToken))return fail('Host only',403);try{switchRoomGame(room,String(b.gameType||''));broadcast(room);return jsonResponse({ok:true,gameType:room.gameType})}catch(err){return fail(err.message)}}
-  if(u.pathname==='/api/start'&&request.method==='POST'){
-    if(!host(room,b.hostToken))return fail('Host only',403);const joined=[...room.players.values()];if(joined.some(x=>!x.ready))return fail('Everyone must be Ready');try{assignOpenSeats(room)}catch(err){return fail(err.message)}if(isExtraGame(room.gameType)){try{startExtraGame(room);broadcast(room);return jsonResponse({ok:true})}catch(err){return fail(err.message)}}
-    if(room.gameType===GAME_TYPES.SMEAR&&joined.length!==4)return fail('Smear requires exactly 4 players');if(room.gameType!==GAME_TYPES.SMEAR&&joined.length<2)return fail('Need at least 2 players');const order=playerOrder(room);
-    room.game.schedule=room.gameType===GAME_TYPES.SMEAR?[{handSize:6,trump:null,powerRank:null,source:null}]:room.gameType===GAME_TYPES.FUCK?generateFuckSchedule(room.settings.roundCount,order.length):buildScrewSchedule(order.length);for(const id of order){room.players.get(id).score=0}
-    if(room.gameType===GAME_TYPES.SMEAR){room.game.teamScores={A:0,B:0};const dealerId=randomDealer(order);room.game.dealerId=dealerId;room.game.dealerCeremony={type:'random',dealerId,sequence:[],createdAt:now()}}else{const ceremony=firstDealerCeremony(order,room.gameType);room.game.dealerId=ceremony.dealerId;room.game.dealerCeremony={type:'jack',...ceremony,createdAt:now()}}startRound(room,0);return jsonResponse({ok:true});
-  }
+  if(u.pathname==='/api/start'&&request.method==='POST'){if(!host(room,b.hostToken))return fail('Host only',403);try{startRoomMatch(room);return jsonResponse({ok:true,matchId:room.game.matchId})}catch(err){return fail(err.message)}}
+  if(u.pathname==='/api/rematch'&&request.method==='POST'){if(!host(room,b.hostToken))return fail('Host only',403);if(room.game.phase!=='gameOver')return fail('The match is not finished');try{startRoomMatch(room,{rematch:true});return jsonResponse({ok:true,matchId:room.game.matchId})}catch(err){return fail(err.message)}}
   if(u.pathname==='/api/gameAction'&&request.method==='POST'){if(!p)return fail('Player not found',401);if(!isExtraGame(room.gameType))return fail('This game uses the standard card actions');try{extraGameAction(room,p,b);broadcast(room);return jsonResponse({ok:true})}catch(err){return fail(err.message)}}
   if(u.pathname==='/api/bid'&&request.method==='POST'){if(!p)return fail('Player not found',401);try{applyStandardBid(room,p,b.bid);broadcast(room);return jsonResponse({ok:true})}catch(err){return fail(err.message)}}
   if(u.pathname==='/api/play'&&request.method==='POST'){if(!p)return fail('Player not found',401);try{const result=applyStandardPlay(room,p,b.cardId);broadcast(room);scheduleTrickAdvance(room,result);return jsonResponse({ok:true})}catch(err){return fail(err.message)}}
@@ -254,10 +266,14 @@ async function handleApi(request){
 }
 
 export class GameHub {
-  constructor(ctx,env){this.ctx=ctx;this.env=env;activeHub=this;this.ready=this.loadRooms()}
+  constructor(ctx,env){this.ctx=ctx;this.env=env;this.recordingMatches=new Set();activeHub=this;this.ready=this.loadRooms()}
   async loadRooms(){const stored=await this.ctx.storage.list({prefix:'room:'});for(const [key,raw] of stored){const id=key.slice(5);if(!rooms.has(id))rooms.set(id,restoreRoom(raw))}}
   async getRoom(id){if(!id)return null;await this.ready;if(rooms.has(id))return rooms.get(id);const raw=await this.ctx.storage.get(`room:${id}`);if(!raw)return null;const room=restoreRoom(raw);rooms.set(id,room);return room}
   persistRoom(room){const data=serializeRoom(room);this.ctx.waitUntil(this.ctx.storage.put(`room:${room.id}`,data))}
+  maybeRecordCompletedMatch(room){const matchId=room.game?.matchId;if(!matchId||room.game?.resultRecorded||this.recordingMatches.has(matchId))return;this.recordingMatches.add(matchId);this.ctx.waitUntil((async()=>{try{const key=`result:${matchId}`;if(await this.ctx.storage.get(key)){room.game.resultRecorded=true;this.persistRoom(room);return}const winners=(room.game.winnerIds||[]).map(id=>room.players.get(id)).filter(p=>p&&!p.isBot);const record={matchId,roomId:room.id,gameType:room.gameType,gameName:gameName(room.gameType),at:now(),winners:winners.map(p=>({profileId:p.profileId||`legacy:${String(p.name).toLowerCase()}`,name:p.name,playerId:p.id})),players:[...room.players.values()].filter(p=>!p.isBot).map(p=>({profileId:p.profileId||`legacy:${String(p.name).toLowerCase()}`,name:p.name,playerId:p.id,score:p.score}))};await this.ctx.storage.put(key,record);const board=await this.getLeaderboard();for(const w of record.winners){const id=w.profileId;let row=board.players[id];if(!row)row=board.players[id]={profileId:id,name:w.name,totalWins:0,games:{},lastWinAt:0};row.name=w.name;row.totalWins++;row.lastWinAt=record.at;const g=row.games[record.gameType]||{gameType:record.gameType,name:record.gameName,wins:0};g.name=record.gameName;g.wins++;row.games[record.gameType]=g}board.recent=[{matchId:record.matchId,gameType:record.gameType,gameName:record.gameName,at:record.at,winners:record.winners.map(w=>w.name)},...(board.recent||[]).filter(x=>x.matchId!==record.matchId)].slice(0,40);await this.ctx.storage.put('leaderboard:v1',board);room.game.resultRecorded=true;this.persistRoom(room)}finally{this.recordingMatches.delete(matchId)}})())}
+  async getLeaderboard(){const data=await this.ctx.storage.get('leaderboard:v1');return data&&data.players?data:{players:{},recent:[]}}
+  async addRequest(b){const text=String(b.text||'').trim().slice(0,800);if(!text)throw new Error('Please enter a request');const category=requestCategories.has(String(b.category))?String(b.category):'Other',name=String(b.name||'Family player').trim().slice(0,24)||'Family player',entry={id:crypto.randomUUID(),profileId:profileIdFrom(b),name,category,text,at:now(),status:'Requested'};const list=await this.getRequests();list.unshift(entry);await this.ctx.storage.put('requests:v1',list.slice(0,250));return entry}
+  async getRequests(){const data=await this.ctx.storage.get('requests:v1');return Array.isArray(data)?data:[]}
   async fetch(request){activeHub=this;await this.ready;try{return await handleApi(request)}catch(err){console.error(err);return jsonResponse({error:err?.message||'Server error'},500)}}
 }
 

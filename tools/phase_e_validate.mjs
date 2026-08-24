@@ -4,7 +4,7 @@ import path from 'node:path';
 
 const ROOT=process.cwd();
 const PUBLIC=path.join(ROOT,'public');
-const BUILD='3D-STAGING-PHASE-E2-UX-03';
+const BUILD='GAME-NIGHT-STAGING-PHASE-F-PLATFORM-04';
 const failures=[];
 const warnings=[];
 const passes=[];
@@ -92,13 +92,20 @@ for(const [file,s] of allPublic){
 if(cdnHits.length)warn(`core 3D CDN dependency remains (${[...new Set(cdnHits)].join(', ')})`); else pass('no Three.js / addon runtime CDN references');
 
 const app=await text('public/app.js'),sw=await text('public/sw.js'),idx=await text('public/index.html'),ng=await text('public/new-games.html'),il=await text('public/island-life.html');
-app.includes(BUILD)&&sw.includes('black-family-game-night-3d-staging-phase-e2-ux-03')&&idx.includes(BUILD)&&ng.includes(BUILD)&&il.includes(BUILD)?pass('staging cache/version markers are consistent'):fail('staging cache/version markers are inconsistent');
+const worker=await text('worker.mjs'),extra=await text('extraGames.mjs'),styles=await text('public/styles.css'),studio=await text('public/shared-3d-studio.mjs');
+app.includes(BUILD)&&sw.includes('black-family-game-night-staging-phase-f-platform-04')&&idx.includes(BUILD)&&ng.includes(BUILD)&&il.includes(BUILD)?pass('staging cache/version markers are consistent'):fail('staging cache/version markers are inconsistent');
 sw.includes('/phase-e-qa.mjs')?pass('staging diagnostics module precached'):fail('phase-e diagnostics missing from service worker shell');
+app.includes("s.gameType===GAME.SMEAR")&&app.includes('YOUR 6-CARD HAND · REVIEW IT BEFORE YOU BID')?pass('Smear six-card hand is rendered during bidding'):fail('Smear bidding-hand presentation marker missing');
+app.includes("PROFILE_KEY='gn_profile_v1'")&&app.includes('homeAvatarHubHTML')&&app.includes('Character → outfit → player colour')?pass('persistent Avatar Hub profile flow present'):fail('Avatar Hub profile flow incomplete');
+app.includes("api('requests'")&&app.includes("api('leaderboard'")&&worker.includes("/api/requests")&&worker.includes("/api/leaderboard")?pass('Requests and shared Leaderboards routes/UI present'):fail('Requests/Leaderboards integration incomplete');
+app.includes('KEEP PLAYING')&&app.includes('RETURN TO GAME SHELF')&&worker.includes("/api/rematch")?pass('shared room rematch/end-of-game flow present'):fail('shared room rematch/end-of-game flow incomplete');
+extra.includes('TRAIL_HAND_SIZE=5')&&extra.includes('trailDrawTo')&&extra.includes('trailDiscardCard')&&app.includes('bindTrailBoardGestures')&&styles.includes('touch-action:none')?pass('Trail Trouble five-card hand and gesture board controls present'):fail('Trail Trouble Phase F markers incomplete');
+studio.includes('applyPrimaryClothingColor')?pass('future authored GLB primary-clothing tint contract present'):fail('primary clothing tint contract missing');
 
 const wranglerBin=path.join(ROOT,'node_modules','.bin','wrangler');
 if(existsSync(wranglerBin))pass('Wrangler executable available for deployment smoke test'); else warn('Wrangler executable unavailable: actual Cloudflare deployment remains UNVERIFIED');
 
-console.log(`PHASE E STATIC BUILD VALIDATION - ${BUILD}`);
+console.log(`PLATFORM STAGING BUILD VALIDATION - ${BUILD}`);
 for(const p of passes)console.log(`PASS ${p}`);
 for(const w of warnings)console.log(`WARN ${w}`);
 for(const f of failures)console.log(`FAIL ${f}`);

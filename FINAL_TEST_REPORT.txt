@@ -1,32 +1,12 @@
-BLACK FAMILY GAME NIGHT - E2/UX-03 FINAL CODE-SIDE TEST REPORT
-Build: 3D-STAGING-PHASE-E2-UX-03
-Package: 3.0.1-staging-phase-e2-ux-03
+BLACK FAMILY GAME NIGHT - PHASE F PLATFORM 04
 
-AUTOMATED CHECK
-Command: npm run check
-Result: PASS
-Tests: 229 / 229 passed
-Failures: 0
-
-STATIC STAGING BUILD VALIDATION
-Command: npm run build
-Result: PASS WITH DECLARED WARNINGS
-Hard checks: 110 passed
-Warnings: 2
-Failures: 0
+Automated test result: 245 / 245 PASS
+Static staging validation: 116 PASS / 2 WARN / 0 FAIL
+Production GLB audit: PASS 10 / 10
+Local static HTTP smoke: PASS
 
 Warnings:
-1. Core Three.js 0.185.1 / addon CDN dependency remains.
-2. Wrangler executable unavailable; actual Cloudflare deployment remains UNVERIFIED.
+1. Three.js 0.185.1 and addon runtime CDN references remain.
+2. Wrangler executable is unavailable in this environment; actual Cloudflare deployment is UNVERIFIED.
 
-PRODUCTION GLB INTEGRITY AUDIT
-Command: python3 tools/audit_production_assets.py
-Result: PASS
-Packaged GLBs validated: 10
-
-IMPORTANT LIMITATIONS
-- Passing tests are code-side evidence only, not gameplay proof.
-- Final home-screen composite could not be reliably rendered in the available headless Chromium environment; VISUAL RESULT UNVERIFIED.
-- Real-phone E2/UX QA is required.
-- Existing procedural/parametric 3D models and environments are not claimed as finished production art.
-- Proper authored character, dog, animation, prop and environment assets remain a separate external 3D production requirement.
+Visual result: UNVERIFIED. Headless Chromium did not complete a reliable render in the container. Real-phone QA is required.

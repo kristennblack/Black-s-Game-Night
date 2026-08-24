@@ -1,25 +1,33 @@
 BLACK FAMILY GAME NIGHT
 BUILD MANIFEST
 
-Build ID: 3D-STAGING-PHASE-E2-UX-03
-Package version: 3.0.1-staging-phase-e2-ux-03
+Build ID: GAME-NIGHT-STAGING-PHASE-F-PLATFORM-04
+Package version: 3.0.1-staging-phase-f-platform-04
 Cloudflare staging worker name: black-family-game-night-phase-e-staging
 Static asset directory: ./public
 SPA fallback: single-page-application
 
-Primary staging pages:
-- /                       Home / table games
+Primary pages:
+- /                       Home / room card & board games
 - /new-games.html         Family Mystery, Prop Hunt, Birthday Seat
 - /island-life.html       Island Life
 
-QA query:
-- append ?qa3d=1 to a live 3D game URL when diagnostic overlays are intentionally required
+New/expanded Phase F systems:
+- private six-card Smear bidding-hand presentation
+- shared room rematch endpoint + end controls
+- persistent local player profile / Avatar Hub
+- primary-clothing player-colour contract
+- persistent GameHub Requests board
+- duplicate-safe GameHub Leaderboards
+- client-only Game School tutorial framework
+- Trail Trouble five-card authoritative hands
+- Trail Trouble waypoint movement and gesture board view
 
-New E2/UX assets:
+Current home visual assets retained from E2:
 - /john-home-approved.jpg
 - /home-cabin-background.jpg
 
-Core authored/packaged GLB paths currently present:
+Current packaged GLBs:
 - /models/characters/john.glb
 - /models/dogs/gunner.glb
 - /models/props/prop-zapper.glb
@@ -32,9 +40,10 @@ Core authored/packaged GLB paths currently present:
 - /models/furniture/shelving.glb
 
 ART STATUS WARNING
-The GLBs above validate technically but the current repository-generated John/Gunner/prop/environment visuals are not being represented as finished authored production art. See the production plan documents.
+The GLBs above validate technically. They do NOT constitute completion of the requested finished authored 3D family/avatar/environment production.
 
 Validation summary:
-- npm run check: 229/229
-- npm run build: 110 pass, 2 warning, 0 fail
+- npm run check: 245/245
+- static build validation: 116 pass, 2 warning, 0 fail
 - GLB audit: PASS 10/10
+- real-device / final visual result: UNVERIFIED

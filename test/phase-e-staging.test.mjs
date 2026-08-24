@@ -13,9 +13,9 @@ const [prop,island,birthday,sw,app,manifestText]=await Promise.all([
 const manifest=JSON.parse(manifestText);
 
 test('Phase E staging identifier is explicit and cache-versioned',()=>{
-  assert.equal(STAGING_BUILD_ID,'3D-STAGING-PHASE-E2-UX-03');
+  assert.equal(STAGING_BUILD_ID,'GAME-NIGHT-STAGING-PHASE-F-PLATFORM-04');
   assert.ok(app.includes(STAGING_BUILD_ID));
-  assert.ok(sw.includes('black-family-game-night-3d-staging-phase-e2-ux-03'));
+  assert.ok(sw.includes('black-family-game-night-staging-phase-f-platform-04'));
   assert.ok(sw.includes('/phase-e-qa.mjs'));
 });
 

@@ -42,8 +42,10 @@ test('Euchre calling action works',()=>{
 test('Cribbage discards to crib',()=>{
   const r=room(GAME_TYPES.CRIBBAGE,2);startExtraGame(r);const p=[...r.players.values()][0],a=extraPublicState(r,p).actions[0];assert.equal(a.action,'cribDiscard');extraGameAction(r,p,a);
 });
-test('Trail Trouble draws a movement card',()=>{
-  const r=room(GAME_TYPES.TRAIL,4,{teamMode:'teams2'});startExtraGame(r);const p=r.players.get(r.game.extra.turnPlayerId),a=extraPublicState(r,p).actions[0];assert.equal(a.action,'trailDraw');extraGameAction(r,p,a);
+test('Trail Trouble deals a persistent private five-card hand',()=>{
+  const r=room(GAME_TYPES.TRAIL,4,{teamMode:'teams2'});startExtraGame(r);const p=r.players.get(r.game.extra.turnPlayerId),pub=extraPublicState(r,p);
+  assert.equal(p.hand.length,5);assert.equal(pub.hand.length,5);assert.ok(pub.actions.every(a=>a.args?.cardId),'every Trail action is tied to a held card');
+  for(const q of r.players.values())assert.equal(q.hand.length,5);
 });
 test('Marbles & Jokers draws a card',()=>{
   const r=room(GAME_TYPES.MARBLES,4);startExtraGame(r);const p=r.players.get(r.game.extra.turnPlayerId),a=extraPublicState(r,p).actions[0];assert.equal(a.action,'marbleDraw');extraGameAction(r,p,a);
@@ -84,12 +86,12 @@ test('Golf recycles discards and is capped at six players for a 56-card deck',()
 });
 
 test('Trail Trouble only wins when all team markers reach the final Home space',()=>{
-  const r=room(GAME_TYPES.TRAIL,4,{teamMode:'teams2'});startExtraGame(r);const ex=r.game.extra,ids=[...r.players.keys()],team=[ids[0],ids[2]];
+  const r=room(GAME_TYPES.TRAIL,4,{teamMode:'teams2'});startExtraGame(r);const ex=r.game.extra,ids=[...r.players.keys()],team=[ids[0],ids[2]],p=r.players.get(ids[0]);
   for(const id of team)for(const q of ex.pawns[id]){q.zone='home';q.home=0}
-  ex.turnPlayerId=ids[0];ex.drawn={kind:'noop',label:'test'};extraGameAction(r,r.players.get(ids[0]),{action:'trailDiscard'});
+  ex.turnPlayerId=ids[0];p.hand=[{id:'no-move-1',kind:'out',label:'HIT THE TRAIL'}];let pub=extraPublicState(r,p);let discard=pub.actions.find(a=>a.action==='trailDiscardCard');assert.ok(discard);extraGameAction(r,p,discard);
   assert.notEqual(r.game.phase,'gameOver');
   for(const id of team)for(const q of ex.pawns[id]){q.zone='home';q.home=3}
-  ex.turnPlayerId=ids[0];ex.drawn={kind:'noop',label:'test'};extraGameAction(r,r.players.get(ids[0]),{action:'trailDiscard'});
+  ex.turnPlayerId=ids[0];p.hand=[{id:'no-move-2',kind:'out',label:'HIT THE TRAIL'}];pub=extraPublicState(r,p);discard=pub.actions.find(a=>a.action==='trailDiscardCard');assert.ok(discard);extraGameAction(r,p,discard);
   assert.equal(r.game.phase,'gameOver');
 });
 
@@ -238,9 +240,9 @@ test('31 skips eliminated players when a player knocks',()=>{
 
 test('Trail Trouble exposes board metadata and card 4 moves backward four',()=>{
   const r=room(GAME_TYPES.TRAIL,4,{teamMode:'teams2'});startExtraGame(r);const ex=r.game.extra,id=ex.turnPlayerId,p=r.players.get(id),pawn=ex.pawns[id][0];
-  pawn.zone='track';pawn.dist=12;ex.drawn={id:'trail-four',kind:'move',value:4,label:'4'};
+  pawn.zone='track';pawn.dist=12;p.hand=[{id:'trail-four',kind:'move',value:4,label:'4'}];
   const pub=extraPublicState(r,p);assert.equal(pub.trackLength,60);assert.equal(pub.deckCount,ex.deck.length);assert.equal(pub.direction,1);assert.ok(pub.startPositions[id]===0);
   const backward=pub.actions.find(a=>a.action==='trailMove'&&a.args.pawnId===pawn.id&&a.args.steps===-4);assert.ok(backward,'4 should offer a backward-four move');
   assert.equal(pub.actions.some(a=>a.action==='trailMove'&&a.args.pawnId===pawn.id&&a.args.steps===4),false);
-  extraGameAction(r,p,backward);assert.equal(pawn.dist,8);
+  extraGameAction(r,p,backward);assert.equal(pawn.dist,8);assert.equal(p.hand.length,5,'played card is replaced to restore the five-card hand');
 });

@@ -83,6 +83,27 @@ export function findRigNode(root,names=[]){const targets=names.map(canonicalName
  * procedural rigs.  This lets a GLB become useful immediately, even before it
  * has authored clips: locomotion, gaze, recoil and contextual poses can drive
  * its named joints while AnimationMixer remains available when clips arrive. */
+export function applyPrimaryClothingColor(root,color){
+  if(!root||color==null)return 0;
+  const roleMatch=v=>/^(primary[-_ ]?clothing|shirt|top|jacket|hoodie|sweater|dress[-_ ]?top)$/i.test(String(v||'').trim());
+  const nameMatch=v=>/(^|[ _.-])(primary[-_ ]?clothing|shirt|top|jacket|hoodie|sweater|dress[-_ ]?top)([ _.-]|$)/i.test(String(v||''));
+  let changed=0;
+  root.traverse?.(mesh=>{
+    if(!mesh?.isMesh)return;
+    const meshTagged=mesh.userData?.primaryClothing===true||roleMatch(mesh.userData?.materialRole)||roleMatch(mesh.userData?.role)||nameMatch(mesh.name);
+    const mats=Array.isArray(mesh.material)?mesh.material:[mesh.material];
+    let cloned=false;
+    const next=mats.map(mat=>{
+      if(!mat)return mat;
+      const tagged=meshTagged||mat.userData?.primaryClothing===true||roleMatch(mat.userData?.materialRole)||roleMatch(mat.userData?.role)||nameMatch(mat.name);
+      if(!tagged||!mat.color?.set)return mat;
+      const copy=mat.clone?.()||mat;copy.color.set(color);copy.needsUpdate=true;changed++;cloned=true;return copy;
+    });
+    if(cloned)mesh.material=Array.isArray(mesh.material)?next:next[0];
+  });
+  return changed;
+}
+
 export function bindAuthoredRigParts(root,{kind='human'}={}){
   if(!root)return null;
   const node=(...names)=>findRigNode(root,names);

@@ -1,35 +1,44 @@
 BLACK FAMILY GAME NIGHT
-STAGING BUILD: 3D-STAGING-PHASE-E2-UX-03
-PACKAGE VERSION: 3.0.1-staging-phase-e2-ux-03
+STAGING BUILD: GAME-NIGHT-STAGING-PHASE-F-PLATFORM-04
+PACKAGE VERSION: 3.0.1-staging-phase-f-platform-04
 
 PURPOSE
-This is the combined E2/UX staging candidate requested after phone testing.
-It preserves the accepted E1 gameplay-continuity repairs while adding:
-- immediate legal tap-to-play for the normal Screw Your Buddy / Fuck Your Buddy / Smear card table flow
-- complete vertical round score sheets for Screw Your Buddy and Fuck Your Buddy
-- a rebuilt responsive cabin home screen using an explicit approved John reference crop
-- reduced home motion and improved typography/spacing/card hierarchy
-- cleaner mobile 3D controls and hidden QA/dev warnings during standard play
-- tighter per-game camera framing without replacing the repaired movement/collision architecture
-
-IMPORTANT 3D ART TRUTH
-This package DOES NOT claim that the current family models or environments are finished production artwork.
-The current repository still lacks the proper authored, skinned, animation-ready family models and authored environment art required for the requested final visual standard. Existing runtime/procedural fallbacks remain only so gameplay can run.
-See 3D_ASSET_PRODUCTION_PLAN.md and PAPA_SHOP_VERTICAL_SLICE_ASSET_SPEC.md.
+This staging candidate preserves the E1 continuity foundation and E2/UX repairs, then adds:
+- Smear: all six private cards visible before bidding
+- universal Keep Playing / Return to Game Shelf match-end flow where applicable
+- saved Home Avatar Hub: Character -> Outfit -> Color -> Save
+- player colour driving the avatar primary clothing tint
+- Requests replacing Store with persistent shared request history
+- shared duplicate-safe Leaderboards by stable player profile + game
+- Game School / How to Play game selector with guided practice tutorials
+- Trail Trouble persistent private five-card hands for humans and bots
+- Trail card -> pawn/move flow without redundant Confirm
+- Trail waypoint movement animation, visual board dressing, pinch zoom, pan and Reset View
 
 VALIDATION
-- npm run check: 229 / 229 tests PASS
-- npm run build: 110 PASS, 2 WARN, 0 FAIL
+- npm run check: 245 / 245 tests PASS
+- npm run build/static validation: 116 PASS, 2 WARN, 0 FAIL
 - production GLB integrity audit: PASS for all 10 packaged GLBs
-- actual Cloudflare deployment: UNVERIFIED in this environment (Wrangler unavailable)
-- final rendered home/3D composition: VISUAL RESULT UNVERIFIED in this environment; the Chromium compositor could not complete a reliable headless render
+- local static HTTP asset smoke: PASS
+- actual Cloudflare deployment: UNVERIFIED (Wrangler unavailable here)
+- final rendered composition: VISUAL RESULT UNVERIFIED; container Chromium did not produce a reliable render
 - real-phone QA: REQUIRED
 
-KNOWN DECLARED WARNINGS
-1. Three.js 0.185.1 / addon runtime CDN dependency remains.
-2. Wrangler executable is unavailable here, so actual Cloudflare staging deployment is UNVERIFIED.
+IMPORTANT 3D ART TRUTH
+This package DOES NOT claim that the current family character models or real-time 3D environments are finished production artwork.
+Proper authored/skinned family models, authored animations and finished environment art are still required.
+See 3D_ASSET_PRODUCTION_PLAN.md and PAPA_SHOP_VERTICAL_SLICE_ASSET_SPEC.md.
 
-NEXT STEP
-Deploy ONLY as staging. Confirm the visible build ID is exactly:
-3D-STAGING-PHASE-E2-UX-03
-Then use PHONE_QA_E2_UX_CHECKLIST.md.
+TRAIL RULE NOTE
+The current authoritative Trail Trouble source does not contain an implemented Scavenge card/rule, so this build did not invent one.
+If none of a player's five held cards has any legal move, the player may discard one, draw a replacement, and end the turn.
+
+DEPLOY STAGING
+1. Extract the package.
+2. Run npm install.
+3. Run npm run check and expect 245/245.
+4. Run npm run build and expect 0 failures.
+5. Run npm run deploy:staging.
+6. Do not overwrite production during QA.
+7. Confirm the screen build ID is exactly GAME-NIGHT-STAGING-PHASE-F-PLATFORM-04.
+8. Follow PHONE_QA_PHASE_F_PLATFORM_04.md.

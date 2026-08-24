@@ -43,3 +43,6 @@
  .ph3d-stick{width:42px;height:42px;left:29px;top:29px}
  .ph3d-prop-prompt{bottom:116px;max-width:64vw;text-align:center}
 }
+
+/* Phase F Platform 04: clean shared match-end choices */
+.ph-match-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.ph-match-actions .btn{min-height:46px}@media(max-width:620px){.ph-match-actions{grid-template-columns:1fr}}
