@@ -1,33 +1,36 @@
-BLACK FAMILY GAME NIGHT - PHASE E STAGING
+BLACK FAMILY GAME NIGHT - PHASE E1 CONTINUITY STAGING
 
-Visible build ID: 3D-STAGING-PHASE-E-01
-Package version: 3.0.1-staging-phase-e-01
-Service worker cache: black-family-game-night-3d-staging-phase-e-01
+Visible build ID: 3D-STAGING-PHASE-E1-02
+Package version: 3.0.1-staging-phase-e1-02
+Service worker cache: black-family-game-night-3d-staging-phase-e1-02
 Cloudflare staging Worker name: black-family-game-night-phase-e-staging
 Static asset directory: ./public
 Static binding: ASSETS
 SPA fallback: single-page-application
 
 PURPOSE
-Real-device proof build for the repaired player/avatar/animation/controls/collision/camera/zoom/map foundation. No Phase E scenery/game-mode redesign.
+Real-device proof build for the repaired player/avatar/animation/controls/collision/camera/zoom/map foundation, with known Phase D continuity regressions restored. No scenery/game-mode redesign.
 
 AUTOMATED RESULT
-- npm run check: 214/214 PASS
+- npm run check: 221/221 PASS
+- Phase E1 continuity tests: 7/7 PASS
 - npm run build: 108 PASS, 2 WARNINGS, 0 FAILURES
 - production GLB integrity audit: PASS
-- local static HTTP + GLB smoke: PASS
+
+CONTINUITY NOTE
+The historical Phase D worktree reported 243/243 but was never packaged. Its 37 Phase-D-only test cases cannot be recovered exactly. This package does not pretend 221 is the same suite; it restores the known lost Phase D behaviors identified in the E1 forensic audit.
 
 WARNINGS
 1. Three.js 0.185.1 plus GLTFLoader/SkeletonUtils still load from public CDNs. Exact-version local package retrieval was blocked by this runner's network/DNS path.
 2. Wrangler executable is unavailable locally. Actual Cloudflare dry-run/deploy is UNVERIFIED.
 
-REAL-TIME GAMES
-- Family Prop Hunt
-- Family Island Life
-- John's Birthday Seat
+FOUR INTENDED 3D EXPERIENCES
+- Family Prop Hunt - third-person real-time 3D
+- Family Island Life - third-person real-time 3D
+- John's Birthday Seat - third-person real-time obstacle/platform 3D
+- Family Mystery - 3D BOARD GAME - NOT YET IMPLEMENTED TO INTENDED VISUAL STANDARD
 
-SEPARATE FOURTH REAL-TIME 3D GAME
-NOT FOUND
+Family Mystery must eventually use the shared proper family avatar/animation assets with board-specific movement/camera controls. It must not inherit free WASD/jump/shooting controls.
 
 PACKAGED GLB ASSETS
 - /public/models/characters/john.glb
@@ -41,4 +44,4 @@ PACKAGED GLB ASSETS
 - /public/models/furniture/tool-chest.glb
 - /public/models/furniture/shelving.glb
 
-See PHASE_E_STAGING_REPORT.md for strict asset-authorship and missing-avatar findings.
+Procedural geometry is not classified as finished production art.

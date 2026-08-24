@@ -4,7 +4,7 @@ import path from 'node:path';
 
 const ROOT=process.cwd();
 const PUBLIC=path.join(ROOT,'public');
-const BUILD='3D-STAGING-PHASE-E-01';
+const BUILD='3D-STAGING-PHASE-E1-02';
 const failures=[];
 const warnings=[];
 const passes=[];
@@ -92,7 +92,7 @@ for(const [file,s] of allPublic){
 if(cdnHits.length)warn(`core 3D CDN dependency remains (${[...new Set(cdnHits)].join(', ')})`); else pass('no Three.js / addon runtime CDN references');
 
 const app=await text('public/app.js'),sw=await text('public/sw.js'),idx=await text('public/index.html'),ng=await text('public/new-games.html'),il=await text('public/island-life.html');
-app.includes(BUILD)&&sw.includes('black-family-game-night-3d-staging-phase-e-01')&&idx.includes(BUILD)&&ng.includes(BUILD)&&il.includes(BUILD)?pass('staging cache/version markers are consistent'):fail('staging cache/version markers are inconsistent');
+app.includes(BUILD)&&sw.includes('black-family-game-night-3d-staging-phase-e1-02')&&idx.includes(BUILD)&&ng.includes(BUILD)&&il.includes(BUILD)?pass('staging cache/version markers are consistent'):fail('staging cache/version markers are inconsistent');
 sw.includes('/phase-e-qa.mjs')?pass('staging diagnostics module precached'):fail('phase-e diagnostics missing from service worker shell');
 
 const wranglerBin=path.join(ROOT,'node_modules','.bin','wrangler');

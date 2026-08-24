@@ -1,5 +1,5 @@
 BLACK FAMILY GAME NIGHT - PHASE E CHANGED / RECONSTRUCTED FILES
-Build: 3D-STAGING-PHASE-E-01
+Build: 3D-STAGING-PHASE-E1-02
 
 Continuity warning: the accepted Phase D worktree was not persisted, so this is not an exact git diff from Phase D.
 It is the concrete diff/addition set relative to the persisted v3.0.1 source baseline used to reconstruct Phase E.
@@ -34,3 +34,11 @@ It is the concrete diff/addition set relative to the persisted v3.0.1 source bas
   ?? test/phase-e-staging.test.mjs
   ?? tools/phase_e_validate.mjs
   ?? wrangler.staging.jsonc
+
+E1 continuity additions:
+- public/prop-hunt-core.mjs
+- public/prop-hunt-3d.js
+- public/shared-3d-gameplay.mjs
+- public/island-life.js
+- test/phase-e1-continuity-recovery.test.mjs
+- PHASE_E1_CONTINUITY_REPORT.md

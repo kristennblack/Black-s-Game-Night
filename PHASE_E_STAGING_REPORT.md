@@ -1,7 +1,7 @@
 # Black Family Game Night - Phase E Staging Report
 
-Build: **3D-STAGING-PHASE-E-01**  
-Package version: `3.0.1-staging-phase-e-01`  
+Build: **3D-STAGING-PHASE-E1-02**  
+Package version: `3.0.1-staging-phase-e1-02`  
 Date: 2026-08-24  
 Status: **STAGING TEST CANDIDATE ONLY - NOT PRODUCTION READY**
 
@@ -10,6 +10,8 @@ Status: **STAGING TEST CANDIDATE ONLY - NOT PRODUCTION READY**
 The accepted Phase D QA report identified its working tree as `/mnt/data/v301_playability`, reported 243/243 tests passing, and intentionally did not create a Phase D release ZIP. That transient worktree was no longer mounted when Phase E began. The latest persisted source archive was `black-family-game-night-v3.0.1-playability-recovery-full-replacement.zip`, which contained the earlier 206-test baseline.
 
 This Phase E package therefore reconstructs the accepted shared camera, collision, body-profile, authored-model, animation-fallback and zoom foundation from the persisted v3.0.1 source plus the accepted Phase D report, then adds Phase E staging instrumentation. It must not be described as a byte-for-byte continuation of the vanished Phase D worktree.
+
+Phase E1 then performed a forensic continuity pass and restored the known Phase D behaviors proven missing from the reconstruction: muzzle-origin shot revalidation, vertical prop selection, decoy support height, Island interaction line-of-sight, visitor swept collision/replanning, scene/listener cleanup, and invalid/bounds recovery. Seven direct E1 regression tests now protect those restorations. The historical 37 Phase-D-only test cases themselves remain unavailable, so this package does not claim numerical identity with the historical 243-test suite.
 
 ## 1. Complete avatar asset audit
 
@@ -74,20 +76,18 @@ The production-asset audit passes GLB headers, hierarchy and calibrated height c
 
 Every current production real-time map is true WebGL 3D space, not a flat 2D renderer. However, **all seven real-time environments are still visually constructed primarily from procedural geometry and Three.js/art-kit primitives rather than finished authored environment assets**. Papa's Shop has seven imported GLB hero props/furniture, but the map itself is still a procedural structure. This staging package intentionally does not redesign or decorate those environments because Phase E is foundation/device QA.
 
-## 3. Expected fourth 3D game
+## 3. Corrected four-game architecture
 
-**EXPECTED FOURTH 3D GAME: NOT FOUND**
+There are four intended 3D experiences in the project:
 
-Repository-wide `WebGLRenderer` search finds only:
+1. Family Prop Hunt - third-person real-time 3D.
+2. Family Island Life - third-person real-time 3D.
+3. John's Birthday Seat - third-person real-time obstacle/platform 3D.
+4. Family Mystery - **3D BOARD GAME - NOT YET IMPLEMENTED TO INTENDED VISUAL STANDARD**.
 
-1. `public/prop-hunt-3d.js` - Family Prop Hunt
-2. `public/island-life.js` - Family Island Life
-3. `public/birthday-climb.js` - John's Birthday Seat
-4. `public/_deep3d_qa.html` - QA harness, not a game
+Repository-wide `WebGLRenderer` search still shows that Family Mystery has not yet received its intended WebGL board presentation. Its current HTML/CSS illustrated board and standees are an incomplete implementation state, not the intended final architecture.
 
-`public/birthday-climb.js` explicitly labels John's Birthday Seat as the **REAL WEBGL FAMILY OBBY** and implements the platform/jumping/obstacle-course intent. No separate fourth platform/obby/tower/birthday-course/family-chaos WebGL game exists elsewhere in the repository.
-
-Family Mystery remains the existing illustrated HTML/CSS board/standee game. It was not converted or reclassified as the fourth third-person game.
+Family Mystery should eventually share the proper family avatar loader and reusable idle/walk/turn/reaction animations, but use board-specific destination selection, legal-move highlighting, path-driven movement and a smooth orbit/zoom/cinematic board camera. It should **not** inherit free WASD walking, platform jumping, Prop Hunt shooting or free-roaming collision controls.
 
 ## 4. CDN / local bundling status
 
@@ -139,15 +139,15 @@ Because the accepted Phase D worktree was not persisted, an exact filesystem dif
 
 ## 6. Staging build/version
 
-Visible build identifier: **3D-STAGING-PHASE-E-01**
+Visible build identifier: **3D-STAGING-PHASE-E1-02**
 
-Service-worker cache namespace: `black-family-game-night-3d-staging-phase-e-01`
+Service-worker cache namespace: `black-family-game-night-3d-staging-phase-e1-02`
 
 The identifier is displayed unobtrusively in each real-time game. The diagnostics toggle remains available even when `qa3d=1` is not in the URL.
 
 ## 7. Build / automated validation result
 
-`npm run check`: **214 / 214 tests PASS**
+`npm run check`: **221 / 221 tests PASS**
 
 `npm run build`: **PASS as repository staging/static production-shape validation**
 
@@ -220,11 +220,11 @@ On a machine with normal npm/Cloudflare connectivity:
 
 1. Extract the Phase E staging ZIP.
 2. From the extracted project directory run `npm install` to install the pinned Wrangler dev dependency.
-3. Run `npm run check` and confirm 214/214 tests pass.
+3. Run `npm run check` and confirm 221/221 tests pass.
 4. Run `npm run build` and confirm the Phase E validator has 0 failures.
 5. Run `npm run deploy:staging`.
 6. Use the `workers.dev` or staging-domain URL printed by Wrangler. Do **not** deploy over the production Worker for this phone test.
-7. On the phone, open the new staging URL in a fresh/reopened tab and confirm the on-screen badge reads exactly **3D-STAGING-PHASE-E-01**. If it does not, stop testing because the wrong/cache-stale build is loaded.
+7. On the phone, open the new staging URL in a fresh/reopened tab and confirm the on-screen badge reads exactly **3D-STAGING-PHASE-E1-02**. If it does not, stop testing because the wrong/cache-stale build is loaded.
 8. QA-mode URLs after deployment are:
    - Prop Hunt: `<STAGING_BASE>/new-games.html?game=prophunt&qa3d=1`
    - Island Life: `<STAGING_BASE>/island-life.html?qa3d=1`

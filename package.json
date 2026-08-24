@@ -1,6 +1,6 @@
 {
   "name": "black-family-game-night",
-  "version": "3.0.1-staging-phase-e-01",
+  "version": "3.0.1-staging-phase-e1-02",
   "private": true,
   "type": "module",
   "description": "Black Family Game Night Phase E staging test candidate. Real-device WebGL gameplay, avatar likeness, controls, camera feel and visual quality remain unverified until phone QA.",

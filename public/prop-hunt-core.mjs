@@ -4,6 +4,28 @@ export const lerpAngle=(a,b,t)=>{let d=wrapAngle(b-a);return a+d*t};
 export const wrapAngle=a=>{while(a>Math.PI)a-=Math.PI*2;while(a<-Math.PI)a+=Math.PI*2;return a};
 export const dist2=(a,b)=>Math.hypot((a.x||0)-(b.x||0),(a.z||0)-(b.z||0));
 
+export function verticalIntervalGap(aMin,aMax,bMin,bMax){
+  if(aMax<bMin)return bMin-aMax;
+  if(bMax<aMin)return aMin-bMax;
+  return 0;
+}
+
+/** Choose a nearby prop without reaching through a floor/ceiling to another level. */
+export function nearestReachableProp(actor,props,maxHorizontal=1.6,maxVerticalGap=.55){
+  if(!actor)return null;let best=null,bestScore=Infinity;
+  const actorMin=Number(actor.y)||0,actorMax=actorMin+(Number(actor.height)||1.72);
+  for(const prop of props||[]){
+    const horizontal=Math.hypot((Number(actor.x)||0)-(Number(prop.x)||0),(Number(actor.z)||0)-(Number(prop.z)||0));
+    if(horizontal>maxHorizontal)continue;
+    const propMin=Number(prop.y)||0,propMax=propMin+Math.max(.05,Number(prop.h)||.5);
+    const verticalGap=verticalIntervalGap(actorMin,actorMax,propMin,propMax);
+    if(verticalGap>maxVerticalGap)continue;
+    const score=Math.hypot(horizontal,verticalGap*1.35);
+    if(score<bestScore){best=prop;bestScore=score}
+  }
+  return best;
+}
+
 export function rayAabbDistance(origin,dir,box,maxDistance=Infinity){
   const min={x:box.x-box.w/2,y:box.y??0,z:box.z-box.d/2};
   const max={x:box.x+box.w/2,y:(box.y??0)+box.h,z:box.z+box.d/2};

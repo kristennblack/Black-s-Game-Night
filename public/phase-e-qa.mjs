@@ -1,5 +1,5 @@
-export const STAGING_BUILD_ID='3D-STAGING-PHASE-E-01';
-export const STAGING_APP_VERSION='3.0.1-staging-phase-e-01';
+export const STAGING_BUILD_ID='3D-STAGING-PHASE-E1-02';
+export const STAGING_APP_VERSION='3.0.1-staging-phase-e1-02';
 
 const fmt=n=>Number.isFinite(Number(n))?Number(n).toFixed(2):'n/a';
 const vec=v=>v?`${fmt(v.x)}, ${fmt(v.y)}, ${fmt(v.z)}`:'n/a';

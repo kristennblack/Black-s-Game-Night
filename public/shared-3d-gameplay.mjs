@@ -194,10 +194,18 @@ export function findSafeCharacterPosition(core,colliders,preferred,bounds={},opt
 
 export function recoverActorFromGeometry(core,actor,colliders,bounds={},opts={}){
   if(!actor||!core?.blockingCollider)return false;
-  const blocked=core.blockingCollider(actor.x,actor.z,opts.radius??actor.radius??.32,actor.y??0,opts.height??actor.height??1.82,colliders);
-  if(!blocked)return false;
-  const safe=findSafeCharacterPosition(core,colliders,{x:actor.x,y:actor.y??0,z:actor.z},bounds,{...opts,radius:opts.radius??actor.radius,height:opts.height??actor.height});
+  const radius=opts.radius??actor.radius??.32,height=opts.height??actor.height??1.82;
+  const clampTo=(v,lo,hi,pad)=>Math.min(hi-pad,Math.max(lo+pad,v));
+  const finite=v=>Number.isFinite(Number(v)),minX=Number.isFinite(bounds.minX)?bounds.minX:-Infinity,maxX=Number.isFinite(bounds.maxX)?bounds.maxX:Infinity,minZ=Number.isFinite(bounds.minZ)?bounds.minZ:-Infinity,maxZ=Number.isFinite(bounds.maxZ)?bounds.maxZ:Infinity;
+  const invalid=!finite(actor.x)||!finite(actor.y)||!finite(actor.z)||Number(actor.y)<(opts.minY??-8)||Number(actor.y)>(opts.maxY??80);
+  const outOfBounds=!invalid&&(actor.x<minX+radius||actor.x>maxX-radius||actor.z<minZ+radius||actor.z>maxZ-radius);
+  const blocked=!invalid&&!outOfBounds?core.blockingCollider(actor.x,actor.z,radius,actor.y??0,height,colliders):null;
+  if(!invalid&&!outOfBounds&&!blocked)return false;
+  const fallback=opts.fallback||{x:Number.isFinite(minX)&&Number.isFinite(maxX)?(minX+maxX)/2:0,y:0,z:Number.isFinite(minZ)&&Number.isFinite(maxZ)?(minZ+maxZ)/2:0};
+  const preferred={x:invalid?fallback.x:clampTo(actor.x,minX,maxX,radius+.08),y:invalid?fallback.y:(actor.y??0),z:invalid?fallback.z:clampTo(actor.z,minZ,maxZ,radius+.08)};
+  const safe=findSafeCharacterPosition(core,colliders,preferred,bounds,{...opts,radius,height});
   actor.x=safe.x;actor.y=safe.y;actor.z=safe.z;actor.vx=0;actor.vy=0;actor.vz=0;actor.grounded=true;actor._recoveredFromGeometry=(actor._recoveredFromGeometry||0)+1;
+  actor._lastRecoveryReason=invalid?'invalid transform recovery':outOfBounds?'bounds recovery':'geometry recovery';
   actor.rig?.position?.set?.(actor.x,actor.y,actor.z);
   return true;
 }

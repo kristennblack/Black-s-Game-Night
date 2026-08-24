@@ -1,36 +1,37 @@
-BLACK FAMILY GAME NIGHT - PHASE E STAGING TEST CANDIDATE
-Build: 3D-STAGING-PHASE-E-01
-Package: 3.0.1-staging-phase-e-01
+BLACK FAMILY GAME NIGHT - PHASE E1 CONTINUITY STAGING TEST CANDIDATE
+Build: 3D-STAGING-PHASE-E1-02
+Package: 3.0.1-staging-phase-e1-02
 
 THIS IS NOT A FINAL RELEASE.
-Real-device WebGL, avatar appearance, animation, controls, collision feel, camera feel, map quality and Cloudflare deployment remain subject to the Phase E phone test.
+Real-device WebGL, avatar appearance, animation, controls, collision feel, camera feel, map quality and Cloudflare deployment remain subject to the Phase E2 phone test.
 
 READ FIRST
-- PHASE_E_STAGING_REPORT.md       Full avatar/map/deployment audit and exact limitations
-- DEVICE_QA_ISSUE_TEMPLATE.md     Narrow repair record for each device failure
-- FINAL_TEST_REPORT.txt           Automated/static test result
-- BUILD_MANIFEST.txt              Build/cache/config summary
+- PHASE_E1_CONTINUITY_REPORT.md  What was restored after the 243 -> 214 continuity investigation
+- PHASE_E_STAGING_REPORT.md      Full avatar/map/deployment audit and limitations
+- DEVICE_QA_ISSUE_TEMPLATE.md    Narrow repair record for each device failure
+- FINAL_TEST_REPORT.txt          Automated/static result
+- BUILD_MANIFEST.txt             Build/cache/config summary
 
 VISIBLE BUILD CHECK
-Every real-time 3D game should display: 3D-STAGING-PHASE-E-01
+Every real-time 3D game should display: 3D-STAGING-PHASE-E1-02
 If that exact identifier is not visible, do not trust the test because an old cached build may be running.
 
 DIAGNOSTICS
 Append ?qa3d=1 to a URL with no query parameters, or &qa3d=1 when parameters already exist.
 A small QA button can also open/close diagnostics in the game.
 
-REAL-TIME GAMES IN THIS REPOSITORY
+FOUR INTENDED 3D EXPERIENCES
 1. Family Prop Hunt
 2. Family Island Life
 3. John's Birthday Seat
+4. Family Mystery - 3D BOARD GAME - NOT YET IMPLEMENTED TO INTENDED VISUAL STANDARD
 
-Expected separate fourth 3D game: NOT FOUND.
-Family Mystery remains its board/standee game.
+The current Family Mystery HTML/CSS/standee presentation is incomplete relative to the intended realistic dimensional 3D board-game design. It is not being converted during E1/E2.
 
 STAGING DEPLOY
 1. npm install
-2. npm run check
-3. npm run build
+2. npm run check    (expect 221/221 PASS)
+3. npm run build    (expect 108 PASS, 2 warnings, 0 failures)
 4. npm run deploy:staging
 5. Use the staging URL printed by Wrangler.
 
@@ -40,10 +41,12 @@ QA URL PATTERNS
 - <STAGING_BASE>/new-games.html?game=birthday&qa3d=1
 
 IMPORTANT LIMITATIONS
-- Automated regression: 214/214 PASS.
+- Automated regression: 221/221 PASS.
+- Historical Phase D 243/243 test source was not persisted and cannot be claimed as recreated exactly.
 - Phase E static validation: 108 PASS, 2 warnings, 0 failures.
 - Actual Wrangler deployment in this build runner: UNVERIFIED.
 - Real phone/WebGL visual signoff: UNVERIFIED.
-- Core Three.js/GLTFLoader/SkeletonUtils are still exact-version CDN runtime dependencies because this runner could not retrieve npm packages. This must be removed before final production.
-- Only John and Gunner have packaged character GLBs. They contain named joint hierarchies but no glTF skins and no authored animation clips.
-- Every other required family member is a REAL 3D AVATAR ASSET MISSING and uses a procedural runtime rig for this staging test.
+- Core Three.js/GLTFLoader/SkeletonUtils remain exact-version CDN runtime dependencies in this runner.
+- Only John and Gunner have packaged character GLBs; neither has a glTF skin or authored clips.
+- Every other required family member remains REAL 3D AVATAR ASSET MISSING and uses a procedural runtime rig for staging.
+- Current real-time environments remain primarily procedural/generated visual geometry; that is not finished production art.
