@@ -19,13 +19,47 @@ export function rayAabbDistance(origin,dir,box,maxDistance=Infinity){
   return tmin<=maxDistance?tmin:null;
 }
 
-export function cameraObstructionDistance(target,desired,colliders,padding=.18){
+export function cameraObstructionDistance(target,desired,colliders,padding=.18,volumeRadius=.16){
   const dx=desired.x-target.x,dy=desired.y-target.y,dz=desired.z-target.z;
   const len=Math.hypot(dx,dy,dz)||1,dir={x:dx/len,y:dy/len,z:dz/len};
+  // Treat the camera as a small volume rather than a zero-width center ray. This
+  // catches roof edges, awnings and wall corners that can otherwise clip one side
+  // of a third-person camera while the center line remains clear.
+  const planar=Math.hypot(dir.x,dir.z)||1;
+  const right={x:dir.z/planar,y:0,z:-dir.x/planar};
+  const up={x:-dir.x*dir.y/planar,y:planar,z:-dir.z*dir.y/planar};
+  const r=Math.max(0,volumeRadius);
+  const offsets=[
+    {x:0,y:0,z:0},
+    {x:right.x*r,y:0,z:right.z*r},{x:-right.x*r,y:0,z:-right.z*r},
+    {x:up.x*r,y:up.y*r,z:up.z*r},{x:-up.x*r,y:-up.y*r,z:-up.z*r},
+    {x:(right.x+up.x)*r*.7,y:up.y*r*.7,z:(right.z+up.z)*r*.7},
+    {x:(right.x-up.x)*r*.7,y:-up.y*r*.7,z:(right.z-up.z)*r*.7},
+    {x:(-right.x+up.x)*r*.7,y:up.y*r*.7,z:(-right.z+up.z)*r*.7},
+    {x:(-right.x-up.x)*r*.7,y:-up.y*r*.7,z:(-right.z-up.z)*r*.7}
+  ];
   let nearest=len;
-  for(const b of colliders){if(b.noCamera||b.solid===false)continue;const t=rayAabbDistance(target,dir,b,len);if(t!=null&&t<nearest)nearest=t}
+  for(const o of offsets){
+    const origin={x:target.x+o.x,y:target.y+o.y,z:target.z+o.z};
+    for(const b of colliders){
+      if(b.noCamera||b.solid===false)continue;
+      const t=rayAabbDistance(origin,dir,b,len);
+      if(t!=null&&t<nearest)nearest=t;
+    }
+  }
   if(nearest>=len-1e-6)return len;
   return Math.max(.35,Math.min(len,nearest-padding));
+}
+
+export function lineOfSightClear(origin,target,colliders,padding=.04){
+  const dx=target.x-origin.x,dy=target.y-origin.y,dz=target.z-origin.z;
+  const len=Math.hypot(dx,dy,dz)||1,dir={x:dx/len,y:dy/len,z:dz/len};
+  for(const b of colliders){
+    if(b.noVision||b.solid===false)continue;
+    const t=rayAabbDistance(origin,dir,b,len);
+    if(t!=null&&t<len-padding)return false;
+  }
+  return true;
 }
 
 export function overlapsCircleAabb(x,z,r,b){
@@ -68,7 +102,7 @@ export function blockingCollider(x,z,r,feetY,height,colliders,ignore=null){
   return null;
 }
 
-export function attemptCharacterMove(actor,dx,dz,colliders,opts={}){
+function attemptMoveStep(actor,dx,dz,colliders,opts={}){
   const radius=opts.radius??actor.radius??.32,height=opts.height??actor.height??1.72;
   const maxStep=opts.maxStep??.42,maxMantle=opts.maxMantle??1.15;
   const next={x:actor.x+dx,z:actor.z+dz,y:actor.y};
@@ -87,6 +121,23 @@ export function attemptCharacterMove(actor,dx,dz,colliders,opts={}){
   if(!blockingCollider(actor.x+dx,z,radius,actor.y,height,colliders))x=actor.x+dx;
   if(!blockingCollider(x,actor.z+dz,radius,actor.y,height,colliders))z=actor.z+dz;
   return {x,z,y:actor.y,mantle:null,blocked:true};
+}
+
+export function attemptCharacterMove(actor,dx,dz,colliders,opts={}){
+  // Split long-frame movement into short pieces so a fast player cannot tunnel
+  // through thin collision boxes during a hitch or low-FPS phone frame.
+  const radius=opts.radius??actor.radius??.32;
+  const distance=Math.hypot(dx,dz);
+  const maxSubstep=opts.maxSubstep??Math.max(.075,Math.min(.18,radius*.45));
+  const steps=Math.max(1,Math.ceil(distance/maxSubstep));
+  let cur={...actor},blocked=false,stepped=false;
+  for(let i=0;i<steps;i++){
+    const r=attemptMoveStep(cur,dx/steps,dz/steps,colliders,opts);
+    cur.x=r.x;cur.z=r.z;cur.y=r.y;
+    blocked=blocked||!!r.blocked;stepped=stepped||!!r.stepped;
+    if(r.mantle)return {...r,blocked:true,substeps:i+1};
+  }
+  return {x:cur.x,z:cur.z,y:cur.y,mantle:null,blocked,stepped,substeps:steps};
 }
 
 export function assignRoles(players,round=1){

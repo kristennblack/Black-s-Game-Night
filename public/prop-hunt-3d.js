@@ -13,6 +13,7 @@
   const ART_URL='/shared-3d-art-kit.mjs';
   const GAMEPLAY_URL='/shared-3d-gameplay.mjs';
   const STUDIO_URL='/shared-3d-studio.mjs';
+  const PHASE_E_URL='/phase-e-qa.mjs';
   const FAMILY=window.FAMILY;
   const APP=window.APP||{toast:()=>{}};
   const family=()=>[...(FAMILY?.people||[]),...(FAMILY?.supports||[])];
@@ -22,7 +23,7 @@
   const QA_MODE=new URLSearchParams(location.search).get('qa3d')==='1';
   const CDN_NOTICE='Three.js 0.185.1';
 
-  let root=null,THREE=null,core=null,art=null,gameplay=null,studio=null,assets=null,audio=null,loadPromise=null,game=null,raf=0,lastFrame=0;
+  let root=null,THREE=null,core=null,art=null,gameplay=null,studio=null,phaseE=null,assets=null,audio=null,loadPromise=null,game=null,raf=0,lastFrame=0;
   let network=null,roomState=null,ws=null,reconnectTimer=0,pollTimer=0;
   const keys=Object.create(null);
   const joy={x:0,z:0,id:null};
@@ -45,25 +46,9 @@
   };
 
 
-  // Visual scale is calibrated against the actual procedural rig height instead of
-  // guessing at 1.0.  This keeps the mesh, doorway scale, camera target and collider
-  // describing the same-sized body.  `proportions` only changes silhouette ratios.
-  const PROP_HUNT_BODY_PROFILES={
-    john:{scale:.875,height:1.82,radius:.34,proportions:{bodyWidth:1.05,hipWidth:1.03,headScale:1.00}},
-    kristen:{scale:.851,height:1.77,radius:.32,proportions:{bodyWidth:.97,hipWidth:.98,headScale:1.02}},
-    holly:{scale:.683,height:1.42,radius:.27,proportions:{bodyWidth:.88,hipWidth:.89,headScale:1.13}},
-    elizabeth:{scale:.702,height:1.46,radius:.27,proportions:{bodyWidth:.89,hipWidth:.90,headScale:1.12}},
-    vanessa:{scale:.861,height:1.79,radius:.32,proportions:{bodyWidth:.98,hipWidth:.99,headScale:1.01}},
-    logan:{scale:.875,height:1.82,radius:.32,proportions:{bodyWidth:.95,hipWidth:.94,headScale:1.01}},
-    james:{scale:.841,height:1.75,radius:.33,proportions:{bodyWidth:1.04,hipWidth:1.02,headScale:1.02}},
-    dorothy:{scale:.813,height:1.69,radius:.31,proportions:{bodyWidth:.98,hipWidth:1.00,headScale:1.03}},
-    nana:{scale:.788,height:1.64,radius:.30,proportions:{bodyWidth:.96,hipWidth:.98,headScale:1.04}},
-    papa:{scale:.832,height:1.73,radius:.33,proportions:{bodyWidth:1.07,hipWidth:1.04,headScale:1.02}},
-    kelsi:{scale:.765,height:.90,radius:.38,proportions:{headScale:1.03,bodyLength:1.00}},
-    molly:{scale:.782,height:.92,radius:.39,proportions:{headScale:1.02,bodyLength:1.02}},
-    gunner:{scale:.918,height:1.08,radius:.46,proportions:{headScale:1.09,bodyLength:1.08}}
-  };
-  const bodyProfile=id=>PROP_HUNT_BODY_PROFILES[id]||{scale:.875,height:1.82,radius:.33,proportions:{}};
+  // Physical character dimensions now come from shared-3d-gameplay.mjs so the same
+  // family member has one collider/camera/visual scale contract in all 3D games.
+  const bodyProfile=id=>gameplay?.familyBodyProfile?.(id,{dog:['kelsi','molly','gunner'].includes(id)})||{scale:.875,height:1.82,radius:.33,proportions:{}};
 
   const PROP_DEFS={
     'Bucket':{kind:'cylinder',w:.42,d:.42,h:.48,color:0x77818a},
@@ -111,7 +96,7 @@
 
   async function ensureEngine(){
     if(loadPromise)return loadPromise;
-    loadPromise=Promise.all([import(THREE_URL),import(CORE_URL),import(ART_URL),import(GAMEPLAY_URL),import(STUDIO_URL)]).then(([t,c,a,g,s])=>{THREE=t;core=c;art=a.create3DArtKit(THREE);gameplay=g;studio=s;assets=studio.createAuthoredAssetPipeline(THREE);audio=studio.createAudioSystem();return true}).catch(err=>{console.error('3D engine failed to load',err);throw new Error('The 3D engine could not load. Check the internet connection and reload the game.')});
+    loadPromise=Promise.all([import(THREE_URL),import(CORE_URL),import(ART_URL),import(GAMEPLAY_URL),import(STUDIO_URL),import(PHASE_E_URL)]).then(([t,c,a,g,s,q])=>{THREE=t;core=c;art=a.create3DArtKit(THREE);gameplay=g;studio=s;phaseE=q;assets=studio.createAuthoredAssetPipeline(THREE,{assetVersion:phaseE.STAGING_BUILD_ID});audio=studio.createAudioSystem();return true}).catch(err=>{console.error('3D engine failed to load',err);throw new Error('The 3D engine could not load. Check the internet connection and reload the game.')});
     return loadPromise;
   }
 
@@ -202,7 +187,7 @@
     game.performance=gameplay.createPerformanceGovernor(renderer,{targetFps:55,minPixelRatio:.82,maxPixelRatio:Math.min(2,devicePixelRatio||1)});
     game.motionFx=art.createMotionFxSystem(scene,{color:mapKey==='camp'?0xc8b793:mapKey==='farm'?0xa88c68:0xb1a28d,max:24});
     game.cinematic=studio.createCinematicCamera(game.cameraRig);audio.setAmbience(mapKey==='camp'?{birds:.22,water:.28,wind:.18}:mapKey==='farm'?{birds:.3,wind:.25}:{birds:.12,wind:.08});
-    game.world=buildWorld(mapKey);game.nav=studio.createNavigationGrid({minX:game.world.bounds.minX,maxX:game.world.bounds.maxX,minZ:game.world.bounds.minZ,maxZ:game.world.bounds.maxZ,cellSize:.72,isBlocked:(x,z)=>!!core.blockingCollider(x,z,.34,0,1.55,game.world.colliders)});spawnActors();bindControls();onResize();resetPlayableView({announce:false});addFeed('Prop Hunt quality slice active: real depth, navigation, camera collision and all-angle rigs.');if(network)addFeed('Dedicated live Prop Hunt room connected.');lastFrame=performance.now();loop(lastFrame);
+    game.world=buildWorld(mapKey);const stage=root.querySelector('#ph3Stage');game.controlDisposers.push(phaseE.installInteractionGuards(stage),phaseE.mountZoomButtons(stage,game.cameraRig,{top:'178px',right:'12px'}));game.stagingQa=phaseE.mountStagingDiagnostics(stage,{gameName:'Family Prop Hunt',open:QA_MODE,getSnapshot:()=>{const a=game?.player,c=game?.camera,cs=game?.cameraRig?.state||{};return{game:'Family Prop Hunt',character:a?.person?.name||a?.person?.id,map:game?.mapKey,player:a?{x:a.x,y:a.y,z:a.z}:null,groundHeight:a?core.supportHeight(a.x,a.z,a.radius,game.world.colliders,a.y+.08,.5):null,camera:c?c.position:null,cameraDistance:a&&c?c.position.distanceTo(new THREE.Vector3(a.x,a.y,a.z)):null,desiredZoom:cs.targetDistance,actualZoom:cs.actualDistance,cameraPitch:cs.pitch,cameraObstructed:cs.obstructed,animation:a?.anim,movement:a?(!a.grounded?'air':Math.hypot(a.vx||0,a.vz||0)>.2?'moving':'idle'):'n/a',cameraRig:cs}}});game.controlDisposers.push(()=>game?.stagingQa?.dispose?.());game.nav=studio.createNavigationGrid({minX:game.world.bounds.minX,maxX:game.world.bounds.maxX,minZ:game.world.bounds.minZ,maxZ:game.world.bounds.maxZ,cellSize:.72,isBlocked:(x,z)=>!!core.blockingCollider(x,z,.34,0,1.55,game.world.colliders)});spawnActors();bindControls();onResize();resetPlayableView({announce:false});addFeed('Prop Hunt quality slice active: real depth, navigation, camera collision and all-angle rigs.');if(network)addFeed('Dedicated live Prop Hunt room connected.');lastFrame=performance.now();loop(lastFrame);
   }
 
   function disposeRoot(){if(game?.controlDisposers)for(const off of game.controlDisposers){try{off?.()}catch{}}try{game?.motionFx?.dispose?.()}catch{}if(game?.renderer){try{game.renderer.dispose()}catch{}}game=null;}
@@ -422,7 +407,7 @@
     try{
       await assets.ensureManifest();
       const dog=isDog(actor.person),entry=assets.entry(dog?'dogs':'characters',actor.person.id);
-      if(!entry?.file||(entry.games&&!entry.games.includes('propHunt'))||!game?.actorsById?.has(actor.id))return;
+      if(!entry?.file){assets.reportMissing(dog?'dogs':'characters',actor.person.id,{fallbackUsed:true,context:'Family Prop Hunt character'});return}if((entry.games&&!entry.games.includes('propHunt'))||!game?.actorsById?.has(actor.id))return;
       const rig=await(dog?assets.loadDog(actor.person.id,{fallback:null}):assets.loadCharacter(actor.person.id,{fallback:null}));
       if(!rig||!game?.actorsById?.has(actor.id))return;
       rig.position.copy(actor.rig.position);rig.rotation.copy(actor.rig.rotation);
@@ -468,9 +453,9 @@
   function onKeyDown(e){keys[e.code]=true;if(e.code==='Space'){if(!e.repeat)input.jumpQueued=true;input.jumpHeld=true;e.preventDefault()}if(e.code==='KeyC'&&!e.repeat)game?.cameraRig?.swapShoulder();if(e.code==='KeyR'&&!e.repeat)resetPlayableView();if(e.code==='KeyE')changeProp();if(e.code==='KeyF')flash();if(e.code==='KeyQ')dropDecoy();if(e.code==='KeyL')toggleLock();}
   function onKeyUp(e){keys[e.code]=false;if(e.code==='Space')input.jumpHeld=false;}
   function onResize(){if(!game?.renderer)return;const c=game.renderer.domElement,r=c.getBoundingClientRect();game.renderer.setSize(Math.max(320,r.width),Math.max(360,r.height),false);game.camera.aspect=Math.max(.5,r.width/Math.max(1,r.height));game.camera.updateProjectionMatrix();}
-  function resetPlayableView({announce=true}={}){const a=game?.player;if(!a)return;const moved=gameplay.recoverActorFromGeometry(core,a,game.world.colliders,game.world.bounds,{radius:a.radius,height:a.height,maxRadius:5,requireCameraPocket:true,cameraHeight:isDog(a.person)?.64:1.17,cameraDistance:3.4,minCameraPocket:1.5});game.cameraRig.reset(a,game.world.colliders,{yaw:a.yaw,pitch:.065,distance:game.cameraRig.cfg.cameraDistance,dog:isDog(a.person),height:a.prop?a.height*.55:(isDog(a.person)?.64:1.17),forceSnap:true});game.cameraYaw=game.cameraRig.state.yaw;game.cameraPitch=game.cameraRig.state.pitch;if(announce)addFeed(moved?'Player and view recovered to a safe spot.':'View reset behind your character.');}
+  function resetPlayableView({announce=true}={}){const a=game?.player;if(!a)return;const moved=gameplay.recoverActorFromGeometry(core,a,game.world.colliders,game.world.bounds,{radius:a.radius,height:a.height,maxRadius:5,requireCameraPocket:true,cameraHeight:isDog(a.person)?.64:1.17,cameraDistance:3.4,minCameraPocket:1.5});game.cameraRig.reset(a,game.world.colliders,{yaw:a.yaw,pitch:.065,distance:game.cameraRig.cfg.cameraDistance,dog:isDog(a.person),height:a.prop?a.height*.55:(isDog(a.person)?.64:1.17),forceSnap:true,reason:'manual Reset View'});game.stagingQa?.setRecovery(moved?'manual Reset View + safe-position recovery':'manual Reset View');game.cameraYaw=game.cameraRig.state.yaw;game.cameraPitch=game.cameraRig.state.pitch;if(announce)addFeed(moved?'Player and view recovered to a safe spot.':'View reset behind your character.');}
 
-  function loop(now){if(!game)return;const dt=Math.min(.04,Math.max(.001,(now-lastFrame)/1000));lastFrame=now;update(dt,now);game.performance?.sample(dt);if(QA_MODE)updateQaHud(dt,now);game.renderer.render(game.scene,game.camera);raf=requestAnimationFrame(loop);}
+  function loop(now){if(!game)return;const dt=Math.min(.04,Math.max(.001,(now-lastFrame)/1000));lastFrame=now;update(dt,now);game.performance?.sample(dt);if(QA_MODE)updateQaHud(dt,now);game.stagingQa?.update(dt,now);game.renderer.render(game.scene,game.camera);raf=requestAnimationFrame(loop);}
   function update(dt,now){
     if(!game.player)return;
     // Gamepad support is sampled at frame rate so aiming and movement feel analog instead of menu-like.
@@ -555,7 +540,7 @@
   function updateEffects(dt){for(let i=game.effects.length-1;i>=0;i--){const e=game.effects[i];e.life-=dt;if(e.kind==='tracer')e.mesh.material.opacity=Math.max(0,e.life/e.max);if(e.kind==='spark'){e.vy-=8*dt;e.mesh.position.x+=e.vx*dt;e.mesh.position.y+=e.vy*dt;e.mesh.position.z+=e.vz*dt;e.mesh.material.opacity=Math.max(0,e.life/e.max)}if(e.life<=0){game.scene.remove(e.mesh);e.mesh.geometry?.dispose?.();e.mesh.material?.dispose?.();game.effects.splice(i,1)}}game.motionFx?.update(dt);if(game.world?.group)art.animateAmbience(game.world.group,performance.now()*.001,{player:game.player,dt})}
 
   function updateCamera(dt){
-    const a=game.player;if(!a)return;if(gameplay.recoverActorFromGeometry(core,a,game.world.colliders,game.world.bounds,{radius:a.radius,height:a.height,maxRadius:3.5})){game.cameraRig.reset(a,game.world.colliders,{yaw:a.yaw,pitch:.065,distance:game.cameraRig.cfg.cameraDistance,dog:isDog(a.person),height:a.prop?a.height*.55:(isDog(a.person)?.64:1.17),forceSnap:true});}const aim=input.aim||game.padAim,sprinting=gameplay.wantsSprint(keys,input,{sprint:game.padSprint},{strength:Math.min(1,Math.hypot(a.vx,a.vz)/(game.cameraRig.cfg.runSpeed||1))});
+    const a=game.player;if(!a)return;if(gameplay.recoverActorFromGeometry(core,a,game.world.colliders,game.world.bounds,{radius:a.radius,height:a.height,maxRadius:3.5})){game.stagingQa?.setRecovery('player geometry recovery');game.cameraRig.reset(a,game.world.colliders,{yaw:a.yaw,pitch:.065,distance:game.cameraRig.cfg.cameraDistance,dog:isDog(a.person),height:a.prop?a.height*.55:(isDog(a.person)?.64:1.17),forceSnap:true,reason:'player geometry recovery'});}const aim=input.aim||game.padAim,sprinting=gameplay.wantsSprint(keys,input,{sprint:game.padSprint},{strength:Math.min(1,Math.hypot(a.vx,a.vz)/(game.cameraRig.cfg.runSpeed||1))});
     game.cameraRig.state.aim=aim;game.cameraRig.update(a,game.world.colliders,dt,{aim,sprinting,dog:isDog(a.person),height:a.prop?a.height*.55:(isDog(a.person)?.64:1.17),velocity:{x:a.vx,z:a.vz},turnRate:a.turnRate||0,cameraBob:(a._motion?.landing||0)*-.025});
     game.cameraYaw=game.cameraRig.state.yaw;game.cameraPitch=game.cameraRig.state.pitch;game.cameraActualDistance=game.cameraRig.state.actualDistance;a.cameraHidden=game.cameraActualDistance<.72&&!a.prop;
   }
@@ -586,6 +571,6 @@
   function modal(html,bind){closeModal();const d=document.createElement('div');d.className='modal-backdrop';d.id='ph3Modal';d.innerHTML=`<div class="modal">${html}</div>`;document.body.appendChild(d);if(bind)bind(d.querySelector('.modal'));}
   function closeModal(){document.getElementById('ph3Modal')?.remove();}
 
-  window.__PROP_HUNT_REAL3D__={version:'3.0.1-playability-recovery',renderer:'WebGL',three:'0.185.1',usesDepthBuffer:true,usesCanvas2D:false};
+  window.__PROP_HUNT_REAL3D__={version:'3D-STAGING-PHASE-E-01',renderer:'WebGL',three:'0.185.1',usesDepthBuffer:true,usesCanvas2D:false};
   window.PropHunt={mount,stop};
 })();

@@ -1,45 +1,49 @@
-BLACK FAMILY GAME NIGHT v3.0.1 - PLAYABILITY RECOVERY
+BLACK FAMILY GAME NIGHT - PHASE E STAGING TEST CANDIDATE
+Build: 3D-STAGING-PHASE-E-01
+Package: 3.0.1-staging-phase-e-01
 
-WHY THIS BUILD EXISTS
-Real-phone screenshots showed the same severe camera/controller failure in:
-- Family Prop Hunt / Papa's Shop
-- Family Island Life
-- John's Birthday Seat
+THIS IS NOT A FINAL RELEASE.
+Real-device WebGL, avatar appearance, animation, controls, collision feel, camera feel, map quality and Cloudflare deployment remain subject to the Phase E phone test.
 
-This build fixes the shared third-person camera and spawn/recovery layer before any more art work is attempted.
+READ FIRST
+- PHASE_E_STAGING_REPORT.md       Full avatar/map/deployment audit and exact limitations
+- DEVICE_QA_ISSUE_TEMPLATE.md     Narrow repair record for each device failure
+- FINAL_TEST_REPORT.txt           Automated/static test result
+- BUILD_MANIFEST.txt              Build/cache/config summary
 
-FIRST TEST
-1. Deploy this full replacement build to the same Cloudflare app.
-2. On the phone, fully close/reopen the browser tab after deployment so the v301 service-worker cache is picked up.
-3. Test Prop Hunt / Papa's Shop first.
-4. Test Family Island Life outside.
-5. Test Birthday Seat.
-
-EXPECTED VIEW
-- The camera should begin several metres behind the character, not above/on top of them.
-- You should be able to see the character's back while moving forward.
-- Drag/look should rotate around the character normally.
-- Roofs, awnings and platforms should not permanently crush the camera against the avatar.
-- RESET VIEW should immediately restore a usable behind-character view.
-
-RESET
-- Phone: tap RESET VIEW.
-- Desktop: press R.
+VISIBLE BUILD CHECK
+Every real-time 3D game should display: 3D-STAGING-PHASE-E-01
+If that exact identifier is not visible, do not trust the test because an old cached build may be running.
 
 DIAGNOSTICS
-Append `&qa3d=1` to a URL that already has query parameters, or `?qa3d=1` if it has none.
-All three 3D games now show camera/position diagnostics in QA mode.
+Append ?qa3d=1 to a URL with no query parameters, or &qa3d=1 when parameters already exist.
+A small QA button can also open/close diagnostics in the game.
 
-PLEASE SEND IF ANY VIEW IS STILL WRONG
-- one normal screenshot
-- one screenshot with qa3d=1
-- tell me whether RESET VIEW recovered it
+REAL-TIME GAMES IN THIS REPOSITORY
+1. Family Prop Hunt
+2. Family Island Life
+3. John's Birthday Seat
 
-TEST STATUS
-- JavaScript syntax checks: PASS
-- Complete automated regression suite: 206/206 PASS
-- New camera/spawn recovery regression tests: PASS
-- Actual iPhone visual signoff: REQUIRED
+Expected separate fourth 3D game: NOT FOUND.
+Family Mystery remains its board/standee game.
 
-IMPORTANT
-Do not judge new art from this version. This is a playability recovery release. Once the camera/controller passes on the phone, continue the Papa's Shop production-art vertical slice.
+STAGING DEPLOY
+1. npm install
+2. npm run check
+3. npm run build
+4. npm run deploy:staging
+5. Use the staging URL printed by Wrangler.
+
+QA URL PATTERNS
+- <STAGING_BASE>/new-games.html?game=prophunt&qa3d=1
+- <STAGING_BASE>/island-life.html?qa3d=1
+- <STAGING_BASE>/new-games.html?game=birthday&qa3d=1
+
+IMPORTANT LIMITATIONS
+- Automated regression: 214/214 PASS.
+- Phase E static validation: 108 PASS, 2 warnings, 0 failures.
+- Actual Wrangler deployment in this build runner: UNVERIFIED.
+- Real phone/WebGL visual signoff: UNVERIFIED.
+- Core Three.js/GLTFLoader/SkeletonUtils are still exact-version CDN runtime dependencies because this runner could not retrieve npm packages. This must be removed before final production.
+- Only John and Gunner have packaged character GLBs. They contain named joint hierarchies but no glTF skins and no authored animation clips.
+- Every other required family member is a REAL 3D AVATAR ASSET MISSING and uses a procedural runtime rig for this staging test.

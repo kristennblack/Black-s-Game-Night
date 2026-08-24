@@ -9,7 +9,7 @@ const css=await readFile(new URL('../public/prop-hunt-3d.css',import.meta.url),'
 
 function profile(id){
   const re=new RegExp(`${id}:\\{scale:([.0-9]+),height:([.0-9]+),radius:([.0-9]+),proportions:\\{([^}]*)\\}`);
-  const m=prop.match(re);assert.ok(m,`missing ${id} body profile`);return {scale:Number(m[1]),height:Number(m[2]),radius:Number(m[3]),raw:m[4]};
+  const m=gameplay.match(re);assert.ok(m,`missing ${id} body profile`);return {scale:Number(m[1]),height:Number(m[2]),radius:Number(m[3]),raw:m[4]};
 }
 
 test('Prop Hunt visible rig scale is calibrated to human-scale colliders instead of 2m prototype bodies',()=>{

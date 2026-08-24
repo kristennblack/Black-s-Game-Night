@@ -8,7 +8,9 @@
       "rig": "named-jointed-human",
       "referenceHeight": 1.82,
       "games": [
-        "propHunt"
+        "propHunt",
+        "islandLife",
+        "birthdaySeat"
       ]
     }
   },
@@ -20,7 +22,9 @@
       "rig": "named-jointed-dog",
       "referenceHeight": 1.08,
       "games": [
-        "propHunt"
+        "propHunt",
+        "islandLife",
+        "birthdaySeat"
       ]
     }
   },

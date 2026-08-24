@@ -1,22 +1,35 @@
-Black Family Game Night v3.0.1-playability-recovery
+BLACK FAMILY GAME NIGHT - 3D-STAGING-PHASE-E-01
 
-RESULT: PASS
+STATUS: STAGING TEST CANDIDATE ONLY - NOT PRODUCTION READY
 
-Full `npm run check`:
-- JavaScript syntax checks: PASS
-- Automated regression tests: 206/206 PASS
+AUTOMATED REGRESSION
+npm run check: 214 / 214 PASS
+- JavaScript/module syntax: PASS
+- Phase E staging regression tests: PASS
+- camera-volume obstruction regression: PASS
+- swept/sub-stepped movement regression: PASS
+- family body profile regression: PASS
+- John/Gunner authored-GLB routing regression: PASS
+- user zoom preservation regression: PASS
+- staging version/cache/diagnostics regression: PASS
 
-New regression coverage includes:
-- first-frame camera snaps to a solved third-person view instead of easing from WebGL origin
-- normal camera stays usable beneath low ceilings
-- non-solid/decorative geometry does not obstruct camera
-- embedded character safe-position search and velocity reset
-- all three 3D games expose RESET VIEW and keyboard R recovery
+STATIC / CLOUDFLARE-SHAPE BUILD VALIDATION
+npm run build: PASS
+- 108 checks PASS
+- 2 warnings
+- 0 failures
 
-Real-device status:
-- automated environment cannot provide final iPhone GPU/gesture signoff
-- visual acceptance remains mandatory on the user's phone
+Warnings:
+1. Core 3D CDN dependency remains for Three.js/GLTFLoader/SkeletonUtils.
+2. Wrangler executable unavailable, so actual Cloudflare deployment is UNVERIFIED.
 
-Cloudflare deployment:
-- NOT DEPLOYED by this build process
-- local Wrangler dry-run attempt could not complete within the execution timeout; no Cloudflare configuration changes were made in this release
+PRODUCTION 3D ASSET INTEGRITY AUDIT
+PASS for all 10 packaged GLBs.
+Important: John and Gunner GLBs have no glTF skins and no authored animation clips. Other family character GLBs are missing.
+
+LOCAL HTTP SMOKE
+PASS for static entry pages, staging QA module and all manifest GLBs with glTF magic.
+This is not equivalent to Cloudflare deployment.
+
+REAL DEVICE STATUS
+UNVERIFIED. Required next step is phone QA in the exact A/B/C/D/E sequence from the Phase E brief.

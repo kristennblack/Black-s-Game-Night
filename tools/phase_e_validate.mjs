@@ -1,0 +1,106 @@
+import {readFile,readdir,stat,access} from 'node:fs/promises';
+import {existsSync} from 'node:fs';
+import path from 'node:path';
+
+const ROOT=process.cwd();
+const PUBLIC=path.join(ROOT,'public');
+const BUILD='3D-STAGING-PHASE-E-01';
+const failures=[];
+const warnings=[];
+const passes=[];
+const pass=m=>passes.push(m);
+const fail=m=>failures.push(m);
+const warn=m=>warnings.push(m);
+const text=async p=>readFile(path.join(ROOT,p),'utf8');
+const exists=p=>existsSync(path.join(ROOT,p));
+
+for(const p of ['public','public/index.html','public/new-games.html','public/island-life.html','public/app.js','public/prop-hunt-3d.js','public/island-life.js','public/birthday-climb.js','public/phase-e-qa.mjs','worker.mjs','wrangler.jsonc','wrangler.staging.jsonc']){
+  exists(p)?pass(`exists: ${p}`):fail(`missing: ${p}`);
+}
+
+const wrangler=await text('wrangler.jsonc');
+for(const token of ['"directory":"./public"','"binding":"ASSETS"','"not_found_handling":"single-page-application"'])wrangler.includes(token)?pass(`wrangler: ${token}`):fail(`wrangler missing ${token}`);
+for(const token of ['GameHub','PropHuntRoom','IslandLifeRoom'])wrangler.includes(token)?pass(`durable object: ${token}`):fail(`wrangler missing Durable Object ${token}`);
+const stagingWrangler=await text('wrangler.staging.jsonc');
+for(const token of ['"name": "black-family-game-night-phase-e-staging"','"directory":"./public"','"binding":"ASSETS"','"not_found_handling":"single-page-application"'])stagingWrangler.includes(token)?pass(`staging wrangler: ${token}`):fail(`staging wrangler missing ${token}`);
+for(const token of ['GameHub','PropHuntRoom','IslandLifeRoom'])stagingWrangler.includes(token)?pass(`staging durable object: ${token}`):fail(`staging wrangler missing Durable Object ${token}`);
+
+const manifest=JSON.parse(await text('public/models/manifest.json'));
+let modelCount=0;
+for(const [category,items] of Object.entries(manifest)){
+  if(category==='version'||!items||typeof items!=='object')continue;
+  for(const [id,entry] of Object.entries(items)){
+    if(!entry?.file)continue;
+    modelCount++;
+    const rel='public'+entry.file;
+    if(!exists(rel)){fail(`manifest path missing/case mismatch: ${category}:${id} -> ${entry.file}`);continue}
+    const b=await readFile(path.join(ROOT,rel));
+    if(entry.file.endsWith('.glb')&&b.subarray(0,4).toString('ascii')!=='glTF')fail(`invalid GLB magic: ${entry.file}`); else pass(`manifest asset: ${entry.file}`);
+  }
+}
+if(!modelCount)fail('no model files referenced by manifest');
+
+const sourceExt=/\.(?:html?|m?js|css)$/i;
+const assetExt=/\.(?:html?|m?js|css|json|webmanifest|png|jpe?g|webp|gif|svg|glb|gltf|bin|mp3|wav|ogg)(?:\?[^'"`\s)]+)?$/i;
+const refs=new Set();
+async function walk(dir){
+  for(const ent of await readdir(dir,{withFileTypes:true})){
+    const full=path.join(dir,ent.name);
+    if(ent.isDirectory())await walk(full);
+    else if(sourceExt.test(ent.name)){
+      let s;try{s=await readFile(full,'utf8')}catch{continue}
+      for(const m of s.matchAll(/['"`]\/(?!api\/)([^'"`\s)]+)['"`]/g)){
+        const raw='/'+m[1];
+        if(assetExt.test(raw)&&!raw.includes('${'))refs.add(raw.split('?')[0]);
+      }
+    }
+  }
+}
+await walk(PUBLIC);
+for(const ref of refs){
+  const rel='public'+ref;
+  exists(rel)?pass(`literal asset ref: ${ref}`):fail(`literal asset path missing/case mismatch: ${ref}`);
+}
+
+let textureCount=0,glbCount=0,jsCount=0;
+async function counts(dir){
+  for(const ent of await readdir(dir,{withFileTypes:true})){
+    const full=path.join(dir,ent.name);
+    if(ent.isDirectory())await counts(full); else {
+      if(/\.(?:png|jpe?g|webp)$/i.test(ent.name))textureCount++;
+      if(/\.glb$/i.test(ent.name))glbCount++;
+      if(/\.(?:m?js)$/i.test(ent.name))jsCount++;
+    }
+  }
+}
+await counts(PUBLIC);
+textureCount?pass(`textures present: ${textureCount}`):fail('no texture/image files found');
+glbCount?pass(`GLBs present: ${glbCount}`):fail('no GLBs found');
+jsCount?pass(`JavaScript modules present: ${jsCount}`):fail('no bundled/local JavaScript found');
+
+const allPublic=[];
+async function scanText(dir){for(const ent of await readdir(dir,{withFileTypes:true})){const full=path.join(dir,ent.name);if(ent.isDirectory())await scanText(full);else if(sourceExt.test(ent.name)){try{allPublic.push([path.relative(ROOT,full),await readFile(full,'utf8')])}catch{}}}}
+await scanText(PUBLIC);
+for(const [file,s] of allPublic){
+  if(/file:\/\/|\/mnt\/data\/|[A-Za-z]:\\\\/.test(s))fail(`filesystem-only path in ${file}`);
+}
+const cdnHits=[];
+for(const [file,s] of allPublic){
+  if(/cdn\.jsdelivr\.net\/npm\/three@0\.185\.1/i.test(s))cdnHits.push(`${file}: Three.js`);
+  if(/esm\.sh\/three@0\.185\.1/i.test(s))cdnHits.push(`${file}: Three addon`);
+}
+if(cdnHits.length)warn(`core 3D CDN dependency remains (${[...new Set(cdnHits)].join(', ')})`); else pass('no Three.js / addon runtime CDN references');
+
+const app=await text('public/app.js'),sw=await text('public/sw.js'),idx=await text('public/index.html'),ng=await text('public/new-games.html'),il=await text('public/island-life.html');
+app.includes(BUILD)&&sw.includes('black-family-game-night-3d-staging-phase-e-01')&&idx.includes(BUILD)&&ng.includes(BUILD)&&il.includes(BUILD)?pass('staging cache/version markers are consistent'):fail('staging cache/version markers are inconsistent');
+sw.includes('/phase-e-qa.mjs')?pass('staging diagnostics module precached'):fail('phase-e diagnostics missing from service worker shell');
+
+const wranglerBin=path.join(ROOT,'node_modules','.bin','wrangler');
+if(existsSync(wranglerBin))pass('Wrangler executable available for deployment smoke test'); else warn('Wrangler executable unavailable: actual Cloudflare deployment remains UNVERIFIED');
+
+console.log(`PHASE E STATIC BUILD VALIDATION - ${BUILD}`);
+for(const p of passes)console.log(`PASS ${p}`);
+for(const w of warnings)console.log(`WARN ${w}`);
+for(const f of failures)console.log(`FAIL ${f}`);
+console.log(`SUMMARY: ${passes.length} pass, ${warnings.length} warning, ${failures.length} fail`);
+if(failures.length)process.exitCode=1;

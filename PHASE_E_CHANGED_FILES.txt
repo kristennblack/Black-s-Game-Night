@@ -1,0 +1,36 @@
+BLACK FAMILY GAME NIGHT - PHASE E CHANGED / RECONSTRUCTED FILES
+Build: 3D-STAGING-PHASE-E-01
+
+Continuity warning: the accepted Phase D worktree was not persisted, so this is not an exact git diff from Phase D.
+It is the concrete diff/addition set relative to the persisted v3.0.1 source baseline used to reconstruct Phase E.
+
+   M BUILD_MANIFEST.txt
+   M FINAL_TEST_OUTPUT.tap
+   M FINAL_TEST_REPORT.txt
+   M START_HERE.txt
+   M VERSION.txt
+   M package.json
+   M public/app.js
+   M public/birthday-climb.js
+   M public/index.html
+   M public/island-life.html
+   M public/island-life.js
+   M public/models/manifest.json
+   M public/new-games.html
+   M public/prop-hunt-3d.js
+   M public/prop-hunt-core.mjs
+   M public/shared-3d-gameplay.mjs
+   M public/shared-3d-studio.mjs
+   M public/sw.js
+   M test/cloudflare-adapter.test.mjs
+   M test/prop-hunt-3d.test.mjs
+   M test/prop-hunt-quality-slice-v210.test.mjs
+   M test/shared-3d-gameplay.test.mjs
+   M test/trail-ui.test.mjs
+  ?? DEVICE_QA_ISSUE_TEMPLATE.md
+  ?? PHASE_E_CHANGED_FILES.txt
+  ?? PHASE_E_STAGING_REPORT.md
+  ?? public/phase-e-qa.mjs
+  ?? test/phase-e-staging.test.mjs
+  ?? tools/phase_e_validate.mjs
+  ?? wrangler.staging.jsonc

@@ -23,6 +23,30 @@ export const dampAngle=(current,target,lambda,dt)=>{
   return current+d*(1-Math.exp(-lambda*Math.max(0,dt)));
 };
 
+// One physical silhouette contract shared by every free-moving 3D game. Values
+// originated in the Prop Hunt tuning pass so collision, camera focus and visual
+// scale do not disagree when the same family member appears in another game.
+export const FAMILY_BODY_PROFILES=Object.freeze({
+  john:{scale:.875,height:1.82,radius:.34,proportions:{bodyWidth:1.05,hipWidth:1.03,headScale:1.00}},
+  kristen:{scale:.851,height:1.77,radius:.32,proportions:{bodyWidth:.97,hipWidth:.98,headScale:1.02}},
+  holly:{scale:.683,height:1.42,radius:.27,proportions:{bodyWidth:.88,hipWidth:.89,headScale:1.13}},
+  elizabeth:{scale:.702,height:1.46,radius:.27,proportions:{bodyWidth:.89,hipWidth:.90,headScale:1.12}},
+  lizzie:{scale:.702,height:1.46,radius:.27,proportions:{bodyWidth:.89,hipWidth:.90,headScale:1.12}},
+  vanessa:{scale:.861,height:1.79,radius:.32,proportions:{bodyWidth:.98,hipWidth:.99,headScale:1.01}},
+  logan:{scale:.875,height:1.82,radius:.32,proportions:{bodyWidth:.95,hipWidth:.94,headScale:1.01}},
+  james:{scale:.841,height:1.75,radius:.33,proportions:{bodyWidth:1.04,hipWidth:1.02,headScale:1.02}},
+  dorothy:{scale:.813,height:1.69,radius:.31,proportions:{bodyWidth:.98,hipWidth:1.00,headScale:1.03}},
+  nana:{scale:.788,height:1.64,radius:.30,proportions:{bodyWidth:.96,hipWidth:.98,headScale:1.04}},
+  papa:{scale:.832,height:1.73,radius:.33,proportions:{bodyWidth:1.07,hipWidth:1.04,headScale:1.02}},
+  kelsi:{scale:.765,height:.90,radius:.38,proportions:{headScale:1.03,bodyLength:1.00}},
+  molly:{scale:.782,height:.92,radius:.39,proportions:{headScale:1.02,bodyLength:1.02}},
+  gunner:{scale:.918,height:1.08,radius:.46,proportions:{headScale:1.09,bodyLength:1.08}}
+});
+export function familyBodyProfile(id,{dog=false}={}){
+  const key=String(id||'').toLowerCase();
+  return FAMILY_BODY_PROFILES[key]||{scale:dog?.86:.875,height:dog?.98:1.82,radius:dog?.39:.33,proportions:{}};
+}
+
 const CONTROL_PREF_KEY='black-family-3d-control-preferences-v1';
 export function loadControlPreferences(){
   const base={lookScale:1,invertY:false,leftHanded:false};
@@ -295,7 +319,8 @@ export function createThirdPersonCamera(THREE,camera,core,presetName='island',op
     targetDistance:opts.distance??cfg.cameraDistance,actualDistance:opts.distance??cfg.cameraDistance,
     shoulder:opts.shoulder??cfg.shoulder,shoulderSign:opts.shoulderSign??1,aim:false,sprinting:false,minPitch:cfg.minPitch,maxPitch:cfg.maxPitch,
     shake:0,recoilPitch:0,recoilYaw:0,targetReady:false,lookScale:1,invertY:false,effectiveShoulderSign:opts.shoulderSign??1,
-    initialized:false,collapsedFor:0,recoveries:0,lastSolveRatio:1,lastSafeDistance:opts.distance??cfg.cameraDistance,forceSnap:true
+    initialized:false,collapsedFor:0,recoveries:0,lastSolveRatio:1,lastSafeDistance:opts.distance??cfg.cameraDistance,forceSnap:true,
+    obstructed:false,lastRecoveryReason:'initial solve',lastResetReason:'initial solve'
   };
   const temp={target:new THREE.Vector3(),smoothedTarget:new THREE.Vector3(),desired:new THREE.Vector3(),look:new THREE.Vector3(),pos:new THREE.Vector3(),velocity:new THREE.Vector3(),candidate:new THREE.Vector3(),best:new THREE.Vector3()};
   function rotate(dx,dy,{touch=false}={}){const s=(touch?cfg.touchLookSensitivity:cfg.lookSensitivity)*(state.lookScale||1),iy=state.invertY?-1:1;state.yaw-=dx*s;state.pitch=clamp(state.pitch+dy*s*iy,state.minPitch,state.maxPitch)}
@@ -305,7 +330,7 @@ export function createThirdPersonCamera(THREE,camera,core,presetName='island',op
   function kick(pitch=.035,yaw=0,shake=.04){state.recoilPitch+=pitch;state.recoilYaw+=yaw;state.shake=Math.max(state.shake,shake)}
   function reset(target,colliders=[],options={}){
     state.yaw=options.yaw??target?.yaw??state.yaw;state.pitch=clamp(options.pitch??cfg.recoveryPitch??.07,state.minPitch,state.maxPitch);
-    state.distance=state.targetDistance=options.distance??cfg.cameraDistance;state.recoilPitch=0;state.recoilYaw=0;state.shake=0;state.collapsedFor=0;state.forceSnap=true;state.targetReady=false;state.recoveries++;
+    state.distance=state.targetDistance=options.distance??cfg.cameraDistance;state.recoilPitch=0;state.recoilYaw=0;state.shake=0;state.collapsedFor=0;state.forceSnap=true;state.targetReady=false;state.recoveries++;state.lastResetReason=options.reason||'manual/reset';state.lastRecoveryReason=state.lastResetReason;
     if(target)update(target,colliders,1/30,{...options,forceSnap:true});
     return state;
   }
@@ -355,13 +380,13 @@ export function createThirdPersonCamera(THREE,camera,core,presetName='island',op
     const yaw=state.yaw+state.recoilYaw,pitch=clamp(state.pitch+state.recoilPitch,state.minPitch-.05,state.maxPitch+.05);
     let solved=solve(temp.target,colliders,desiredDist,targetShoulder,yaw,pitch,options);
     if(!solved){candidatePosition(temp.target,yaw,pitch,desiredDist,targetShoulder,cfg.cameraLift??.18,temp.best);solved={hit:desiredDist,full:desiredDist,ratio:1,pitch,shoulder:targetShoulder,pos:temp.best.clone()};}
-    state.lastSolveRatio=solved.ratio;state.effectiveShoulderSign=targetShoulder&&Math.sign(solved.shoulder)!==Math.sign(targetShoulder)?-state.shoulderSign:state.shoulderSign;
+    state.lastSolveRatio=solved.ratio;state.obstructed=solved.ratio<.985;state.effectiveShoulderSign=targetShoulder&&Math.sign(solved.shoulder)!==Math.sign(targetShoulder)?-state.shoulderSign:state.shoulderSign;
     const dir=temp.desired.copy(solved.pos).sub(temp.target),full=dir.length()||1;dir.multiplyScalar(1/full);
     const usable=Math.max(.34,Math.min(full,solved.hit));temp.pos.copy(temp.target).addScaledVector(dir,usable);
     const minDist=options.minCameraDistance??cfg.minCameraDistance??1.35;
     if(usable<minDist){state.collapsedFor+=dt}else{state.collapsedFor=Math.max(0,state.collapsedFor-dt*2.5);state.lastSafeDistance=usable;}
     // A roof/awning/nearby platform can trap the requested ray. Recover the view automatically instead of leaving the camera glued to the avatar.
-    if(state.collapsedFor>.28){state.pitch=damp(state.pitch,cfg.recoveryPitch??.07,14,dt);state.targetDistance=Math.max(state.targetDistance,cfg.cameraDistance);state.collapsedFor=.12;state.recoveries++;}
+    if(state.collapsedFor>.28){state.pitch=damp(state.pitch,cfg.recoveryPitch??.07,14,dt);state.targetDistance=Math.max(state.targetDistance,cfg.cameraDistance);state.collapsedFor=.12;state.recoveries++;state.lastRecoveryReason='automatic close-camera collapse recovery';}
     if(state.shake>.001){temp.pos.x+=(Math.random()-.5)*state.shake;temp.pos.y+=(Math.random()-.5)*state.shake*.65;}
     const snap=state.forceSnap||!state.initialized||options.forceSnap;
     if(snap){camera.position.copy(temp.pos);state.forceSnap=false;state.initialized=true}else camera.position.lerp(temp.pos,1-Math.exp(-(state.aim?19:15)*dt));

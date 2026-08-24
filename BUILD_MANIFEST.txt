@@ -1,22 +1,44 @@
-BLACK FAMILY GAME NIGHT v3.0.1-playability-recovery
+BLACK FAMILY GAME NIGHT - PHASE E STAGING
 
-Purpose: emergency shared third-person camera/spawn recovery after real-device failures in Prop Hunt, Family Island Life and Birthday Seat.
+Visible build ID: 3D-STAGING-PHASE-E-01
+Package version: 3.0.1-staging-phase-e-01
+Service worker cache: black-family-game-night-3d-staging-phase-e-01
+Cloudflare staging Worker name: black-family-game-night-phase-e-staging
+Static asset directory: ./public
+Static binding: ASSETS
+SPA fallback: single-page-application
 
-Service worker cache: black-family-game-night-v301-playability-recovery
-App version: 3.0.1-playability-recovery
-Package version: 3.0.1-playability.0
+PURPOSE
+Real-device proof build for the repaired player/avatar/animation/controls/collision/camera/zoom/map foundation. No Phase E scenery/game-mode redesign.
 
-Key files changed:
-- public/shared-3d-gameplay.mjs
-- public/prop-hunt-core.mjs
-- public/prop-hunt-3d.js
-- public/prop-hunt-3d.css
-- public/island-life.js
-- public/island-life.css
-- public/birthday-climb.js
-- public/birthday-climb.css
-- public/sw.js
-- public/app.js
-- test/shared-3d-playability-recovery-v301.test.mjs
+AUTOMATED RESULT
+- npm run check: 214/214 PASS
+- npm run build: 108 PASS, 2 WARNINGS, 0 FAILURES
+- production GLB integrity audit: PASS
+- local static HTTP + GLB smoke: PASS
 
-Full regression: 206/206 PASS
+WARNINGS
+1. Three.js 0.185.1 plus GLTFLoader/SkeletonUtils still load from public CDNs. Exact-version local package retrieval was blocked by this runner's network/DNS path.
+2. Wrangler executable is unavailable locally. Actual Cloudflare dry-run/deploy is UNVERIFIED.
+
+REAL-TIME GAMES
+- Family Prop Hunt
+- Family Island Life
+- John's Birthday Seat
+
+SEPARATE FOURTH REAL-TIME 3D GAME
+NOT FOUND
+
+PACKAGED GLB ASSETS
+- /public/models/characters/john.glb
+- /public/models/dogs/gunner.glb
+- /public/models/props/prop-zapper.glb
+- /public/models/props/tractor.glb
+- /public/models/props/motorcycle.glb
+- /public/models/furniture/papa-chair.glb
+- /public/models/furniture/fireplace.glb
+- /public/models/furniture/workbench.glb
+- /public/models/furniture/tool-chest.glb
+- /public/models/furniture/shelving.glb
+
+See PHASE_E_STAGING_REPORT.md for strict asset-authorship and missing-avatar findings.

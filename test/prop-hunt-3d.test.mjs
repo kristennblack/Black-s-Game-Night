@@ -53,7 +53,7 @@ test('movement blocks solid walls and jump input can auto-mantle a reasonable le
   const actor={x:0,z:0,y:0,radius:.32,height:1.72};
   const wall={x:0,z:-.7,y:0,w:2,d:.2,h:2.5,solid:true};
   const blocked=attemptCharacterMove(actor,0,-.7,[wall],{radius:.32,height:1.72});
-  assert.equal(blocked.blocked,true);assert.equal(blocked.z,0);
+  assert.equal(blocked.blocked,true);assert.ok(blocked.z>=-.281 && blocked.z<=0,'actor may advance to contact but must not penetrate the wall');
   const crate={x:0,z:-.7,y:0,w:1.2,d:.7,h:.85,solid:true,climbable:true,walkableTop:true};
   const mantle=attemptCharacterMove(actor,0,-.45,[crate],{radius:.32,height:1.72,maxStep:.42,maxMantle:1.2,jumpRequested:true});
   assert.equal(mantle.blocked,true);assert.equal(mantle.mantle?.collider,crate);
