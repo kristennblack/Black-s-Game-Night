@@ -1,0 +1,71 @@
+PHASE H ACTIVE SOURCE / PACKAGE CHANGE SET
+
+ M BUILD_MANIFEST.txt
+ M FINAL_BUILD_VALIDATION.txt
+ M FINAL_TEST_OUTPUT.tap
+ M FINAL_TEST_REPORT.txt
+ M README.md
+ M START_HERE.txt
+ M VERSION.txt
+ M extraGames.mjs
+ M package.json
+ M propHuntRoom.mjs
+ M public/app.js
+ M public/birthday-climb.css
+ M public/birthday-climb.js
+ M public/index.html
+ M public/island-life.html
+ M public/models/manifest.json
+ M public/new-games.html
+ M public/phase-e-qa.mjs
+ M public/prop-hunt-3d.css
+ M public/prop-hunt-3d.js
+ M public/shared-3d-gameplay.mjs
+ M public/shared-3d-studio.mjs
+ M public/styles.css
+ M public/sw.js
+ M test/cloudflare-adapter.test.mjs
+ M test/extraGames.test.mjs
+ M test/launch-v121-interactions.test.mjs
+ M test/phase-e-staging.test.mjs
+ M test/phase-e2-ux.test.mjs
+ M test/production3d-papa.test.mjs
+ M test/prop-hunt-quality-slice-v210.test.mjs
+ M test/shared-3d-gameplay.test.mjs
+ M test/studio-realism-v200.test.mjs
+ M test/trail-ui.test.mjs
+ M tools/phase_e_validate.mjs
+ M worker.mjs
+?? ACTUAL_RUNNING_MARBLES_BOARD.png
+?? ASSET_PROVENANCE_PHASE_G.md
+?? BOTH_GAMES_APPROVAL_PREVIEW.png
+?? MARBLES_ACTUAL_AFTER_DRAW_PROOF.png
+?? MARBLES_ACTUAL_RENDERER_DESKTOP_PROOF.png
+?? MARBLES_ACTUAL_RENDERER_MOBILE_PROOF.png
+?? MARBLES_ACTUAL_RENDERER_PROOF.png
+?? MARBLES_ACTUAL_SELECTED_CARD_PROOF.png
+?? MARBLES_JOKERS_APPROVAL_PREVIEW.png
+?? PAPA_SHOP_APPROVAL_PREVIEW.png
+?? PAPA_SHOP_GAMEPLAY_APPROVAL_PREVIEW.png
+?? PAPA_SHOP_VERTICAL_SLICE_PHONE_RENDER.png
+?? PHASE_F_CHANGED_FILES.txt
+?? PHASE_F_PLATFORM_UPGRADE_REPORT.md
+?? PHASE_G_PAPA_VERTICAL_SLICE_REPORT.md
+?? PHASE_H_CHANGED_FILES.txt
+?? PHASE_H_TABLETOP_STAGING_REPORT.md
+?? PHONE_QA_PHASE_F_PLATFORM_04.md
+?? PHONE_QA_PHASE_G_PAPA_VSLICE_05.md
+?? PHONE_QA_PHASE_H_TABLETOP_06.md
+?? _reference_assets/
+?? public/models/characters/john-production-skinned.glb
+?? public/models/environments/
+?? public/models/sets/
+?? test/phase-f-platform-upgrade.test.mjs
+?? test/phase-g-papa-production.test.mjs
+?? test/phase-h-production-gate.test.mjs
+?? tools/audit_phase_g_vertical_slice.py
+?? tools/build_vertical_slice_assets.py
+?? tools/render_marbles_approval_preview.py
+?? tools/render_papa_approval_preview.py
+?? tools/render_papa_gameplay_preview.py
+?? tools/render_papa_vertical_slice.py

@@ -4,7 +4,7 @@ import path from 'node:path';
 
 const ROOT=process.cwd();
 const PUBLIC=path.join(ROOT,'public');
-const BUILD='GAME-NIGHT-STAGING-PHASE-G-PAPA-VSLICE-05';
+const BUILD='GAME-NIGHT-STAGING-PHASE-H-TABLETOP-06';
 const failures=[];
 const warnings=[];
 const passes=[];
@@ -93,7 +93,7 @@ if(cdnHits.length)warn(`core 3D CDN dependency remains (${[...new Set(cdnHits)].
 
 const app=await text('public/app.js'),sw=await text('public/sw.js'),idx=await text('public/index.html'),ng=await text('public/new-games.html'),il=await text('public/island-life.html');
 const worker=await text('worker.mjs'),extra=await text('extraGames.mjs'),styles=await text('public/styles.css'),studio=await text('public/shared-3d-studio.mjs');
-app.includes(BUILD)&&sw.includes('black-family-game-night-staging-phase-g-papa-vslice-05')&&idx.includes(BUILD)&&ng.includes(BUILD)&&il.includes(BUILD)?pass('staging cache/version markers are consistent'):fail('staging cache/version markers are inconsistent');
+app.includes(BUILD)&&sw.includes('black-family-game-night-staging-phase-h-tabletop-06')&&idx.includes(BUILD)&&ng.includes(BUILD)&&il.includes(BUILD)?pass('staging cache/version markers are consistent'):fail('staging cache/version markers are inconsistent');
 sw.includes('/phase-e-qa.mjs')?pass('staging diagnostics module precached'):fail('phase-e diagnostics missing from service worker shell');
 app.includes("s.gameType===GAME.SMEAR")&&app.includes('YOUR 6-CARD HAND · REVIEW IT BEFORE YOU BID')?pass('Smear six-card hand is rendered during bidding'):fail('Smear bidding-hand presentation marker missing');
 app.includes("PROFILE_KEY='gn_profile_v1'")&&app.includes('homeAvatarHubHTML')&&app.includes('Character → outfit → player colour')?pass('persistent Avatar Hub profile flow present'):fail('Avatar Hub profile flow incomplete');

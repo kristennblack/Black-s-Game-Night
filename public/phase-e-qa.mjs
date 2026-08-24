@@ -1,5 +1,5 @@
-export const STAGING_BUILD_ID='GAME-NIGHT-STAGING-PHASE-G-PAPA-VSLICE-05';
-export const STAGING_APP_VERSION='3.0.1-staging-phase-g-papa-vslice-05';
+export const STAGING_BUILD_ID='GAME-NIGHT-STAGING-PHASE-H-TABLETOP-06';
+export const STAGING_APP_VERSION='3.0.1-staging-phase-h-tabletop-06';
 
 const fmt=n=>Number.isFinite(Number(n))?Number(n).toFixed(2):'n/a';
 const vec=v=>v?`${fmt(v.x)}, ${fmt(v.y)}, ${fmt(v.z)}`:'n/a';

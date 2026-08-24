@@ -349,16 +349,16 @@ def build_skinned_john():
     # neck
     prims.append(add_tube(1.47,1.56,0,0,.064,.064,.061,.061,joint_index['neck'],joint_index['neck'],m_skin,segments=20,rings=3))
     # head and face texture
-    prims.append(add_ellipsoid_prim((0,1.66,0),(.178,.170,.192),joint_index['head'],m_skin,seg=30,rings=18))
-    prims.append(add_face_patch((0,1.66,0),(.178,.170,.194),joint_index['head'],m_face,cols=30,rows=30))
+    prims.append(add_ellipsoid_prim((0,1.66,0),(.205,.198,.218),joint_index['head'],m_skin,seg=34,rings=20))
+    prims.append(add_face_patch((0,1.66,0),(.205,.198,.220),joint_index['head'],m_face,cols=34,rows=34))
     # hair cap: flattened ellipsoid slightly above, and beard volume behind face photo patch
-    prims.append(add_ellipsoid_prim((0,1.745,.018),(.172,.066,.172),joint_index['head'],m_hair,seg=26,rings=12))
+    prims.append(add_ellipsoid_prim((0,1.765,.018),(.200,.078,.198),joint_index['head'],m_hair,seg=28,rings=14))
     # beard/chin low profile; preserve facial photo as primary likeness
-    prims.append(add_ellipsoid_prim((0,1.585,-.174),(.135,.062,.025),joint_index['head'],m_beard,seg=22,rings=10))
+    prims.append(add_ellipsoid_prim((0,1.575,-.205),(.155,.073,.030),joint_index['head'],m_beard,seg=24,rings=12))
     # ears and a small nose give the textured face a genuinely dimensional silhouette.
-    prims.append(add_ellipsoid_prim((-.185,1.66,0),(.032,.052,.026),joint_index['head'],m_skin,seg=14,rings=8))
-    prims.append(add_ellipsoid_prim(( .185,1.66,0),(.032,.052,.026),joint_index['head'],m_skin,seg=14,rings=8))
-    prims.append(add_ellipsoid_prim((0,1.66,-.196),(.032,.045,.036),joint_index['head'],m_skin,seg=14,rings=8))
+    prims.append(add_ellipsoid_prim((-.210,1.66,0),(.034,.056,.030),joint_index['head'],m_skin,seg=14,rings=8))
+    prims.append(add_ellipsoid_prim(( .210,1.66,0),(.034,.056,.030),joint_index['head'],m_skin,seg=14,rings=8))
+    prims.append(add_ellipsoid_prim((0,1.66,-.225),(.034,.050,.040),joint_index['head'],m_skin,seg=14,rings=8))
     # collar, belt, buckle all skin to torso/hips
     prims.append(add_box_prim((0,1.465,-.188),(.30,.055,.025),joint_index['chest'],m_shirt))
     prims.append(add_box_prim((0,.955,0),(.49,.055,.25),joint_index['hips'],m_boot))
@@ -459,12 +459,19 @@ def wall_x(scene,z,x0,x1,h,openings,material,prefix,th=.14,interior_mat=None):
         if top<h:segments.append((a,b,top,h))
         cur=b
     if cur<x1:segments.append((cur,x1,0,h))
-    ribmat=mat(prefix+'_SidingSeams',0x59483a if 'shop' in prefix else 0x4e4035,.94,0)
+    is_shop='shop' in prefix
+    ribmat=mat(prefix+'_SidingSeams',0x4b3629 if is_shop else 0x4b2926,.96,0)
+    plank_cols=([0x7b5b40,0x6d5039,0x866347,0x604532] if is_shop else [0x88483d,0x763b34,0x934f43,0x64312d])
+    plank_mats=[mat(prefix+f'_Board{i}',c,.93,0) for i,c in enumerate(plank_cols)]
     for i,(a,b,y0,y1) in enumerate(segments):
         add(scene,box([b-a,y1-y0,th],material),f'{prefix}_wall_{i}',T((a+b)/2,(y0+y1)/2,z))
-        # corrugated/batten detail on outer face
-        for x in np.arange(a+.12,b-.06,.32):
-            add(scene,box([.028,y1-y0-.04,.045],ribmat),f'{prefix}_rib_{i}_{x:.2f}',T(x,(y0+y1)/2,z-th*.68))
+        # Physical board-and-batten cladding. Broad boards give the wall real surface rhythm
+        # instead of a single flat rectangle, while the base panel stays the weather seal.
+        step=.30
+        for j,x in enumerate(np.arange(a+.15,b-.05,step)):
+            w=min(.265,b-x-.015)
+            if w>.06:add(scene,box([w,y1-y0-.035,.024],plank_mats[(j+i)%len(plank_mats)]),f'{prefix}_board_{i}_{j}',T(x+w/2,(y0+y1)/2,z-th*.62))
+            add(scene,box([.024,y1-y0-.02,.040],ribmat),f'{prefix}_rib_{i}_{j}',T(x-.012,(y0+y1)/2,z-th*.70))
 
 def wall_z(scene,x,z0,z1,h,openings,material,prefix,th=.14):
     openings=sorted(openings,key=lambda o:o[0]);cur=z0;segments=[]
@@ -475,11 +482,17 @@ def wall_z(scene,x,z0,z1,h,openings,material,prefix,th=.14):
         if top<h:segments.append((a,b,top,h))
         cur=b
     if cur<z1:segments.append((cur,z1,0,h))
-    ribmat=mat(prefix+'_SidingSeams',0x59483a if 'shop' in prefix else 0x4e4035,.94,0)
+    is_shop='shop' in prefix
+    ribmat=mat(prefix+'_SidingSeams',0x4b3629 if is_shop else 0x4b2926,.96,0)
+    plank_cols=([0x7b5b40,0x6d5039,0x866347,0x604532] if is_shop else [0x88483d,0x763b34,0x934f43,0x64312d])
+    plank_mats=[mat(prefix+f'_Board{i}',c,.93,0) for i,c in enumerate(plank_cols)]
     for i,(a,b,y0,y1) in enumerate(segments):
         add(scene,box([th,y1-y0,b-a],material),f'{prefix}_wall_{i}',T(x,(y0+y1)/2,(a+b)/2))
-        for z in np.arange(a+.12,b-.06,.32):
-            add(scene,box([.045,y1-y0-.04,.028],ribmat),f'{prefix}_rib_{i}_{z:.2f}',T(x-th*.68,(y0+y1)/2,z))
+        step=.30
+        for j,zp in enumerate(np.arange(a+.15,b-.05,step)):
+            w=min(.265,b-zp-.015)
+            if w>.06:add(scene,box([.024,y1-y0-.035,w],plank_mats[(j+i)%len(plank_mats)]),f'{prefix}_board_{i}_{j}',T(x-th*.62,(y0+y1)/2,zp+w/2))
+            add(scene,box([.040,y1-y0-.02,.024],ribmat),f'{prefix}_rib_{i}_{j}',T(x-th*.70,(y0+y1)/2,zp-.012))
 
 def roof_plane(scene,x0,x1,z0,z1,y_eave,y_ridge,side,material,prefix,th=.105):
     # side -1: x0 -> ridge at x1; side +1: ridge x0 -> eave x1
@@ -488,7 +501,11 @@ def roof_plane(scene,x0,x1,z0,z1,y_eave,y_ridge,side,material,prefix,th=.105):
     xc=(xa+xb)/2;yc=(ya+yb)/2;dx=xb-xa;dy=yb-ya;length=math.hypot(dx,dy);angle=math.atan2(dy,dx)
     m=box([length,th,z1-z0],material)
     # box long axis X; rotate around Z to follow slope
-    add(scene,m,prefix,T(xc,yc,(z0+z1)/2)@R(angle,[0,0,1]))
+    tr=T(xc,yc,(z0+z1)/2)@R(angle,[0,0,1]);add(scene,m,prefix,tr)
+    # Standing-seam ribs make the roof read as weathered metal instead of a flat slab.
+    seam=mat(prefix+'_MetalSeam',0x222625,.48,.68)
+    for k,zz in enumerate(np.arange(z0+.22,z1-.12,.42)):
+        add(scene,box([length*.99,.035,.026],seam),f'{prefix}_seam{k}',T(xc,yc+th*.62,zz)@R(angle,[0,0,1]))
 
 
 
@@ -559,8 +576,8 @@ def make_tree(scene,x,z,scale,name):
 
 def build_papa_shop_environment():
     s=trimesh.Scene(base_frame='world')
-    shop=mat('Shop_WarmWeatheredSiding',0x75604c,.88,0);shop_dark=mat('Shop_SidingShadow',0x5e4b3c,.92,0)
-    barn=mat('Barn_WornTimber',0x6a5744,.93,0);roof=mat('Roof_DarkMetal',0x363a3a,.54,.55);trim=mat('Trim_Cream',0xd6c4a7,.82,0)
+    shop=mat('Shop_WarmWeatheredSiding',0x72563d,.91,0);shop_dark=mat('Shop_SidingShadow',0x4e3829,.95,0)
+    barn=mat('Barn_WornRedSiding',0x7b3e34,.92,0);roof=mat('Roof_DarkWeatheredMetal',0x34332f,.58,.46);trim=mat('Trim_Cream',0xd8c7a9,.84,0)
     concrete=mat('Shop_Concrete',0x77746c,.95,0);dirt=mat('Barn_Dirt',0x66513d,.98,0);gravel=mat('Apron_Gravel',0x6c685f,.98,0)
     steel=mat('Structural_Steel',0x5d6464,.52,.6);glass=mat('GlassBlue',0x88b9c3,.12,.05);stone=mat('ChimneyStone',0x655d54,.96,0)
     # Base terrain slabs with subtle separate zones
@@ -645,6 +662,71 @@ def build_papa_shop_environment():
     make_tree(s,18.1,1.2,.9,'tree_east1');make_tree(s,18.25,8.8,.8,'tree_east2');make_tree(s,.55,11.9,.75,'tree_west')
     # property sign and small utility box
     add(s,box([1.7,.9,.10],timber),'property_sign_board',T(2.0,1.15,12.65));add(s,box([.10,1.65,.10],timber),'property_sign_postL',T(1.35,.825,12.65));add(s,box([.10,1.65,.10],timber),'property_sign_postR',T(2.65,.825,12.65))
+
+    # Reference-aligned exterior dressing for the approved rural shop/barn property.
+    # This intentionally sits OUTSIDE the authoritative gameplay collision shell.
+    barn_dark=mat('Barn_DarkRedTrim',0x4c2d28,.94,0);green_roof=mat('LeanTo_GreenMetal',0x405443,.62,.48)
+    yardwood=mat('Yard_WeatheredWood',0x74533a,.94,0);rust=mat('Yard_RustedMetal',0x7a4b31,.82,.45)
+    hay=mat('Hay_Straw',0xa98951,.96,0);fencewood=mat('Fence_WornWood',0x61452f,.96,0);mud=mat('Yard_Mud',0x514333,.99,0)
+
+    # Old green-roof lean-to / side shelter, matching the approved property silhouette.
+    for px in (.55,1.65):
+        add(s,box([.12,2.25,.12],yardwood),f'lean_post_{px}',T(px,1.125,6.9))
+        add(s,box([.12,2.25,.12],yardwood),f'lean_post2_{px}',T(px,1.125,8.25))
+    lean=box([2.25,.10,2.15],green_roof);add(s,lean,'lean_to_roof',T(1.10,2.42,7.55)@R(-.11,[0,0,1]))
+    add(s,box([2.25,.18,.16],yardwood),'lean_header',T(1.1,2.18,8.32))
+
+    # Barn sliding doors parked open at each side of the playable rear opening.
+    door_red=mat('Barn_Door_Red',0x6e352e,.92,0)
+    for name,dx in [('L',13.25),('R',16.65)]:
+        add(s,box([.82,2.18,.085],door_red),f'barn_slide_door_{name}',T(dx,1.09,8.32))
+        # cream X brace gives the door a recognizable barn silhouette
+        beam_between((dx-.34,.18,8.27),(dx+.34,2.00,8.27),.035,trim,f'barn_door_x1_{name}',s,10)
+        beam_between((dx+.34,.18,8.265),(dx-.34,2.00,8.265),.035,trim,f'barn_door_x2_{name}',s,10)
+        add(s,box([.72,.055,.04],trim),f'barn_door_top_{name}',T(dx,2.05,8.265))
+
+    # Loft hatch and cupola/weather-vane massing so the barn reads like the approved reference.
+    add(s,box([.78,.62,.07],door_red),'barn_loft_hatch',T(14.7,2.82,8.315))
+    add(s,box([.70,.055,.085],trim),'barn_loft_trim_top',T(14.7,3.14,8.30))
+    for xx in (14.30,15.10):add(s,box([.055,.70,.085],trim),f'barn_loft_trim_{xx}',T(xx,2.82,8.30))
+    add(s,box([.68,.55,.68],barn),'barn_cupola',T(14.7,3.64,5.18))
+    roof_plane(s,14.30,14.70,4.78,5.58,3.93,4.18,-1,roof,'cupola_roof_L',.065)
+    roof_plane(s,14.70,15.10,4.78,5.58,3.93,4.18,1,roof,'cupola_roof_R',.065)
+    add(s,cyl(.022,.72,steel,8),'weather_vane_post',T(14.7,4.48,5.18))
+    add(s,box([.38,.035,.06],steel),'weather_vane_arrow',T(14.7,4.80,5.18))
+
+    # Working-yard fence and pen geometry, leaving a broad opening for the playable apron.
+    for x in np.arange(.55,19.0,1.55):
+        if 5.2<x<9.3: continue
+        add(s,box([.10,1.05,.10],fencewood),f'front_fence_post_{x:.2f}',T(x,.525,13.05))
+    for y in (.42,.82):
+        for xa,xb in [(.55,5.15),(9.35,18.95)]:add(s,box([xb-xa,.075,.095],fencewood),f'front_fence_rail_{y}_{xa}',T((xa+xb)/2,y,13.05))
+    # Right livestock/service pen around the barn edge.
+    for z in np.arange(9.0,12.9,1.15):add(s,box([.09,.95,.09],fencewood),f'pen_post_{z:.2f}',T(18.55,.475,z))
+    for y in (.38,.72):add(s,box([.085,.07,3.95],fencewood),f'pen_rail_{y}',T(18.55,y,10.95))
+
+    # Exterior working clutter, grouped deliberately rather than sprayed randomly.
+    for i,(px,pz,ang) in enumerate([(2.9,11.55,.06),(3.55,11.55,-.03),(10.7,11.55,.05),(11.25,11.30,-.05)]):
+        add(s,box([1.00,.13,.72],yardwood),f'yard_pallet_{i}_base',T(px,.09,pz)@R(ang,[0,1,0]))
+        for j in range(4):add(s,box([.92,.055,.10],yardwood),f'yard_pallet_{i}_slat{j}',T(px-.34+j*.22,.19,pz)@R(ang,[0,1,0]))
+    # lumber pile near entrance
+    for j in range(7):add(s,box([2.25,.09,.13],yardwood),f'yard_lumber_{j}',T(1.9,.09+j*.10,10.45+j*.015)@R(.035,[0,1,0]))
+    # stacked tires and rusty drums
+    tiremat=mat('Yard_TireRubber',0x1b1d1c,.98,0)
+    for k in range(4):add(s,torus(.28,.095,tiremat,28,10),f'yard_tire_{k}',T(11.75,.10+k*.17,10.20)@R(math.pi/2,[1,0,0]))
+    for k,(px,pz) in enumerate([(16.95,10.15),(17.45,10.10),(17.20,10.55)]):
+        add(s,cyl(.25,.72,rust,20),f'yard_drum_{k}',T(px,.36,pz))
+        add(s,torus(.24,.018,steel,20,7),f'yard_drum_rim_{k}',T(px,.71,pz)@R(math.pi/2,[1,0,0]))
+    # hay and feed stacks by barn
+    for j,(px,pz) in enumerate([(13.0,10.65),(13.75,10.70),(14.5,10.70),(13.35,11.20),(14.10,11.25)]):
+        add(s,box([.72,.45,.48],hay),f'hay_bale_{j}',T(px,.225,pz)@R((j%2)*.06,[0,1,0]))
+    # muddy high-traffic patches visually break up the big gravel slab.
+    for j,(px,pz,sx,sz) in enumerate([(6.7,11.2,3.2,1.25),(15.6,11.4,2.5,1.1),(9.7,12.25,2.1,.55)]):
+        add(s,box([sx,.018,sz],mud),f'mud_patch_{j}',T(px,.002,pz))
+    # small timber service shed on the left side of the property with green metal roof.
+    add(s,box([2.4,1.85,1.8],shop_dark),'service_shed_body',T(.65,.925,3.15))
+    add(s,box([2.65,.10,2.05],green_roof),'service_shed_roof',T(.65,1.95,3.15)@R(-.05,[0,0,1]))
+    add(s,box([.82,1.58,.06],yardwood),'service_shed_door',T(1.88,.79,3.15))
     # Export
     out=MODELS/'environments'/'papa-shop-barn-production.glb';out.parent.mkdir(parents=True,exist_ok=True);data=s.export(file_type='glb');out.write_bytes(data);print('WROTE',out.relative_to(ROOT),len(data)/1024,'KiB',len(s.graph.nodes),'nodes')
 

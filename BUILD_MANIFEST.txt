@@ -1,34 +1,44 @@
 BLACK FAMILY GAME NIGHT
-BUILD MANIFEST
+PHASE H TABLETOP STAGING BUILD MANIFEST
 
-Build ID: GAME-NIGHT-STAGING-PHASE-G-PAPA-VSLICE-05
-Package version: 3.0.1-staging-phase-g-papa-vslice-05
-Cloudflare staging worker name: black-family-game-night-phase-e-staging
-Static asset directory: ./public
+Build ID: GAME-NIGHT-STAGING-PHASE-H-TABLETOP-06
+Package version: 3.0.1-staging-phase-h-tabletop-06
+Worker main: worker.mjs
+Cloudflare static asset directory: ./public
+Assets binding: ASSETS
 SPA fallback: single-page-application
+Staging config: wrangler.staging.jsonc
 
-Primary pages:
-- /                       Home / room card & board games
-- /new-games.html         Family Mystery, Prop Hunt, Birthday Seat
-- /island-life.html       Island Life
+PRIMARY ENTRY POINTS
+- /                       Home, rooms, card games and board games
+- /new-games.html         Family Mystery, Family Prop Hunt and Birthday Seat
+- /island-life.html       Family Island Life
 
-New/expanded Phase F systems:
-- private six-card Smear bidding-hand presentation
-- shared room rematch endpoint + end controls
-- persistent local player profile / Avatar Hub
-- primary-clothing player-colour contract
-- persistent GameHub Requests board
-- duplicate-safe GameHub Leaderboards
-- client-only Game School tutorial framework
-- Trail Trouble five-card authoritative hands
-- Trail Trouble waypoint movement and gesture board view
+PHASE H TABLETOP SYSTEMS
+- dimensional Marbles & Jokers board treatment
+- recessed track, Start and Home sockets
+- glossy seated marble styling
+- routed Home channels and clearer Start areas
+- Marbles board pinch zoom, pan, wheel zoom and Reset/Fit controls
+- Marbles waypoint movement animation support
+- shared draw-required pile highlighting
+- Crazy Eights Countdown progress presentation
+- Cribbage Ace-to-King sorting
+- Cribbage automatic crib-card submission
+- contextual Cribbage GO control
+- guided Game School interaction scenes
+- in-game How to Play entry
+- Party and Sly quick reactions
 
-Current home visual assets retained from E2:
-- /john-home-approved.jpg
-- /home-cabin-background.jpg
+PRESERVED GAMEPLAY FOUNDATIONS
+- Phase E1 third-person playability recovery
+- Phase F platform and profile systems
+- Phase G Papa's Shop technical asset integration
+- existing room, reconnect, bot, chat and reaction architecture
+- established game rules and scoring
 
-Current packaged GLBs:
-- /models/characters/john.glb
+PACKAGED 3D ASSETS
+- /models/characters/john-production-skinned.glb
 - /models/dogs/gunner.glb
 - /models/props/prop-zapper.glb
 - /models/props/tractor.glb
@@ -38,12 +48,19 @@ Current packaged GLBs:
 - /models/furniture/workbench.glb
 - /models/furniture/tool-chest.glb
 - /models/furniture/shelving.glb
+- /models/environments/papa-shop-barn-production.glb
+- /models/sets/papa-shop-production-props.glb
+- plus the legacy John GLB retained in the public model tree
 
-ART STATUS WARNING
-The GLBs above validate technically. They do NOT constitute completion of the requested finished authored 3D family/avatar/environment production.
+VALIDATION SUMMARY
+- automated tests: 259 / 259 PASS
+- static/package validator: 120 PASS, 2 WARN, 0 FAIL
+- GLB integrity/scale audit: PASS
+- Phase G technical asset audit: PASS
 
-Validation summary:
-- npm run check: 245/245
-- static build validation: 116 pass, 2 warning, 0 fail
-- GLB audit: PASS 10/10
-- real-device / final visual result: UNVERIFIED
+UNVERIFIED OR NOT APPROVED
+- actual Cloudflare deployment
+- final phone QA for this exact build
+- Prop Hunt John likeness approval
+- final Papa's Shop production-art approval
+- finished visual art for Island Life and Birthday Seat

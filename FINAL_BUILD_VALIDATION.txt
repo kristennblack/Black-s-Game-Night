@@ -1,4 +1,8 @@
-PLATFORM STAGING BUILD VALIDATION - GAME-NIGHT-STAGING-PHASE-F-PLATFORM-04
+
+> black-family-game-night@3.0.1-staging-phase-h-tabletop-06 build
+> node tools/phase_e_validate.mjs
+
+PLATFORM STAGING BUILD VALIDATION - GAME-NIGHT-STAGING-PHASE-H-TABLETOP-06
 PASS exists: public
 PASS exists: public/index.html
 PASS exists: public/new-games.html
@@ -24,7 +28,7 @@ PASS staging wrangler: "not_found_handling":"single-page-application"
 PASS staging durable object: GameHub
 PASS staging durable object: PropHuntRoom
 PASS staging durable object: IslandLifeRoom
-PASS manifest asset: /models/characters/john.glb
+PASS manifest asset: /models/characters/john-production-skinned.glb
 PASS manifest asset: /models/dogs/gunner.glb
 PASS manifest asset: /models/props/prop-zapper.glb
 PASS manifest asset: /models/props/tractor.glb
@@ -34,7 +38,10 @@ PASS manifest asset: /models/furniture/fireplace.glb
 PASS manifest asset: /models/furniture/workbench.glb
 PASS manifest asset: /models/furniture/tool-chest.glb
 PASS manifest asset: /models/furniture/shelving.glb
+PASS manifest asset: /models/environments/papa-shop-barn-production.glb
+PASS manifest asset: /models/sets/papa-shop-production-props.glb
 PASS literal asset ref: /shared-3d-art-kit.mjs
+PASS literal asset ref: /styles.css
 PASS literal asset ref: /sw.js
 PASS literal asset ref: /avatars/john-black.png
 PASS literal asset ref: /avatars/dorothy.png
@@ -77,7 +84,6 @@ PASS literal asset ref: /shared-3d-studio.mjs
 PASS literal asset ref: /phase-e-qa.mjs
 PASS literal asset ref: /manifest.webmanifest
 PASS literal asset ref: /apple-touch-icon.png
-PASS literal asset ref: /styles.css
 PASS literal asset ref: /app.js
 PASS literal asset ref: /island-life.css
 PASS literal asset ref: /island-life.js
@@ -86,7 +92,7 @@ PASS literal asset ref: /birthday-climb.css
 PASS literal asset ref: /prop-hunt-3d.css
 PASS literal asset ref: /prop-hunt-3d.js
 PASS literal asset ref: /birthday-climb.js
-PASS literal asset ref: /models/characters/john.glb
+PASS literal asset ref: /models/characters/john-production-skinned.glb
 PASS literal asset ref: /models/dogs/gunner.glb
 PASS literal asset ref: /models/props/prop-zapper.glb
 PASS literal asset ref: /models/props/tractor.glb
@@ -96,6 +102,8 @@ PASS literal asset ref: /models/furniture/fireplace.glb
 PASS literal asset ref: /models/furniture/workbench.glb
 PASS literal asset ref: /models/furniture/tool-chest.glb
 PASS literal asset ref: /models/furniture/shelving.glb
+PASS literal asset ref: /models/environments/papa-shop-barn-production.glb
+PASS literal asset ref: /models/sets/papa-shop-production-props.glb
 PASS literal asset ref: /models/manifest.json
 PASS literal asset ref: /home-cabin-background.jpg
 PASS literal asset ref: /new-games.html
@@ -105,7 +113,7 @@ PASS literal asset ref: /family-3d-lineup-approved.png
 PASS literal asset ref: /icon-192.png
 PASS literal asset ref: /icon-512.png
 PASS textures present: 201
-PASS GLBs present: 10
+PASS GLBs present: 13
 PASS JavaScript modules present: 11
 PASS staging cache/version markers are consistent
 PASS staging diagnostics module precached
@@ -117,4 +125,4 @@ PASS Trail Trouble five-card hand and gesture board controls present
 PASS future authored GLB primary-clothing tint contract present
 WARN core 3D CDN dependency remains (public/_deep3d_qa.html: Three.js, public/birthday-climb.js: Three.js, public/island-life.js: Three.js, public/prop-hunt-3d.js: Three.js, public/shared-3d-studio.mjs: Three addon)
 WARN Wrangler executable unavailable: actual Cloudflare deployment remains UNVERIFIED
-SUMMARY: 116 pass, 2 warning, 0 fail
+SUMMARY: 120 pass, 2 warning, 0 fail

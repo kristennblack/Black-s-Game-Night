@@ -1,44 +1,62 @@
 BLACK FAMILY GAME NIGHT
-STAGING BUILD: GAME-NIGHT-STAGING-PHASE-G-PAPA-VSLICE-05
-PACKAGE VERSION: 3.0.1-staging-phase-g-papa-vslice-05
+STAGING BUILD: GAME-NIGHT-STAGING-PHASE-H-TABLETOP-06
+PACKAGE VERSION: 3.0.1-staging-phase-h-tabletop-06
 
 PURPOSE
-This staging candidate preserves the E1 continuity foundation and E2/UX repairs, then adds:
-- Smear: all six private cards visible before bidding
-- universal Keep Playing / Return to Game Shelf match-end flow where applicable
-- saved Home Avatar Hub: Character -> Outfit -> Color -> Save
-- player colour driving the avatar primary clothing tint
-- Requests replacing Store with persistent shared request history
-- shared duplicate-safe Leaderboards by stable player profile + game
-- Game School / How to Play game selector with guided practice tutorials
-- Trail Trouble persistent private five-card hands for humans and bots
-- Trail card -> pawn/move flow without redundant Confirm
-- Trail waypoint movement animation, visual board dressing, pinch zoom, pan and Reset View
+This is a staging and phone-QA candidate. It is not a production visual signoff.
 
-VALIDATION
-- npm run check: 245 / 245 tests PASS
-- npm run build/static validation: 116 PASS, 2 WARN, 0 FAIL
-- production GLB integrity audit: PASS for all 10 packaged GLBs
-- local static HTTP asset smoke: PASS
-- actual Cloudflare deployment: UNVERIFIED (Wrangler unavailable here)
-- final rendered composition: VISUAL RESULT UNVERIFIED; container Chromium did not produce a reliable render
-- real-phone QA: REQUIRED
+PRIMARY PHASE H CHANGES
+- Marbles & Jokers: dimensional crafted-board treatment
+- Marbles & Jokers: recessed socket styling for track, Start and Home locations
+- Marbles & Jokers: glossy marbles that appear seated in the board sockets
+- Marbles & Jokers: clearer routed Home channels and stronger Start areas
+- Marbles & Jokers: pinch zoom, empty-board pan, mouse-wheel zoom and animated path waypoints
+- shared tabletop draw-required pile highlighting
+- Crazy Eights Countdown player progress with previous stage struck out
+- Cribbage rank sorting from Ace through King
+- Cribbage automatic crib submission after the required cards are selected
+- Cribbage contextual GO control above the hand
+- Game School guided interaction scenes and in-game How to Play access
+- Quick Reactions now include Party and Sly
+- Prop Hunt right-side touch-look and two-finger camera zoom
 
-IMPORTANT 3D ART TRUTH
-This package DOES NOT claim that the current family character models or real-time 3D environments are finished production artwork.
-Proper authored/skinned family models, authored animations and finished environment art are still required.
-See 3D_ASSET_PRODUCTION_PLAN.md and PAPA_SHOP_VERTICAL_SLICE_ASSET_SPEC.md.
+PRESERVED FROM EARLIER PHASES
+- E1 camera, movement, collision, spawn and recovery foundation
+- Prop Hunt muzzle obstruction, vertical disguise selection and decoy support-height repairs
+- Smear six-card bidding-hand presentation
+- tap-to-play for legal single-card actions where appropriate
+- complete vertical Buddy score sheets
+- Keep Playing / Return to Game Shelf flow
+- Avatar Hub, saved outfit and player-colour profile
+- Requests and Leaderboards
+- Trail Trouble private five-card hands, bots, waypoint movement, pinch/pan and Reset View
+- existing multiplayer rooms, reconnect, bots and game rules
 
-TRAIL RULE NOTE
-The current authoritative Trail Trouble source does not contain an implemented Scavenge card/rule, so this build did not invent one.
-If none of a player's five held cards has any legal move, the player may discard one, draw a replacement, and end the turn.
+VALIDATION RECORDED FOR THIS SOURCE
+- JavaScript syntax and automated regression suite: 259 / 259 PASS
+- static/package validation: 120 PASS, 2 WARN, 0 FAIL
+- packaged GLBs: 13 present
+- production GLB integrity and calibrated scale audit: PASS
+- Phase G technical vertical-slice asset audit: PASS
 
-DEPLOY STAGING
-1. Extract the package.
-2. Run npm install.
-3. Run npm run check and expect 245/245.
-4. Run npm run build and expect 0 failures.
-5. Run npm run deploy:staging.
-6. Do not overwrite production during QA.
-7. Confirm the screen build ID is exactly GAME-NIGHT-STAGING-PHASE-G-PAPA-VSLICE-05.
-8. Follow PHONE_QA_PHASE_F_PLATFORM_04.md.
+DECLARED WARNINGS
+1. Core Three.js and addon modules still use external CDN URLs.
+2. Wrangler is not installed in this execution environment, so actual Cloudflare deployment is UNVERIFIED.
+
+PROP HUNT VISUAL STATUS
+The repaired Prop Hunt gameplay foundation and Phase G technical assets are included, but John likeness and Papa's Shop final visual quality have NOT passed the user's production-art approval gate. This ZIP must not be described as final Prop Hunt art.
+
+DEPLOY TO STAGING
+1. Extract the ZIP into a new folder.
+2. Run: npm install
+3. Run: npm run check
+4. Confirm: 259 / 259 tests pass.
+5. Run: npm run build
+6. Confirm: 0 failures.
+7. Run: npm run deploy:staging
+8. Do not overwrite production during QA.
+9. Confirm the visible build ID is GAME-NIGHT-STAGING-PHASE-H-TABLETOP-06.
+10. Follow PHONE_QA_PHASE_H_TABLETOP_06.md.
+
+IMPORTANT
+The new Mexican Train, Skip-Bo and Backgammon specifications are not implemented in this staging package. They require separate game-engine, multiplayer, bot, tutorial and QA phases.
