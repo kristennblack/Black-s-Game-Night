@@ -1,6 +1,6 @@
 {
   "name": "black-family-game-night",
-  "version": "3.0.0-production3d-papa.0",
+  "version": "3.0.1-playability.0",
   "private": true,
   "type": "module",
   "description": "Black Family Game Night v3.0 Production3D Papa alpha - first asset-first vertical slice with baked GLB John and Gunner rigs, authored prop-zapper/tractor/Papa chair, semantic named-joint fallback animation, and Papa's Shop visual QA; other games remain on the v2 Studio baseline.",

@@ -23,7 +23,8 @@ export function cameraObstructionDistance(target,desired,colliders,padding=.18){
   const dx=desired.x-target.x,dy=desired.y-target.y,dz=desired.z-target.z;
   const len=Math.hypot(dx,dy,dz)||1,dir={x:dx/len,y:dy/len,z:dz/len};
   let nearest=len;
-  for(const b of colliders){if(b.noCamera)continue;const t=rayAabbDistance(target,dir,b,len);if(t!=null&&t<nearest)nearest=t}
+  for(const b of colliders){if(b.noCamera||b.solid===false)continue;const t=rayAabbDistance(target,dir,b,len);if(t!=null&&t<nearest)nearest=t}
+  if(nearest>=len-1e-6)return len;
   return Math.max(.35,Math.min(len,nearest-padding));
 }
 

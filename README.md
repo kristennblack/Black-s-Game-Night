@@ -1,3 +1,7 @@
+# Black Family Game Night - v3.0.1 Playability Recovery
+
+**Current priority:** shared third-person playability. Real-device screenshots showed camera/spawn collapse in Prop Hunt, Family Island Life and Birthday Seat. This release fixes camera initialization, obstruction solving, safe spawn/recovery and adds RESET VIEW before further art production.
+
 # v3.0 Production3D Papa alpha
 
 This is the first **asset-first** Prop Hunt vertical slice. It keeps the proven Lodge/Cloudflare/multiplayer foundation, but begins retiring runtime primitive construction for the objects the player studies most closely. John, Gunner, the prop-zapper, Papa's tractor and Papa's chair now ship as actual GLB files through `public/models/manifest.json`, with procedural visuals retained only as safe fallbacks.

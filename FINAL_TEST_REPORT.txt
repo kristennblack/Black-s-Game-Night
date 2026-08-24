@@ -1,42 +1,22 @@
-Black Family Game Night v3.0.0-production3d-papa-alpha
-Date: 2026-08-24 UTC
+Black Family Game Night v3.0.1-playability-recovery
 
-SCOPE
-First asset-first Production3D vertical slice for Family Prop Hunt / Papa's Shop.
-This release does NOT visually sign off the other 3D games or maps.
+RESULT: PASS
 
-AUTOMATED RESULT
-201 / 201 tests passing.
+Full `npm run check`:
+- JavaScript syntax checks: PASS
+- Automated regression tests: 206/206 PASS
 
-PRODUCTION ASSET AUDIT
-PASS.
-The audit validates GLB headers, required named hierarchy nodes, embedded approved-reference face texture materials, manifest entries and calibrated visible heights.
+New regression coverage includes:
+- first-frame camera snaps to a solved third-person view instead of easing from WebGL origin
+- normal camera stays usable beneath low ceilings
+- non-solid/decorative geometry does not obstruct camera
+- embedded character safe-position search and velocity reset
+- all three 3D games expose RESET VIEW and keyboard R recovery
 
-Production benchmark assets:
-- John GLB: calibrated 1.820 m visual height, named articulated hierarchy, attachment sockets, curved approved-reference face texture.
-- Gunner GLB: calibrated 1.080 m visual height, quadruped hierarchy/back socket, curved approved-reference face/fur texture.
-- Prop-zapper GLB.
-- Tractor GLB.
-- Old motorcycle GLB.
-- Papa's chair GLB.
-- Fireplace GLB.
-- Workbench GLB.
-- Rolling tool chest GLB.
-- Loaded shelving GLB.
+Real-device status:
+- automated environment cannot provide final iPhone GPU/gesture signoff
+- visual acceptance remains mandatory on the user's phone
 
-RUNTIME CONTRACT
-- GLB visuals are optional/async and fall back safely if a production file fails.
-- Existing simulation-owned colliders remain authoritative underneath hero-prop visual swaps.
-- Authored named-joint character rigs use the shared semantic procedural animation bridge until real clips exist.
-- Existing wall occlusion, raycast shooting, camera collision, jump/mantle and Cloudflare room behavior remain covered by the full regression suite.
-
-VISUAL QA LIMITATION
-This environment cannot provide trustworthy iPhone GPU visual signoff. Passing tests prove file/runtime contracts, not that John looks sufficiently like John on the phone.
-
-The real-device acceptance checklist is PRODUCTION_3D_ASSET_QA.md plus PROP_HUNT_PAPA_SHOP_VISUAL_QA.md.
-
-RELEASE DECISION RULE
-Do not roll this production pipeline across Camper, Backyard, Farm, Island Life or Birthday Seat until the Papa's Shop production slice is compared on a real phone and judged materially better than the v2.1 procedural slice.
-
-DEPLOYMENT
-No Cloudflare deployment was performed by this build process.
+Cloudflare deployment:
+- NOT DEPLOYED by this build process
+- local Wrangler dry-run attempt could not complete within the execution timeout; no Cloudflare configuration changes were made in this release

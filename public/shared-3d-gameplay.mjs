@@ -108,26 +108,74 @@ export function consumeMotionEvents(actor){
 export const CONTROL_PRESETS=Object.freeze({
   propHunt:{
     walkSpeed:2.75,runSpeed:4.6,groundAccel:16.5,groundBrake:21,airControl:.31,
-    jumpSpeed:6.15,gravity:18.5,cameraDistance:4.25,aimDistance:2.72,
-    cameraHeight:1.4,shoulder:.52,fov:56,aimFov:47,sprintFov:62,
-    lookSensitivity:.0048,touchLookSensitivity:.0054,minPitch:-.42,maxPitch:.66
+    jumpSpeed:6.15,gravity:18.5,cameraDistance:4.65,aimDistance:3.05,
+    cameraHeight:1.17,cameraLift:.18,minCameraDistance:1.35,recoveryPitch:.075,shoulder:.48,fov:58,aimFov:49,sprintFov:63,
+    lookSensitivity:.0048,touchLookSensitivity:.0054,minPitch:-.30,maxPitch:.50
   },
   island:{
     walkSpeed:2.55,runSpeed:4.35,groundAccel:15,groundBrake:20,airControl:.3,
-    jumpSpeed:5.9,gravity:18,cameraDistance:4.45,aimDistance:3.2,
-    cameraHeight:1.34,shoulder:.22,fov:58,aimFov:54,sprintFov:62,
-    lookSensitivity:.0046,touchLookSensitivity:.0052,minPitch:-.38,maxPitch:.64
+    jumpSpeed:5.9,gravity:18,cameraDistance:4.8,aimDistance:3.35,
+    cameraHeight:1.14,cameraLift:.18,minCameraDistance:1.4,recoveryPitch:.065,shoulder:.20,fov:60,aimFov:55,sprintFov:63,
+    lookSensitivity:.0046,touchLookSensitivity:.0052,minPitch:-.30,maxPitch:.50
   },
   birthday:{
     walkSpeed:3.0,runSpeed:5.0,groundAccel:19,groundBrake:24,airControl:.48,
-    jumpSpeed:6.65,gravity:18.2,cameraDistance:4.1,aimDistance:3.2,
-    cameraHeight:1.34,shoulder:.18,fov:59,aimFov:55,sprintFov:65,
-    lookSensitivity:.0048,touchLookSensitivity:.0055,minPitch:-.46,maxPitch:.66
+    jumpSpeed:6.65,gravity:18.2,cameraDistance:4.55,aimDistance:3.35,
+    cameraHeight:1.15,cameraLift:.16,minCameraDistance:1.35,recoveryPitch:.06,shoulder:.16,fov:61,aimFov:56,sprintFov:66,
+    lookSensitivity:.0048,touchLookSensitivity:.0055,minPitch:-.32,maxPitch:.50
   }
 });
 
 export function getControlPreset(name,overrides={}){
   return {...(CONTROL_PRESETS[name]||CONTROL_PRESETS.island),...overrides};
+}
+
+/**
+ * Find a spawn/recovery point that is not embedded in solid gameplay geometry.
+ * The search is intentionally deterministic so every client can make the same
+ * local recovery decision without introducing a random teleport.
+ */
+export function findSafeCharacterPosition(core,colliders,preferred,bounds={},opts={}){
+  const radius=opts.radius??.32,height=opts.height??1.82,maxRadius=opts.maxRadius??4.5,step=opts.step??.55,
+    minX=bounds.minX??-Infinity,maxX=bounds.maxX??Infinity,minZ=bounds.minZ??-Infinity,maxZ=bounds.maxZ??Infinity,
+    groundAt=opts.groundAt||null,baseY=preferred?.y??0;
+  const clampBound=(v,lo,hi,pad)=>Math.min(hi-pad,Math.max(lo+pad,v));
+  const supportAt=(x,z)=>{
+    if(groundAt)return Number(groundAt(x,z))||0;
+    if(core?.supportHeight)return core.supportHeight(x,z,radius,colliders,baseY+.42,.65);
+    return baseY;
+  };
+  const openAt=(x,z,y)=>!core?.blockingCollider||!core.blockingCollider(x,z,radius,y,height,colliders);
+  const cameraPocket=(x,z,y)=>{
+    if(!opts.requireCameraPocket||!core?.cameraObstructionDistance)return true;
+    const focus={x,y:y+(opts.cameraHeight??1.15),z},d=opts.cameraDistance??3.2;
+    let best=0;
+    for(const [dx,dz] of [[0,-d],[d,0],[0,d],[-d,0]]){
+      const desired={x:x+dx,y:focus.y+(opts.cameraLift??.18),z:z+dz};
+      best=Math.max(best,core.cameraObstructionDistance(focus,desired,colliders,.22));
+    }
+    return best>=(opts.minCameraPocket??1.45);
+  };
+  const tryPoint=(x,z)=>{
+    x=clampBound(x,minX,maxX,radius+.08);z=clampBound(z,minZ,maxZ,radius+.08);const y=supportAt(x,z);
+    return openAt(x,z,y)&&cameraPocket(x,z,y)?{x,y,z}:null;
+  };
+  let hit=tryPoint(preferred.x,preferred.z);if(hit)return hit;
+  for(let r=step;r<=maxRadius+.001;r+=step){
+    const samples=Math.max(8,Math.ceil(Math.PI*2*r/step));
+    for(let i=0;i<samples;i++){const a=i/samples*Math.PI*2;hit=tryPoint(preferred.x+Math.cos(a)*r,preferred.z+Math.sin(a)*r);if(hit)return hit;}
+  }
+  return {x:clampBound(preferred.x,minX,maxX,radius+.08),y:baseY,z:clampBound(preferred.z,minZ,maxZ,radius+.08),unsafe:true};
+}
+
+export function recoverActorFromGeometry(core,actor,colliders,bounds={},opts={}){
+  if(!actor||!core?.blockingCollider)return false;
+  const blocked=core.blockingCollider(actor.x,actor.z,opts.radius??actor.radius??.32,actor.y??0,opts.height??actor.height??1.82,colliders);
+  if(!blocked)return false;
+  const safe=findSafeCharacterPosition(core,colliders,{x:actor.x,y:actor.y??0,z:actor.z},bounds,{...opts,radius:opts.radius??actor.radius,height:opts.height??actor.height});
+  actor.x=safe.x;actor.y=safe.y;actor.z=safe.z;actor.vx=0;actor.vy=0;actor.vz=0;actor.grounded=true;actor._recoveredFromGeometry=(actor._recoveredFromGeometry||0)+1;
+  actor.rig?.position?.set?.(actor.x,actor.y,actor.z);
+  return true;
 }
 
 /** Camera-relative movement vector. The returned strength remains analog. */
@@ -243,47 +291,86 @@ export function applyGamepadLook(cameraState,dt,sensitivity=2.25){
 
 export function createThirdPersonCamera(THREE,camera,core,presetName='island',opts={}){
   const cfg=getControlPreset(presetName,opts),state={
-    yaw:opts.yaw??Math.PI,pitch:opts.pitch??.18,distance:opts.distance??cfg.cameraDistance,
+    yaw:opts.yaw??Math.PI,pitch:opts.pitch??cfg.recoveryPitch??.07,distance:opts.distance??cfg.cameraDistance,
     targetDistance:opts.distance??cfg.cameraDistance,actualDistance:opts.distance??cfg.cameraDistance,
     shoulder:opts.shoulder??cfg.shoulder,shoulderSign:opts.shoulderSign??1,aim:false,sprinting:false,minPitch:cfg.minPitch,maxPitch:cfg.maxPitch,
-    shake:0,recoilPitch:0,recoilYaw:0,targetReady:false,lookScale:1,invertY:false,effectiveShoulderSign:opts.shoulderSign??1
+    shake:0,recoilPitch:0,recoilYaw:0,targetReady:false,lookScale:1,invertY:false,effectiveShoulderSign:opts.shoulderSign??1,
+    initialized:false,collapsedFor:0,recoveries:0,lastSolveRatio:1,lastSafeDistance:opts.distance??cfg.cameraDistance,forceSnap:true
   };
-  const temp={target:new THREE.Vector3(),smoothedTarget:new THREE.Vector3(),desired:new THREE.Vector3(),look:new THREE.Vector3(),pos:new THREE.Vector3(),velocity:new THREE.Vector3()};
+  const temp={target:new THREE.Vector3(),smoothedTarget:new THREE.Vector3(),desired:new THREE.Vector3(),look:new THREE.Vector3(),pos:new THREE.Vector3(),velocity:new THREE.Vector3(),candidate:new THREE.Vector3(),best:new THREE.Vector3()};
   function rotate(dx,dy,{touch=false}={}){const s=(touch?cfg.touchLookSensitivity:cfg.lookSensitivity)*(state.lookScale||1),iy=state.invertY?-1:1;state.yaw-=dx*s;state.pitch=clamp(state.pitch+dy*s*iy,state.minPitch,state.maxPitch)}
-  function zoom(delta){state.targetDistance=clamp(state.targetDistance+delta,2.25,7.5)}
+  function zoom(delta){state.targetDistance=clamp(state.targetDistance+delta,Math.max(2.7,cfg.minCameraDistance+1),7.5)}
   function swapShoulder(){state.shoulderSign*=-1;return state.shoulderSign}
   function recenter(actorYaw){state.yaw=dampAngle(state.yaw,actorYaw??state.yaw,20,1/30)}
   function kick(pitch=.035,yaw=0,shake=.04){state.recoilPitch+=pitch;state.recoilYaw+=yaw;state.shake=Math.max(state.shake,shake)}
+  function reset(target,colliders=[],options={}){
+    state.yaw=options.yaw??target?.yaw??state.yaw;state.pitch=clamp(options.pitch??cfg.recoveryPitch??.07,state.minPitch,state.maxPitch);
+    state.distance=state.targetDistance=options.distance??cfg.cameraDistance;state.recoilPitch=0;state.recoilYaw=0;state.shake=0;state.collapsedFor=0;state.forceSnap=true;state.targetReady=false;state.recoveries++;
+    if(target)update(target,colliders,1/30,{...options,forceSnap:true});
+    return state;
+  }
+  function clearance(from,to,colliders,padding=.2){
+    const full=from.distanceTo(to)||1;
+    const td={x:from.x,y:from.y,z:from.z},dd={x:to.x,y:to.y,z:to.z};
+    const hit=core?.cameraObstructionDistance?core.cameraObstructionDistance(td,dd,colliders||[],padding):full;
+    return {hit,full,ratio:clamp(hit/full,0,1)};
+  }
+  function candidatePosition(target,yaw,pitch,distance,shoulder,lift,out){
+    const cp=Math.cos(pitch),sy=Math.sin(yaw),cy=Math.cos(yaw),backX=sy*cp,backZ=cy*cp,rightX=cy,rightZ=-sy;
+    out.set(target.x+backX*distance+rightX*shoulder,target.y+Math.sin(pitch)*distance+lift,target.z+backZ*distance+rightZ*shoulder);
+    return out;
+  }
+  function solve(target,colliders,desiredDist,targetShoulder,yaw,pitch,options={}){
+    const minDist=options.minCameraDistance??cfg.minCameraDistance??1.35,lift=options.cameraLift??cfg.cameraLift??.18;
+    const autoShoulder=options.autoShoulder!==false,shoulderPool=autoShoulder?[targetShoulder,0,-targetShoulder]:[targetShoulder,0];const shoulders=shoulderPool.filter((v,i,a)=>i===0||a.findIndex(x=>Math.abs(x-v)<.001)===i);
+    const pitches=[pitch,clamp(pitch,-.10,.16),cfg.recoveryPitch??.07,-.04].filter((v,i,a)=>i===0||a.findIndex(x=>Math.abs(x-v)<.01)===i);
+    const lifts=[lift,Math.max(.02,lift-.18),lift+.12];
+    let best=null;
+    for(const pp of pitches){
+      for(const ss of shoulders){
+        for(const ll of lifts){
+          candidatePosition(target,yaw,pp,desiredDist,ss,ll,temp.candidate);
+          const c=clearance(target,temp.candidate,colliders,.22),usable=c.hit;
+          // Prefer clearance first; small penalties keep the chosen camera near the player's requested shoulder/pitch.
+          const score=usable-(Math.abs(pp-pitch)*.42+Math.abs(ss-targetShoulder)*.08+Math.abs(ll-lift)*.06);
+          if(!best||score>best.score)best={score,hit:c.hit,full:c.full,ratio:c.ratio,pitch:pp,shoulder:ss,lift:ll,pos:temp.candidate.clone()};
+          if(c.hit>=Math.min(c.full,minDist+.45)&&c.ratio>.90&&Math.abs(pp-pitch)<.01&&Math.abs(ss-targetShoulder)<.01)break;
+        }
+      }
+    }
+    return best;
+  }
   function update(target,colliders,dt,options={}){
+    if(!target)return state;
     state.aim=!!options.aim;state.sprinting=!!options.sprinting;
     state.recoilPitch=damp(state.recoilPitch,0,13,dt);state.recoilYaw=damp(state.recoilYaw,0,15,dt);state.shake=damp(state.shake,0,12,dt);
     state.distance=damp(state.distance,state.targetDistance,10,dt);
     const desiredDist=state.aim?cfg.aimDistance:state.distance;
-    const dog=!!options.dog,height=options.height??(dog?.73:cfg.cameraHeight),targetShoulder=(state.aim?state.shoulder:(options.shoulderAlways?state.shoulder:state.shoulder*.28))*state.shoulderSign;
+    const dog=!!options.dog,height=options.height??(dog?.64:cfg.cameraHeight),targetShoulder=(state.aim?state.shoulder:(options.shoulderAlways?state.shoulder:state.shoulder*.24))*state.shoulderSign;
     temp.target.set(target.x,target.y+height+(options.cameraBob||0),target.z);
-    if(options.velocity){temp.velocity.set(options.velocity.x||0,0,options.velocity.z||0);const vlen=temp.velocity.length();if(vlen>.01)temp.target.addScaledVector(temp.velocity,Math.min(.12,.035*vlen));}
-    if(!state.targetReady){temp.smoothedTarget.copy(temp.target);state.targetReady=true}else temp.smoothedTarget.lerp(temp.target,1-Math.exp(-18*dt));
+    if(options.velocity){temp.velocity.set(options.velocity.x||0,0,options.velocity.z||0);const vlen=temp.velocity.length();if(vlen>.01)temp.target.addScaledVector(temp.velocity,Math.min(.11,.03*vlen));}
+    const teleported=state.targetReady&&temp.smoothedTarget.distanceToSquared(temp.target)>16;
+    if(!state.targetReady||teleported||options.forceSnap){temp.smoothedTarget.copy(temp.target);state.targetReady=true;state.forceSnap=true}else temp.smoothedTarget.lerp(temp.target,1-Math.exp(-18*dt));
     temp.target.copy(temp.smoothedTarget);
-    const yaw=state.yaw+state.recoilYaw,pitch=state.pitch+state.recoilPitch,cp=Math.cos(pitch),sy=Math.sin(yaw),cy=Math.cos(yaw);
-    const back=new THREE.Vector3(sy*cp,Math.sin(pitch)*.74,cy*cp),right=new THREE.Vector3(cy,0,-sy);
-    temp.desired.copy(temp.target).addScaledVector(back,desiredDist).addScaledVector(right,targetShoulder);temp.desired.y+=.65;
-    const td={x:temp.target.x,y:temp.target.y,z:temp.target.z};let dd={x:temp.desired.x,y:temp.desired.y,z:temp.desired.z};
-    let hit=core?.cameraObstructionDistance?core.cameraObstructionDistance(td,dd,colliders||[],.2):temp.target.distanceTo(temp.desired),full=temp.target.distanceTo(temp.desired)||1,ratio=clamp(hit/full,0,1),effectiveShoulder=state.shoulderSign;
-    // In tight rooms an aiming shoulder can be physically valid yet visually useless.
-    // Try the opposite side only when the current side is substantially obstructed.
-    if(state.aim&&options.autoShoulder!==false&&Math.abs(state.shoulder)>.05&&ratio<.74&&core?.cameraObstructionDistance){
-      const opposite=temp.pos.copy(temp.target).addScaledVector(back,desiredDist).addScaledVector(right,-targetShoulder);opposite.y+=.65;const od={x:opposite.x,y:opposite.y,z:opposite.z},oppHit=core.cameraObstructionDistance(td,od,colliders||[],.2),oppFull=temp.target.distanceTo(opposite)||1,oppRatio=clamp(oppHit/oppFull,0,1);
-      if(oppRatio>ratio+.16&&oppHit>hit+.3){temp.desired.copy(opposite);dd=od;hit=oppHit;full=oppFull;ratio=oppRatio;effectiveShoulder=-state.shoulderSign}
-    }
-    state.effectiveShoulderSign=effectiveShoulder;temp.pos.copy(temp.target).lerp(temp.desired,ratio);
-    if(state.shake>.001){temp.pos.x+=(Math.random()-.5)*state.shake;temp.pos.y+=(Math.random()-.5)*state.shake*.65}
-    camera.position.lerp(temp.pos,1-Math.exp(-(state.aim?19:15)*dt));
-    temp.look.copy(temp.target).addScaledVector(right,state.aim?.16*state.effectiveShoulderSign:0);camera.lookAt(temp.look);
+    const yaw=state.yaw+state.recoilYaw,pitch=clamp(state.pitch+state.recoilPitch,state.minPitch-.05,state.maxPitch+.05);
+    let solved=solve(temp.target,colliders,desiredDist,targetShoulder,yaw,pitch,options);
+    if(!solved){candidatePosition(temp.target,yaw,pitch,desiredDist,targetShoulder,cfg.cameraLift??.18,temp.best);solved={hit:desiredDist,full:desiredDist,ratio:1,pitch,shoulder:targetShoulder,pos:temp.best.clone()};}
+    state.lastSolveRatio=solved.ratio;state.effectiveShoulderSign=targetShoulder&&Math.sign(solved.shoulder)!==Math.sign(targetShoulder)?-state.shoulderSign:state.shoulderSign;
+    const dir=temp.desired.copy(solved.pos).sub(temp.target),full=dir.length()||1;dir.multiplyScalar(1/full);
+    const usable=Math.max(.34,Math.min(full,solved.hit));temp.pos.copy(temp.target).addScaledVector(dir,usable);
+    const minDist=options.minCameraDistance??cfg.minCameraDistance??1.35;
+    if(usable<minDist){state.collapsedFor+=dt}else{state.collapsedFor=Math.max(0,state.collapsedFor-dt*2.5);state.lastSafeDistance=usable;}
+    // A roof/awning/nearby platform can trap the requested ray. Recover the view automatically instead of leaving the camera glued to the avatar.
+    if(state.collapsedFor>.28){state.pitch=damp(state.pitch,cfg.recoveryPitch??.07,14,dt);state.targetDistance=Math.max(state.targetDistance,cfg.cameraDistance);state.collapsedFor=.12;state.recoveries++;}
+    if(state.shake>.001){temp.pos.x+=(Math.random()-.5)*state.shake;temp.pos.y+=(Math.random()-.5)*state.shake*.65;}
+    const snap=state.forceSnap||!state.initialized||options.forceSnap;
+    if(snap){camera.position.copy(temp.pos);state.forceSnap=false;state.initialized=true}else camera.position.lerp(temp.pos,1-Math.exp(-(state.aim?19:15)*dt));
+    const sy=Math.sin(yaw),cy=Math.cos(yaw),right=new THREE.Vector3(cy,0,-sy);temp.look.copy(temp.target).addScaledVector(right,state.aim?.14*state.effectiveShoulderSign:0);camera.lookAt(temp.look);
     const targetRoll=clamp(-(options.turnRate||0)*.0065,-.018,.018);camera.rotation.z=damp(camera.rotation.z||0,targetRoll,8,dt);
     const fov=state.aim?cfg.aimFov:state.sprinting?cfg.sprintFov:cfg.fov;camera.fov=damp(camera.fov||cfg.fov,fov,9,dt);camera.updateProjectionMatrix();
     state.actualDistance=temp.target.distanceTo(camera.position);return state;
   }
-  return {state,cfg,rotate,zoom,swapShoulder,recenter,kick,update};
+  return {state,cfg,rotate,zoom,swapShoulder,recenter,kick,reset,update};
 }
 
 export function bindPointerLook(element,cameraRig,{ignoreSelector='button,select,input,a,.no-look'}={}){

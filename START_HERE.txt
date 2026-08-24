@@ -1,100 +1,45 @@
-# Black Family Game Night v3.0.0 Production3D Papa Alpha
+BLACK FAMILY GAME NIGHT v3.0.1 - PLAYABILITY RECOVERY
 
-This is the first **asset-first production 3D vertical slice**. It is intentionally focused on Family Prop Hunt -> Papa's Shop.
+WHY THIS BUILD EXISTS
+Real-phone screenshots showed the same severe camera/controller failure in:
+- Family Prop Hunt / Papa's Shop
+- Family Island Life
+- John's Birthday Seat
 
-The goal is not to claim the entire game collection is now visually finished. The goal is to test a different production pipeline that can actually close the gap between the approved concept art and live gameplay.
+This build fixes the shared third-person camera and spawn/recovery layer before any more art work is attempted.
 
-## What is different from v2.1
+FIRST TEST
+1. Deploy this full replacement build to the same Cloudflare app.
+2. On the phone, fully close/reopen the browser tab after deployment so the v301 service-worker cache is picked up.
+3. Test Prop Hunt / Papa's Shop first.
+4. Test Family Island Life outside.
+5. Test Birthday Seat.
 
-High-attention visuals are now baked GLB assets instead of being created only from runtime Three.js primitive constructors.
+EXPECTED VIEW
+- The camera should begin several metres behind the character, not above/on top of them.
+- You should be able to see the character's back while moving forward.
+- Drag/look should rotate around the character normally.
+- Roofs, awnings and platforms should not permanently crush the camera against the avatar.
+- RESET VIEW should immediately restore a usable behind-character view.
 
-### Production character assets
+RESET
+- Phone: tap RESET VIEW.
+- Desktop: press R.
 
-- John: `/public/models/characters/john.glb`
-  - calibrated to the 1.82 m gameplay body
-  - true front / side / back geometry
-  - named articulated joints and hand/back sockets
-  - plaid clothing geometry, boots, belt, hair and beard volume
-  - curved approved-reference facial texture mapped to the real 3D head surface
-- Gunner: `/public/models/dogs/gunner.glb`
-  - calibrated to the 1.08 m large-dog gameplay profile
-  - quadruped joint hierarchy and backpack socket
-  - curved approved-reference facial/fur texture mapped to the real 3D head
+DIAGNOSTICS
+Append `&qa3d=1` to a URL that already has query parameters, or `?qa3d=1` if it has none.
+All three 3D games now show camera/position diagnostics in QA mode.
 
-The reference texture is NOT a camera-facing billboard. Walking behind either character still shows actual rear geometry.
+PLEASE SEND IF ANY VIEW IS STILL WRONG
+- one normal screenshot
+- one screenshot with qa3d=1
+- tell me whether RESET VIEW recovered it
 
-### Production hero assets in Papa's Shop
+TEST STATUS
+- JavaScript syntax checks: PASS
+- Complete automated regression suite: 206/206 PASS
+- New camera/spawn recovery regression tests: PASS
+- Actual iPhone visual signoff: REQUIRED
 
-- prop-zapper
-- tractor
-- old motorcycle
-- Papa's tattered yellow chair
-- stone fireplace
-- workbench
-- rolling tool chest
-- loaded shelving
-
-The visible GLB is swapped over the existing gameplay collider/fallback. Art replacement therefore cannot silently change wall, shooting, climbing or collision rules.
-
-## Important limitation
-
-John and Gunner are now baked GLB benchmark assets, but they are still project-authored stylized meshes generated from our production builder. They are **not yet final Blender-sculpted, continuously skinned studio characters with a full bespoke animation library**.
-
-This build exists to answer the next practical question on the phone:
-
-> Does the asset-first GLB approach materially improve likeness, silhouette and scene quality enough that we should continue the production pipeline?
-
-If yes, the next step is to replace the benchmark John/Gunner meshes with fully sculpted/skinned source assets while keeping the same manifest, sockets, semantic animation and gameplay interfaces.
-
-## Test Papa's Shop first
-
-1. Start Family Prop Hunt.
-2. Select **Papa's Shop**.
-3. Use John as a hunter if possible.
-4. Append `?qa3d=1` for one diagnostic run.
-5. Check these views:
-   - John front at normal camera distance
-   - John side
-   - John from directly behind
-   - John aiming and firing
-   - Gunner walking from the side and rear
-   - shop doorway looking toward the tractor/workbench
-   - fireplace/Papa-chair corner
-   - motorcycle from the side
-   - exterior looking back at the shop and rural horizon
-
-## Pass/fail rules
-
-A production asset does not pass because it loaded.
-
-It passes only if:
-
-- it is obviously more believable than the procedural fallback;
-- John reads as John rather than Generic Man;
-- Gunner reads as Gunner rather than Generic Dog;
-- there is no front-facing billboard illusion from side/rear views;
-- weapon and sockets stay attached through movement/aiming;
-- GLB hero props align with the existing collision footprint;
-- camera/walls/occlusion remain correct;
-- performance remains usable on the actual phone.
-
-See:
-
-- `PRODUCTION_3D_PAPA_ARCHITECTURE.md`
-- `PRODUCTION_3D_ASSET_QA.md`
-- `PROP_HUNT_PAPA_SHOP_VISUAL_QA.md`
-
-## Validation
-
-Run:
-
-```bash
-npm run assets:audit
-npm run check
-```
-
-The build does not deploy itself. Keep the existing Git repository, replace the tracked files, commit/push, and let the existing Cloudflare deployment rebuild.
-
-Service-worker cache:
-
-`black-family-game-night-v300-production3d-papa-alpha`
+IMPORTANT
+Do not judge new art from this version. This is a playability recovery release. Once the camera/controller passes on the phone, continue the Papa's Shop production-art vertical slice.

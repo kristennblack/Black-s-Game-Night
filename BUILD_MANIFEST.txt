@@ -1,17 +1,22 @@
-BLACK FAMILY GAME NIGHT v3.0.0-production3d-papa-alpha
-Generated: 2026-08-24 UTC
-Automated tests: 201 / 201 passing
-Service worker cache: black-family-game-night-v300-production3d-papa-alpha
+BLACK FAMILY GAME NIGHT v3.0.1-playability-recovery
 
-Production asset SHA-256:
-fd80751e4df24e1588c7e47b8fefeeb633c0c3c5c8aa95ca098c9a40ac57937f  public/models/characters/john.glb
-6d0aa88aa47625d90ea492f1c46366cfffff9300635ea582b7c3e1156a403548  public/models/dogs/gunner.glb
-8ab969de8da9233215f5439a0a0704ec985bc3244654b24ac99f6eef58d7bbed  public/models/props/prop-zapper.glb
-c374ad3fce39531e696969e5414580b98e1b774848491b8355529aef2d06c6bc  public/models/props/tractor.glb
-0377cda07e1488817ca2b93758792fe7f73a219d5ea48534d1db953d50df1680  public/models/props/motorcycle.glb
-35f49d979692875ea2032b6c5cd6410b3bc05bbaeeee3d5a675f35dd61700a79  public/models/furniture/papa-chair.glb
-ea7cd28b4714675b79e5b2a7daf1f846b40a8c1feb6a8b805bc2df5ed41bee62  public/models/furniture/fireplace.glb
-c110b9bed5429e9c6bc902686abd9e9fbe8be7fd12c0d536a45e6f5986f5f05d  public/models/furniture/workbench.glb
-cb109545f1dd2b3a19ed9dafb61bc516bc147f652b45060fa0646efccf6c9a86  public/models/furniture/tool-chest.glb
-6bae4b8f47140344636f3be765f38d55eed694f3680d3ab9caa4f9df475c65f8  public/models/furniture/shelving.glb
-53139c51578b137d34cdfdd2e8b24e3c0ab3f5fd2834083e9add8693563cacae  public/models/manifest.json
+Purpose: emergency shared third-person camera/spawn recovery after real-device failures in Prop Hunt, Family Island Life and Birthday Seat.
+
+Service worker cache: black-family-game-night-v301-playability-recovery
+App version: 3.0.1-playability-recovery
+Package version: 3.0.1-playability.0
+
+Key files changed:
+- public/shared-3d-gameplay.mjs
+- public/prop-hunt-core.mjs
+- public/prop-hunt-3d.js
+- public/prop-hunt-3d.css
+- public/island-life.js
+- public/island-life.css
+- public/birthday-climb.js
+- public/birthday-climb.css
+- public/sw.js
+- public/app.js
+- test/shared-3d-playability-recovery-v301.test.mjs
+
+Full regression: 206/206 PASS

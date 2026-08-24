@@ -118,12 +118,12 @@ test('Launch UI removes the nonfunctional install button and provides room retry
   assert.match(appSource,/data-action="retryConnect"/);
 });
 
-test('Launch assets advertise v3.0.0-production3d-papa-alpha and use a fresh service-worker cache', async()=>{
+test('Launch assets advertise v3.0.1-playability-recovery and use a fresh service-worker cache', async()=>{
   const {readFile}=await import('node:fs/promises');
   const appSource=await readFile(new URL('../public/app.js',import.meta.url),'utf8');
   const swSource=await readFile(new URL('../public/sw.js',import.meta.url),'utf8');
-  assert.match(appSource,/APP_VERSION='3.0.0-production3d-papa-alpha'/);
-  assert.match(swSource,/black-family-game-night-v300-production3d-papa-alpha/);
+  assert.match(appSource,/APP_VERSION='3.0.1-playability-recovery'/);
+  assert.match(swSource,/black-family-game-night-v301-playability-recovery/);
 });
 
 
