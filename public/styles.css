@@ -640,3 +640,69 @@ html{background:#e8dfcc}body{min-height:100svh;padding-bottom:env(safe-area-inse
   .skipbo-card.small-card{width:56px!important;height:80px!important}
   .bg-board{height:min(41vh,312px)}
 }
+
+/* Phase O: shared physical-motion and action-realism pass. */
+.card,.domino-tile,.skipbo-card,.physical-deck,.bg-checker-stack,.trail-marker,.marble-piece{transform-style:preserve-3d;backface-visibility:hidden}
+.card,.domino-tile,.skipbo-card{will-change:transform,filter;transition:box-shadow .16s ease,filter .16s ease,transform .16s ease}
+.hand-card:not(:disabled):active,.extra-hand-card:not(:disabled):active{transform:translateY(-8px) rotateX(7deg) scale(.985)!important}
+.hand-card.legal:hover .card,.extra-hand-card.playable:hover .card,.extra-hand-card.playable:hover .domino-tile{box-shadow:0 12px 24px rgba(0,0,0,.34),0 0 0 2px rgba(244,207,103,.62)}
+.played .card,.trick-seat-play .card,.feature-card .card{box-shadow:0 12px 23px rgba(0,0,0,.32),0 2px 4px rgba(255,255,255,.42) inset}
+.table-deck-button,.golf-deck-stack,.marble-deck,.skipbo-draw,.mt-boneyard{perspective:520px}
+.table-deck-button:not(:disabled):active .physical-deck,.golf-deck-stack:not(:disabled):active .physical-deck,.marble-deck:not(:disabled):active .physical-deck,.skipbo-draw:not(:disabled):active .physical-deck,.mt-boneyard:not(:disabled):active .domino-back-stack{transform:translateY(4px) rotateX(7deg) scale(.985)}
+.physical-deck,.domino-back-stack{transition:transform .14s cubic-bezier(.2,.8,.2,1),filter .14s ease}
+.draw-required .physical-deck,.draw-required .domino-back-stack{animation:physicalDeckReady 1.25s ease-in-out infinite alternate}
+@keyframes physicalDeckReady{from{filter:drop-shadow(0 4px 4px rgba(0,0,0,.34))}to{filter:drop-shadow(0 8px 10px rgba(255,206,89,.42)) brightness(1.08);transform:translateY(-2px)}}
+
+/* Backgammon: proper pip dice and animated checker flight. */
+.die{position:relative;perspective:380px;transform-style:preserve-3d;overflow:hidden}
+.die-pips{display:grid;width:72%;height:72%;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:2px}
+.die-pips em{display:block;place-self:center;width:6px;height:6px;border-radius:50%;background:transparent;box-shadow:none}
+.die-pips em.on{background:#2d2118;box-shadow:inset 0 1px 1px rgba(255,255,255,.26),0 1px 1px rgba(0,0,0,.18)}
+.die-number{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.motion-flying-checker{position:fixed;z-index:9999;width:34px;height:16px;border-radius:50%;pointer-events:none;background:radial-gradient(ellipse at 35% 20%,#fff 0 7%,color-mix(in srgb,var(--pc) 75%,#fff) 8% 28%,var(--pc) 30% 62%,color-mix(in srgb,var(--pc) 58%,#15100d) 82%);border:2px solid color-mix(in srgb,var(--pc) 55%,#fff);box-shadow:0 8px 10px rgba(0,0,0,.48),inset 0 2px 3px rgba(255,255,255,.5);transform:translate(-50%,-50%)}
+.bg-checker-stack.legal{animation:bgLegalBreath 1.05s ease-in-out infinite alternate}
+@keyframes bgLegalBreath{to{filter:drop-shadow(0 0 10px #ffd45e) brightness(1.08)}}
+.bg-cube>strong{transform-style:preserve-3d;backface-visibility:hidden}
+
+/* Dominoes land with more weight; cards retain a slight physical edge. */
+.domino-tile{box-shadow:inset 0 0 0 2px rgba(255,255,255,.65),0 7px 9px rgba(0,0,0,.3)}
+.mt-domino-chain .domino-tile{transform-origin:center center}
+.skipbo-build .skipbo-card,.skipbo-public-card .skipbo-card{filter:drop-shadow(0 5px 5px rgba(0,0,0,.24))}
+
+/* More tangible board tokens and score changes. */
+.trail-marker,.marble-piece{transition:filter .16s ease,box-shadow .16s ease}
+.trick-pile .mini-back{box-shadow:0 4px 5px rgba(0,0,0,.28)}
+.phase-card,.round-results-sheet,.extra-game-over{transform-origin:center 42%}
+
+/* Global tactile button feedback without changing layout. */
+.btn,button[data-extra-action],button[data-card],button[data-trail-pawn],button[data-marble-pawn],button[data-bg-from]{touch-action:manipulation;transform-origin:center}
+
+@media(max-width:650px){
+ .motion-flying-checker{width:29px;height:14px}
+ .die-pips em{width:5px;height:5px}
+}
+@media(prefers-reduced-motion:reduce){
+ .draw-required .physical-deck,.draw-required .domino-back-stack,.bg-checker-stack.legal{animation:none!important}
+ .card,.domino-tile,.skipbo-card,.physical-deck,.domino-back-stack{transition:none!important}
+}
+
+/* Phase O per-game action details. */
+.motion-collected-card{position:fixed;z-index:9998;pointer-events:none;transform-origin:center center}.motion-collected-card .card{width:100%;height:100%;box-sizing:border-box}
+.crib-hole.pegged b{animation:cribPegDrop .3s cubic-bezier(.2,.8,.25,1)}
+@keyframes cribPegDrop{from{transform:translateY(-10px) scale(.7);opacity:.3}70%{transform:translateY(2px) scale(1.08)}to{transform:none;opacity:1}}
+.crib-pegging .card{animation:cribCardSettle .28s cubic-bezier(.2,.78,.24,1)}
+@keyframes cribCardSettle{from{transform:translateY(-10px) rotate(-4deg);opacity:.35}to{transform:none;opacity:1}}
+.golf-cell.face-up .card{animation:golfCardFlip .38s cubic-bezier(.2,.75,.2,1);transform-origin:center}
+@keyframes golfCardFlip{from{transform:rotateY(86deg) scale(.92);filter:brightness(1.3)}65%{transform:rotateY(-8deg) scale(1.03)}to{transform:none;filter:none}}
+.community-row .card{animation:pokerDealSettle .36s cubic-bezier(.18,.78,.22,1)}
+@keyframes pokerDealSettle{from{transform:translateY(-24px) rotate(-5deg) scale(.86);opacity:.2}70%{transform:translateY(2px) rotate(1deg) scale(1.02);opacity:1}to{transform:none}}
+.pot.live .chip,.chip-stack.live .chip{animation:chipDrop .32s cubic-bezier(.18,.82,.24,1)}
+.pot.live .chip:nth-child(2n),.chip-stack.live .chip:nth-child(2n){animation-delay:.04s}.pot.live .chip:nth-child(3n),.chip-stack.live .chip:nth-child(3n){animation-delay:.08s}
+@keyframes chipDrop{from{transform:translateY(-10px) rotate(-12deg);opacity:.25}70%{transform:translateY(1px) rotate(2deg)}to{transform:none;opacity:1}}
+.haven-route.built{stroke-dasharray:14 5;animation:routeBuildIn .48s ease-out both}
+@keyframes routeBuildIn{from{stroke-dashoffset:80;opacity:.25}to{stroke-dashoffset:0;opacity:1}}
+.meld-rack span{animation:meldSettle .28s ease-out both}
+@keyframes meldSettle{from{transform:translateY(-6px) scale(.9);opacity:.35}to{transform:none;opacity:1}}
+.pile-plate,.call-plaque,.score-burst,.poker-pot{transform-origin:center;animation:tablePlaqueSettle .22s ease-out}
+@keyframes tablePlaqueSettle{from{transform:scale(.96);filter:brightness(1.08)}to{transform:scale(1);filter:none}}
+@media(prefers-reduced-motion:reduce){.crib-hole.pegged b,.crib-pegging .card,.golf-cell.face-up .card,.community-row .card,.pot.live .chip,.chip-stack.live .chip,.haven-route.built,.meld-rack span,.pile-plate,.call-plaque,.score-burst,.poker-pot{animation:none!important}}

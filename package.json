@@ -1,9 +1,9 @@
 {
   "name": "black-family-game-night",
-  "version": "3.0.1-staging-phase-l-new-games-shelf-09",
+  "version": "3.0.1-staging-phase-o-realistic-actions-12",
   "private": true,
   "type": "module",
-  "description": "Black Family Game Night Phase K staging candidate with the John Character Lab 02 3D model integrated into the shared character pipeline plus Mexican Train, Skip-Bo and Backgammon. Real-device visual QA and actual Cloudflare deployment remain required.",
+  "description": "Black Family Game Night Phase O staging candidate: shared physical tabletop motion, realistic cards/dominoes/dice/checker actions, smoother authored 3D animation blending, plus the Phase N mobile layout improvements. Real-device visual QA and actual Cloudflare deployment remain required.",
   "scripts": {
     "test": "node --test",
     "check": "node --check worker.mjs && node --check propHuntRoom.mjs && node --check islandLifeRoom.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check threeNewGames.mjs && node --check public/app.js && node --check public/prop-hunt-core.mjs && node --check public/shared-3d-art-kit.mjs && node --check public/shared-3d-gameplay.mjs && node --check public/shared-3d-studio.mjs && node --check public/prop-hunt-3d.js && node --check public/island-life-core.mjs && node --check public/island-life.js && node --check public/birthday-climb.js && node --check public/phase-e-qa.mjs && node --check public/sw.js && node --test",

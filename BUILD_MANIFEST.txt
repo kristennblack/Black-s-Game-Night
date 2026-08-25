@@ -1,77 +1,36 @@
 BLACK FAMILY GAME NIGHT
-PHASE K LAB02 + THREE-GAME STAGING BUILD MANIFEST
+PHASE O REALISTIC ACTIONS STAGING BUILD MANIFEST
 
-Build ID: GAME-NIGHT-STAGING-PHASE-L-NEW-GAMES-SHELF-09
-Package version: 3.0.1-staging-phase-l-new-games-shelf-09
+Build ID: GAME-NIGHT-STAGING-PHASE-O-REALISTIC-ACTIONS-12
+Package version: 3.0.1-staging-phase-o-realistic-actions-12
 Worker main: worker.mjs
 Cloudflare static asset directory: ./public
 Assets binding: ASSETS
 SPA fallback: single-page-application
 Staging config: wrangler.staging.jsonc
+Staging Worker name: black-family-game-night-phase-o-staging
+Service worker cache: black-family-game-night-staging-phase-o-realistic-actions-12
 
-3D CHARACTER UPDATE
-- John Character Lab 02 now occupies public/models/characters/john-production-skinned.glb
-- 1 skinned humanoid rig
-- 14 authored animation clips with the existing shared animation names
-- 3 embedded images
-- calibrated final height: about 1.819 m against 1.820 m manifest reference
-- existing shared third-person controller, camera, collision, loader and animation-state systems retained
-- app/service-worker cache identity bumped so the replacement GLB is not hidden by the prior cache
+RETAINED CONTENT
+- All existing game engines and room/reconnect/bot/chat/rematch systems
+- Mexican Train, Skip-Bo and Backgammon
+- Phase N mobile layout tightening
+- John Character Lab 02 production runtime slot
+- Prop Hunt, Island Life and Birthday Seat shared 3D pipeline
 
-NEW PLAYABLE GAME MODULES RETAINED FROM PHASE I
-1. Mexican Train Dominoes
-   - 2 to 8 players/bots
-   - complete Double-12 set
-   - engine opening, private/open trains, Family Train and boneyard
-   - family-avatar open-train markers
-   - forced-double handling and three-round low-score result
+PHASE O CLIENT CHANGES
+- shared cross-render physical piece motion
+- card/domino stable motion keys
+- trick-taking card sweep/collection
+- deck and action tactile feedback
+- Backgammon checker/dice/cube physical motion
+- Cribbage/Golf/Poker/Prairie/Last Haven action detail animations
+- Family Mystery die animation
+- improved authored 3D clip crossfades and smoothed time scale
+- reduced-motion handling
 
-2. Skip-Bo
-   - 2 to 6 players/bots
-   - 162-card original Black Family Game Night visual deck
-   - private hand/future Stock cards
-   - public Stock top/count and four public Discard Piles
-   - four central Building Piles
-   - draw-to-five, mid-turn refill, Wild values and completed-pile recycling
-   - clear Stock Pile to win
-
-3. Backgammon
-   - 2-player human/bot play
-   - standard 24-point / 15-checker setup
-   - complete legal turn-sequence validation
-   - both-dice, larger-die and doubles rules
-   - hits, Bar, re-entry and bearing off
-   - normal, gammon and backgammon scoring
-   - doubling cube with Automatic Doubles, Beavers and Jacoby options
-
-SHARED APP INTEGRATION
-- existing room/lobby and Durable Object persistence/reconnect
-- saved avatars, outfits and player colours
-- Easy / Medium / Hard bots
-- chat and Quick Reactions
-- Leaderboards
-- Keep Playing / Return to Game Shelf
-- in-game How to Play / Game School
-- responsive tabletop pinch zoom, pan, wheel zoom and Fit/Reset
-
-VALIDATION SUMMARY
-- npm run check: 307 / 307 PASS
-- staging validator: 138 PASS, 2 WARN, 0 FAIL
-- production GLB audit: PASS
-- John Lab02 release tests: PASS
-
-DECLARED WARNINGS
-1. Core Three.js and selected addons still use external CDN URLs.
-2. Wrangler is unavailable in the packaging environment, so actual Cloudflare deployment remains UNVERIFIED.
-
-REAL-DEVICE QA STILL REQUIRED
-- new John likeness/silhouette and animation presentation
-- Gunner and Papa's Shop final production-art quality
-- real-phone layouts and gesture comfort
-- complete multiplayer matches for Mexican Train, Skip-Bo and Backgammon
-- reconnect during active obligations and pending Backgammon cube offers
-
-Phase L shelf correction:
-- Mexican Train, Skip-Bo and Backgammon are now explicitly present in home() categoryOrder under New Table Games.
-- Regression test verifies actual shelf visibility.
-- Fresh service-worker cache prevents the prior shelf from persisting after deployment.
+VALIDATION
+- 315 / 315 automated tests pass
+- build validator: 138 pass, 2 warnings, 0 failures
+- production 3D asset audit: PASS
+- actual Cloudflare deployment: UNVERIFIED

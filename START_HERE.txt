@@ -1,55 +1,48 @@
 BLACK FAMILY GAME NIGHT
-STAGING BUILD: GAME-NIGHT-STAGING-PHASE-L-NEW-GAMES-SHELF-09
-PACKAGE VERSION: 3.0.1-staging-phase-l-new-games-shelf-09
+STAGING BUILD: GAME-NIGHT-STAGING-PHASE-O-REALISTIC-ACTIONS-12
+PACKAGE VERSION: 3.0.1-staging-phase-o-realistic-actions-12
+
+WHAT THIS BUILD IS
+Phase O is the whole-app animation / physical-action pass built on top of the Phase N mobile layout fixes and the Phase L three-game shelf release.
 
 WHAT CHANGED
-This package takes the Phase I three-game integration and adds the newer John Character Lab 02 3D model into the real shared character pipeline. It is a new isolated staging build so you can test the closer John model without overwriting the previous rollback package.
+- Shared physical tabletop motion system: stable card/domino identities now animate between hand, table, discard/build piles and trains instead of teleporting between server states.
+- Screw Your Buddy / Fuck Your Buddy / Smear: played cards travel into the trick and completed tricks sweep toward the winning player's trick pile.
+- Deck-driven games: draw piles/decks have physical press/lift feedback and newly visible cards deal/settle into place.
+- Cribbage: peg drops and pegging cards settle more naturally.
+- Golf: face-up cards flip into place.
+- Poker: community cards deal in and pot/chip state changes settle visually.
+- Prairie Pots: chip stacks drop in with weight.
+- Last Haven: newly built routes draw onto the board.
+- Mexican Train: rack-to-train domino movement uses the shared physical motion system; boneyard feels more tactile.
+- Skip-Bo: hand/Stock/Discard cards move into Building Piles rather than snapping; draw pile and cards feel more physical.
+- Backgammon: checker flight arc, hit-to-Bar motion, proper pip dice with tumble/settle, and doubling-cube flip.
+- Family Mystery: visible pip die with a roll animation, retaining the existing step-by-step standee movement.
+- Marbles & Jokers / Trail Trouble: existing path animations retained and combined with improved tactile card/button feedback.
+- 3D Prop Hunt / Island Life / Birthday Seat: authored animation clips now phase-match walk/run transitions, use smoother playback-speed changes, and use shorter crossfades for fire/hit/jump/land actions.
+- Mobile accessibility: prefers-reduced-motion disables the new repeating/action-detail animations.
 
-THE THREE NEW GAMES INCLUDED
-1. Mexican Train Dominoes
-   - 2-8 players/bots
-   - complete Double-12 set
-   - private/open trains, shared Family Train and boneyard
-   - family-avatar train markers
-   - doubles and three-round low-score result
+THREE NEW TABLE GAMES RETAINED
+- Mexican Train Dominoes
+- Skip-Bo
+- Backgammon
 
-2. Skip-Bo
-   - 2-6 players/bots
-   - 162-card original visual deck
-   - visible Stock/Discard/Building layout
-   - private hands and future Stock cards
-   - Wilds, refill/recycle logic and Stock-clear win
-
-3. Backgammon
-   - standard 24-point / 15-checker setup
-   - legal sequence enforcement, both-dice/larger-die rules and doubles
-   - hits, Bar/re-entry and bearing off
-   - normal/gammon/backgammon results
-   - doubling cube and optional rule settings
-
-JOHN LAB02 INTEGRATION
-- runtime slot: public/models/characters/john-production-skinned.glb
+JOHN LAB02 RETAINED
+- public/models/characters/john-production-skinned.glb
 - 1 skin / 14 authored clips / 3 embedded images
-- existing animation names preserved
-- existing controller/camera/collision systems preserved
-- service-worker cache bumped to force the new GLB to load
+- same runtime slot and shared 3D pipeline
 
 VALIDATION RECORDED
-- npm run check: 307 / 307 PASS
+- npm run check: 315 / 315 PASS
 - npm run build: 138 PASS, 2 WARN, 0 FAIL
 - python tools/audit_production_assets.py: PASS
 
-IMPORTANT STAGING LIMITATIONS
-- This does NOT claim the John likeness is final. It needs your real-device visual approval.
-- Gunner and Papa's Shop final production-art quality are still separate visual gates.
-- Actual Cloudflare deployment remains UNVERIFIED because Wrangler is unavailable in this packaging environment.
-- Core 3D still uses external Three.js/addon CDN URLs.
+KNOWN STAGING LIMITATIONS
+- This is still a staging build. Animation timing/feel must be judged on the actual phones/tablets used for game night.
+- Actual Cloudflare deployment is UNVERIFIED in this packaging environment because Wrangler is unavailable here.
+- Core 3D still references external Three.js/addon CDN URLs.
+- Better blending cannot invent authored character clips that do not exist. John Lab02 has the full 14-clip set; fallback/procedural characters continue using the shared procedural animator.
 
-TEST ORDER I RECOMMEND
-1. Deploy this as a staging build, not production.
-2. Confirm visible build ID: GAME-NIGHT-STAGING-PHASE-L-NEW-GAMES-SHELF-09.
-3. Open Family Prop Hunt -> Papa's Shop and verify the new John model loads.
-4. Test John front/side/back, walk/run/turn/jump/aim/fire, camera orbit/zoom and Reset View.
-5. Check the same John model in Island Life and John's Birthday Seat.
-6. Test Mexican Train, Skip-Bo and Backgammon using PHONE_QA_PHASE_K_LAB02_THREE_GAMES_08.md.
-7. Keep the prior Phase I ZIP as rollback until this visual pass is accepted.
+RECOMMENDED PHONE CHECK
+Use PHONE_QA_PHASE_O_REALISTIC_ACTIONS_12.md and confirm the visible build ID is:
+GAME-NIGHT-STAGING-PHASE-O-REALISTIC-ACTIONS-12

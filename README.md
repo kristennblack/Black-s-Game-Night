@@ -1,8 +1,12 @@
 # Black Family Game Night
 
-**Build:** `GAME-NIGHT-STAGING-PHASE-L-NEW-GAMES-SHELF-09`  
-**Package:** `3.0.1-staging-phase-l-new-games-shelf-09`  
+**Build:** `GAME-NIGHT-STAGING-PHASE-O-REALISTIC-ACTIONS-12`  
+**Package:** `3.0.1-staging-phase-o-realistic-actions-12`  
 **Status:** Staging / real-device QA candidate
+
+## What is new in Phase O
+
+Phase O adds a shared physical-motion layer across the game shelf: cards and dominoes animate between real UI locations instead of teleporting between server states, trick cards sweep to winners, Backgammon gets checker/dice/cube motion, Cribbage/Golf/Poker/Prairie/Last Haven receive action-specific motion details, Family Mystery gets an animated pip die, and authored 3D clips use smoother phase-matched crossfades/playback speeds. The Phase N phone-layout work and the three new table games are retained. See `PHASE_O_REALISTIC_ACTIONS_REPORT.md` and `PHONE_QA_PHASE_O_REALISTIC_ACTIONS_12.md`.
 
 ## What is new in Phase I
 
@@ -112,6 +116,6 @@ npm run deploy:staging
 
 Confirm that the loaded screen displays:
 
-`GAME-NIGHT-STAGING-PHASE-L-NEW-GAMES-SHELF-09`
+`GAME-NIGHT-STAGING-PHASE-O-REALISTIC-ACTIONS-12`
 
 Then follow `PHONE_QA_PHASE_I_THREE_GAMES_07.md` before replacing production.

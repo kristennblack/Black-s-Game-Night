@@ -11,5 +11,5 @@ test('Trail Trouble has a square race board with Camp zones, Safe Trails, Home, 
 });
 
 test('Trail Trouble remains available in the v2.0.0 Studio Realism package',()=>{
-  assert.ok(app.includes("const APP_VERSION='GAME-NIGHT-STAGING-PHASE-L-NEW-GAMES-SHELF-09'"));
+  assert.ok(app.includes("const APP_VERSION='GAME-NIGHT-STAGING-PHASE-O-REALISTIC-ACTIONS-12'"));
 });
