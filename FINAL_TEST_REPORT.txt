@@ -1,29 +1,22 @@
-BLACK FAMILY GAME NIGHT
-GAME-NIGHT-STAGING-PHASE-I-THREE-GAMES-07
+Black Family Game Night
+GAME-NIGHT-STAGING-PHASE-K-LAB02-THREE-GAMES-08
+Package: 3.0.1-staging-phase-k-lab02-three-games-08
 
-AUTOMATED RESULT: 303 / 303 PASS
+RESULT
+- 307 / 307 automated tests passing
+- 138 staging validator checks passing
+- 2 declared warnings
+- 0 build-validation failures
+- production GLB audit passing
 
-DEDICATED THREE-GAME RESULT:
-20 / 20 PASS in test/three-new-games.test.mjs
-Additional Phase I integration and rule tests also pass in test/phase-i-three-new-games.test.mjs.
+NEW IN THIS RELEASE
+- John Character Lab 02 integrated at the existing production John runtime URL
+- same 1-skin / 14-animation shared runtime contract retained
+- new service-worker/app cache identity to prevent stale John GLB reuse
+- Mexican Train Dominoes, Skip-Bo and Backgammon retained from the Phase I three-game integration
 
-STATIC / PACKAGE VALIDATION:
-138 PASS
-2 WARN
-0 FAIL
-
-ASSET AUDIT:
-Production GLB integrity and calibrated-scale audit: PASS
-13 GLB files present in the package's public model tree
-
-NEW MODULES VERIFIED IN SOURCE AND TESTS:
-- Mexican Train
-- Skip-Bo
-- Backgammon
-
-DECLARED WARNINGS:
-1. Core Three.js and selected addons still use external CDN URLs.
-2. Wrangler is unavailable in the packaging environment; actual Cloudflare deployment remains UNVERIFIED.
-
-DEVICE STATUS:
-Real-phone visual, gesture, full-match and multiplayer acceptance testing is still required for this exact staging build.
+UNVERIFIED
+- real-phone/browser visual quality and game feel
+- final John likeness approval
+- Gunner/Papa's Shop final visual quality
+- actual Cloudflare deployment in this packaging environment

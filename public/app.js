@@ -1,6 +1,6 @@
 const app=document.querySelector('#app');
-const APP_VERSION='GAME-NIGHT-STAGING-PHASE-I-THREE-GAMES-07';
-if('serviceWorker'in navigator)window.addEventListener('load',async()=>{try{const reg=await navigator.serviceWorker.register('/sw.js?v=GAME-NIGHT-STAGING-PHASE-I-THREE-GAMES-07',{updateViaCache:'none'});reg.update().catch(()=>{})}catch{}});
+const APP_VERSION='GAME-NIGHT-STAGING-PHASE-K-LAB02-THREE-GAMES-08';
+if('serviceWorker'in navigator)window.addEventListener('load',async()=>{try{const reg=await navigator.serviceWorker.register('/sw.js?v=GAME-NIGHT-STAGING-PHASE-K-LAB02-THREE-GAMES-08',{updateViaCache:'none'});reg.update().catch(()=>{})}catch{}});
 
 const GAME={SCREW:'screw',FUCK:'fuck',SMEAR:'smear',CAMPFIRE:'campfire',TRAIL:'trail',PRAIRIE:'prairie',BURN_LOGS:'burnlogs',DECK_SWEEP:'decksweep',CRIBBAGE:'cribbage',MARBLES:'marbles',EUCHRE:'euchre',THIRTY_ONE:'thirtyone',GOLF:'golf',CRAZY_EIGHTS:'crazy8',MITTS:'mitts',POKER:'poker',PRESIDENT:'president',LAST_HAVEN:'lasthaven',MEXICAN_TRAIN:'mexicantrain',SKIP_BO:'skipbo',BACKGAMMON:'backgammon'};
 const gameMeta={

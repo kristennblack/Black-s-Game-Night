@@ -598,6 +598,6 @@
   function modal(html,bind){closeModal();const d=document.createElement('div');d.className='modal-backdrop';d.id='ph3Modal';d.innerHTML=`<div class="modal">${html}</div>`;document.body.appendChild(d);if(bind)bind(d.querySelector('.modal'));}
   function closeModal(){document.getElementById('ph3Modal')?.remove();}
 
-  window.__PROP_HUNT_REAL3D__={version:'GAME-NIGHT-STAGING-PHASE-I-THREE-GAMES-07',renderer:'WebGL',three:'0.185.1',usesDepthBuffer:true,usesCanvas2D:false};
+  window.__PROP_HUNT_REAL3D__={version:'GAME-NIGHT-STAGING-PHASE-K-LAB02-THREE-GAMES-08',renderer:'WebGL',three:'0.185.1',usesDepthBuffer:true,usesCanvas2D:false};
   window.PropHunt={mount,stop};
 })();

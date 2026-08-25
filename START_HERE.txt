@@ -1,68 +1,55 @@
 BLACK FAMILY GAME NIGHT
-STAGING BUILD: GAME-NIGHT-STAGING-PHASE-I-THREE-GAMES-07
-PACKAGE VERSION: 3.0.1-staging-phase-i-three-games-07
+STAGING BUILD: GAME-NIGHT-STAGING-PHASE-K-LAB02-THREE-GAMES-08
+PACKAGE VERSION: 3.0.1-staging-phase-k-lab02-three-games-08
 
-PURPOSE
-This is the first staging package that includes Mexican Train, Skip-Bo and Backgammon inside the existing Black Family Game Night app. It is intended for real-device gameplay and visual QA before production replacement.
+WHAT CHANGED
+This package takes the Phase I three-game integration and adds the newer John Character Lab 02 3D model into the real shared character pipeline. It is a new isolated staging build so you can test the closer John model without overwriting the previous rollback package.
 
-NEW GAME 1: MEXICAN TRAIN
-- 2–8 players/bots
-- complete Double-12 set
-- 15 / 12 / 11 tile rack sizes based on player count
-- private racks and boneyard
-- engine/highest-double opening
-- private trains, open trains and shared Family Train
-- family-avatar open-train markers
-- forced double closure
-- one-tile warning
-- three-round, low-total scoring
-- complete score sheet
+THE THREE NEW GAMES INCLUDED
+1. Mexican Train Dominoes
+   - 2-8 players/bots
+   - complete Double-12 set
+   - private/open trains, shared Family Train and boneyard
+   - family-avatar train markers
+   - doubles and three-round low-score result
 
-NEW GAME 2: SKIP-BO
-- 2–6 players/bots
-- 162-card original visual deck
-- Stock size setting: 10 / 20 / 30
-- private five-card hand and future Stock cards
-- public Stock top/count and four public Discard Piles
-- four central Building Piles
-- draw to five and mid-turn refill
-- play from hand, Stock or Discard top
-- Wild values, 1–12 completion and Draw-Pile recycling
-- clear Stock to win
+2. Skip-Bo
+   - 2-6 players/bots
+   - 162-card original visual deck
+   - visible Stock/Discard/Building layout
+   - private hands and future Stock cards
+   - Wilds, refill/recycle logic and Stock-clear win
 
-NEW GAME 3: BACKGAMMON
-- 2 players
-- standard 15-checker setup
-- full legal turn sequence enforcement
-- both-dice, larger-die and doubles rules
-- hits, Bar, forced re-entry and bearing off
-- normal/gammon/backgammon scoring
-- doubling cube and optional rule settings
-- dimensional board, checkers, dice, cup and cube
+3. Backgammon
+   - standard 24-point / 15-checker setup
+   - legal sequence enforcement, both-dice/larger-die rules and doubles
+   - hits, Bar/re-entry and bearing off
+   - normal/gammon/backgammon results
+   - doubling cube and optional rule settings
 
-VALIDATION RECORDED FOR THIS SOURCE
-- npm run check: 303 / 303 PASS
+JOHN LAB02 INTEGRATION
+- runtime slot: public/models/characters/john-production-skinned.glb
+- 1 skin / 14 authored clips / 3 embedded images
+- existing animation names preserved
+- existing controller/camera/collision systems preserved
+- service-worker cache bumped to force the new GLB to load
+
+VALIDATION RECORDED
+- npm run check: 307 / 307 PASS
 - npm run build: 138 PASS, 2 WARN, 0 FAIL
-- static assets, paths and GLBs: PASS
+- python tools/audit_production_assets.py: PASS
 
-DECLARED WARNINGS
-1. Three.js/addon modules still use external CDN URLs.
-2. Wrangler is unavailable in this environment; actual Cloudflare deployment is UNVERIFIED.
+IMPORTANT STAGING LIMITATIONS
+- This does NOT claim the John likeness is final. It needs your real-device visual approval.
+- Gunner and Papa's Shop final production-art quality are still separate visual gates.
+- Actual Cloudflare deployment remains UNVERIFIED because Wrangler is unavailable in this packaging environment.
+- Core 3D still uses external Three.js/addon CDN URLs.
 
-STAGING LIMITATIONS
-- Real-device visual/game-feel QA is still required for all three new modules.
-- Skip-Bo team mode is not enabled in this first staging release.
-- Backgammon uses dimensional HTML/CSS presentation rather than rigid-body WebGL dice physics.
-- Prop Hunt final production-art approval remains separate and unresolved.
-
-DEPLOY / TEST
-1. Extract this package into a new folder.
-2. Run: npm install
-3. Run: npm run check
-4. Confirm: 303 / 303 tests pass.
-5. Run: npm run build
-6. Confirm: 0 failures.
-7. Run: npm run deploy:staging
-8. Confirm visible build ID: GAME-NIGHT-STAGING-PHASE-I-THREE-GAMES-07
-9. Test each new game using PHONE_QA_PHASE_I_THREE_GAMES_07.md.
-10. Do not overwrite production until the staging tests are accepted.
+TEST ORDER I RECOMMEND
+1. Deploy this as a staging build, not production.
+2. Confirm visible build ID: GAME-NIGHT-STAGING-PHASE-K-LAB02-THREE-GAMES-08.
+3. Open Family Prop Hunt -> Papa's Shop and verify the new John model loads.
+4. Test John front/side/back, walk/run/turn/jump/aim/fire, camera orbit/zoom and Reset View.
+5. Check the same John model in Island Life and John's Birthday Seat.
+6. Test Mexican Train, Skip-Bo and Backgammon using PHONE_QA_PHASE_K_LAB02_THREE_GAMES_08.md.
+7. Keep the prior Phase I ZIP as rollback until this visual pass is accepted.
