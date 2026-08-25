@@ -1,0 +1,8 @@
+Phase L changed files
+- public/app.js (new visible New Table Games shelf + release marker)
+- public/sw.js and active versioned public entry points (fresh cache/version marker)
+- package.json / VERSION.txt / START_HERE.txt / README.md / BUILD_MANIFEST.txt (release marker)
+- active validators/tests updated to the Phase L marker
+- test/phase-l-new-games-shelf.test.mjs (new regression coverage)
+- PHASE_L_NEW_GAMES_SHELF_REPORT.md
+- PHASE_L_CHANGED_FILES.txt

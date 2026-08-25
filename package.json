@@ -1,6 +1,6 @@
 {
   "name": "black-family-game-night",
-  "version": "3.0.1-staging-phase-k-lab02-three-games-08",
+  "version": "3.0.1-staging-phase-l-new-games-shelf-09",
   "private": true,
   "type": "module",
   "description": "Black Family Game Night Phase K staging candidate with the John Character Lab 02 3D model integrated into the shared character pipeline plus Mexican Train, Skip-Bo and Backgammon. Real-device visual QA and actual Cloudflare deployment remain required.",

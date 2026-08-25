@@ -1,6 +1,6 @@
 const app=document.querySelector('#app');
-const APP_VERSION='GAME-NIGHT-STAGING-PHASE-K-LAB02-THREE-GAMES-08';
-if('serviceWorker'in navigator)window.addEventListener('load',async()=>{try{const reg=await navigator.serviceWorker.register('/sw.js?v=GAME-NIGHT-STAGING-PHASE-K-LAB02-THREE-GAMES-08',{updateViaCache:'none'});reg.update().catch(()=>{})}catch{}});
+const APP_VERSION='GAME-NIGHT-STAGING-PHASE-L-NEW-GAMES-SHELF-09';
+if('serviceWorker'in navigator)window.addEventListener('load',async()=>{try{const reg=await navigator.serviceWorker.register('/sw.js?v=GAME-NIGHT-STAGING-PHASE-L-NEW-GAMES-SHELF-09',{updateViaCache:'none'});reg.update().catch(()=>{})}catch{}});
 
 const GAME={SCREW:'screw',FUCK:'fuck',SMEAR:'smear',CAMPFIRE:'campfire',TRAIL:'trail',PRAIRIE:'prairie',BURN_LOGS:'burnlogs',DECK_SWEEP:'decksweep',CRIBBAGE:'cribbage',MARBLES:'marbles',EUCHRE:'euchre',THIRTY_ONE:'thirtyone',GOLF:'golf',CRAZY_EIGHTS:'crazy8',MITTS:'mitts',POKER:'poker',PRESIDENT:'president',LAST_HAVEN:'lasthaven',MEXICAN_TRAIN:'mexicantrain',SKIP_BO:'skipbo',BACKGAMMON:'backgammon'};
 const gameMeta={
@@ -99,6 +99,7 @@ function home(){
  const categoryOrder=[
   ['Cards, Bids & Tricks',[GAME.SCREW,GAME.FUCK,GAME.SMEAR,GAME.EUCHRE,GAME.CRIBBAGE]],
   ['Board, Race & Strategy',[GAME.TRAIL,GAME.MARBLES,GAME.PRAIRIE,GAME.LAST_HAVEN]],
+  ['New Table Games',[GAME.MEXICAN_TRAIN,GAME.SKIP_BO,GAME.BACKGAMMON]],
   ['Fast Family Chaos',[GAME.CAMPFIRE,GAME.CRAZY_EIGHTS,GAME.PRESIDENT,GAME.DECK_SWEEP]],
   ['Classic Night Games',[GAME.THIRTY_ONE,GAME.GOLF,GAME.BURN_LOGS,GAME.MITTS,GAME.POKER]]
  ];

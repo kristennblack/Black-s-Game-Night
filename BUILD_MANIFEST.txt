@@ -1,8 +1,8 @@
 BLACK FAMILY GAME NIGHT
 PHASE K LAB02 + THREE-GAME STAGING BUILD MANIFEST
 
-Build ID: GAME-NIGHT-STAGING-PHASE-K-LAB02-THREE-GAMES-08
-Package version: 3.0.1-staging-phase-k-lab02-three-games-08
+Build ID: GAME-NIGHT-STAGING-PHASE-L-NEW-GAMES-SHELF-09
+Package version: 3.0.1-staging-phase-l-new-games-shelf-09
 Worker main: worker.mjs
 Cloudflare static asset directory: ./public
 Assets binding: ASSETS
@@ -70,3 +70,8 @@ REAL-DEVICE QA STILL REQUIRED
 - real-phone layouts and gesture comfort
 - complete multiplayer matches for Mexican Train, Skip-Bo and Backgammon
 - reconnect during active obligations and pending Backgammon cube offers
+
+Phase L shelf correction:
+- Mexican Train, Skip-Bo and Backgammon are now explicitly present in home() categoryOrder under New Table Games.
+- Regression test verifies actual shelf visibility.
+- Fresh service-worker cache prevents the prior shelf from persisting after deployment.

@@ -222,5 +222,5 @@ test('Phase F platform build ID and cache namespace are explicit and fresh',asyn
   const [app,sw,qa,version]=await Promise.all([
     readFile(new URL('../public/app.js',import.meta.url),'utf8'),readFile(new URL('../public/sw.js',import.meta.url),'utf8'),readFile(new URL('../public/phase-e-qa.mjs',import.meta.url),'utf8'),readFile(new URL('../VERSION.txt',import.meta.url),'utf8')
   ]);
-  assert.match(app,/GAME-NIGHT-STAGING-PHASE-K-LAB02-THREE-GAMES-08/);assert.match(sw,/black-family-game-night-staging-phase-k-lab02-three-games-08/);assert.match(qa,/GAME-NIGHT-STAGING-PHASE-K-LAB02-THREE-GAMES-08/);assert.equal(version.trim(),'GAME-NIGHT-STAGING-PHASE-K-LAB02-THREE-GAMES-08');
+  assert.match(app,/GAME-NIGHT-STAGING-PHASE-L-NEW-GAMES-SHELF-09/);assert.match(sw,/black-family-game-night-staging-phase-l-new-games-shelf-09/);assert.match(qa,/GAME-NIGHT-STAGING-PHASE-L-NEW-GAMES-SHELF-09/);assert.equal(version.trim(),'GAME-NIGHT-STAGING-PHASE-L-NEW-GAMES-SHELF-09');
 });

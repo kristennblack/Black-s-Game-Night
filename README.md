@@ -1,7 +1,7 @@
 # Black Family Game Night
 
-**Build:** `GAME-NIGHT-STAGING-PHASE-K-LAB02-THREE-GAMES-08`  
-**Package:** `3.0.1-staging-phase-k-lab02-three-games-08`  
+**Build:** `GAME-NIGHT-STAGING-PHASE-L-NEW-GAMES-SHELF-09`  
+**Package:** `3.0.1-staging-phase-l-new-games-shelf-09`  
 **Status:** Staging / real-device QA candidate
 
 ## What is new in Phase I
@@ -112,6 +112,6 @@ npm run deploy:staging
 
 Confirm that the loaded screen displays:
 
-`GAME-NIGHT-STAGING-PHASE-K-LAB02-THREE-GAMES-08`
+`GAME-NIGHT-STAGING-PHASE-L-NEW-GAMES-SHELF-09`
 
 Then follow `PHONE_QA_PHASE_I_THREE_GAMES_07.md` before replacing production.

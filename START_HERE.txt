@@ -1,6 +1,6 @@
 BLACK FAMILY GAME NIGHT
-STAGING BUILD: GAME-NIGHT-STAGING-PHASE-K-LAB02-THREE-GAMES-08
-PACKAGE VERSION: 3.0.1-staging-phase-k-lab02-three-games-08
+STAGING BUILD: GAME-NIGHT-STAGING-PHASE-L-NEW-GAMES-SHELF-09
+PACKAGE VERSION: 3.0.1-staging-phase-l-new-games-shelf-09
 
 WHAT CHANGED
 This package takes the Phase I three-game integration and adds the newer John Character Lab 02 3D model into the real shared character pipeline. It is a new isolated staging build so you can test the closer John model without overwriting the previous rollback package.
@@ -47,7 +47,7 @@ IMPORTANT STAGING LIMITATIONS
 
 TEST ORDER I RECOMMEND
 1. Deploy this as a staging build, not production.
-2. Confirm visible build ID: GAME-NIGHT-STAGING-PHASE-K-LAB02-THREE-GAMES-08.
+2. Confirm visible build ID: GAME-NIGHT-STAGING-PHASE-L-NEW-GAMES-SHELF-09.
 3. Open Family Prop Hunt -> Papa's Shop and verify the new John model loads.
 4. Test John front/side/back, walk/run/turn/jump/aim/fire, camera orbit/zoom and Reset View.
 5. Check the same John model in Island Life and John's Birthday Seat.

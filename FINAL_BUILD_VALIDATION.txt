@@ -1,8 +1,4 @@
-
-> black-family-game-night@3.0.1-staging-phase-k-lab02-three-games-08 build
-> node tools/phase_e_validate.mjs
-
-PLATFORM STAGING BUILD VALIDATION - GAME-NIGHT-STAGING-PHASE-K-LAB02-THREE-GAMES-08
+PLATFORM STAGING BUILD VALIDATION - GAME-NIGHT-STAGING-PHASE-L-NEW-GAMES-SHELF-09
 PASS exists: public
 PASS exists: public/index.html
 PASS exists: public/new-games.html
@@ -22,7 +18,7 @@ PASS wrangler: "not_found_handling":"single-page-application"
 PASS durable object: GameHub
 PASS durable object: PropHuntRoom
 PASS durable object: IslandLifeRoom
-PASS staging wrangler: "name": "black-family-game-night-phase-k-staging"
+PASS staging wrangler: "name": "black-family-game-night-phase-l-staging"
 PASS staging wrangler: "directory":"./public"
 PASS staging wrangler: "binding":"ASSETS"
 PASS staging wrangler: "not_found_handling":"single-page-application"
