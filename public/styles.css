@@ -535,3 +535,108 @@ html{background:#e8dfcc}body{min-height:100svh;padding-bottom:env(safe-area-inse
 .mt-score-sheet{border:2px solid #9d7043;border-radius:15px;background:#f5e7c9;color:#302319;overflow:hidden;box-shadow:0 7px 13px #0005}
 .mt-score-head{display:flex;justify-content:space-between;gap:12px;padding:7px 10px;background:#4a2e1c;color:#f8e5b9}.mt-score-head small{opacity:.85}
 .mt-score-scroll{overflow:auto}.mt-score-sheet table{width:100%;border-collapse:collapse;min-width:360px;font-size:.64rem}.mt-score-sheet th,.mt-score-sheet td{padding:6px 8px;text-align:center;border:1px solid #b58a55}.mt-score-sheet thead th{position:sticky;top:0;background:#dcc394}.mt-score-sheet thead th:not(:first-child){box-shadow:inset 0 4px var(--pc)}.mt-score-sheet tr.current{background:#fff4cb}.mt-score-sheet tr.total{font-weight:1000;background:#d2b37b}
+
+
+/* Phase M mobile layout pass: fit the new table games on phones and keep cards/dominoes readable. */
+@media(max-width:700px){
+  .three-new-layout{gap:10px}
+  .three-new-table{min-height:740px;padding:58px 6px 150px;border-width:6px;border-radius:22px}
+  .three-new-board-toolbar{left:6px;right:6px;top:8px;padding:6px 8px;gap:5px;border-radius:12px}
+  .three-new-board-toolbar>span{font-size:.58rem;letter-spacing:.06em}
+  .three-new-board-toolbar button{min-width:36px;height:30px}
+  .three-new-board-toolbar small{width:38px;font-size:.68rem}
+  .three-new-viewport{left:2px;right:2px;top:50px;bottom:148px;border-radius:14px}
+  .three-new-canvas>.extra-center{padding:4px}
+  .three-new-table>.extra-hand{bottom:6px;width:calc(100% - 10px)}
+  .extra-hand-label{font-size:.6rem;line-height:1.25;padding:5px 8px}
+  .domino-rack .extra-card-row,.skipbo-hand .extra-card-row{justify-content:flex-start;overflow-x:auto;padding:10px 8px 8px}
+  .domino-rack .extra-hand-card{min-width:86px;padding:2px}
+  .domino-tile{width:82px;height:42px}
+  .domino-tile.small-domino{width:66px;height:36px}
+  .skipbo-hand .extra-hand-card{min-width:68px;max-width:none}
+  .skipbo-card.small-card{width:52px!important;height:76px!important}
+  .skipbo-table,.mexican-train-table,.backgammon-table{gap:10px;padding:10px;border-width:7px;border-radius:22px}
+  .skipbo-center{grid-template-columns:72px minmax(0,1fr);gap:8px;padding:8px}
+  .skipbo-builds{grid-template-columns:repeat(2,minmax(70px,1fr));gap:6px}
+  .skipbo-build{min-height:104px;padding:4px}
+  .skipbo-opponents{grid-template-columns:1fr;gap:6px}
+  .skipbo-player-station{padding:8px}
+  .skipbo-stock-discard{grid-template-columns:70px 1fr;gap:8px}
+  .skipbo-discards{gap:5px}
+  .skipbo-public-card{min-height:78px}
+  .mt-station{gap:8px}
+  .mt-engine{padding:6px 8px}
+  .mt-boneyard{min-width:92px}
+  .mt-private-trains{grid-template-columns:1fr;gap:6px}
+  .mt-train{min-height:96px}
+  .mt-domino-chain{min-height:44px}
+  .mt-score-sheet table{min-width:320px}
+  .backgammon-table{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto}
+  .bg-board{min-height:320px;padding:10px 16px;border-width:8px;gap:10px}
+  .bg-checker-stack{width:28px}
+  .bg-checker-stack i{width:26px;height:12px}
+  .bg-checker-stack i:nth-child(2){top:10px}
+  .bg-checker-stack i:nth-child(3){top:20px}
+  .bg-point.bottom .bg-checker-stack i:nth-child(2){bottom:10px}
+  .bg-point.bottom .bg-checker-stack i:nth-child(3){bottom:20px}
+  .bg-bar{width:34px}
+  .bg-controls{grid-template-columns:1fr 1fr;padding:8px;gap:8px}
+  .bg-dice{min-height:60px}
+  .die{width:38px;height:38px}
+  .dice-cup{width:70px;height:60px}
+  .bg-cube{padding:6px}
+  .bg-cube>strong{width:42px;height:42px}
+  .bg-primary-actions{grid-column:1/-1}
+  .mt-message,.skipbo-message,.bg-message{font-size:.64rem;max-width:92%;text-align:center}
+}
+@media(max-width:430px){
+  .three-new-table{min-height:710px;padding-bottom:144px}
+  .three-new-viewport{bottom:142px}
+  .domino-rack .extra-hand-card{min-width:82px}
+  .domino-tile{width:78px;height:40px}
+  .skipbo-hand .extra-hand-card{min-width:62px}
+  .skipbo-card.small-card{width:49px!important;height:72px!important}
+  .skipbo-center{grid-template-columns:66px minmax(0,1fr)}
+  .skipbo-stock-discard{grid-template-columns:66px 1fr}
+  .bg-board{min-height:300px;padding-inline:12px}
+  .bg-controls{grid-template-columns:1fr}
+}
+
+
+/* Phase N follow-up: more aggressive mobile fitting and clearer hands/racks for the new games. */
+@media(max-width:700px){
+  .three-new-table.extra-backgammon .three-new-viewport{bottom:196px}
+  .three-new-table.extra-skip_bo .three-new-viewport{bottom:176px}
+  .three-new-table.extra-mexican_train .three-new-viewport{bottom:188px}
+  .three-new-table.extra-backgammon .backgammon-table{max-width:760px;margin:0 auto}
+  .three-new-table.extra-skip_bo .skipbo-table{max-width:740px;margin:0 auto}
+  .three-new-table.extra-mexican_train .mexican-train-table{max-width:760px;margin:0 auto}
+  .three-new-table>.extra-hand{background:linear-gradient(180deg,rgba(21,45,35,.1),rgba(21,45,35,.48) 32%,rgba(21,45,35,.75));padding-top:8px;border-bottom-left-radius:18px;border-bottom-right-radius:18px}
+  .domino-rack .extra-card-row,.skipbo-hand .extra-card-row{scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+  .domino-rack .extra-card-row{gap:12px;padding:12px 12px 10px;min-height:108px}
+  .domino-rack .extra-hand-card{min-width:92px;scroll-snap-align:center}
+  .domino-tile{width:88px;height:46px}
+  .domino-tile.small-domino{width:72px;height:38px}
+  .skipbo-hand .extra-card-row{gap:10px;padding:10px 10px 8px;min-height:112px}
+  .skipbo-hand .extra-hand-card{min-width:74px;scroll-snap-align:center}
+  .skipbo-card.small-card{width:58px!important;height:84px!important}
+  .skipbo-player-cards{gap:6px}
+  .skipbo-player-cards .skipbo-card.mini{width:30px;height:44px;font-size:.54rem}
+  .skipbo-player-cards .skipbo-card.mini .big{font-size:.82rem}
+  .skipbo-public-card{min-height:82px}
+  .skipbo-build .small-card{width:40px!important;height:58px!important}
+  .mt-score-sheet{font-size:.82rem;overflow-x:auto}
+  .mt-score-sheet table{min-width:360px}
+  .bg-board{height:min(44vh,340px);min-height:0}
+  .bg-controls{padding:10px;gap:10px}
+}
+@media(max-width:430px){
+  .three-new-table.extra-backgammon .three-new-viewport{bottom:190px}
+  .three-new-table.extra-skip_bo .three-new-viewport{bottom:172px}
+  .three-new-table.extra-mexican_train .three-new-viewport{bottom:184px}
+  .domino-rack .extra-hand-card{min-width:88px}
+  .domino-tile{width:84px;height:44px}
+  .skipbo-hand .extra-hand-card{min-width:70px}
+  .skipbo-card.small-card{width:56px!important;height:80px!important}
+  .bg-board{height:min(41vh,312px)}
+}
