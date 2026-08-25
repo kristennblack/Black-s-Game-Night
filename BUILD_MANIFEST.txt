@@ -1,0 +1,79 @@
+BLACK FAMILY GAME NIGHT
+PHASE I THREE-GAME STAGING BUILD MANIFEST
+
+Build ID: GAME-NIGHT-STAGING-PHASE-I-THREE-GAMES-07
+Package version: 3.0.1-staging-phase-i-three-games-07
+Worker main: worker.mjs
+Cloudflare static asset directory: ./public
+Assets binding: ASSETS
+SPA fallback: single-page-application
+Staging config: wrangler.staging.jsonc
+
+NEW PLAYABLE GAME MODULES
+1. Mexican Train
+   - 2 to 8 players and bots
+   - complete unique Double-12 set
+   - supplied rack sizes by player count
+   - engine opening, private trains, shared train and boneyard
+   - open-train family-avatar markers
+   - forced double closure
+   - three-round low-score match
+
+2. Skip-Bo
+   - 2 to 6 players and bots
+   - 162-card original Black Family visual deck
+   - private five-card hand and future Stock cards
+   - public Stock top/count and four public Discard Piles
+   - four central Building Piles
+   - draw to five, mid-turn refill and Building-Pile recycling
+   - clear Stock Pile to win
+
+3. Backgammon
+   - 2-player human or bot play
+   - standard 24-point and 15-checker setup
+   - complete legal turn-sequence validation
+   - both-dice, larger-die and doubles rules
+   - hits, Bar, re-entry and bearing off
+   - normal, gammon and backgammon scoring
+   - doubling cube with optional Automatic Doubles, Beavers and Jacoby settings
+
+SHARED APP INTEGRATION
+- existing room and lobby system
+- Durable Object persistence and reconnect
+- saved avatars, outfits and player colours
+- Easy, Medium and Hard bot driver
+- chat and Quick Reactions
+- Leaderboards and duplicate-safe match results
+- Keep Playing and Return to Game Shelf
+- in-game How to Play and Game School scenes
+- responsive table pinch zoom, pan, wheel zoom and Fit controls
+
+PRIMARY SOURCE FILES
+- threeNewGames.mjs
+- extraGames.mjs
+- gameEngine.mjs
+- public/app.js
+- public/styles.css
+- test/three-new-games.test.mjs
+- test/phase-i-three-new-games.test.mjs
+
+PACKAGED 3D ASSETS RETAINED FROM EXISTING 3D PIPELINE
+- 13 GLB files are present in the public model tree
+- no new third-party model files were introduced for these tabletop games
+- tabletop visuals are original dimensional HTML/CSS components
+
+VALIDATION SUMMARY
+- automated tests: 303 / 303 PASS
+- dedicated new-game tests: 20 / 20 PASS plus the complementary Phase I integration suite
+- static/package validator: 138 PASS, 2 WARN, 0 FAIL
+- GLB integrity and calibrated-scale audit: PASS
+
+DECLARED WARNINGS
+1. Core Three.js and selected addons still use external CDN URLs.
+2. Wrangler is unavailable in the packaging environment, so actual Cloudflare deployment remains UNVERIFIED.
+
+DEVICE QA STILL REQUIRED
+- real-phone layouts and gesture comfort
+- complete multiplayer matches for all three games
+- bot pacing and strategy feel
+- reconnect during active obligations and pending cube offers

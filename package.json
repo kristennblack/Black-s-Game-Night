@@ -1,0 +1,20 @@
+{
+  "name": "black-family-game-night",
+  "version": "3.0.1-staging-phase-i-three-games-07",
+  "private": true,
+  "type": "module",
+  "description": "Black Family Game Night Phase I staging candidate with integrated Mexican Train, Skip-Bo and Backgammon modules, plus the previously verified Phase H tabletop, card-game, profile, Trail Trouble and 3D gameplay foundations. Real-device visual QA and actual Cloudflare deployment remain required.",
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check worker.mjs && node --check propHuntRoom.mjs && node --check islandLifeRoom.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check threeNewGames.mjs && node --check public/app.js && node --check public/prop-hunt-core.mjs && node --check public/shared-3d-art-kit.mjs && node --check public/shared-3d-gameplay.mjs && node --check public/shared-3d-studio.mjs && node --check public/prop-hunt-3d.js && node --check public/island-life-core.mjs && node --check public/island-life.js && node --check public/birthday-climb.js && node --check public/phase-e-qa.mjs && node --check public/sw.js && node --test",
+    "deploy": "wrangler deploy",
+    "assets:build": "python tools/build_production_assets.py",
+    "assets:audit": "python tools/audit_production_assets.py",
+    "build": "node tools/phase_e_validate.mjs",
+    "staging:validate": "node tools/phase_e_validate.mjs",
+    "deploy:staging": "wrangler deploy --config wrangler.staging.jsonc"
+  },
+  "devDependencies": {
+    "wrangler": "4.125.0"
+  }
+}

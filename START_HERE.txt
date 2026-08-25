@@ -1,0 +1,68 @@
+BLACK FAMILY GAME NIGHT
+STAGING BUILD: GAME-NIGHT-STAGING-PHASE-I-THREE-GAMES-07
+PACKAGE VERSION: 3.0.1-staging-phase-i-three-games-07
+
+PURPOSE
+This is the first staging package that includes Mexican Train, Skip-Bo and Backgammon inside the existing Black Family Game Night app. It is intended for real-device gameplay and visual QA before production replacement.
+
+NEW GAME 1: MEXICAN TRAIN
+- 2–8 players/bots
+- complete Double-12 set
+- 15 / 12 / 11 tile rack sizes based on player count
+- private racks and boneyard
+- engine/highest-double opening
+- private trains, open trains and shared Family Train
+- family-avatar open-train markers
+- forced double closure
+- one-tile warning
+- three-round, low-total scoring
+- complete score sheet
+
+NEW GAME 2: SKIP-BO
+- 2–6 players/bots
+- 162-card original visual deck
+- Stock size setting: 10 / 20 / 30
+- private five-card hand and future Stock cards
+- public Stock top/count and four public Discard Piles
+- four central Building Piles
+- draw to five and mid-turn refill
+- play from hand, Stock or Discard top
+- Wild values, 1–12 completion and Draw-Pile recycling
+- clear Stock to win
+
+NEW GAME 3: BACKGAMMON
+- 2 players
+- standard 15-checker setup
+- full legal turn sequence enforcement
+- both-dice, larger-die and doubles rules
+- hits, Bar, forced re-entry and bearing off
+- normal/gammon/backgammon scoring
+- doubling cube and optional rule settings
+- dimensional board, checkers, dice, cup and cube
+
+VALIDATION RECORDED FOR THIS SOURCE
+- npm run check: 303 / 303 PASS
+- npm run build: 138 PASS, 2 WARN, 0 FAIL
+- static assets, paths and GLBs: PASS
+
+DECLARED WARNINGS
+1. Three.js/addon modules still use external CDN URLs.
+2. Wrangler is unavailable in this environment; actual Cloudflare deployment is UNVERIFIED.
+
+STAGING LIMITATIONS
+- Real-device visual/game-feel QA is still required for all three new modules.
+- Skip-Bo team mode is not enabled in this first staging release.
+- Backgammon uses dimensional HTML/CSS presentation rather than rigid-body WebGL dice physics.
+- Prop Hunt final production-art approval remains separate and unresolved.
+
+DEPLOY / TEST
+1. Extract this package into a new folder.
+2. Run: npm install
+3. Run: npm run check
+4. Confirm: 303 / 303 tests pass.
+5. Run: npm run build
+6. Confirm: 0 failures.
+7. Run: npm run deploy:staging
+8. Confirm visible build ID: GAME-NIGHT-STAGING-PHASE-I-THREE-GAMES-07
+9. Test each new game using PHONE_QA_PHASE_I_THREE_GAMES_07.md.
+10. Do not overwrite production until the staging tests are accepted.

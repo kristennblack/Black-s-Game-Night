@@ -1,0 +1,34 @@
+CLOUDFLARE BUILD SETTINGS - v1.6.0-3d-systems
+
+Existing project workflow remains the intended deployment path.
+
+Build command: blank / None
+Deploy command: npx wrangler deploy
+Root directory: /
+Production branch: main
+
+CURRENT DURABLE OBJECTS
+- GAME_HUB -> GameHub
+- PROP_HUNT -> PropHuntRoom
+- ISLAND_LIFE -> IslandLifeRoom
+
+MIGRATIONS
+Keep the existing migrations in wrangler.jsonc. v1.6 adds no new Durable Object class or migration.
+
+V1.6 CLIENT-SIDE ADDITIONS
+- public/shared-3d-gameplay.mjs
+- updated public/shared-3d-art-kit.mjs
+- genuine WebGL public/birthday-climb.js
+- unified Prop Hunt/Island Life/Birthday controls and animation
+- service-worker cache: black-family-game-night-v160-3d-systems
+
+DEPLOYMENT CHECK
+1. Replace tracked files with the v1.6 package while keeping the repository metadata.
+2. Commit and push to the production branch.
+3. Let the existing Worker deployment rebuild.
+4. Check Worker logs if the deployment fails.
+5. Hard refresh iPhone/iPad once after deployment so the v160 cache replaces older caches.
+6. Run the real-device checklist in START_HERE.txt.
+
+NOTE
+The current 3D clients load Three.js from jsDelivr. Network access is required for those modules unless a future build vendors Three.js locally.
