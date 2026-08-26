@@ -4,8 +4,8 @@ import fs from 'node:fs';
 import {PropHuntRoom} from '../propHuntRoom.mjs';
 
 const read=p=>fs.readFileSync(new URL(`../${p}`,import.meta.url),'utf8');
-const BUILD='GAME-NIGHT-STAGING-PHASE-T1-PROP-HUNT-HUNTER-RELEASE-COMBAT-19';
-const CACHE='black-family-game-night-staging-phase-t1-prop-hunt-hunter-release-combat-19';
+const BUILD='GAME-NIGHT-STAGING-PHASE-U2-ARCADE-PACK-22';
+const CACHE='black-family-game-night-staging-phase-u2-arcade-pack-22';
 class FakeSql {constructor(){this.row=null;}exec(q,...args){if(/^SELECT json/i.test(q))return{toArray:()=>this.row?[{json:this.row}]:[]};if(/^INSERT INTO prop_room/i.test(q)){this.row=args[0];return{toArray:()=>[]}}return{toArray:()=>[]}}}
 function makeRoom(){const sql=new FakeSql(),ctx={storage:{sql},blockConcurrencyWhile(fn){return Promise.resolve().then(fn)},getWebSockets(){return[]},acceptWebSocket(){},waitUntil(){}};return new PropHuntRoom(ctx,{})}
 

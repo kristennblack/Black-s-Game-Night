@@ -1,9 +1,9 @@
 {
   "name": "black-family-game-night",
-  "version": "3.5.1-staging-phase-t1-prop-hunt-hunter-release-combat-19",
+  "version": "3.5.2-staging-phase-u2-arcade-pack-22",
   "private": true,
   "type": "module",
-  "description": "Black Family Game Night Phase T.1: protected Prop Hunt hiding phase and crosshair-first rapid-fire hunter controls, preserving Phase T animation work and Phase S repairs.",
+  "description": "Black Family Game Night Phase U.2: ten original family-themed single-file arcade games added to Arcade Corner, preserving Phase U.1 and Prop Hunt T.1 work.",
   "scripts": {
     "test": "node --test",
     "check": "node --check worker.mjs && node --check propHuntRoom.mjs && node --check islandLifeRoom.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check threeNewGames.mjs && node --check blackGammon.mjs && node --check public/app.js && node --check public/prop-hunt-core.mjs && node --check public/shared-3d-art-kit.mjs && node --check public/shared-3d-gameplay.mjs && node --check public/shared-3d-studio.mjs && node --check public/prop-hunt-3d.js && node --check public/island-life-core.mjs && node --check public/island-life.js && node --check public/birthday-climb.js && node --check public/phase-e-qa.mjs && node --check public/sw.js && node --test",

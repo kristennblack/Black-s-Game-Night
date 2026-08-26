@@ -454,3 +454,8 @@ If an important answer is no, continue refining before calling the milestone com
 **Target release name:** `GAME-NIGHT-STAGING-PHASE-R-PROP-HUNT-P2-GAMMON-UX-16`
 
 The goal is no longer to prove that the app can render 3D or simulate a board game. The goal is to make these experiences look and play like intentionally designed games.
+
+---
+
+# PHASE U.2 MASTER ADDENDUM - FAMILY ARCADE PACK
+The latest governing Arcade Corner expansion is `MASTER_PHASE_U2_ARCADE_PACK_DIRECTIVE.md`. Preserve all prior locked gameplay and 3D work, then add these ten original single-file games to Arcade Corner: Camp Pong, Goat Crossing, Shop Bomber, Cabin Blocks, Camp 2048, Minefield, Goat Whack, Memory Mayhem, Firelight Simon and Papa's Pipes. The Arcade Corner count is now 14. Use original code/art/presentation, static Cloudflare-friendly HTML files, responsive touch controls and the Phase U.2 service-worker/version identifier. The target release is `GAME-NIGHT-STAGING-PHASE-U2-ARCADE-PACK-22`.

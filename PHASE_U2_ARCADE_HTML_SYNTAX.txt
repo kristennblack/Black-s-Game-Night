@@ -1,0 +1,12 @@
+Phase U.2 standalone arcade HTML JavaScript syntax validation
+PASS camp-pong.html: inline JS syntax valid; no remote dependency
+PASS goat-crossing.html: inline JS syntax valid; no remote dependency
+PASS shop-bomber.html: inline JS syntax valid; no remote dependency
+PASS cabin-blocks.html: inline JS syntax valid; no remote dependency
+PASS camp-2048.html: inline JS syntax valid; no remote dependency
+PASS minefield.html: inline JS syntax valid; no remote dependency
+PASS goat-whack.html: inline JS syntax valid; no remote dependency
+PASS memory-mayhem.html: inline JS syntax valid; no remote dependency
+PASS firelight-simon.html: inline JS syntax valid; no remote dependency
+PASS papas-pipes.html: inline JS syntax valid; no remote dependency
+SUMMARY: 10 pass, 0 fail
