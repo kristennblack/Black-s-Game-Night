@@ -70,7 +70,7 @@ test('3D phone cleanup keeps core recovery while using more readable per-game ca
     assert.ok(src.includes('aria-label="Swap camera shoulder"'));
     assert.ok(src.includes('>↺</button>'));
   }
-  assert.ok(sw.includes('black-family-game-night-staging-phase-p1-flagship-upgrade-14'));
+  assert.ok(sw.includes('black-family-game-night-staging-phase-q-mobile-tabletop-ux-15'));
   assert.ok(sw.includes('/john-home-approved.jpg'));
   assert.ok(sw.includes('/home-cabin-background.jpg'));
 });

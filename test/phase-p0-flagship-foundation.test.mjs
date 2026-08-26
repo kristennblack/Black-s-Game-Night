@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 const read=p=>fs.readFileSync(new URL(`../${p}`,import.meta.url),'utf8');
-const build='GAME-NIGHT-STAGING-PHASE-P1-FLAGSHIP-UPGRADE-14';
+const build='GAME-NIGHT-STAGING-PHASE-Q-MOBILE-TABLETOP-UX-15';
 
 test('Phase P0 installs flagship directive and locked-component register',()=>{
   assert.match(read('MASTER_3D_DEVELOPMENT_DIRECTIVE.md'),/Family Prop Hunt.*flagship/s);

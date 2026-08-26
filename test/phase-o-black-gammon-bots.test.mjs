@@ -2,12 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
-const build='GAME-NIGHT-STAGING-PHASE-P1-FLAGSHIP-UPGRADE-14';
-const cache='black-family-game-night-staging-phase-p1-flagship-upgrade-14';
+const build='GAME-NIGHT-STAGING-PHASE-Q-MOBILE-TABLETOP-UX-15';
+const cache='black-family-game-night-staging-phase-q-mobile-tabletop-ux-15';
 
 test('Phase O has an isolated build/cache identity',()=>{
  const app=fs.readFileSync('public/app.js','utf8'),sw=fs.readFileSync('public/sw.js','utf8'),version=fs.readFileSync('VERSION.txt','utf8'),wrangler=fs.readFileSync('wrangler.staging.jsonc','utf8');
- assert.match(app,new RegExp(build));assert.match(sw,new RegExp(cache));assert.equal(version.trim(),build);assert.match(wrangler,/black-family-game-night-phase-p1-staging/);
+ assert.match(app,new RegExp(build));assert.match(sw,new RegExp(cache));assert.equal(version.trim(),build);assert.match(wrangler,/black-family-game-night-phase-q-staging/);
 });
 
 test('Phase O keeps standard Backgammon and adds separate Black Gammon',()=>{

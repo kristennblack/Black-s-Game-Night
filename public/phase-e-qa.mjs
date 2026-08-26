@@ -1,5 +1,5 @@
-export const STAGING_BUILD_ID='GAME-NIGHT-STAGING-PHASE-P1-FLAGSHIP-UPGRADE-14';
-export const STAGING_APP_VERSION='3.1.0-staging-phase-p1-flagship-upgrade-14';
+export const STAGING_BUILD_ID='GAME-NIGHT-STAGING-PHASE-Q-MOBILE-TABLETOP-UX-15';
+export const STAGING_APP_VERSION='3.2.0-staging-phase-q-mobile-tabletop-ux-15';
 
 const fmt=n=>Number.isFinite(Number(n))?Number(n).toFixed(2):'n/a';
 const vec=v=>v?`${fmt(v.x)}, ${fmt(v.y)}, ${fmt(v.z)}`:'n/a';

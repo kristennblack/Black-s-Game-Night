@@ -2,8 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
-const build='GAME-NIGHT-STAGING-PHASE-P1-FLAGSHIP-UPGRADE-14';
-const cache='black-family-game-night-staging-phase-p1-flagship-upgrade-14';
+const build='GAME-NIGHT-STAGING-PHASE-Q-MOBILE-TABLETOP-UX-15';
+const cache='black-family-game-night-staging-phase-q-mobile-tabletop-ux-15';
 
 function parseGlbJson(path){
   const b=fs.readFileSync(path);

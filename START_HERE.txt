@@ -1,44 +1,47 @@
 BLACK FAMILY GAME NIGHT
-STAGING BUILD: GAME-NIGHT-STAGING-PHASE-P1-FLAGSHIP-UPGRADE-14
-PACKAGE VERSION: 3.1.0-staging-phase-p1-flagship-upgrade-14
+STAGING BUILD: GAME-NIGHT-STAGING-PHASE-Q-MOBILE-TABLETOP-UX-15
+PACKAGE VERSION: 3.2.0-staging-phase-q-mobile-tabletop-ux-15
 
-THIS IS THE PHASE P1 PROP HUNT FLAGSHIP UPGRADE PACKAGE.
+THIS IS THE PHASE Q MOBILE TABLETOP UX PACKAGE.
 
 PRIMARY CHANGES
-1. John is rebuilt as the PH-CHAR-01 flagship character candidate with one skinned rig and 19 authored clips.
-2. Prop Hunt now supports layered lower-body locomotion with upper-body aim/fire instead of replacing the whole motion state.
-3. Touch/gamepad shooting gains restrained aim assistance while retaining muzzle/wall validation.
-4. Prop Hunt mobile controls and crosshair feedback are clearer and larger.
-5. Papa's Shop keeps its proven gameplay/collider layout while authored static visuals receive lighting/performance optimization.
-6. The approved cozy cabin is preserved and the Game Shelf is upgraded with dimensional cabin-style plaques and custom vector game medallions.
-7. Black Gammon, standard Backgammon, Easy-first bot defaults and readable bot selectors remain preserved.
-8. Island Life and Birthday Seat are not blindly visually rewritten. Shared Prop Hunt systems are to be propagated only after the flagship benchmark is visually approved.
+1. Skip-Bo is rebuilt as a portrait-first, screen-filling card layout instead of a zoom/pan mini-table.
+2. Skip-Bo keeps the player hand, stock, four discard piles, four shared build piles, draw pile, and compact opponent status in the core play surface.
+3. Skip-Bo opponent hands remain private and show count only.
+4. Skip-Bo uses tap-source then direct destination play: valid targets glow and invalid targets dim.
+5. Cribbage is rebuilt around a more believable wood crib board with player lanes, current/trailing pegs, clearer pegging ownership, and visible peg feedback.
+6. Cribbage preserves completed hand/crib scoring evidence, including actual cards, starter, point breakdown, and score movement.
+7. MASTER_MOBILE_TABLETOP_UX_DIRECTIVE.md is added as the governing tabletop/mobile directive.
+8. Phase P1 Prop Hunt flagship work, Black Gammon, standard Backgammon, bots, multiplayer, reconnect, and existing rules are preserved.
 
-AUTOMATED/TECHNICAL VALIDATION
-- npm test: 339 / 339 PASS
-- npm run check: syntax/module checks PASS; 339 / 339 tests PASS
-- staging validator: 144 PASS, 2 WARN, 0 FAIL
-- production 3D asset audit: PASS
-- John/Papa technical vertical-slice audit: PASS
+VALIDATION STATUS
+- Technical/regression validation is recorded in PHASE_Q_PACKAGE_VERIFICATION.txt in the packaged release.
+- Real-device portrait visual/game-feel approval is still required before production signoff.
 
-IMPORTANT VISUAL STATUS
-Automated tests do not prove visual quality. The John bind-pose geometry preview was inspected and one boot-placement defect was corrected, but the actual Three.js gameplay render still requires phone/browser visual approval.
+PHONE QA PRIORITIES
+SKIP-BO
+- No zoom toolbar or board panning required for a normal turn.
+- Hand, stock, four own discards, four builds, draw pile, and opponent status are readable together.
+- Opponent hand is count-only.
+- Tap a card/source and verify legal destinations glow while invalid destinations dim.
+
+CRIBBAGE
+- Board reads immediately as a crib board.
+- Player lanes and current/trailing pegs are clear.
+- Pegging cards show who played them.
+- Scored hands and crib show actual cards and point explanation.
+- Completed scoring recap remains inspectable after the next deal begins.
 
 BEFORE PRODUCTION
 1. Deploy this ZIP as staging.
-2. Confirm visible build ID: GAME-NIGHT-STAGING-PHASE-P1-FLAGSHIP-UPGRADE-14.
-3. Follow PHONE_QA_PHASE_P1_FLAGSHIP_UPGRADE_14.md.
-4. Do not lock PH-CHAR-01 until John passes front/side/rear, locomotion, aim/fire, jump/land/mantle and Papa's Shop scale/lighting proof.
-5. Do not call Papa's Shop visually complete until inspected in the running game.
-
-KNOWN WARNINGS
-- Actual Cloudflare deployment is unverified in this packaging environment because Wrangler is unavailable.
-- Core Three.js/addon URLs still include external CDN dependencies.
-- Real-device visual/game-feel QA remains required.
+2. Confirm visible build ID: GAME-NIGHT-STAGING-PHASE-Q-MOBILE-TABLETOP-UX-15.
+3. Follow PHONE_QA_PHASE_Q_MOBILE_TABLETOP_UX_15.md.
+4. Test Skip-Bo and Cribbage on a real portrait phone.
+5. Keep the Phase P1 Prop Hunt visual benchmark work on its separate approval track.
 
 READ NEXT
+- MASTER_MOBILE_TABLETOP_UX_DIRECTIVE.md
+- PHASE_Q_MOBILE_TABLETOP_UX_REPORT.md
+- PHONE_QA_PHASE_Q_MOBILE_TABLETOP_UX_15.md
 - MASTER_3D_DEVELOPMENT_DIRECTIVE.md
-- PROP_HUNT_FLAGSHIP_AUDIT_AND_PLAN.md
 - PHASE_P1_FLAGSHIP_UPGRADE_REPORT.md
-- PHONE_QA_PHASE_P1_FLAGSHIP_UPGRADE_14.md
-- LOCKED_COMPONENTS_REGISTER.md
