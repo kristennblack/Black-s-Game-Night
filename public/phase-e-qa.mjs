@@ -1,5 +1,5 @@
-export const STAGING_BUILD_ID='GAME-NIGHT-STAGING-PHASE-U2-ARCADE-PACK-22';
-export const STAGING_APP_VERSION='3.5.2-staging-phase-u2-arcade-pack-22';
+export const STAGING_BUILD_ID='GAME-NIGHT-STAGING-PHASE-T1-PROP-HUNT-HUNTER-RELEASE-COMBAT-19';
+export const STAGING_APP_VERSION='3.4.0-staging-phase-s-gameplay-tabletop-realism-17';
 
 const fmt=n=>Number.isFinite(Number(n))?Number(n).toFixed(2):'n/a';
 const vec=v=>v?`${fmt(v.x)}, ${fmt(v.y)}, ${fmt(v.z)}`:'n/a';

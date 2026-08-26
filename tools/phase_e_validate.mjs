@@ -4,7 +4,7 @@ import path from 'node:path';
 
 const ROOT=process.cwd();
 const PUBLIC=path.join(ROOT,'public');
-const BUILD='GAME-NIGHT-STAGING-PHASE-U2-ARCADE-PACK-22';
+const BUILD='GAME-NIGHT-STAGING-PHASE-T1-PROP-HUNT-HUNTER-RELEASE-COMBAT-19';
 const failures=[];
 const warnings=[];
 const passes=[];
@@ -93,7 +93,7 @@ if(cdnHits.length)warn(`core 3D CDN dependency remains (${[...new Set(cdnHits)].
 
 const app=await text('public/app.js'),sw=await text('public/sw.js'),idx=await text('public/index.html'),ng=await text('public/new-games.html'),il=await text('public/island-life.html');
 const worker=await text('worker.mjs'),extra=await text('extraGames.mjs'),three=await text('threeNewGames.mjs'),black=await text('blackGammon.mjs'),styles=await text('public/styles.css'),studio=await text('public/shared-3d-studio.mjs'),prop3d=await text('public/prop-hunt-3d.js');
-app.includes(BUILD)&&sw.includes('black-family-game-night-staging-phase-u2-arcade-pack-22')&&idx.includes(BUILD)&&ng.includes(BUILD)&&il.includes(BUILD)?pass('staging cache/version markers are consistent'):fail('staging cache/version markers are inconsistent');
+app.includes(BUILD)&&sw.includes('black-family-game-night-staging-phase-t1-prop-hunt-hunter-release-combat-19')&&idx.includes(BUILD)&&ng.includes(BUILD)&&il.includes(BUILD)?pass('staging cache/version markers are consistent'):fail('staging cache/version markers are inconsistent');
 sw.includes('/phase-e-qa.mjs')?pass('staging diagnostics module precached'):fail('phase-e diagnostics missing from service worker shell');
 app.includes("s.gameType===GAME.SMEAR")&&app.includes('YOUR 6-CARD HAND · REVIEW IT BEFORE YOU BID')?pass('Smear six-card hand is rendered during bidding'):fail('Smear bidding-hand presentation marker missing');
 app.includes("PROFILE_KEY='gn_profile_v1'")&&app.includes('homeAvatarHubHTML')&&app.includes('Character → outfit → player colour')?pass('persistent Avatar Hub profile flow present'):fail('Avatar Hub profile flow incomplete');

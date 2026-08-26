@@ -1,8 +1,8 @@
 
-> black-family-game-night@3.5.2-staging-phase-u2-arcade-pack-22 build
+> black-family-game-night@3.7.0-staging-phase-u3-family-arcade-23 build
 > node tools/phase_e_validate.mjs
 
-PLATFORM STAGING BUILD VALIDATION - GAME-NIGHT-STAGING-PHASE-U2-ARCADE-PACK-22
+PLATFORM STAGING BUILD VALIDATION - GAME-NIGHT-STAGING-PHASE-T1-PROP-HUNT-HUNTER-RELEASE-COMBAT-19
 PASS exists: public
 PASS exists: public/index.html
 PASS exists: public/new-games.html
@@ -44,20 +44,23 @@ PASS manifest asset: /models/environments/papa-shop-barn-production.glb
 PASS manifest asset: /models/sets/papa-shop-production-props.glb
 PASS literal asset ref: /shared-3d-art-kit.mjs
 PASS literal asset ref: /sw.js
+PASS literal asset ref: /papas-paddle-battle.html
+PASS literal asset ref: /gunners-goat-run.html
+PASS literal asset ref: /johns-shop-bomber.html
+PASS literal asset ref: /jamess-lumber-stack.html
+PASS literal asset ref: /dorothys-garden-merge.html
+PASS literal asset ref: /logans-minefield.html
+PASS literal asset ref: /nanas-goat-whack.html
+PASS literal asset ref: /hollys-memory-mayhem.html
+PASS literal asset ref: /lizzies-dramatic-lights.html
+PASS literal asset ref: /vanessas-pipe-problem.html
+PASS literal asset ref: /kelsis-rock-hunt.html
+PASS literal asset ref: /mollys-light-chase.html
+PASS literal asset ref: /gunners-snack-attack.html
 PASS literal asset ref: /breakout.html
 PASS literal asset ref: /space-shooter.html
 PASS literal asset ref: /rocket-gap.html
 PASS literal asset ref: /neon-snake.html
-PASS literal asset ref: /camp-pong.html
-PASS literal asset ref: /goat-crossing.html
-PASS literal asset ref: /shop-bomber.html
-PASS literal asset ref: /cabin-blocks.html
-PASS literal asset ref: /camp-2048.html
-PASS literal asset ref: /minefield.html
-PASS literal asset ref: /goat-whack.html
-PASS literal asset ref: /memory-mayhem.html
-PASS literal asset ref: /firelight-simon.html
-PASS literal asset ref: /papas-pipes.html
 PASS literal asset ref: /avatars/john-black.png
 PASS literal asset ref: /avatars/dorothy.png
 PASS literal asset ref: /avatars/james.png
@@ -193,4 +196,4 @@ PASS Phase T1 governing directive packaged
 PASS Phase T1 real-device QA checklist packaged
 WARN core 3D CDN dependency remains (public/_deep3d_qa.html: Three.js, public/birthday-climb.js: Three.js, public/island-life.js: Three.js, public/prop-hunt-3d.js: Three.js, public/shared-3d-studio.mjs: Three addon)
 WARN Wrangler executable unavailable: actual Cloudflare deployment remains UNVERIFIED
-SUMMARY: 188 pass, 2 warning, 0 fail
+SUMMARY: 191 pass, 2 warning, 0 fail

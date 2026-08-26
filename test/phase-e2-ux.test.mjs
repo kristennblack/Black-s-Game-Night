@@ -70,7 +70,7 @@ test('3D phone cleanup keeps core recovery while using more readable per-game ca
     assert.ok(src.includes('aria-label="Swap camera shoulder"'));
     assert.ok(src.includes('>↺</button>'));
   }
-  assert.ok(sw.includes('black-family-game-night-staging-phase-u2-arcade-pack-22'));
+  assert.ok(sw.includes('black-family-game-night-staging-phase-t1-prop-hunt-hunter-release-combat-19'));
   assert.ok(sw.includes('/john-home-approved.jpg'));
   assert.ok(sw.includes('/home-cabin-background.jpg'));
 });

@@ -1,5 +1,5 @@
 
-> black-family-game-night@3.5.2-staging-phase-u2-arcade-pack-22 assets:audit
+> black-family-game-night@3.7.0-staging-phase-u3-family-arcade-23 assets:audit
 > python tools/audit_production_assets.py
 
 Production3D asset audit

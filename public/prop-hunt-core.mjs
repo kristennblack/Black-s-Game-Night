@@ -208,3 +208,51 @@ export function canServerRegisterHit(shooter,target,maxRange=22){
   const dx=(shooter.live?.x??0)-(target.live?.x??0),dy=(shooter.live?.y??0)-(target.live?.y??0),dz=(shooter.live?.z??0)-(target.live?.z??0);
   return Math.hypot(dx,dy,dz)<=maxRange;
 }
+
+// Phase V: Papa's Shop world expansion and round variety contracts.
+export const PAPA_DISGUISE_POOL=Object.freeze([
+  'Coffee Mug','Extension Cord','Welding Helmet','Bucket','Oil Jug','Toolbox','Gas Can','Shop Vac','Beer Case','Stool',
+  'Sawhorse','Feed Bucket','Hay Bale','Wheelbarrow','Garbage Can','Parts Crate','Lumber','Tire','Feed Barrel','Trough',
+  'Pallet','Feed Sack','Rock','Tractor','Motorcycle','Papa Chair','Tool Chest','Air Compressor','Barrel Stack','Tree'
+]);
+
+
+export const MAP_DISGUISE_POOLS=Object.freeze({
+  papa:PAPA_DISGUISE_POOL,
+  camp:Object.freeze(['Camp Chair','Cooler','Lantern','Dog Toy','Card Box','Water Jug','Firewood','Camp Bin','Rock','Bucket','Tire','Pallet']),
+  acreage:Object.freeze(['Flower Pot','Watering Can','Tire','Toolbox','Gas Can','Garbage Can','Camp Chair','Cooler','Rock','Pallet','Feed Bucket','Bucket']),
+  farm:Object.freeze(['Feed Barrel','Trough','Hay Bale','Pallet','Feed Sack','Egg Crate','Feed Bucket','Mud Bucket','Garbage Can','Toolbox','Tire','Lumber'])
+});
+export function disguisePoolForMap(mapKey){return MAP_DISGUISE_POOLS[mapKey]||PAPA_DISGUISE_POOL}
+
+export const PROP_SURVIVAL_RATES=Object.freeze({small:1,medium:1.35,large:1.8,giant:2.5});
+const PROP_RISK=Object.freeze({
+  'Coffee Mug':'small','Extension Cord':'small','Welding Helmet':'small','Bucket':'small','Oil Jug':'small','Toolbox':'medium','Gas Can':'medium','Shop Vac':'medium','Beer Case':'medium','Stool':'medium',
+  'Sawhorse':'medium','Feed Bucket':'small','Hay Bale':'large','Wheelbarrow':'large','Garbage Can':'medium','Parts Crate':'medium','Lumber':'large','Tire':'medium','Feed Barrel':'medium','Trough':'large',
+  'Pallet':'large','Feed Sack':'medium','Rock':'medium','Tractor':'giant','Motorcycle':'giant','Papa Chair':'large','Tool Chest':'large','Air Compressor':'large','Barrel Stack':'giant','Tree':'giant'
+});
+
+export function propRiskTier(type){return PROP_RISK[type]||'medium'}
+export function propSurvivalRate(type){return PROP_SURVIVAL_RATES[propRiskTier(type)]||PROP_SURVIVAL_RATES.medium}
+
+export function hashSeed(value){
+  const s=String(value??'');let h=2166136261>>>0;
+  for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}
+  return h>>>0;
+}
+export function seededRandom(seed){
+  let a=(Number(seed)>>>0)||0x6d2b79f5;
+  return ()=>{a|=0;a=a+0x6d2b79f5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296};
+}
+export function pickUnique(items,count,rng=Math.random){
+  const a=[...(items||[])],out=[];while(a.length&&out.length<count){const i=Math.floor(rng()*a.length);out.push(a.splice(i,1)[0])}return out;
+}
+export function assignDisguiseOptions(players,seed,pool=PAPA_DISGUISE_POOL,count=4){
+  const result={};for(const p of players||[]){const rng=seededRandom(hashSeed(`${seed}:${p.id}:${p.seat??0}`));result[p.id]=pickUnique(pool,count,rng)}return result;
+}
+
+export const WEATHER_PRESETS=Object.freeze(['clear','sunset','overcast','light-rain','light-snow','fair-fog','windy']);
+export function weatherForSeed(seed){const rng=seededRandom(hashSeed(`weather:${seed}`));return WEATHER_PRESETS[Math.floor(rng()*WEATHER_PRESETS.length)]}
+export function layoutVariantForSeed(seed){const rng=seededRandom(hashSeed(`layout:${seed}`));return Math.floor(rng()*6)}
+
+export function roundSeed(roomId,round,createdAt=0){return hashSeed(`${roomId}:${round}:${createdAt}`)}

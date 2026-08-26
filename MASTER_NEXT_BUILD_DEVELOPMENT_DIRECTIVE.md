@@ -459,3 +459,68 @@ The goal is no longer to prove that the app can render 3D or simulate a board ga
 
 # PHASE U.2 MASTER ADDENDUM - FAMILY ARCADE PACK
 The latest governing Arcade Corner expansion is `MASTER_PHASE_U2_ARCADE_PACK_DIRECTIVE.md`. Preserve all prior locked gameplay and 3D work, then add these ten original single-file games to Arcade Corner: Camp Pong, Goat Crossing, Shop Bomber, Cabin Blocks, Camp 2048, Minefield, Goat Whack, Memory Mayhem, Firelight Simon and Papa's Pipes. The Arcade Corner count is now 14. Use original code/art/presentation, static Cloudflare-friendly HTML files, responsive touch controls and the Phase U.2 service-worker/version identifier. The target release is `GAME-NIGHT-STAGING-PHASE-U2-ARCADE-PACK-22`.
+
+---
+
+# PHASE U.3 MASTER ADDENDUM - FAMILY ARCADE PERSONALIZATION
+The latest governing personalization directive is `MASTER_PHASE_U3_FAMILY_ARCADE_PERSONALIZATION_DIRECTIVE.md` and the permanent project-level source of truth is `BLACK_FAMILY_GAME_NIGHT_PROJECT_CONSTITUTION.md`.
+
+Future work must begin from the latest working ZIP + Project Constitution + this cumulative Master Development Directive.
+
+Phase U.3 replaces the first ten generic Phase U.2 arcade cards with character-specific versions:
+- Papa's Paddle Battle;
+- Gunner's Goat Run;
+- John's Shop Bomber;
+- James's Lumber Stack;
+- Dorothy's Garden Merge;
+- Logan's Minefield;
+- Nana's Goat Whack;
+- Holly's Memory Mayhem;
+- Lizzie's Dramatic Lights;
+- Vanessa's Pipe Problem.
+
+It also adds three dog bonus games:
+- Kelsi's Rock Hunt;
+- Molly's Light Chase;
+- Gunner's Snack Attack.
+
+Kristen is the Arcade Corner host layer. The arcade shelf now has 17 playable games total including the four preserved Phase U/U.1 titles: Cabin Breakout, Neon Star Patrol, Campfire Rocket and Neon Snake.
+
+Use the shared localStorage progression keys `bfgn_arcade_progress_v1` and `bfgn_arcade_achievements_v1` for local plays/achievements. Do not add a database for this phase.
+
+Preserve Prop Hunt Phase T/T.1, Island Life, Birthday Seat, tabletop games, bots, multiplayer room/reconnect/chat systems and all locked rules. Do not show duplicate generic Phase U.2 cards after personalization.
+
+Release marker: `GAME-NIGHT-STAGING-PHASE-U3-FAMILY-ARCADE-23`.
+Target ZIP: `black-family-game-night-STAGING-PHASE-U3-FAMILY-ARCADE-23.zip`.
+
+---
+
+# PHASE V MASTER ADDENDUM - PROP HUNT PAPA'S SHOP WORLD EXPANSION
+The latest governing Prop Hunt world directive is `MASTER_PHASE_V_PROP_HUNT_PAPA_SHOP_WORLD_EXPANSION_DIRECTIVE.md`.
+
+Phase V expands Papa's Shop from the prior compact benchmark into an approximately 8.31x larger actual traversable property, targeting up to 12 players and preserving the Phase T/T.1 movement, camera, hunter blackout, crosshair-first shooting and hold-to-rapid-fire systems.
+
+Permanent Phase V rules and standards:
+- Papa's Shop is now the flagship world-scale benchmark, with a large warehouse-like main shop, fully searchable barn with loft/ladder routes, large animal pens, equipment yard, lumber/material storage and wide exterior grass/apron circulation.
+- The actual Papa playable bounds are approximately 51.6 x 41.6 world units, about 2,146.56 square units versus the prior 258.4 square-unit benchmark footprint.
+- Clear map-edge treatment is mandatory. Papa's Shop uses rural boundary posts plus red survey-line/tape treatment rather than unexplained invisible edges.
+- Major zones should form loops with multiple exits and camera-safe chase space. Avoid accidental trap pockets.
+- Papa's Shop should present hundreds of visible prop instances and at least roughly 150 gameplay-meaningful objects when disguise targets, climbables, doors/routes and explicit interactions are counted together.
+- Explicit world interactions include shop lights, tractor horn, barn bell, a one-way-safe shortcut gate, several rare surprises and a legendary Papa-chair Easter egg. Interactions must never permanently trap players.
+- Papa's Shop has a curated 30-prop disguise pool. Each hider is assigned exactly four choices each round. Choices change by round/player, can overlap across players and have no reroll.
+- Hiders retain three disguise changes after the initial disguise, 10 decoys per round and flash refresh on disguise change.
+- Hider survival scoring rewards disguise risk/size over time. Current multipliers are Small 1.00x, Medium 1.35x, Large 1.80x and Giant 2.50x. This scoring informs Best Hider/MVP without changing health.
+- Hunters begin fully powered. No hunter upgrade/progression system is added.
+- Default hide time remains 30 seconds. Default hunt time is 5 minutes.
+- Classic elimination visibly breaks the prop and moves the eliminated player into ghost spectator mode. Ghosts can free-fly or follow/cycle living players and cannot interact with the match. Family Chaos still converts eliminated hiders into hunters.
+- Each elimination triggers the original comedic synthesized line, `That's a sin.`, with queue/rate limiting. Do not clone or impersonate a real person's voice.
+- Each round selects one deterministic weather/time mood from clear, sunset, overcast, light rain, light snow, fair fog or windy. Time of day remains fixed within that round. Visibility must remain fair.
+- Large landmarks remain learnable while secondary clutter, equipment placement and small environmental details vary deterministically by round seed.
+- Papa's Shop includes lightweight ambient farm life and environmental movement without allowing NPCs to block competitive routes.
+- End each completed round with a roughly 10-second skippable MVP presentation for Best Hider and Best Hunter. Track lifetime Prop Hunt stats locally and preserve server-side lifetime fields within multiplayer rooms.
+- Preserve a few rare Easter eggs plus one legendary Easter egg per map with no competitive advantage.
+
+Deferred decisions remain deferred. Do not invent hunter cosmetics/progression or materially different prop-physics rules until they are explicitly approved.
+
+Release marker: `GAME-NIGHT-STAGING-PHASE-V-PROP-HUNT-WORLD-24`.
+Target ZIP: `black-family-game-night-STAGING-PHASE-V-PROP-HUNT-WORLD-24.zip`.
