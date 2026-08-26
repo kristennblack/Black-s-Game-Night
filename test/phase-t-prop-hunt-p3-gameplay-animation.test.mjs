@@ -4,14 +4,14 @@ import fs from 'node:fs';
 import {movementRelativeToFacing,resolveDirectionalLocomotion} from '../public/shared-3d-gameplay.mjs';
 
 const read=p=>fs.readFileSync(new URL(`../${p}`,import.meta.url),'utf8');
-const BUILD='GAME-NIGHT-STAGING-PHASE-T-PROP-HUNT-P3-GAMEPLAY-ANIMATION-18';
-const CACHE='black-family-game-night-staging-phase-t-prop-hunt-p3-gameplay-animation-18';
+const BUILD='GAME-NIGHT-STAGING-PHASE-T1-PROP-HUNT-HUNTER-RELEASE-COMBAT-19';
+const CACHE='black-family-game-night-staging-phase-t1-prop-hunt-hunter-release-combat-19';
 
 test('Phase T has a fresh isolated build/cache identity',()=>{
   assert.equal(read('VERSION.txt').trim(),BUILD);
   assert.match(read('public/app.js'),new RegExp(BUILD));
   assert.match(read('public/sw.js'),new RegExp(CACHE));
-  assert.match(read('wrangler.staging.jsonc'),/black-family-game-night-phase-t-staging/);
+  assert.match(read('wrangler.staging.jsonc'),/black-family-game-night-phase-t1-staging/);
 });
 
 test('directional aiming classifies forward, backpedal and strafes in facing space',()=>{
@@ -23,7 +23,7 @@ test('directional aiming classifies forward, backpedal and strafes in facing spa
   assert.equal(resolveDirectionalLocomotion(left,{aiming:true}).semantic,'strafeLeft');
 });
 
-test('player faces travel direction outside aim and camera direction while aiming',()=>{
+test('player faces travel direction as hider and camera/crosshair direction as hunter',()=>{
   const src=read('public/prop-hunt-3d.js');
   assert.match(src,/targetYaw=aiming\?game\.cameraYaw:movingIntent\?Math\.atan2\(intent\.directionX,-intent\.directionZ\):a\.yaw/);
   assert.match(src,/resolveDirectionalLocomotion\(a,\{aiming,sprinting:sprint\}\)/);

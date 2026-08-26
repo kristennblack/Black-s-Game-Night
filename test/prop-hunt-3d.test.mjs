@@ -113,8 +113,9 @@ test('raycast shooting and bot sight use world geometry so walls block both shot
   assert.ok(js.includes('ray.intersectObjects(game.world.raycastMeshes,true)'));
 });
 
-test('mobile/desktop controls expose camera, aim, sprint, jump-auto-mantle, shoot, prop, flash, decoy and lock',()=>{
-  for(const id of ['phAim','phShoot','phJump','phSprint','phProp','phFlashBtn','phDecoy','phLock','phJoy'])assert.ok(js.includes(id),id);
+test('mobile/desktop controls expose crosshair-first shooting, sprint, jump-auto-mantle, prop, flash, decoy and lock without a separate aim button',()=>{
+  for(const id of ['phShoot','phJump','phSprint','phProp','phFlashBtn','phDecoy','phLock','phJoy'])assert.ok(js.includes(id),id);
+  assert.ok(!js.includes('id=\"phAim\"'),'separate aim button must be removed');
   for(const token of ['.ph3d-joystick','.ph3d-actions','.ph3d-crosshair','.ph3d-camera-help'])assert.ok(css.includes(token),token);
 });
 

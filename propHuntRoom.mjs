@@ -17,8 +17,8 @@ const mapForRound=(setting,round)=>setting==='rotate'?['papa','camp','acreage','
 function persistentPlayer(p){
   return {id:p.id,token:p.token,name:p.name,avatar:p.avatar,seat:p.seat,isBot:!!p.isBot,difficulty:p.difficulty||null,ready:!!p.ready,connected:!!p.connected,role:p.role||null,health:p.health??3,alive:p.alive!==false,prop:p.prop||null,propChanges:p.propChanges??3,decoys:p.decoys??10,flash:p.flash!==false,score:p.score||{hiderWins:0,hunterWins:0}};
 }
-function publicPlayer(p){
-  return {id:p.id,name:p.name,avatar:p.avatar,seat:p.seat,isBot:!!p.isBot,difficulty:p.isBot?p.difficulty:null,ready:!!p.ready,connected:!!p.connected,role:p.role||null,health:p.health??3,alive:p.alive!==false,prop:p.prop||null,propChanges:p.propChanges??3,decoys:p.decoys??10,flash:p.flash!==false,score:p.score||{hiderWins:0,hunterWins:0},live:p.live||null};
+function publicPlayer(p,{maskHide=false}={}){
+  return {id:p.id,name:p.name,avatar:p.avatar,seat:p.seat,isBot:!!p.isBot,difficulty:p.isBot?p.difficulty:null,ready:!!p.ready,connected:!!p.connected,role:p.role||null,health:p.health??3,alive:p.alive!==false,prop:maskHide?null:(p.prop||null),propChanges:p.propChanges??3,decoys:p.decoys??10,flash:p.flash!==false,score:p.score||{hiderWins:0,hunterWins:0},live:maskHide?null:(p.live||null)};
 }
 
 export class PropHuntRoom {
@@ -39,8 +39,8 @@ export class PropHuntRoom {
 
   stateFor(tokenValue){
     if(!this.room)return null;
-    const viewer=playerByToken(this.room,tokenValue);
-    return {id:this.room.id,createdAt:this.room.createdAt,revision:this.room.revision||0,phase:this.room.phase,phaseEndsAt:this.room.phaseEndsAt||0,round:this.room.round||0,activeMap:this.room.activeMap||mapForRound(this.room.settings?.mapKey||'papa',this.room.round||1),wins:this.room.wins||{hiders:0,hunters:0},settings:this.room.settings,players:this.room.players.map(publicPlayer),viewerId:viewer?.id||null,isHost:!!viewer&&viewer.id===this.room.hostPlayerId,hostPlayerId:this.room.hostPlayerId,roundResult:this.room.roundResult||null};
+    const viewer=playerByToken(this.room,tokenValue),hideFromHunter=this.room.phase==='hide'&&viewer?.role==='hunter';
+    return {id:this.room.id,createdAt:this.room.createdAt,revision:this.room.revision||0,phase:this.room.phase,phaseEndsAt:this.room.phaseEndsAt||0,round:this.room.round||0,activeMap:this.room.activeMap||mapForRound(this.room.settings?.mapKey||'papa',this.room.round||1),wins:this.room.wins||{hiders:0,hunters:0},settings:this.room.settings,players:this.room.players.map(p=>publicPlayer(p,{maskHide:hideFromHunter&&p.role==='hider'})),decoyObjects:hideFromHunter?[]:(this.room.decoyObjects||[]),viewerId:viewer?.id||null,isHost:!!viewer&&viewer.id===this.room.hostPlayerId,hostPlayerId:this.room.hostPlayerId,roundResult:this.room.roundResult||null};
   }
 
   bump(persist=true){this.room.revision=(this.room.revision||0)+1;if(persist)this.save();}
@@ -50,10 +50,11 @@ export class PropHuntRoom {
     for(const ws of this.ctx.getWebSockets()){if(ws===except)continue;try{if(ws.readyState===1)ws.send(data)}catch{}}
   }
   broadcastState(persist=true){this.bump(persist);for(const ws of this.ctx.getWebSockets()){const a=ws.deserializeAttachment?.()||{};try{if(ws.readyState===1)ws.send(JSON.stringify({type:'state',state:this.stateFor(a.token)}))}catch{}}}
+  broadcastGameplay(payload,except=null,{hideFromHuntersDuringHide=false}={}){const data=JSON.stringify(payload);for(const ws of this.ctx.getWebSockets()){if(ws===except)continue;const a=ws.deserializeAttachment?.()||{},viewer=this.room?.players.find(p=>p.id===a.playerId);if(hideFromHuntersDuringHide&&this.room?.phase==='hide'&&viewer?.role==='hunter')continue;try{if(ws.readyState===1)ws.send(data)}catch{}}}
 
   startRound(){
     const r=this.room;const roles=assignRoles(r.players,r.round);
-    r.phase='hide';r.phaseEndsAt=Date.now()+30000;r.roundResult=null;r.activeMap=mapForRound(r.settings.mapKey,r.round);
+    r.phase='hide';r.phaseEndsAt=Date.now()+30000;r.roundResult=null;r.activeMap=mapForRound(r.settings.mapKey,r.round);r.decoyObjects=[];
     for(const p of r.players){p.role=roles[p.id];p.health=3;p.alive=true;p.prop=null;p.propChanges=3;p.decoys=10;p.flash=true;p.live=null}
     this.broadcastState(true);
   }
@@ -100,7 +101,7 @@ export class PropHuntRoom {
     if(this.room)return json({error:'Room already exists'},409);
     const body=await request.json().catch(()=>({})),roomId=url.searchParams.get('room');if(!roomId)return json({error:'Missing room id'},400);
     const hostToken=token(),playerToken=token(),playerId=crypto.randomUUID();
-    this.room={id:roomId,createdAt:Date.now(),revision:1,hostToken,hostPlayerId:playerId,phase:'lobby',phaseEndsAt:0,round:0,roundResult:null,wins:{hiders:0,hunters:0},settings:{mode:'classic',mapKey:'papa',rounds:6},players:[{id:playerId,token:playerToken,name:safeName(body.name||'Host'),avatar:safeAvatar(body.avatar||'john'),seat:0,isBot:false,difficulty:null,ready:false,connected:true,role:null,health:3,alive:true,prop:null,propChanges:3,decoys:10,flash:true,score:{hiderWins:0,hunterWins:0},live:null}]};
+    this.room={id:roomId,createdAt:Date.now(),revision:1,hostToken,hostPlayerId:playerId,phase:'lobby',phaseEndsAt:0,round:0,roundResult:null,wins:{hiders:0,hunters:0},settings:{mode:'classic',mapKey:'papa',rounds:6},decoyObjects:[],players:[{id:playerId,token:playerToken,name:safeName(body.name||'Host'),avatar:safeAvatar(body.avatar||'john'),seat:0,isBot:false,difficulty:null,ready:false,connected:true,role:null,health:3,alive:true,prop:null,propChanges:3,decoys:10,flash:true,score:{hiderWins:0,hunterWins:0},live:null}]};
     this.save();return json({roomId,hostToken,playerToken,playerId});
   }
   async join(request){
@@ -137,19 +138,19 @@ export class PropHuntRoom {
 
   connectWebSocket(request,url){
     if(request.headers.get('Upgrade')!=='websocket')return new Response('Expected WebSocket',{status:426});if(!this.room)return new Response('Room not found',{status:404});const t=url.searchParams.get('token'),p=playerByToken(this.room,t);if(!p)return new Response('Player not found',{status:401});
-    const pair=new WebSocketPair(),[client,server]=Object.values(pair);this.ctx.acceptWebSocket(server,[`player:${p.id}`]);server.serializeAttachment({playerId:p.id,token:t,isHost:p.id===this.room.hostPlayerId});p.connected=true;this.bump(false);server.send(JSON.stringify({type:'state',state:this.stateFor(t)}));for(const q of this.room.players)if(q.live)server.send(JSON.stringify({type:'snapshot',playerId:q.id,snapshot:q.live}));this.broadcast({type:'presence',playerId:p.id,connected:true},server);return new Response(null,{status:101,webSocket:client});
+    const pair=new WebSocketPair(),[client,server]=Object.values(pair);this.ctx.acceptWebSocket(server,[`player:${p.id}`]);server.serializeAttachment({playerId:p.id,token:t,isHost:p.id===this.room.hostPlayerId});p.connected=true;this.bump(false);server.send(JSON.stringify({type:'state',state:this.stateFor(t)}));for(const q of this.room.players)if(q.live&&!(this.room.phase==='hide'&&p.role==='hunter'&&q.role==='hider'))server.send(JSON.stringify({type:'snapshot',playerId:q.id,snapshot:q.live}));this.broadcast({type:'presence',playerId:p.id,connected:true},server);return new Response(null,{status:101,webSocket:client});
   }
 
   async webSocketMessage(ws,message){
     await this.ready;this.advanceClock();let msg;try{msg=JSON.parse(typeof message==='string'?message:new TextDecoder().decode(message))}catch{return}const auth=ws.deserializeAttachment?.()||{},sender=this.room?.players.find(p=>p.id===auth.playerId);if(!sender)return;
     if(msg.type==='snapshot'){
-      let target=sender;if(msg.playerId&&msg.playerId!==sender.id&&auth.isHost){const q=this.room.players.find(p=>p.id===msg.playerId&&p.isBot);if(q)target=q}const snap=sanitizeSnapshot(msg.snapshot||{},target.live||{});target.live=snap;this.broadcast({type:'snapshot',playerId:target.id,snapshot:snap},ws);return;
+      let target=sender;if(msg.playerId&&msg.playerId!==sender.id&&auth.isHost){const q=this.room.players.find(p=>p.id===msg.playerId&&p.isBot);if(q)target=q}const snap=sanitizeSnapshot(msg.snapshot||{},target.live||{});target.live=snap;this.broadcastGameplay({type:'snapshot',playerId:target.id,snapshot:snap},ws,{hideFromHuntersDuringHide:target.role==='hider'});return;
     }
     if(msg.type!=='action')return;const action=String(msg.action||'');
-    if(action==='disguise'&&sender.role==='hider'&&sender.alive){const prop=String(msg.prop||'').slice(0,48);if(!prop)return;if(sender.prop&&sender.propChanges<=0)return;if(sender.prop)sender.propChanges--;sender.prop=prop;sender.flash=true;this.broadcastState(true);this.broadcast({type:'action',action:'disguise',playerId:sender.id,prop});return}
-    if(action==='decoy'&&sender.role==='hider'&&sender.alive&&sender.prop&&sender.decoys>0){sender.decoys--;this.broadcastState(true);this.broadcast({type:'action',action:'decoy',playerId:sender.id,prop:sender.prop,position:sender.live});return}
-    if(action==='flash'&&sender.role==='hider'&&sender.alive&&sender.prop&&sender.flash){sender.flash=false;this.broadcastState(true);this.broadcast({type:'action',action:'flash',playerId:sender.id,position:sender.live});return}
-    if(action==='hit'&&sender.role==='hunter'&&sender.alive){const target=this.room.players.find(p=>p.id===msg.targetId);if(!canServerRegisterHit(sender,target,24))return;target.health=clamp((target.health??3)-1,0,3);if(target.health<=0){if(this.room.settings.mode==='chaos'){target.role='hunter';target.prop=null;target.health=3;target.alive=true}else target.alive=false}this.broadcastState(true);this.broadcast({type:'action',action:'hit',playerId:sender.id,targetId:target.id,health:target.health,alive:target.alive,role:target.role});this.advanceClock();return}
+    if(action==='disguise'&&sender.role==='hider'&&sender.alive){const prop=String(msg.prop||'').slice(0,48);if(!prop)return;if(sender.prop&&sender.propChanges<=0)return;if(sender.prop)sender.propChanges--;sender.prop=prop;sender.flash=true;this.broadcastState(true);this.broadcastGameplay({type:'action',action:'disguise',playerId:sender.id,prop},null,{hideFromHuntersDuringHide:true});return}
+    if(action==='decoy'&&sender.role==='hider'&&sender.alive&&sender.prop&&sender.decoys>0){sender.decoys--;const decoy={id:crypto.randomUUID(),playerId:sender.id,prop:sender.prop,position:sender.live?{x:sender.live.x,y:sender.live.y,z:sender.live.z}:null,rotation:sender.live?.yaw||0};this.room.decoyObjects=this.room.decoyObjects||[];this.room.decoyObjects.push(decoy);this.broadcastState(true);this.broadcastGameplay({type:'action',action:'decoy',playerId:sender.id,prop:sender.prop,position:decoy.position,rotation:decoy.rotation,decoyId:decoy.id},null,{hideFromHuntersDuringHide:true});return}
+    if(action==='flash'&&sender.role==='hider'&&sender.alive&&sender.prop&&sender.flash){sender.flash=false;this.broadcastState(true);this.broadcastGameplay({type:'action',action:'flash',playerId:sender.id,position:sender.live},null,{hideFromHuntersDuringHide:true});return}
+    if(action==='hit'&&this.room.phase==='hunt'&&sender.role==='hunter'&&sender.alive){const target=this.room.players.find(p=>p.id===msg.targetId);if(!canServerRegisterHit(sender,target,24))return;target.health=clamp((target.health??3)-1,0,3);if(target.health<=0){if(this.room.settings.mode==='chaos'){target.role='hunter';target.prop=null;target.health=3;target.alive=true}else target.alive=false}this.broadcastState(true);this.broadcast({type:'action',action:'hit',playerId:sender.id,targetId:target.id,health:target.health,alive:target.alive,role:target.role});this.advanceClock();return}
   }
   async webSocketClose(ws){await this.ready;const a=ws.deserializeAttachment?.()||{},p=this.room?.players.find(q=>q.id===a.playerId);if(p&&!p.isBot){p.connected=false;this.broadcast({type:'presence',playerId:p.id,connected:false});this.broadcastState(false)}}
   async webSocketError(ws,error){console.error(JSON.stringify({message:'prop hunt websocket error',error:String(error)}));try{ws.close(1011,'socket error')}catch{}}

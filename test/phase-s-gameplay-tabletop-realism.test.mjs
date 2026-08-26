@@ -5,8 +5,8 @@ import fs from 'node:fs';
 import { GAME_TYPES } from '../gameEngine.mjs';
 import { extraDefaults, startExtraGame, extraPublicState, extraGameAction } from '../extraGames.mjs';
 
-const BUILD='GAME-NIGHT-STAGING-PHASE-T-PROP-HUNT-P3-GAMEPLAY-ANIMATION-18';
-const CACHE='black-family-game-night-staging-phase-t-prop-hunt-p3-gameplay-animation-18';
+const BUILD='GAME-NIGHT-STAGING-PHASE-T1-PROP-HUNT-HUNTER-RELEASE-COMBAT-19';
+const CACHE='black-family-game-night-staging-phase-t1-prop-hunt-hunter-release-combat-19';
 const read=p=>fs.readFileSync(new URL(`../${p}`,import.meta.url),'utf8');
 const player=i=>({id:`p${i}`,token:`t${i}`,name:`Player ${i}`,avatar:i===1?'john':'kristen',variant:0,outfitVariant:0,color:i===1?'#2f6bb2':'#c74277',seat:i-1,ready:true,connected:true,isBot:false,botDifficulty:null,bid:null,tricks:0,score:0,continued:false,hand:[],eliminated:false});
 function room(type,n,settings={}){

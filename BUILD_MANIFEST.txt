@@ -1,42 +1,38 @@
 BLACK FAMILY GAME NIGHT
-PHASE S GAMEPLAY REPAIR + TABLETOP REALISM MANIFEST
+PHASE T.1 PROP HUNT HUNTER RELEASE + COMBAT CONTROLS MANIFEST
 
-Build ID: GAME-NIGHT-STAGING-PHASE-S-GAMEPLAY-TABLETOP-REALISM-17
-Package version: 3.4.0-staging-phase-s-gameplay-tabletop-realism-17
+Build ID: GAME-NIGHT-STAGING-PHASE-T1-PROP-HUNT-HUNTER-RELEASE-COMBAT-19
+Package version: 3.5.1-staging-phase-t1-prop-hunt-hunter-release-combat-19
 Worker main: worker.mjs
 Cloudflare static asset directory: ./public
 Assets binding: ASSETS
 SPA fallback: single-page-application
 Staging config: wrangler.staging.jsonc
-Staging Worker name: black-family-game-night-phase-s-staging
-Service-worker cache: black-family-game-night-staging-phase-s-gameplay-tabletop-realism-17
+Staging Worker name: black-family-game-night-phase-t1-staging
+Service-worker cache: black-family-game-night-staging-phase-t1-prop-hunt-hunter-release-combat-19
 
 GOVERNING DIRECTIVES
-- MASTER_PHASE_S_GAMEPLAY_TABLETOP_REALISM_DIRECTIVE.md: current Phase S work order.
-- MASTER_NEXT_BUILD_DEVELOPMENT_DIRECTIVE.md: preserved Phase R / Prop Hunt P2 direction.
+- MASTER_PHASE_T1_PROP_HUNT_HUNTER_RELEASE_COMBAT_DIRECTIVE.md: current Phase T.1 work order and master prompt.
+- MASTER_PHASE_T_PROP_HUNT_P3_GAMEPLAY_ANIMATION_DIRECTIVE.md: preserved P3 animation/gameplay direction except where T.1 supersedes Aim-button behavior.
+- MASTER_PHASE_S_GAMEPLAY_TABLETOP_REALISM_DIRECTIVE.md: preserved tabletop/gameplay repairs.
 - MASTER_3D_DEVELOPMENT_DIRECTIVE.md: flagship 3D quality track.
-- MASTER_MOBILE_TABLETOP_UX_DIRECTIVE.md: screen-first tabletop/mobile standard.
+- MASTER_MOBILE_TABLETOP_UX_DIRECTIVE.md: screen-first mobile standard.
 - BLACK_GAMMON_MASTER_RULES.md: locked Black Gammon rules.
 
-PHASE S UPGRADES
-- Skip-Bo exposed Stock Pile top card is an explicit direct-play source and state refreshes after Stock/build/discard actions.
-- Trail Trouble start now immediately refreshes room state; engine regression proves first full normal turn.
-- Last Haven setup Route receives large board tap targets plus a fallback Route action panel; full setup-to-play regression added.
-- Cribbage rebuilt around one shared physical-style wooden track with color lanes, drilled holes, aligned current/previous pegs and score animation.
-- Backgammon and Black Gammon receive dimensional wood, checker and dice treatment while retaining Phase R screen-first layout.
-- Marbles & Jokers gets a dedicated board-first gameplay route with the oversized generic felt shell removed.
-- Screw Your Buddy and Fuck Your Buddy bid boxes show hand-size/trump or special-round context.
-- Phase S regression suite added.
-
-PRESERVED
-- Prop Hunt P2 John/camera/movement/lighting work.
-- Black Gammon complete house-rule engine and standard Backgammon engine.
-- Phase Q Skip-Bo/Cribbage mobile UX foundation.
-- Easy-first bots and readable selectors.
-- Multiplayer, reconnect, private information, player colors, lobby, chat/reactions, leaderboard and rematch contracts.
+PHASE T.1 UPGRADES
+- Opaque hunter-only hide screen with authoritative countdown.
+- Hunter movement/look/jump/sprint/shoot lock during hide.
+- Server-side masking of hider live position, disguise and hide-phase decoys from hunters, including reconnect.
+- Hide-phase hunter damage disabled at the server action gate.
+- Hider positional movement audio suppressed for blinded hunters.
+- Separate Aim button and button-driven aim zoom removed.
+- Centre crosshair is the permanent hunter aim reference.
+- Tap Shoot fires once; hold Shoot repeats at approximately 4.8 shots per second.
+- Rapid fire stops immediately on release/cancel/lost capture/blur.
+- Existing Phase T locomotion, mantle, disguise, flash, damage and spectator work is preserved.
 
 VALIDATION
-See PHASE_S_PACKAGE_VERIFICATION.txt for final cold-package results.
+See PHASE_T1_PACKAGE_VERIFICATION.txt for final cold-package results.
 
 DECLARED LIMITATION
-Real-device visual QA remains required. Technical validation and source-level visual review are not phone visual approval.
+Real-device visual/gameplay QA remains required. Technical validation is not phone visual approval.

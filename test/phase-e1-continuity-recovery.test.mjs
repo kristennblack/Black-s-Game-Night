@@ -35,7 +35,7 @@ test('Prop Hunt camera aim is revalidated from the actual weapon muzzle before a
 test('Prop Hunt decoys preserve elevated support height locally and across network playback',()=>{
   assert.ok(prop.includes('const supportY=core.supportHeight'));
   assert.ok(prop.includes('spawnDecoy(a.prop,x,Number.isFinite(y)?y:a.y,z,{rotation:a.yaw})'));
-  assert.ok(prop.includes("spawnDecoy(m.prop,m.position?.x||0,m.position?.y||0,m.position?.z||0)"));
+  assert.ok(prop.includes("spawnDecoy(m.prop,m.position?.x||0,m.position?.y||0,m.position?.z||0,{rotation:m.rotation,id:m.decoyId||null})"));
   assert.ok(prop.includes('mesh.position.set(x,Number.isFinite(Number(y))?Number(y):0,z)'));
 });
 

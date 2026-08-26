@@ -1,12 +1,27 @@
-BLACK FAMILY GAME NIGHT - PHASE T
-Build: GAME-NIGHT-STAGING-PHASE-T-PROP-HUNT-P3-GAMEPLAY-ANIMATION-18
-Package: 3.5.0-staging-phase-t-prop-hunt-p3-gameplay-animation-18
+BLACK FAMILY GAME NIGHT - PHASE T.1 STAGING
+Build: GAME-NIGHT-STAGING-PHASE-T1-PROP-HUNT-HUNTER-RELEASE-COMBAT-19
+Package: 3.5.1-staging-phase-t1-prop-hunt-hunter-release-combat-19
 
-START HERE:
-1. Read MASTER_PHASE_T_PROP_HUNT_P3_GAMEPLAY_ANIMATION_DIRECTIVE.md
-2. Read PHASE_T_PROP_HUNT_P3_GAMEPLAY_ANIMATION_REPORT.md
-3. Deploy/open the staging build.
-4. Test Prop Hunt -> Papa's Shop as John first.
-5. Use PHONE_QA_PHASE_T_PROP_HUNT_P3_GAMEPLAY_ANIMATION_18.md for the real-device pass.
+PRIMARY CHANGE
+Prop Hunt now has a protected hunter-blind hiding phase and simplified crosshair-first combat:
+- hunters see a black countdown while hiders hide
+- hunters are frozen and cannot shoot during hide
+- hider live/disguise/decoy state is masked from hunters during hide
+- no separate Aim button
+- tap Shoot = one shot
+- hold Shoot = controlled rapid fire
+- shots follow the centre crosshair
 
-Important: automated tests do not equal visual approval. The Phase T gate is actual gameplay feel on device.
+MASTER PROMPT
+MASTER_PHASE_T1_PROP_HUNT_HUNTER_RELEASE_COMBAT_DIRECTIVE.md
+
+PHONE QA
+PHONE_QA_PHASE_T1_PROP_HUNT_HUNTER_RELEASE_COMBAT_19.md
+
+VALIDATE
+npm run check
+npm run build
+npm run assets:audit
+
+STATUS
+Staging only. Real-device gameplay/visual approval is still required.

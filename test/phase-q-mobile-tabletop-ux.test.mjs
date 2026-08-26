@@ -6,8 +6,8 @@ import { GAME_TYPES } from '../gameEngine.mjs';
 import { extraDefaults, startExtraGame, extraPublicState } from '../extraGames.mjs';
 
 const read=p=>fs.readFileSync(new URL(`../${p}`,import.meta.url),'utf8');
-const BUILD='GAME-NIGHT-STAGING-PHASE-T-PROP-HUNT-P3-GAMEPLAY-ANIMATION-18';
-const CACHE='black-family-game-night-staging-phase-t-prop-hunt-p3-gameplay-animation-18';
+const BUILD='GAME-NIGHT-STAGING-PHASE-T1-PROP-HUNT-HUNTER-RELEASE-COMBAT-19';
+const CACHE='black-family-game-night-staging-phase-t1-prop-hunt-hunter-release-combat-19';
 const player=(i)=>({id:`p${i}`,token:`t${i}`,name:`Player ${i}`,avatar:'cowboy',variant:0,outfitVariant:0,color:i===1?'#2f6b9a':'#8b3d38',seat:i-1,ready:true,connected:true,bid:null,tricks:0,score:0,continued:false,hand:[],countHand:[],eliminated:false});
 function room(type,n=2){const players=new Map(Array.from({length:n},(_,i)=>{const p=player(i+1);return[p.id,p]}));return{id:crypto.randomUUID(),gameType:type,settings:extraDefaults(type),players,game:{phase:'lobby',history:[],schedule:[],winnerIds:[],extra:null}}}
 

@@ -4,7 +4,7 @@ import path from 'node:path';
 
 const ROOT=process.cwd();
 const PUBLIC=path.join(ROOT,'public');
-const BUILD='GAME-NIGHT-STAGING-PHASE-T-PROP-HUNT-P3-GAMEPLAY-ANIMATION-18';
+const BUILD='GAME-NIGHT-STAGING-PHASE-T1-PROP-HUNT-HUNTER-RELEASE-COMBAT-19';
 const failures=[];
 const warnings=[];
 const passes=[];
@@ -22,7 +22,7 @@ const wrangler=await text('wrangler.jsonc');
 for(const token of ['"directory":"./public"','"binding":"ASSETS"','"not_found_handling":"single-page-application"'])wrangler.includes(token)?pass(`wrangler: ${token}`):fail(`wrangler missing ${token}`);
 for(const token of ['GameHub','PropHuntRoom','IslandLifeRoom'])wrangler.includes(token)?pass(`durable object: ${token}`):fail(`wrangler missing Durable Object ${token}`);
 const stagingWrangler=await text('wrangler.staging.jsonc');
-for(const token of ['"name": "black-family-game-night-phase-t-staging"','"directory":"./public"','"binding":"ASSETS"','"not_found_handling":"single-page-application"'])stagingWrangler.includes(token)?pass(`staging wrangler: ${token}`):fail(`staging wrangler missing ${token}`);
+for(const token of ['"name": "black-family-game-night-phase-t1-staging"','"directory":"./public"','"binding":"ASSETS"','"not_found_handling":"single-page-application"'])stagingWrangler.includes(token)?pass(`staging wrangler: ${token}`):fail(`staging wrangler missing ${token}`);
 for(const token of ['GameHub','PropHuntRoom','IslandLifeRoom'])stagingWrangler.includes(token)?pass(`staging durable object: ${token}`):fail(`staging wrangler missing Durable Object ${token}`);
 
 const manifest=JSON.parse(await text('public/models/manifest.json'));
@@ -93,7 +93,7 @@ if(cdnHits.length)warn(`core 3D CDN dependency remains (${[...new Set(cdnHits)].
 
 const app=await text('public/app.js'),sw=await text('public/sw.js'),idx=await text('public/index.html'),ng=await text('public/new-games.html'),il=await text('public/island-life.html');
 const worker=await text('worker.mjs'),extra=await text('extraGames.mjs'),three=await text('threeNewGames.mjs'),black=await text('blackGammon.mjs'),styles=await text('public/styles.css'),studio=await text('public/shared-3d-studio.mjs'),prop3d=await text('public/prop-hunt-3d.js');
-app.includes(BUILD)&&sw.includes('black-family-game-night-staging-phase-t-prop-hunt-p3-gameplay-animation-18')&&idx.includes(BUILD)&&ng.includes(BUILD)&&il.includes(BUILD)?pass('staging cache/version markers are consistent'):fail('staging cache/version markers are inconsistent');
+app.includes(BUILD)&&sw.includes('black-family-game-night-staging-phase-t1-prop-hunt-hunter-release-combat-19')&&idx.includes(BUILD)&&ng.includes(BUILD)&&il.includes(BUILD)?pass('staging cache/version markers are consistent'):fail('staging cache/version markers are inconsistent');
 sw.includes('/phase-e-qa.mjs')?pass('staging diagnostics module precached'):fail('phase-e diagnostics missing from service worker shell');
 app.includes("s.gameType===GAME.SMEAR")&&app.includes('YOUR 6-CARD HAND · REVIEW IT BEFORE YOU BID')?pass('Smear six-card hand is rendered during bidding'):fail('Smear bidding-hand presentation marker missing');
 app.includes("PROFILE_KEY='gn_profile_v1'")&&app.includes('homeAvatarHubHTML')&&app.includes('Character → outfit → player colour')?pass('persistent Avatar Hub profile flow present'):fail('Avatar Hub profile flow incomplete');
@@ -136,13 +136,22 @@ const gameplay3d=await text('public/shared-3d-gameplay.mjs'),studio3d=await text
 gameplay3d.includes('export function movementRelativeToFacing')&&gameplay3d.includes('export function resolveDirectionalLocomotion')&&gameplay3d.includes("semantic:'backward'")&&gameplay3d.includes("'strafeLeft':'strafeRight'")?pass('Phase T directional locomotion resolver present'):fail('Phase T directional locomotion resolver incomplete');
 gameplay3d.includes("return 'hardLand'")&&prop3d.includes('_hardLandTimer')&&prop3d.includes('_landingStrength')?pass('Phase T impact-driven hard-land state present'):fail('Phase T hard-land contract missing');
 studio3d.includes('directionalAimLocomotion:true')&&studio3d.includes('reverseBackpedalPlayback:true')&&studio3d.includes('timeScale<0')?pass('Phase T layered directional aim and reverse backpedal playback present'):fail('Phase T directional authored animation contract incomplete');
-prop3d.includes('resolveDirectionalLocomotion(a,{aiming')&&prop3d.includes('targetYaw=aiming?game.cameraYaw:movingIntent?Math.atan2(intent.directionX,-intent.directionZ):a.yaw')&&prop3d.includes('input.aim||game.padAim')?pass('Phase T non-aim travel-facing and aim camera-facing behavior present'):fail('Phase T actor-facing contract incomplete');
+prop3d.includes('resolveDirectionalLocomotion(a,{aiming')&&prop3d.includes('targetYaw=aiming?game.cameraYaw:movingIntent?Math.atan2(intent.directionX,-intent.directionZ):a.yaw')&&prop3d.includes("const aiming=a.role==='hunter'")&&!prop3d.includes('id=\"phAim\"')?pass('Phase T/T1 hider travel-facing and hunter crosshair-facing behavior present'):fail('Phase T/T1 actor-facing contract incomplete');
 prop3d.includes('spawnTransformBurst')&&prop3d.includes('spawnPlacementRing')&&prop3d.includes('spawnFlashBurst')&&prop3d.includes('_propTransform')?pass('Phase T disguise, decoy and flash feedback present'):fail('Phase T hider feedback contract incomplete');
 prop3d.includes("SPECTATING ·")&&prop3d.includes('cycleSpectate')&&prop3d.includes("#phSpectate")&&prop3d.includes('showDamage')&&propCss.includes('.ph3d-damage')?pass('Phase T damage and Classic spectator flow present'):fail('Phase T damage/spectator contract incomplete');
 prop3d.includes("`PROP ${a.propChanges}")&&prop3d.includes("`DECOY ${a.decoys}")&&prop3d.includes("a.flash?'FLASH ✓':'FLASH ×'")?pass('Phase T compact hider resource HUD present'):fail('Phase T hider resource HUD missing');
 propCore.includes("'backward'")&&propCore.includes("'strafeLeft'")&&propCore.includes("'strafeRight'")&&propCore.includes("'hardLand'")?pass('Phase T network animation whitelist accepts new locomotion semantics'):fail('Phase T Prop Hunt snapshot animation whitelist incomplete');
 if(exists('MASTER_PHASE_T_PROP_HUNT_P3_GAMEPLAY_ANIMATION_DIRECTIVE.md')){const directive=await text('MASTER_PHASE_T_PROP_HUNT_P3_GAMEPLAY_ANIMATION_DIRECTIVE.md');directive.includes('movement, aiming, jumping, mantling, shooting and disguising should feel like a real third-person game rather than a technical demo')&&directive.includes('Preservation of Phase S tabletop work')?pass('Phase T governing gameplay/animation directive packaged'):fail('Phase T directive missing required focus/preservation');}else fail('Phase T governing gameplay/animation directive missing');
 if(exists('PHONE_QA_PHASE_T_PROP_HUNT_P3_GAMEPLAY_ANIMATION_18.md')){const qa=await text('PHONE_QA_PHASE_T_PROP_HUNT_P3_GAMEPLAY_ANIMATION_18.md');qa.includes('Aim + backpedal')&&qa.includes('Classic mode: eliminated hider enters spectator view')?pass('Phase T real-device gameplay QA checklist packaged'):fail('Phase T phone QA checklist incomplete');}else fail('Phase T phone QA checklist missing');
+
+// Phase T1 focused gates: protected hide phase + simplified hunter combat controls.
+prop3d.includes('phHideBlind')&&prop3d.includes('HIDERS ARE HIDING')&&propCss.includes('.ph3d-hide-blind')&&propCss.includes('background:#000')?pass('Phase T1 opaque hunter hide countdown present'):fail('Phase T1 hunter hide overlay missing');
+prop3d.includes('isHunterHidePhase')&&prop3d.includes("a.vx=a.vz=a.vy=0")&&prop3d.includes('if(!blindHunter)gameplay.applyGamepadLook')?pass('Phase T1 hunter movement/look freeze during hide present'):fail('Phase T1 hide-phase control freeze incomplete');
+prop3d.includes('HUNTER_FIRE_INTERVAL=1/4.8')&&prop3d.includes('(input.shoot||game.padShoot)')&&prop3d.includes('shootBtn.onpointerdown=startFire')&&!prop3d.includes('id=\"phAim\"')?pass('Phase T1 hold-to-rapid-fire and no-Aim control contract present'):fail('Phase T1 rapid-fire/no-Aim contract incomplete');
+const propRoom=await text('propHuntRoom.mjs');
+propRoom.includes("hideFromHunter=this.room.phase==='hide'&&viewer?.role==='hunter'")&&propRoom.includes('maskHide:hideFromHunter')&&propRoom.includes('hideFromHuntersDuringHide')&&propRoom.includes("action==='hit'&&this.room.phase==='hunt'")?pass('Phase T1 server privacy and hide-phase invulnerability contract present'):fail('Phase T1 server hide-phase protection incomplete');
+if(exists('MASTER_PHASE_T1_PROP_HUNT_HUNTER_RELEASE_COMBAT_DIRECTIVE.md')){const directive=await text('MASTER_PHASE_T1_PROP_HUNT_HUNTER_RELEASE_COMBAT_DIRECTIVE.md');directive.includes('HIDERS ARE HIDING')&&directive.includes('Hold SHOOT')&&directive.includes('no separate Aim button')?pass('Phase T1 governing directive packaged'):fail('Phase T1 governing directive incomplete');}else fail('Phase T1 governing directive missing');
+if(exists('PHONE_QA_PHASE_T1_PROP_HUNT_HUNTER_RELEASE_COMBAT_19.md')){const qa=await text('PHONE_QA_PHASE_T1_PROP_HUNT_HUNTER_RELEASE_COMBAT_19.md');qa.includes('Hunter view is fully black')&&qa.includes('Hold SHOOT')?pass('Phase T1 real-device QA checklist packaged'):fail('Phase T1 phone QA checklist incomplete');}else fail('Phase T1 phone QA checklist missing');
 
 const wranglerBin=path.join(ROOT,'node_modules','.bin','wrangler');
 if(existsSync(wranglerBin))pass('Wrangler executable available for deployment smoke test'); else warn('Wrangler executable unavailable: actual Cloudflare deployment remains UNVERIFIED');
