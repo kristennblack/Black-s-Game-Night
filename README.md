@@ -1,35 +1,38 @@
 # Black Family Game Night
 
-**Build:** `GAME-NIGHT-STAGING-PHASE-S-GAMEPLAY-TABLETOP-REALISM-17`  
-**Package:** `3.4.0-staging-phase-s-gameplay-tabletop-realism-17`  
-**Status:** Staging / technical validation candidate. Real-device visual approval is still required.
+**Build:** `GAME-NIGHT-STAGING-PHASE-T-PROP-HUNT-P3-GAMEPLAY-ANIMATION-18`  
+**Package:** `3.5.0-staging-phase-t-prop-hunt-p3-gameplay-animation-18`  
+**Status:** Staging / technical validation candidate. Real-device animation and visual approval is still required.
 
-## Phase S focus
+## Phase T focus
 
-Phase S follows `MASTER_PHASE_S_GAMEPLAY_TABLETOP_REALISM_DIRECTIVE.md` and fixes reported gameplay blockers before applying the tabletop-realism pass.
+Phase T follows `MASTER_PHASE_T_PROP_HUNT_P3_GAMEPLAY_ANIMATION_DIRECTIVE.md` and concentrates on **Prop Hunt P3 gameplay + animation feel** in Papa's Shop while preserving all Phase S gameplay/tabletop repairs.
 
-### Gameplay repairs
+### Implemented Prop Hunt P3 runtime changes
 
-- **Skip-Bo**: the exposed Stock Pile card is explicitly presented as a playable source; Stock play exposes the next card immediately; direct legal Building Pile targets remain highlighted; fresh room state is fetched after Stock/build/discard actions so the next playable Stock card appears without waiting on SSE timing.
-- **Trail Trouble**: the start flow now fetches and renders fresh state immediately after the host starts; the engine regression test proves a 2-player solo game starts with five-card hands and completes a normal first turn.
-- **Last Haven**: after a Camp is placed, every legal connected setup Route receives a large tap target on the board plus a fallback Route action panel; the regression test completes the full initial Camp/Route setup and proves the first regular roll/end-turn cycle continues.
-- **Backgammon / Black Gammon**: Phase R's explicit post-roll refresh remains in place and is covered by Phase S regression tests.
+- Normal movement now turns the actor toward actual travel direction instead of forcing camera-facing movement when not aiming.
+- Aim mode keeps the actor facing the camera/crosshair while resolving forward, backpedal, strafe-left and strafe-right locomotion semantics.
+- Authored John keeps layered lower-body locomotion with upper-body Aim/Fire; reverse walk playback is available as a backpedal fallback.
+- Start/stop/turn handling is retained and directional semantics are now explicit for future dedicated strafe/backpedal clips.
+- Jump/fall/land behavior now includes a stronger hard-landing response based on impact.
+- Mantle motion has a staged lift/push-over curve for better readability.
+- Authored John uses the existing foot-grounding/IK support during gameplay where safe.
+- Disguise change has a short transform burst/scale-in rather than an instant silent pop.
+- Moving props receive restrained tilt/bob and grounding behavior.
+- Decoys are placed deliberately in front of the hider with support-height/collision fallback and a placement marker.
+- Flash receives world-space burst/light plus the existing affected-screen response.
+- Hider HUD buttons show remaining Prop changes, Flash readiness, Decoy count and Lock state; HP uses a compact dot indicator.
+- Damage produces a brief vignette/pulse.
+- Classic-mode elimination gets a living-player spectator camera plus a `NEXT` target button; Family Chaos conversion behavior remains separate.
 
-### Tabletop realism and readability
+## Preserved Phase S work
 
-- **Cribbage** now uses one shared physical-style wooden scoring board instead of separate player boards. Each player has a color-inlaid route, drilled-looking holes, current and previous physical-style pegs, exact peg-to-hole coordinates, short score-movement animation, revealed crib/scoring evidence, and the existing scoring explanations/recap.
-- **Backgammon / Black Gammon** keep the screen-first Phase R layout and add a stronger physical-board treatment: wood grain, bevel/depth, inset points, darker center bar, dimensional checkers, shadows and physical dice treatment. Black Gammon's 4/4/4/3 setup and locked rules are unchanged.
-- **Marbles & Jokers** now has a dedicated board-first route. The oversized generic felt-table shell is removed from its normal gameplay route so the board consumes the useful play area while the hand and controls stay accessible.
-- **Screw Your Buddy / Fuck Your Buddy** bidding now shows the current hand size and trump/special round directly in the “How many tricks?” box.
-
-## Preserved work
-
-Phase S does not replace the Prop Hunt P2 benchmark, Phase Q Skip-Bo/Cribbage mobile foundation, Black Gammon rule engine, standard Backgammon rules, Easy-first bots, player colors, multiplayer, reconnect, room/seat/Ready flow, chat/reactions, leaderboard/history, or other completed games.
+Phase T does not replace the Phase S repairs. Regression tests keep the Skip-Bo Stock/Discard source flow, Cribbage board/scoring, Trail Trouble start, Last Haven setup progression, Backgammon/Black Gammon roll flow and custom Black Gammon rules, Marbles board-first route, trick-bidding context, Easy-first bots, multiplayer and reconnect intact.
 
 ## Governing directives
 
+- `MASTER_PHASE_T_PROP_HUNT_P3_GAMEPLAY_ANIMATION_DIRECTIVE.md`
 - `MASTER_PHASE_S_GAMEPLAY_TABLETOP_REALISM_DIRECTIVE.md`
-- `MASTER_NEXT_BUILD_DEVELOPMENT_DIRECTIVE.md`
 - `MASTER_3D_DEVELOPMENT_DIRECTIVE.md`
 - `MASTER_MOBILE_TABLETOP_UX_DIRECTIVE.md`
 - `BLACK_GAMMON_MASTER_RULES.md`
@@ -42,27 +45,22 @@ npm run build
 npm run assets:audit
 ```
 
-Phase S validation logs:
+Phase T logs are written as:
 
-- `PHASE_S_TEST_OUTPUT.tap`
-- `PHASE_S_CHECK_OUTPUT.txt`
-- `PHASE_S_BUILD_VALIDATION.txt`
-- `PHASE_S_ASSET_AUDIT.txt`
+- `PHASE_T_TEST_OUTPUT.tap`
+- `PHASE_T_CHECK_OUTPUT.txt`
+- `PHASE_T_BUILD_VALIDATION.txt`
+- `PHASE_T_ASSET_AUDIT.txt`
 
-The final ZIP is cold-extracted and the same validation is rerun against that extracted copy. See `PHASE_S_PACKAGE_VERIFICATION.txt`.
+The final ZIP is cold-extracted and the same validation is rerun against that extracted copy. See `PHASE_T_PACKAGE_VERIFICATION.txt`.
 
 ## Visual/device status
 
-The code, engine transitions, build markers, asset manifest and packaging can be validated in this environment. The environment did **not** successfully produce a reliable headless Chromium render of the Phase S visual QA harness, and no real phone is attached here. Therefore the release must remain **staging** until device screenshots confirm:
+Phase T improves the runtime controller and interaction feedback around the existing John P2 authored asset. It does **not** claim to contain a brand-new John sculpt/model.
 
-- Skip-Bo Stock selection and repeated Stock play feel obvious on phone.
-- Cribbage pegs visually sit in the intended holes and the shared track is easy to follow.
-- Backgammon / Black Gammon look sufficiently dimensional and fill the useful screen.
-- Marbles & Jokers is large and readable without the old felt-table shell.
-- Trail Trouble actually starts through the live room flow.
-- Last Haven visibly advances from Camp to Route to normal gameplay.
+This environment can verify code, rule transitions, build markers, assets and packaging. It cannot substitute for the requested phone gameplay visual gate. Until real-device screenshots/video are reviewed, this release remains staging.
 
-Use `PHONE_QA_PHASE_S_GAMEPLAY_TABLETOP_REALISM_17.md` for the device pass.
+Use `PHONE_QA_PHASE_T_PROP_HUNT_P3_GAMEPLAY_ANIMATION_18.md` for the device pass.
 
 ## Deploy to staging
 
@@ -72,4 +70,4 @@ npm run deploy:staging
 
 Expected visible build ID:
 
-`GAME-NIGHT-STAGING-PHASE-S-GAMEPLAY-TABLETOP-REALISM-17`
+`GAME-NIGHT-STAGING-PHASE-T-PROP-HUNT-P3-GAMEPLAY-ANIMATION-18`

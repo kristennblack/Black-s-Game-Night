@@ -192,14 +192,14 @@ export class SemanticAnimationMixer{
   _start(action,{fade=this.fade,timeScale=1,once=false}={}){
     if(!action)return false;action.enabled=true;action.timeScale=timeScale;action.setEffectiveWeight(1);
     if(once){action.setLoop(this.THREE.LoopOnce,1);action.clampWhenFinished=true}else{action.setLoop(this.THREE.LoopRepeat,Infinity);action.clampWhenFinished=false}
-    if(!action.isRunning?.())action.reset().fadeIn(fade).play();return true;
+    if(!action.isRunning?.()){action.reset();if(timeScale<0)action.time=Math.max(0,action.getClip?.().duration||0);action.fadeIn(fade).play()}return true;
   }
   _fade(action,fade=this.fade){if(action){action.fadeOut(fade);return true}return false}
   play(semantic,{fade=this.fade,loop=true,timeScale=1,once=false}={}){
     const next=this.actionFor(semantic);this.currentSemantic=semantic;if(!next)return false;
     if(this.mode==='layered'){this._fade(this.baseAction,fade);this._fade(this.overlayAction,fade);this.baseAction=this.overlayAction=null;this.baseSemantic=this.overlaySemantic=null}
     this.mode='full';if(next===this.current){next.timeScale=timeScale;return true}
-    next.enabled=true;next.reset();next.timeScale=timeScale;next.setEffectiveWeight(1);
+    next.enabled=true;next.reset();next.timeScale=timeScale;if(timeScale<0)next.time=Math.max(0,next.getClip?.().duration||0);next.setEffectiveWeight(1);
     if(once){next.setLoop(this.THREE.LoopOnce,1);next.clampWhenFinished=true}else if(loop){next.setLoop(this.THREE.LoopRepeat,Infinity);next.clampWhenFinished=false}
     if(this.current){this.current.crossFadeTo(next,fade,false)}else next.fadeIn(fade);next.play();this.current=next;return true;
   }
@@ -326,4 +326,4 @@ export function createCinematicCamera(cameraRig){let shot=null;function start({d
 export function computeStereoPan(listenerYaw,listener,target){const dx=target.x-listener.x,dz=target.z-listener.z,a=Math.atan2(dx,-dz),rel=wrapAngle(a-listenerYaw);return clamp(Math.sin(rel),-1,1)}
 
 /** Returns a compact feature manifest used by QA and in-game diagnostics. */
-export function studioFeatureManifest(){return{version:STUDIO_3D_VERSION,authoredAssets:true,skeletonSafeCloning:true,authoredRigSockets:true,semanticAnimationMixer:true,layeredAimLocomotion:true,staticSceneOptimization:true,proceduralIK:true,faceStates:true,networkSnapshotBuffer:true,navGrid:true,cornerSafePathing:true,npcRoutines:true,weather:true,shaderWater:true,shorelineFoam:true,heightfieldTerrain:true,selectivePhysics:true,webAudio:true,surfaceAudio:true,cinematics:true}}
+export function studioFeatureManifest(){return{version:STUDIO_3D_VERSION,authoredAssets:true,skeletonSafeCloning:true,authoredRigSockets:true,semanticAnimationMixer:true,layeredAimLocomotion:true,directionalAimLocomotion:true,reverseBackpedalPlayback:true,staticSceneOptimization:true,proceduralIK:true,faceStates:true,networkSnapshotBuffer:true,navGrid:true,cornerSafePathing:true,npcRoutines:true,weather:true,shaderWater:true,shorelineFoam:true,heightfieldTerrain:true,selectivePhysics:true,webAudio:true,surfaceAudio:true,cinematics:true}}

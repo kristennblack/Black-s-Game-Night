@@ -59,3 +59,17 @@
 .ph3d-act.jump{min-width:66px;min-height:56px}.ph3d-act.aim.on,.ph3d-act.primary:active{transform:translateY(2px) scale(.97)}
 @media(max-width:680px){.ph3d-actions{gap:7px;max-width:224px}.ph3d-act{min-width:54px;min-height:46px;padding:7px 8px}.ph3d-act.primary{min-width:72px;min-height:60px}.ph3d-crosshair{top:44%}.ph3d-side{display:none}.ph3d-shell{grid-template-columns:1fr}}
 @media(max-width:420px){.ph3d-actions{max-width:205px;gap:5px}.ph3d-act{font-size:.64rem;min-width:50px}.ph3d-act.primary{min-width:68px}.ph3d-joystick{width:118px;height:118px}}
+
+/* Phase T / P3 gameplay + animation feel pass */
+.ph3d-damage{position:absolute;inset:0;z-index:19;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 46%,transparent 0 45%,rgba(160,20,18,.12) 67%,rgba(150,15,12,.62) 100%);box-shadow:inset 0 0 80px rgba(125,10,8,.35)}
+.ph3d-damage.on{animation:phDamagePulse .42s ease-out}
+@keyframes phDamagePulse{0%{opacity:.95}35%{opacity:.58}100%{opacity:0}}
+.ph3d-crosshair.firing:before,.ph3d-crosshair.firing:after{transform:scale(.72);background:#ffe59c;box-shadow:0 0 0 1px #2c1c08,0 0 10px #ffd56acc}
+.ph3d-flash.on{animation:phFlashRecover .9s ease-out;opacity:1}
+@keyframes phFlashRecover{0%{opacity:1;filter:blur(0)}38%{opacity:.94}100%{opacity:0;filter:blur(3px)}}
+.ph3d-spectate{position:absolute;left:50%;top:64px;transform:translateX(-50%);z-index:10;border:1px solid #ffe6a84a;border-radius:999px;background:#17130fe8;color:#ffe6a8;padding:8px 12px;font:900 10px/1 system-ui,sans-serif;letter-spacing:.05em;box-shadow:0 7px 18px #0008;backdrop-filter:blur(8px);touch-action:manipulation}
+.ph3d-spectate[hidden]{display:none}
+.ph3d-spectate:active{transform:translateX(-50%) scale(.97)}
+.ph3d-chip.health{letter-spacing:.08em;color:#ff9a8f}
+.ph3d-act.prop,.ph3d-act.flash,.ph3d-act.lock,.ph3d-act:not(.primary):not(.jump):not(.aim):not(.sprint){white-space:nowrap}
+@media(max-width:700px){.ph3d-spectate{top:54px;max-width:48vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ph3d-chip.health{font-size:9px}}

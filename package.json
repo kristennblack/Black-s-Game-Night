@@ -1,9 +1,9 @@
 {
   "name": "black-family-game-night",
-  "version": "3.4.0-staging-phase-s-gameplay-tabletop-realism-17",
+  "version": "3.5.0-staging-phase-t-prop-hunt-p3-gameplay-animation-18",
   "private": true,
   "type": "module",
-  "description": "Black Family Game Night Phase S: gameplay repair and tabletop realism for Skip-Bo, Cribbage, Trail Trouble, Last Haven, Backgammon/Black Gammon, Marbles & Jokers and trick-bidding context, preserving Prop Hunt P2 and locked rules.",
+  "description": "Black Family Game Night Phase T: Prop Hunt P3 gameplay and animation feel pass, preserving Phase S gameplay/tabletop repairs and all locked game rules.",
   "scripts": {
     "test": "node --test",
     "check": "node --check worker.mjs && node --check propHuntRoom.mjs && node --check islandLifeRoom.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check threeNewGames.mjs && node --check blackGammon.mjs && node --check public/app.js && node --check public/prop-hunt-core.mjs && node --check public/shared-3d-art-kit.mjs && node --check public/shared-3d-gameplay.mjs && node --check public/shared-3d-studio.mjs && node --check public/prop-hunt-3d.js && node --check public/island-life-core.mjs && node --check public/island-life.js && node --check public/birthday-climb.js && node --check public/phase-e-qa.mjs && node --check public/sw.js && node --test",

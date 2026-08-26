@@ -229,6 +229,25 @@ export function movementIntent(keys,joy,yaw,{gamepad=true}={}){
   return {x:dirX*strength,z:dirZ*strength,strength,directionX:dirX,directionZ:dirZ,rawX:x,rawZ:z};
 }
 
+
+/** Resolve world velocity into the actor's facing space. Positive z is forward. */
+export function movementRelativeToFacing(actor){
+  const vx=Number(actor?.vx)||0,vz=Number(actor?.vz)||0,yaw=Number(actor?.yaw)||0,speed=Math.hypot(vx,vz);
+  if(speed<1e-5)return{x:0,z:0,speed:0};
+  const sy=Math.sin(yaw),cy=Math.cos(yaw),rightX=cy,rightZ=sy,forwardX=sy,forwardZ=-cy;
+  return{x:clamp((vx*rightX+vz*rightZ)/speed,-1,1),z:clamp((vx*forwardX+vz*forwardZ)/speed,-1,1),speed};
+}
+
+/** Directional lower-body semantic used while the upper body stays on aim. */
+export function resolveDirectionalLocomotion(actor,{aiming=false,sprinting=false,walkThreshold=.22}={}){
+  const local=movementRelativeToFacing(actor),speed=local.speed;
+  if(speed<walkThreshold)return{semantic:'idle',local,speed};
+  if(!aiming)return{semantic:sprinting?'sprint':speed>3.25?'run':'walk',local,speed};
+  if(local.z<-.48&&Math.abs(local.z)>=Math.abs(local.x)*.72)return{semantic:'backward',local,speed};
+  if(Math.abs(local.x)>.5&&Math.abs(local.x)>Math.abs(local.z)*.82)return{semantic:local.x<0?'strafeLeft':'strafeRight',local,speed};
+  return{semantic:sprinting?'sprint':speed>3.25?'run':'walk',local,speed};
+}
+
 export function smoothVelocity(actor,intent,speed,dt,{accel=18,brake=24,airControl=1}={}){
   const grounded=actor.grounded!==false,factor=grounded?1:airControl;
   const active=intent.strength>.045,targetX=(intent.x||0)*speed,targetZ=(intent.z||0)*speed;
@@ -302,8 +321,10 @@ export function resolveLocomotionAnim(actor,{moving=false,sprinting=false,aiming
   if(actor?._transientAnim&&now>=(actor._transientAnimUntil||0)){actor._transientAnim=null;actor._transientAnimUntil=0}
   if(mantling||actor?.mantle)return 'mantle';
   if(actor?.grounded===false)return (actor?.vy||0)>0?'jump':'fall';
+  if((actor?._hardLandTimer||0)>0)return 'hardLand';
   if((actor?.landTimer||0)>0)return 'land';
   if(moving)return sprinting?'run':'walk';
+  if(!aiming&&Math.abs(actor?.turnRate||0)>.8)return (actor.turnRate||0)<0?'turnLeft':'turnRight';
   return aiming?'aim':'idle';
 }
 

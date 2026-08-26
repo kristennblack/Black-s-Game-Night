@@ -182,7 +182,7 @@ export function sanitizeSnapshot(s,prev={}){
     vx:clamp(finite(s.vx,0),-20,20),
     vy:clamp(finite(s.vy,0),-30,30),
     vz:clamp(finite(s.vz,0),-20,20),
-    anim:['idle','walk','run','jump','fall','land','mantle','aim','hit'].includes(s.anim)?s.anim:'idle',
+    anim:['idle','walk','run','sprint','startMove','stopMove','turnLeft','turnRight','backward','strafeLeft','strafeRight','jump','fall','land','hardLand','mantle','aim','fire','hit'].includes(s.anim)?s.anim:'idle',
     prop:typeof s.prop==='string'?s.prop.slice(0,48):null,
     locked:!!s.locked,
     seq:Math.max(0,Math.floor(finite(s.seq,prev.seq||0))),
