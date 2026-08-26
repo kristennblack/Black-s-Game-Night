@@ -1,5 +1,5 @@
-export const STAGING_BUILD_ID='GAME-NIGHT-STAGING-PHASE-R-PROP-HUNT-P2-GAMMON-UX-16';
-export const STAGING_APP_VERSION='3.3.0-staging-phase-r-prop-hunt-p2-gammon-ux-16';
+export const STAGING_BUILD_ID='GAME-NIGHT-STAGING-PHASE-S-GAMEPLAY-TABLETOP-REALISM-17';
+export const STAGING_APP_VERSION='3.4.0-staging-phase-s-gameplay-tabletop-realism-17';
 
 const fmt=n=>Number.isFinite(Number(n))?Number(n).toFixed(2):'n/a';
 const vec=v=>v?`${fmt(v.x)}, ${fmt(v.y)}, ${fmt(v.z)}`:'n/a';

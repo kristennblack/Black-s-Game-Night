@@ -4,7 +4,7 @@ import path from 'node:path';
 
 const ROOT=process.cwd();
 const PUBLIC=path.join(ROOT,'public');
-const BUILD='GAME-NIGHT-STAGING-PHASE-R-PROP-HUNT-P2-GAMMON-UX-16';
+const BUILD='GAME-NIGHT-STAGING-PHASE-S-GAMEPLAY-TABLETOP-REALISM-17';
 const failures=[];
 const warnings=[];
 const passes=[];
@@ -22,7 +22,7 @@ const wrangler=await text('wrangler.jsonc');
 for(const token of ['"directory":"./public"','"binding":"ASSETS"','"not_found_handling":"single-page-application"'])wrangler.includes(token)?pass(`wrangler: ${token}`):fail(`wrangler missing ${token}`);
 for(const token of ['GameHub','PropHuntRoom','IslandLifeRoom'])wrangler.includes(token)?pass(`durable object: ${token}`):fail(`wrangler missing Durable Object ${token}`);
 const stagingWrangler=await text('wrangler.staging.jsonc');
-for(const token of ['"name": "black-family-game-night-phase-r-staging"','"directory":"./public"','"binding":"ASSETS"','"not_found_handling":"single-page-application"'])stagingWrangler.includes(token)?pass(`staging wrangler: ${token}`):fail(`staging wrangler missing ${token}`);
+for(const token of ['"name": "black-family-game-night-phase-s-staging"','"directory":"./public"','"binding":"ASSETS"','"not_found_handling":"single-page-application"'])stagingWrangler.includes(token)?pass(`staging wrangler: ${token}`):fail(`staging wrangler missing ${token}`);
 for(const token of ['GameHub','PropHuntRoom','IslandLifeRoom'])stagingWrangler.includes(token)?pass(`staging durable object: ${token}`):fail(`staging wrangler missing Durable Object ${token}`);
 
 const manifest=JSON.parse(await text('public/models/manifest.json'));
@@ -93,7 +93,7 @@ if(cdnHits.length)warn(`core 3D CDN dependency remains (${[...new Set(cdnHits)].
 
 const app=await text('public/app.js'),sw=await text('public/sw.js'),idx=await text('public/index.html'),ng=await text('public/new-games.html'),il=await text('public/island-life.html');
 const worker=await text('worker.mjs'),extra=await text('extraGames.mjs'),three=await text('threeNewGames.mjs'),black=await text('blackGammon.mjs'),styles=await text('public/styles.css'),studio=await text('public/shared-3d-studio.mjs'),prop3d=await text('public/prop-hunt-3d.js');
-app.includes(BUILD)&&sw.includes('black-family-game-night-staging-phase-r-prop-hunt-p2-gammon-ux-16')&&idx.includes(BUILD)&&ng.includes(BUILD)&&il.includes(BUILD)?pass('staging cache/version markers are consistent'):fail('staging cache/version markers are inconsistent');
+app.includes(BUILD)&&sw.includes('black-family-game-night-staging-phase-s-gameplay-tabletop-realism-17')&&idx.includes(BUILD)&&ng.includes(BUILD)&&il.includes(BUILD)?pass('staging cache/version markers are consistent'):fail('staging cache/version markers are inconsistent');
 sw.includes('/phase-e-qa.mjs')?pass('staging diagnostics module precached'):fail('phase-e diagnostics missing from service worker shell');
 app.includes("s.gameType===GAME.SMEAR")&&app.includes('YOUR 6-CARD HAND · REVIEW IT BEFORE YOU BID')?pass('Smear six-card hand is rendered during bidding'):fail('Smear bidding-hand presentation marker missing');
 app.includes("PROFILE_KEY='gn_profile_v1'")&&app.includes('homeAvatarHubHTML')&&app.includes('Character → outfit → player colour')?pass('persistent Avatar Hub profile flow present'):fail('Avatar Hub profile flow incomplete');
@@ -117,10 +117,19 @@ for(const token of ['.domino-tile','.skipbo-card','.bg-board','.bg-checker-stack
 app.includes('function gammonGameplay')&&app.includes('[GAME.BACKGAMMON,GAME.BLACK_GAMMON].includes(s.gameType)')?pass('Phase R dedicated Gammon gameplay route present'):fail('Phase R dedicated Gammon gameplay route missing');
 styles.includes('.gammon-focus-surface')&&styles.includes('.gammon-board-viewport')?pass('Phase R screen-first Gammon layout styles present'):fail('Phase R Gammon layout styles missing');
 styles.includes('.three-new-roster>div>span:before{display:none!important;content:none!important}')?pass('Phase R vertical roster-line artifact disabled at source'):fail('Phase R roster-line artifact cleanup missing');
-app.includes("['bgOpeningRoll','bgRoll','blackRoll','blackBigRoll'].includes(a.action)")&&app.includes('const fresh=await fetchState(session.roomId,session.playerToken);setRoomState(fresh);render()')?pass('Phase R roll actions explicitly refresh visible room state'):fail('Phase R roll refresh contract missing');
+app.includes("['bgOpeningRoll','bgRoll','blackRoll','blackBigRoll'].includes(a.action)")&&app.includes('const fresh=await fetchState(session.roomId,session.playerToken);setRoomState(fresh);refreshed=true')&&app.includes('if(refreshed)render()')?pass('Phase R roll actions explicitly refresh visible room state'):fail('Phase R roll refresh contract missing');
 manifest.characters?.john?.phase==='P2'&&manifest.characters?.john?.flagshipBenchmark==='PH-CHAR-01-P2'&&manifest.characters?.john?.animations?.length===19?pass('Phase R John P2 benchmark metadata and 19-clip contract present'):fail('Phase R John P2 benchmark contract incomplete');
 prop3d.includes('P2 fireplace glow')&&prop3d.includes('P2 shop work-bay fill')&&prop3d.includes('P2 barn soft fill')?pass('Phase R Papa Shop local benchmark lighting present'):fail('Phase R Papa Shop benchmark lighting missing');
 if(exists('MASTER_NEXT_BUILD_DEVELOPMENT_DIRECTIVE.md')){const directive=await text('MASTER_NEXT_BUILD_DEVELOPMENT_DIRECTIVE.md');directive.includes('Prop Hunt P2 Character & Animation Visual Gate')&&directive.includes('Critical dice-roll fix')?pass('Phase R governing next-build directive packaged'):fail('Phase R directive missing required focus');}else fail('Phase R governing next-build directive missing');
+
+// Phase S focused gates: gameplay blockers + tabletop realism.
+three.includes("src.kind==='stock'")&&three.includes('Stock Pile cleared')&&app.includes('STOCK · PLAY THIS TOP CARD')&&app.includes('skipbo-valid-target')?pass('Phase S Skip-Bo Stock source and direct destination UI present'):fail('Phase S Skip-Bo Stock source/direct play contract incomplete');
+app.includes('cribPhysicalBoard')&&app.includes('cribPhysicalPeg')&&app.includes('runCribPegAnimation')&&app.includes('Array.from({length:121}')&&styles.includes('.crib-physical-board')&&styles.includes('.crib-real-hole')?pass('Phase S shared physical Cribbage board, holes and peg animation present'):fail('Phase S Cribbage physical board contract incomplete');
+app.includes('haven-route-target')&&app.includes("e.phase==='setupRoute'")&&styles.includes('.haven-route-target')?pass('Phase S Last Haven setup Route has large direct touch targets'):fail('Phase S Last Haven Route touch target missing');
+app.includes('function marblesGameplay')&&app.includes('if(s.gameType===GAME.MARBLES)return marblesGameplay')&&styles.includes('.marbles-focus-layout')?pass('Phase S Marbles board-first route present'):fail('Phase S Marbles board-first route missing');
+app.includes('function bidRoundContext')&&app.includes('bid-round-context')&&styles.includes('.bid-round-context')?pass('Phase S trick-bidding hand/trump context present'):fail('Phase S trick-bidding context missing');
+styles.includes('/* Backgammon / Black Gammon: premium physical wood treatment. */')&&styles.includes('.gammon-focus-surface .bg-checker-stack i')?pass('Phase S dimensional wood/checker treatment present for Gammon boards'):fail('Phase S Gammon realism treatment missing');
+if(exists('MASTER_PHASE_S_GAMEPLAY_TABLETOP_REALISM_DIRECTIVE.md')){const directive=await text('MASTER_PHASE_S_GAMEPLAY_TABLETOP_REALISM_DIRECTIVE.md');directive.includes('Skip-Bo should finally play around the Stock Pile')&&directive.includes('Cribbage should feel like a real wooden cribbage game')?pass('Phase S governing directive packaged'):fail('Phase S directive missing required final goals');}else fail('Phase S governing directive missing');
 
 const wranglerBin=path.join(ROOT,'node_modules','.bin','wrangler');
 if(existsSync(wranglerBin))pass('Wrangler executable available for deployment smoke test'); else warn('Wrangler executable unavailable: actual Cloudflare deployment remains UNVERIFIED');

@@ -2,8 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
-const build='GAME-NIGHT-STAGING-PHASE-R-PROP-HUNT-P2-GAMMON-UX-16';
-const cache='black-family-game-night-staging-phase-r-prop-hunt-p2-gammon-ux-16';
+const build='GAME-NIGHT-STAGING-PHASE-S-GAMEPLAY-TABLETOP-REALISM-17';
+const cache='black-family-game-night-staging-phase-s-gameplay-tabletop-realism-17';
 
 test('Phase L uses a fresh build and service-worker cache',()=>{
   const app=fs.readFileSync('public/app.js','utf8');

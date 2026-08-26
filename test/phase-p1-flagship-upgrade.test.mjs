@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 const read=p=>fs.readFileSync(new URL(`../${p}`,import.meta.url),'utf8');
-const build='GAME-NIGHT-STAGING-PHASE-R-PROP-HUNT-P2-GAMMON-UX-16';
-const cache='black-family-game-night-staging-phase-r-prop-hunt-p2-gammon-ux-16';
+const build='GAME-NIGHT-STAGING-PHASE-S-GAMEPLAY-TABLETOP-REALISM-17';
+const cache='black-family-game-night-staging-phase-s-gameplay-tabletop-realism-17';
 function glbJson(path){const b=fs.readFileSync(new URL(`../${path}`,import.meta.url));assert.equal(b.toString('ascii',0,4),'glTF');const len=b.readUInt32LE(12);return JSON.parse(b.toString('utf8',20,20+len).trim())}
 
 test('Phase P1 has a fresh build/cache identity without removing Phase O games',()=>{

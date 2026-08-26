@@ -1,41 +1,42 @@
 BLACK FAMILY GAME NIGHT
-PHASE R PROP HUNT P2 + GAMMON UX MANIFEST
+PHASE S GAMEPLAY REPAIR + TABLETOP REALISM MANIFEST
 
-Build ID: GAME-NIGHT-STAGING-PHASE-R-PROP-HUNT-P2-GAMMON-UX-16
-Package version: 3.3.0-staging-phase-r-prop-hunt-p2-gammon-ux-16
+Build ID: GAME-NIGHT-STAGING-PHASE-S-GAMEPLAY-TABLETOP-REALISM-17
+Package version: 3.4.0-staging-phase-s-gameplay-tabletop-realism-17
 Worker main: worker.mjs
 Cloudflare static asset directory: ./public
 Assets binding: ASSETS
 SPA fallback: single-page-application
 Staging config: wrangler.staging.jsonc
-Staging Worker name: black-family-game-night-phase-r-staging
-Service-worker cache: black-family-game-night-staging-phase-r-prop-hunt-p2-gammon-ux-16
+Staging Worker name: black-family-game-night-phase-s-staging
+Service-worker cache: black-family-game-night-staging-phase-s-gameplay-tabletop-realism-17
 
 GOVERNING DIRECTIVES
-- MASTER_NEXT_BUILD_DEVELOPMENT_DIRECTIVE.md: current Phase R work order.
+- MASTER_PHASE_S_GAMEPLAY_TABLETOP_REALISM_DIRECTIVE.md: current Phase S work order.
+- MASTER_NEXT_BUILD_DEVELOPMENT_DIRECTIVE.md: preserved Phase R / Prop Hunt P2 direction.
 - MASTER_3D_DEVELOPMENT_DIRECTIVE.md: flagship 3D quality track.
 - MASTER_MOBILE_TABLETOP_UX_DIRECTIVE.md: screen-first tabletop/mobile standard.
 - BLACK_GAMMON_MASTER_RULES.md: locked Black Gammon rules.
 
-PHASE R UPGRADES
-- John PH-CHAR-01-P2 skinned authored candidate rebuilt and packaged.
-- P2 face/body/hand/boot and walk-motion refinements.
-- Papa's Shop P2 localized lighting pass while retaining accepted colliders and authored production environment.
-- Dedicated screen-first Backgammon / Black Gammon gameplay route.
-- Gammon primary roll/big-die/cube action strip.
-- Explicit post-roll state refresh for reliable visible dice feedback.
-- Blue vertical roster-line artifact disabled at source.
-- Responsive large-board Gammon CSS and Fit/zoom support.
+PHASE S UPGRADES
+- Skip-Bo exposed Stock Pile top card is an explicit direct-play source and state refreshes after Stock/build/discard actions.
+- Trail Trouble start now immediately refreshes room state; engine regression proves first full normal turn.
+- Last Haven setup Route receives large board tap targets plus a fallback Route action panel; full setup-to-play regression added.
+- Cribbage rebuilt around one shared physical-style wooden track with color lanes, drilled holes, aligned current/previous pegs and score animation.
+- Backgammon and Black Gammon receive dimensional wood, checker and dice treatment while retaining Phase R screen-first layout.
+- Marbles & Jokers gets a dedicated board-first gameplay route with the oversized generic felt shell removed.
+- Screw Your Buddy and Fuck Your Buddy bid boxes show hand-size/trump or special-round context.
+- Phase S regression suite added.
 
 PRESERVED
-- Phase Q Skip-Bo and Cribbage mobile tabletop work.
-- Black Gammon complete rule engine and standard Backgammon engine.
-- Easy-first bots and readable bot selectors.
-- Prop Hunt repaired camera/movement/collision systems.
-- Multiplayer, reconnect, private information, player colors, room/lobby, chat/reactions, leaderboard and rematch contracts.
+- Prop Hunt P2 John/camera/movement/lighting work.
+- Black Gammon complete house-rule engine and standard Backgammon engine.
+- Phase Q Skip-Bo/Cribbage mobile UX foundation.
+- Easy-first bots and readable selectors.
+- Multiplayer, reconnect, private information, player colors, lobby, chat/reactions, leaderboard and rematch contracts.
 
 VALIDATION
-See PHASE_R_PACKAGE_VERIFICATION.txt for exact packaged-release results.
+See PHASE_S_PACKAGE_VERIFICATION.txt for final cold-package results.
 
 DECLARED LIMITATION
-Real-device visual QA remains required. Technical validation is not visual approval.
+Real-device visual QA remains required. Technical validation and source-level visual review are not phone visual approval.

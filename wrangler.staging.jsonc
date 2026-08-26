@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "black-family-game-night-phase-r-staging",
+  "name": "black-family-game-night-phase-s-staging",
   "main": "worker.mjs",
   "compatibility_date": "2026-08-23",
   "compatibility_flags": ["nodejs_compat"],
