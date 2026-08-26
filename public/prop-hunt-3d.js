@@ -271,6 +271,13 @@
     art.buildLumberStack(w,2.75,8.0,0,{width:2.75,height:.58,depth:.78});
     w.heroFallbacks.fireplace=buildFireplace(w,10.85,7.26,0);
     w.heroFallbacks.papaChair=buildPapaChair(w,9.35,8.0,-.12);
+    // P2 benchmark lighting: keep the global daylight readable, then give the fireplace
+    // corner and working bays localized depth without turning every clutter prop into a
+    // shadow-casting performance cost. These lights intentionally do not cast shadows.
+    const fireplaceGlow=new THREE.PointLight(0xffa05c,1.85,5.2,2);fireplaceGlow.position.set(10.62,1.25,7.2);fireplaceGlow.name='P2 fireplace glow';fireplaceGlow.userData.p2BenchmarkLight=true;w.group.add(fireplaceGlow);
+    const shopFill=new THREE.PointLight(0xffdfb2,.78,6.4,2);shopFill.position.set(6.45,2.42,4.95);shopFill.name='P2 shop work-bay fill';shopFill.userData.p2BenchmarkLight=true;w.group.add(shopFill);
+    const barnFill=new THREE.PointLight(0xc8d7e0,.48,5.8,2);barnFill.position.set(14.65,2.28,5.05);barnFill.name='P2 barn soft fill';barnFill.userData.p2BenchmarkLight=true;w.group.add(barnFill);
+    w.p2BenchmarkLights=[fireplaceGlow,shopFill,barnFill];
     art.buildShopSideTable(w,10.08,8.14,-.05,{width:.7,depth:.52});art.buildTireStack(w,10.85,10.65,.12,{count:3,radius:.3});
     art.buildCrate(w,8.85,4.75,.08,{width:.82,height:.5,depth:.7,name:'Step crate'});art.buildCrate(w,9.15,5.45,-.1,{width:1.0,height:.82,depth:.78,name:'Parts crate'});art.buildCrate(w,10.65,5.7,.05,{width:.78,height:1.06,depth:.68,name:'Shelf step'});
     art.buildBarnStall(w,13.6,4.25,0,{width:2.15,depth:1.95});art.buildBarnStall(w,15.85,4.25,0,{width:2.05,depth:1.95});art.buildBarnStall(w,14.7,6.45,Math.PI,{width:3.8,depth:1.25});
@@ -641,6 +648,6 @@
   function modal(html,bind){closeModal();const d=document.createElement('div');d.className='modal-backdrop';d.id='ph3Modal';d.innerHTML=`<div class="modal">${html}</div>`;document.body.appendChild(d);if(bind)bind(d.querySelector('.modal'));}
   function closeModal(){document.getElementById('ph3Modal')?.remove();}
 
-  window.__PROP_HUNT_REAL3D__={version:'GAME-NIGHT-STAGING-PHASE-Q-MOBILE-TABLETOP-UX-15',renderer:'WebGL',three:'0.185.1',usesDepthBuffer:true,usesCanvas2D:false};
+  window.__PROP_HUNT_REAL3D__={version:'GAME-NIGHT-STAGING-PHASE-R-PROP-HUNT-P2-GAMMON-UX-16',renderer:'WebGL',three:'0.185.1',usesDepthBuffer:true,usesCanvas2D:false};
   window.PropHunt={mount,stop};
 })();

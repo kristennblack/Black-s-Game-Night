@@ -1,0 +1,65 @@
+PHASE R DIRECT CHANGES / NEW FILES
+
+public/app.js
+- dedicated gammonPrimaryActions()
+- dedicated gammonGameplay()
+- Backgammon/Black Gammon route switch
+- Gammon width-first fit behavior
+- duplicate Gammon primary action filtering
+- immediate state refresh after successful roll/big-die actions
+- Phase R build identity
+
+public/styles.css
+- screen-first Gammon responsive layout
+- larger board/dice/checker presentation
+- old inner Gammon primary action suppression
+- mobile/wide responsive Gammon rules
+- faulty roster pseudo-element disabled to remove vertical line
+
+public/prop-hunt-3d.js
+- Papa's Shop P2 local benchmark lights
+- Phase R runtime identity
+
+tools/build_vertical_slice_assets.py
+- John P2 body/head/face/hand/boot refinements
+- Walk foot/hip motion refinements
+- P2 benchmark metadata
+
+public/models/characters/john-production-skinned.glb
+- rebuilt from the P2 vertical-slice builder
+
+public/models/environments/papa-shop-production.glb
+public/models/sets/papa-shop-props-production.glb
+- rebuilt from current authored vertical-slice source
+
+public/models/manifest.json
+- John phase P2 / PH-CHAR-01-P2 / visual-gate metadata
+
+JOHN_P2_BINDPOSE_QA.png
+- offline source-space front/side/rear geometry proof; not an in-game visual approval image
+
+Build/cache/config identity updates:
+public/index.html
+public/new-games.html
+public/island-life.html
+public/sw.js
+public/phase-e-qa.mjs
+package.json
+VERSION.txt
+wrangler.staging.jsonc
+tools/phase_e_validate.mjs
+BUILD_MANIFEST.txt
+START_HERE.txt
+README.md
+
+Tests updated/added:
+test/phase-r-prop-hunt-p2-gammon-ux.test.mjs
+test/phase-k-lab02-release.test.mjs
+test/phase-p1-flagship-upgrade.test.mjs
+plus current-build identity updates in existing staging regression tests.
+
+New documentation:
+MASTER_NEXT_BUILD_DEVELOPMENT_DIRECTIVE.md
+PHASE_R_PROP_HUNT_P2_GAMMON_UX_REPORT.md
+PHONE_QA_PHASE_R_PROP_HUNT_P2_GAMMON_UX_16.md
+PHASE_R_CHANGED_FILES.txt

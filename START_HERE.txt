@@ -1,47 +1,56 @@
 BLACK FAMILY GAME NIGHT
-STAGING BUILD: GAME-NIGHT-STAGING-PHASE-Q-MOBILE-TABLETOP-UX-15
-PACKAGE VERSION: 3.2.0-staging-phase-q-mobile-tabletop-ux-15
+STAGING BUILD: GAME-NIGHT-STAGING-PHASE-R-PROP-HUNT-P2-GAMMON-UX-16
+PACKAGE VERSION: 3.3.0-staging-phase-r-prop-hunt-p2-gammon-ux-16
 
-THIS IS THE PHASE Q MOBILE TABLETOP UX PACKAGE.
+THIS IS THE PHASE R PROP HUNT P2 + GAMMON UX PACKAGE.
 
 PRIMARY CHANGES
-1. Skip-Bo is rebuilt as a portrait-first, screen-filling card layout instead of a zoom/pan mini-table.
-2. Skip-Bo keeps the player hand, stock, four discard piles, four shared build piles, draw pile, and compact opponent status in the core play surface.
-3. Skip-Bo opponent hands remain private and show count only.
-4. Skip-Bo uses tap-source then direct destination play: valid targets glow and invalid targets dim.
-5. Cribbage is rebuilt around a more believable wood crib board with player lanes, current/trailing pegs, clearer pegging ownership, and visible peg feedback.
-6. Cribbage preserves completed hand/crib scoring evidence, including actual cards, starter, point breakdown, and score movement.
-7. MASTER_MOBILE_TABLETOP_UX_DIRECTIVE.md is added as the governing tabletop/mobile directive.
-8. Phase P1 Prop Hunt flagship work, Black Gammon, standard Backgammon, bots, multiplayer, reconnect, and existing rules are preserved.
+1. John is rebuilt as the PH-CHAR-01-P2 authored character candidate with refined body/head/face/hand/boot geometry while preserving the reusable skin/rig and 19 authored clips.
+2. Layered lower-body locomotion + upper-body aim/fire behavior is preserved.
+3. Papa's Shop keeps the repaired gameplay/collision/camera foundation and gains restrained fireplace/work-bay/barn P2 local lighting.
+4. Backgammon and Black Gammon now use a dedicated screen-first Gammon layout instead of the oversized generic green tabletop wrapper.
+5. The Gammon board receives visual priority and retains Fit / zoom controls without making zoom mandatory for normal play.
+6. Roll / big-die / cube actions are surfaced above the board instead of being duplicated in the old inner controls and generic action panel.
+7. Roll actions explicitly refresh room state after a successful API call so the dice result is not visually dependent on live-event timing alone.
+8. The long vertical player-color line is removed by disabling the faulty roster pseudo-element at its source.
+9. Black Gammon's complete custom rule engine remains intact.
+10. Skip-Bo and Cribbage Phase Q mobile tabletop work is preserved.
+
+GOVERNING NEXT-BUILD DIRECTIVE
+- MASTER_NEXT_BUILD_DEVELOPMENT_DIRECTIVE.md
 
 VALIDATION STATUS
-- Technical/regression validation is recorded in PHASE_Q_PACKAGE_VERIFICATION.txt in the packaged release.
-- Real-device portrait visual/game-feel approval is still required before production signoff.
+- Technical/regression results are recorded in the Phase R logs and package verification report.
+- Real-device visual/game-feel approval is still required before production signoff.
 
 PHONE QA PRIORITIES
-SKIP-BO
-- No zoom toolbar or board panning required for a normal turn.
-- Hand, stock, four own discards, four builds, draw pile, and opponent status are readable together.
-- Opponent hand is count-only.
-- Tap a card/source and verify legal destinations glow while invalid destinations dim.
+PROP HUNT
+- John front / side / rear from real gameplay camera.
+- Walk, run, sprint, turn, jump/land.
+- Aim and fire while moving.
+- Camera recovery around doors, roof edges and tight shop geometry.
+- Fireplace, Papa's chair, work-bay and barn lighting/readability.
 
-CRIBBAGE
-- Board reads immediately as a crib board.
-- Player lanes and current/trailing pegs are clear.
-- Pegging cards show who played them.
-- Scored hands and crib show actual cards and point explanation.
-- Completed scoring recap remains inspectable after the next deal begins.
+BACKGAMMON
+- Board is large and readable without living inside the old green table.
+- Roll button works on first and later turns.
+- Checker selection and legal destinations are readable.
+- Vertical blue line is gone.
+
+BLACK GAMMON
+- Same board/roll checks as Backgammon.
+- 4/4/4/3 setup remains correct.
+- Tied normal totals lead to the large die correctly.
+- Blue forward / red backward / gold rescue indicators remain clear.
 
 BEFORE PRODUCTION
 1. Deploy this ZIP as staging.
-2. Confirm visible build ID: GAME-NIGHT-STAGING-PHASE-Q-MOBILE-TABLETOP-UX-15.
-3. Follow PHONE_QA_PHASE_Q_MOBILE_TABLETOP_UX_15.md.
-4. Test Skip-Bo and Cribbage on a real portrait phone.
-5. Keep the Phase P1 Prop Hunt visual benchmark work on its separate approval track.
+2. Confirm visible build ID: GAME-NIGHT-STAGING-PHASE-R-PROP-HUNT-P2-GAMMON-UX-16.
+3. Follow PHONE_QA_PHASE_R_PROP_HUNT_P2_GAMMON_UX_16.md.
+4. Do not treat automated tests as visual signoff.
 
 READ NEXT
-- MASTER_MOBILE_TABLETOP_UX_DIRECTIVE.md
-- PHASE_Q_MOBILE_TABLETOP_UX_REPORT.md
-- PHONE_QA_PHASE_Q_MOBILE_TABLETOP_UX_15.md
-- MASTER_3D_DEVELOPMENT_DIRECTIVE.md
-- PHASE_P1_FLAGSHIP_UPGRADE_REPORT.md
+- MASTER_NEXT_BUILD_DEVELOPMENT_DIRECTIVE.md
+- PHASE_R_PROP_HUNT_P2_GAMMON_UX_REPORT.md
+- PHONE_QA_PHASE_R_PROP_HUNT_P2_GAMMON_UX_16.md
+- BLACK_GAMMON_MASTER_RULES.md

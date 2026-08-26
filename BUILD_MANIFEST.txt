@@ -1,39 +1,41 @@
 BLACK FAMILY GAME NIGHT
-PHASE Q MOBILE TABLETOP UX MANIFEST
+PHASE R PROP HUNT P2 + GAMMON UX MANIFEST
 
-Build ID: GAME-NIGHT-STAGING-PHASE-Q-MOBILE-TABLETOP-UX-15
-Package version: 3.2.0-staging-phase-q-mobile-tabletop-ux-15
+Build ID: GAME-NIGHT-STAGING-PHASE-R-PROP-HUNT-P2-GAMMON-UX-16
+Package version: 3.3.0-staging-phase-r-prop-hunt-p2-gammon-ux-16
 Worker main: worker.mjs
 Cloudflare static asset directory: ./public
 Assets binding: ASSETS
 SPA fallback: single-page-application
 Staging config: wrangler.staging.jsonc
-Staging Worker name: black-family-game-night-phase-q-staging
-Service-worker cache: black-family-game-night-staging-phase-q-mobile-tabletop-ux-15
+Staging Worker name: black-family-game-night-phase-r-staging
+Service-worker cache: black-family-game-night-staging-phase-r-prop-hunt-p2-gammon-ux-16
 
 GOVERNING DIRECTIVES
-- MASTER_3D_DEVELOPMENT_DIRECTIVE.md: flagship 3D quality track, beginning with Family Prop Hunt.
-- MASTER_MOBILE_TABLETOP_UX_DIRECTIVE.md: portrait-first tabletop/card-game UX track, beginning with Skip-Bo and Cribbage.
+- MASTER_NEXT_BUILD_DEVELOPMENT_DIRECTIVE.md: current Phase R work order.
+- MASTER_3D_DEVELOPMENT_DIRECTIVE.md: flagship 3D quality track.
+- MASTER_MOBILE_TABLETOP_UX_DIRECTIVE.md: screen-first tabletop/mobile standard.
+- BLACK_GAMMON_MASTER_RULES.md: locked Black Gammon rules.
 
-PHASE Q UPGRADES
-- Dedicated screen-filling Skip-Bo gameplay route replaces its mandatory generic zoom/pan viewport.
-- Skip-Bo direct source -> highlighted destination interaction.
-- Opponent hand privacy preserved as count-only.
-- Four build piles, draw pile, own stock, four own discards, hand, and compact opponent status prioritized in portrait view.
-- Dedicated Cribbage gameplay route replaces generic oval-table presentation.
-- Cribbage board gains current/trailing peg representation and player-color identity.
-- Pegging sequence carries player identity.
-- Cribbage public state carries current count cards, previous scores, last peg event, and completed round scoring recap.
-- Completed hand and crib recap shows actual cards, starter, score details, and from/to score movement.
+PHASE R UPGRADES
+- John PH-CHAR-01-P2 skinned authored candidate rebuilt and packaged.
+- P2 face/body/hand/boot and walk-motion refinements.
+- Papa's Shop P2 localized lighting pass while retaining accepted colliders and authored production environment.
+- Dedicated screen-first Backgammon / Black Gammon gameplay route.
+- Gammon primary roll/big-die/cube action strip.
+- Explicit post-roll state refresh for reliable visible dice feedback.
+- Blue vertical roster-line artifact disabled at source.
+- Responsive large-board Gammon CSS and Fit/zoom support.
 
 PRESERVED
-- Phase P1 Prop Hunt flagship systems and assets.
-- Black Gammon and standard Backgammon.
-- Easy-first bot defaults and readable bot selectors.
-- Multiplayer, reconnect, private information rules, lobby, player colors, chat/reactions, leaderboard/rematch systems.
+- Phase Q Skip-Bo and Cribbage mobile tabletop work.
+- Black Gammon complete rule engine and standard Backgammon engine.
+- Easy-first bots and readable bot selectors.
+- Prop Hunt repaired camera/movement/collision systems.
+- Multiplayer, reconnect, private information, player colors, room/lobby, chat/reactions, leaderboard and rematch contracts.
 
 VALIDATION
-See PHASE_Q_PACKAGE_VERIFICATION.txt for the exact packaged-release results.
+See PHASE_R_PACKAGE_VERIFICATION.txt for exact packaged-release results.
 
 DECLARED LIMITATION
-Real-device portrait QA is required before production signoff. Technical checks do not constitute visual approval.
+Real-device visual QA remains required. Technical validation is not visual approval.

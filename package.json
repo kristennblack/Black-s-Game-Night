@@ -1,9 +1,9 @@
 {
   "name": "black-family-game-night",
-  "version": "3.2.0-staging-phase-q-mobile-tabletop-ux-15",
+  "version": "3.3.0-staging-phase-r-prop-hunt-p2-gammon-ux-16",
   "private": true,
   "type": "module",
-  "description": "Black Family Game Night Phase Q mobile tabletop UX rebuild: portrait-first full-screen Skip-Bo, realistic/readable Cribbage board and scoring recap, preserved Phase P1 flagship 3D work, multiplayer rules, bots, and reconnect contracts.",
+  "description": "Black Family Game Night Phase R: Prop Hunt P2 John character and animation visual-gate upgrade plus screen-first Backgammon and Black Gammon board UX, roll reliability and artifact cleanup, preserving Phase Q tabletop work and locked multiplayer/rules contracts.",
   "scripts": {
     "test": "node --test",
     "check": "node --check worker.mjs && node --check propHuntRoom.mjs && node --check islandLifeRoom.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check threeNewGames.mjs && node --check blackGammon.mjs && node --check public/app.js && node --check public/prop-hunt-core.mjs && node --check public/shared-3d-art-kit.mjs && node --check public/shared-3d-gameplay.mjs && node --check public/shared-3d-studio.mjs && node --check public/prop-hunt-3d.js && node --check public/island-life-core.mjs && node --check public/island-life.js && node --check public/birthday-climb.js && node --check public/phase-e-qa.mjs && node --check public/sw.js && node --test",

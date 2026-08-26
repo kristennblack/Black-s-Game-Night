@@ -123,8 +123,8 @@ test('Launch assets advertise the Phase E staging build and use a fresh service-
   const {readFile}=await import('node:fs/promises');
   const appSource=await readFile(new URL('../public/app.js',import.meta.url),'utf8');
   const swSource=await readFile(new URL('../public/sw.js',import.meta.url),'utf8');
-  assert.match(appSource,/APP_VERSION='GAME-NIGHT-STAGING-PHASE-Q-MOBILE-TABLETOP-UX-15'/);
-  assert.match(swSource,/black-family-game-night-staging-phase-q-mobile-tabletop-ux-15/);
+  assert.match(appSource,/APP_VERSION='GAME-NIGHT-STAGING-PHASE-R-PROP-HUNT-P2-GAMMON-UX-16'/);
+  assert.match(swSource,/black-family-game-night-staging-phase-r-prop-hunt-p2-gammon-ux-16/);
 });
 
 

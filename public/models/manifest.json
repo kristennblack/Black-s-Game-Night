@@ -34,9 +34,10 @@
         "islandLife",
         "birthdaySeat"
       ],
-      "flagshipBenchmark": "PH-CHAR-01",
+      "flagshipBenchmark": "PH-CHAR-01-P2",
       "artDirection": "stylized-realism",
-      "phase": "P1"
+      "phase": "P2",
+      "visualGate": "character-and-animation"
     }
   },
   "dogs": {

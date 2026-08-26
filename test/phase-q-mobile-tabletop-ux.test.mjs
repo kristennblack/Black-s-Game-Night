@@ -6,8 +6,8 @@ import { GAME_TYPES } from '../gameEngine.mjs';
 import { extraDefaults, startExtraGame, extraPublicState } from '../extraGames.mjs';
 
 const read=p=>fs.readFileSync(new URL(`../${p}`,import.meta.url),'utf8');
-const BUILD='GAME-NIGHT-STAGING-PHASE-Q-MOBILE-TABLETOP-UX-15';
-const CACHE='black-family-game-night-staging-phase-q-mobile-tabletop-ux-15';
+const BUILD='GAME-NIGHT-STAGING-PHASE-R-PROP-HUNT-P2-GAMMON-UX-16';
+const CACHE='black-family-game-night-staging-phase-r-prop-hunt-p2-gammon-ux-16';
 const player=(i)=>({id:`p${i}`,token:`t${i}`,name:`Player ${i}`,avatar:'cowboy',variant:0,outfitVariant:0,color:i===1?'#2f6b9a':'#8b3d38',seat:i-1,ready:true,connected:true,bid:null,tricks:0,score:0,continued:false,hand:[],countHand:[],eliminated:false});
 function room(type,n=2){const players=new Map(Array.from({length:n},(_,i)=>{const p=player(i+1);return[p.id,p]}));return{id:crypto.randomUUID(),gameType:type,settings:extraDefaults(type),players,game:{phase:'lobby',history:[],schedule:[],winnerIds:[],extra:null}}}
 
@@ -15,7 +15,7 @@ test('Phase Q has a fresh build, cache, and QA identity',()=>{
   assert.match(read('public/app.js'),new RegExp(BUILD));
   assert.match(read('public/sw.js'),new RegExp(CACHE));
   assert.equal(read('VERSION.txt').trim(),BUILD);
-  assert.match(read('public/phase-e-qa.mjs'),/3\.2\.0-staging-phase-q-mobile-tabletop-ux-15/);
+  assert.match(read('public/phase-e-qa.mjs'),/3\.3\.0-staging-phase-r-prop-hunt-p2-gammon-ux-16/);
 });
 
 test('Skip-Bo uses a portrait-first direct play surface rather than the zoom viewport',()=>{

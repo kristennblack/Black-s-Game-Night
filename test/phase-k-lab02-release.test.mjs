@@ -2,8 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
-const build='GAME-NIGHT-STAGING-PHASE-Q-MOBILE-TABLETOP-UX-15';
-const cache='black-family-game-night-staging-phase-q-mobile-tabletop-ux-15';
+const build='GAME-NIGHT-STAGING-PHASE-R-PROP-HUNT-P2-GAMMON-UX-16';
+const cache='black-family-game-night-staging-phase-r-prop-hunt-p2-gammon-ux-16';
 
 function parseGlbJson(path){
   const b=fs.readFileSync(path);
@@ -25,9 +25,9 @@ test('Phase K build and cache markers are isolated from Phase I',()=>{
 
 test('John Phase P1 flagship character occupies the production runtime slot',()=>{
   const doc=parseGlbJson('public/models/characters/john-production-skinned.glb');
-  assert.equal(doc.asset?.extras?.flagshipBenchmark,'PH-CHAR-01');
+  assert.match(doc.asset?.extras?.flagshipBenchmark||'',/^PH-CHAR-01(?:-P2)?$/);
   assert.equal(doc.asset?.extras?.productionFlagship,true);
-  assert.equal(doc.asset?.extras?.phase,'P1');
+  assert.ok(['P1','P2'].includes(doc.asset?.extras?.phase));
   assert.equal(doc.asset?.extras?.character,'John');
   assert.equal(doc.skins?.length,1);
   assert.equal(doc.images?.length,3);

@@ -295,6 +295,9 @@ def build_skinned_john():
     m_beard=b.material('John_Beard',0x35251e,.96,0)
     m_face=b.material('John_FacePhoto',0xffffff,.78,0,face_tex,alpha=True,double=True)
     m_metal=b.material('John_Buckle',0xb28a4c,.32,.7)
+    m_eye_white=b.material('John_EyeWhite',0xf2e5d6,.7,0)
+    m_eye=b.material('John_Eye',0x2a201a,.64,0)
+    m_lip=b.material('John_Lips',0x7b463d,.82,0)
 
     # Absolute bind positions. Node tree below converts to local translations.
     abspos={
@@ -319,12 +322,15 @@ def build_skinned_john():
             t=float(np.clip((1.43-y)/.34,0,1));return [joint_index[side+'Shoulder'],joint_index[side+'Elbow']],[1-t,t]
         t=float(np.clip((y-.90)/(.54),0,1));return [joint_index['hips'],joint_index['chest']],[1-t,t]
     shirt_fields=[
-        lambda X,Y,Z:_rounded_box_field(X,Y,Z,(0,1.19,0),(.205,.255,.115),.075),
-        lambda X,Y,Z:_rounded_box_field(X,Y,Z,(0,1.39,0),(.275,.095,.125),.07),
-        lambda X,Y,Z:_capsule_field(X,Y,Z,(-.285,1.405,0),(-.31,1.09,0),.105,.084),
-        lambda X,Y,Z:_capsule_field(X,Y,Z,( .285,1.405,0),( .31,1.09,0),.105,.084),
+        # P2: rounded chest + tapered waist creates an adult torso instead of a square block.
+        lambda X,Y,Z:_ellipsoid_field(X,Y,Z,(0,1.305,0),(.305,.235,.150)),
+        lambda X,Y,Z:_ellipsoid_field(X,Y,Z,(0,1.105,0),(.235,.245,.130)),
+        lambda X,Y,Z:_capsule_field(X,Y,Z,(-.245,1.405,0),(-.31,1.09,0),.112,.082),
+        lambda X,Y,Z:_capsule_field(X,Y,Z,( .245,1.405,0),( .31,1.09,0),.112,.082),
+        lambda X,Y,Z:_ellipsoid_field(X,Y,Z,(-.245,1.405,0),(.115,.100,.125)),
+        lambda X,Y,Z:_ellipsoid_field(X,Y,Z,( .245,1.405,0),(.115,.100,.125)),
     ]
-    prims.append(implicit_union_prim(((-.47,.47),(.84,1.54),(-.27,.27)),(52,58,38),shirt_fields,shirt_weights,m_shirt,'cyl'))
+    prims.append(implicit_union_prim(((-.44,.44),(.83,1.55),(-.24,.24)),(58,66,44),shirt_fields,shirt_weights,m_shirt,'cyl'))
 
     def jeans_weights(v):
         x,y,z=v;side='left' if x<0 else 'right'
@@ -333,11 +339,11 @@ def build_skinned_john():
             t=float(np.clip((.89-y)/.40,0,1));return [joint_index[side+'Hip'],joint_index[side+'Knee']],[1-t,t]
         t=float(np.clip((.49-y)/.36,0,1));return [joint_index[side+'Knee'],joint_index[side+'Foot']],[1-t,t]
     pants_fields=[
-        lambda X,Y,Z:_rounded_box_field(X,Y,Z,(0,.855,0),(.205,.105,.105),.055),
-        lambda X,Y,Z:_capsule_field(X,Y,Z,(-.125,.84,0),(-.13,.49,0),.115,.092),
-        lambda X,Y,Z:_capsule_field(X,Y,Z,( .125,.84,0),( .13,.49,0),.115,.092),
-        lambda X,Y,Z:_capsule_field(X,Y,Z,(-.13,.50,0),(-.13,.14,-.02),.092,.072),
-        lambda X,Y,Z:_capsule_field(X,Y,Z,( .13,.50,0),( .13,.14,-.02),.092,.072),
+        lambda X,Y,Z:_ellipsoid_field(X,Y,Z,(0,.845,0),(.225,.145,.120)),
+        lambda X,Y,Z:_capsule_field(X,Y,Z,(-.125,.83,0),(-.13,.49,0),.116,.094),
+        lambda X,Y,Z:_capsule_field(X,Y,Z,( .125,.83,0),( .13,.49,0),.116,.094),
+        lambda X,Y,Z:_capsule_field(X,Y,Z,(-.13,.50,0),(-.13,.14,-.02),.094,.070),
+        lambda X,Y,Z:_capsule_field(X,Y,Z,( .13,.50,0),( .13,.14,-.02),.094,.070),
     ]
     prims.append(implicit_union_prim(((-.34,.34),(.09,1.02),(-.20,.20)),(44,72,34),pants_fields,jeans_weights,m_denim,'cyl'))
 
@@ -347,11 +353,12 @@ def build_skinned_john():
         prims.append(add_tube(1.105,.79,x,0,.076,.070,.059,.056,joint_index[name+'Elbow'],joint_index[name+'Hand'],m_skin,segments=22,rings=8))
         prims.append(add_ellipsoid_prim((x,.735,-.012),(.066,.082,.052),joint_index[name+'Hand'],m_skin,seg=20,rings=12))
         prims.append(add_boot_wedge((side*.135,.015,-.035),side,joint_index[name+'Foot'],m_boot))
+        prims.append(add_ellipsoid_prim((side*.135,.075,-.175),(.095,.060,.135),joint_index[name+'Foot'],m_boot,seg=16,rings=8))
     # neck
     prims.append(add_tube(1.47,1.56,0,0,.064,.064,.061,.061,joint_index['neck'],joint_index['neck'],m_skin,segments=20,rings=3))
     # head and face texture
-    prims.append(add_ellipsoid_prim((0,1.66,0),(.205,.198,.218),joint_index['head'],m_skin,seg=34,rings=20))
-    prims.append(add_face_patch((0,1.66,0),(.205,.198,.220),joint_index['head'],m_face,cols=34,rows=34))
+    prims.append(add_ellipsoid_prim((0,1.665,0),(.198,.207,.214),joint_index['head'],m_skin,seg=38,rings=24))
+    prims.append(add_face_patch((0,1.665,0),(.198,.207,.216),joint_index['head'],m_face,cols=40,rows=40))
     # Hair is built as several overlapping volumes rather than a helmet-cap.  The
     # asymmetry matters in the rear/three-quarter gameplay view where the face photo
     # cannot carry the silhouette by itself.
@@ -360,15 +367,23 @@ def build_skinned_john():
         prims.append(add_ellipsoid_prim((hx,1.802,hz),(rx,.052,rz),joint_index['head'],m_hair,seg=18,rings=9))
     # Beard/jaw/chin volumes keep John recognisable in side views without trying to
     # fake a second face texture on the back of the head.
-    prims.append(add_ellipsoid_prim((0,1.575,-.207),(.158,.076,.032),joint_index['head'],m_beard,seg=26,rings=13))
-    prims.append(add_ellipsoid_prim((-.112,1.604,-.202),(.055,.088,.027),joint_index['head'],m_beard,seg=16,rings=9))
-    prims.append(add_ellipsoid_prim(( .112,1.604,-.202),(.055,.088,.027),joint_index['head'],m_beard,seg=16,rings=9))
+    prims.append(add_ellipsoid_prim((0,1.570,-.208),(.130,.056,.026),joint_index['head'],m_beard,seg=28,rings=14))
+    prims.append(add_ellipsoid_prim((-.120,1.602,-.201),(.040,.070,.022),joint_index['head'],m_beard,seg=18,rings=10))
+    prims.append(add_ellipsoid_prim(( .120,1.602,-.201),(.040,.070,.022),joint_index['head'],m_beard,seg=18,rings=10))
+    prims.append(add_ellipsoid_prim((0,1.630,-.232),(.090,.020,.016),joint_index['head'],m_beard,seg=20,rings=8))
     # Ears, nose bridge/tip, brow and chin give the textured face a truly dimensional silhouette.
     prims.append(add_ellipsoid_prim((-.210,1.66,0),(.034,.056,.030),joint_index['head'],m_skin,seg=14,rings=8))
     prims.append(add_ellipsoid_prim(( .210,1.66,0),(.034,.056,.030),joint_index['head'],m_skin,seg=14,rings=8))
     prims.append(add_ellipsoid_prim((0,1.676,-.224),(.030,.047,.038),joint_index['head'],m_skin,seg=14,rings=8))
     prims.append(add_ellipsoid_prim((0,1.638,-.238),(.038,.032,.031),joint_index['head'],m_skin,seg=14,rings=8))
     prims.append(add_ellipsoid_prim((0,1.555,-.205),(.080,.038,.025),joint_index['head'],m_skin,seg=16,rings=8))
+    # P2 facial landmarks remain visible at gameplay distance even when the photo texture minifies.
+    for side in (-1,1):
+        ex=side*.071
+        prims.append(add_ellipsoid_prim((ex,1.704,-.206),(.043,.018,.012),joint_index['head'],m_eye_white,seg=14,rings=7))
+        prims.append(add_ellipsoid_prim((ex,1.704,-.220),(.014,.014,.009),joint_index['head'],m_eye,seg=12,rings=6))
+        prims.append(add_ellipsoid_prim((ex,1.738,-.211),(.052,.010,.010),joint_index['head'],m_hair,seg=12,rings=5))
+    prims.append(add_ellipsoid_prim((0,1.612,-.229),(.055,.010,.012),joint_index['head'],m_lip,seg=16,rings=6))
     # Knuckle/finger volumes stop the authored hands from reading as mittens at the
     # over-the-shoulder weapon distance.  They stay skinned to the hand joints.
     for side,name in [(-1,'left'),(1,'right')]:
@@ -448,7 +463,7 @@ def build_skinned_john():
     clip('Idle',2.4,[rot_track('chest',[0,1.2,2.4],[0,.025,0],(0,0,1)),rot_track('head',[0,1.2,2.4],[0,-.035,0],(0,1,0)),trans_track('hips',[0,1.2,2.4],[(0,0,0),(0,.008,0),(0,0,0)])])
     # locomotion cycles
     t=[0,.25,.5,.75,1.0]
-    clip('Walk',1.0,[rot_track('leftHip',t,[.48,0,-.48,0,.48]),rot_track('rightHip',t,[-.48,0,.48,0,-.48]),rot_track('leftKnee',t,[.08,.36,.08,.03,.08]),rot_track('rightKnee',t,[.08,.03,.08,.36,.08]),rot_track('leftShoulder',t,[-.42,0,.42,0,-.42]),rot_track('rightShoulder',t,[.42,0,-.42,0,.42]),rot_track('chest',t,[.025,0,-.025,0,.025],(0,1,0))])
+    clip('Walk',1.0,[rot_track('leftHip',t,[.48,0,-.48,0,.48]),rot_track('rightHip',t,[-.48,0,.48,0,-.48]),rot_track('leftKnee',t,[.08,.36,.08,.03,.08]),rot_track('rightKnee',t,[.08,.03,.08,.36,.08]),rot_track('leftFoot',t,[-.10,.05,.14,.02,-.10]),rot_track('rightFoot',t,[.14,.02,-.10,.05,.14]),rot_track('leftShoulder',t,[-.42,0,.42,0,-.42]),rot_track('rightShoulder',t,[.42,0,-.42,0,.42]),rot_track('chest',t,[.025,0,-.025,0,.025],(0,1,0)),trans_track('hips',t,[(0,0,0),(0,.010,0),(0,0,0),(0,.010,0),(0,0,0)])])
     tr=[0,.18,.36,.54,.72]
     clip('Run',.72,[rot_track('leftHip',tr,[.82,0,-.82,0,.82]),rot_track('rightHip',tr,[-.82,0,.82,0,-.82]),rot_track('leftKnee',tr,[.12,.62,.12,.05,.12]),rot_track('rightKnee',tr,[.12,.05,.12,.62,.12]),rot_track('leftShoulder',tr,[-.72,0,.72,0,-.72]),rot_track('rightShoulder',tr,[.72,0,-.72,0,.72]),rot_track('chest',tr,[.045,0,-.045,0,.045],(0,1,0))])
     sr=[0,.14,.28,.42,.56]
@@ -470,7 +485,7 @@ def build_skinned_john():
     clip('Sit',1.0,[rot_track('leftHip',[0,1],[0,1.35]),rot_track('rightHip',[0,1],[0,1.35]),rot_track('leftKnee',[0,1],[0,-1.25]),rot_track('rightKnee',[0,1],[0,-1.25])])
 
     # Helpful extras for automated provenance/QA.
-    b.doc['asset']['extras']={'productionVerticalSlice':True,'productionFlagship':True,'flagshipBenchmark':'PH-CHAR-01','phase':'P1','sourceReference':'JOHN_16_LOOKS_REFERENCE.jpg','character':'John','authoredClipCount':len(b.doc['animations']),'skinned':True,'artDirection':'stylized-realism'}
+    b.doc['asset']['extras']={'productionVerticalSlice':True,'productionFlagship':True,'flagshipBenchmark':'PH-CHAR-01-P2','phase':'P2','sourceReference':'JOHN_16_LOOKS_REFERENCE.jpg','character':'John','authoredClipCount':len(b.doc['animations']),'skinned':True,'artDirection':'stylized-realism','visualGate':'character-and-animation'}
     size=b.finish(MODELS/'characters'/'john-production-skinned.glb')
     print('WROTE skinned John',size/1024,'KiB clips',len(b.doc['animations']))
 

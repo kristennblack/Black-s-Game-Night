@@ -1,0 +1,33 @@
+BLACK FAMILY GAME NIGHT
+PHASE R PACKAGE VERIFICATION
+
+Build: GAME-NIGHT-STAGING-PHASE-R-PROP-HUNT-P2-GAMMON-UX-16
+Package version: 3.3.0-staging-phase-r-prop-hunt-p2-gammon-ux-16
+
+COLD-EXTRACT VALIDATION RESULT
+- Node regression suite: 354 / 354 passed, 0 failed.
+- Staging build validator: 151 pass, 2 warning, 0 fail.
+- Production 3D asset audit: PASS.
+- ZIP archive integrity test: PASS.
+
+STAGING WARNINGS
+1. Runtime Three.js / addon CDN dependency remains in the existing 3D architecture.
+2. Wrangler executable is unavailable in this packaging runtime, so actual Cloudflare staging deployment remains UNVERIFIED.
+
+PROP HUNT P2 ASSET STATUS
+- John production GLB: valid skinned asset, 19 authored clips.
+- Manifest benchmark: PH-CHAR-01-P2.
+- Papa's Shop authored environment and production prop set remain valid.
+- P2 fireplace/work-bay/barn local benchmark lights are present.
+- JOHN_P2_BINDPOSE_QA.png is an offline source-space geometry proof only, not real gameplay visual approval.
+
+GAMMON STATUS
+- Dedicated screen-first Backgammon / Black Gammon route present.
+- Green generic tabletop wrapper is no longer the normal Gammon gameplay route.
+- Primary roll/big-die controls are surfaced above the board.
+- Successful roll actions explicitly refresh visible room state.
+- Faulty long roster pseudo-element line is disabled at source.
+- Existing Backgammon and Black Gammon rule engines remain covered by regression tests.
+
+VISUAL / DEVICE LIMITATION
+This verification is technical/package validation. Real-device visual and game-feel approval remains required. In particular, verify John in motion, Papa's Shop lighting, Gammon board fit, dice rolling, and removal of the reported line on the user's actual phone.

@@ -4,7 +4,7 @@ import path from 'node:path';
 
 const ROOT=process.cwd();
 const PUBLIC=path.join(ROOT,'public');
-const BUILD='GAME-NIGHT-STAGING-PHASE-Q-MOBILE-TABLETOP-UX-15';
+const BUILD='GAME-NIGHT-STAGING-PHASE-R-PROP-HUNT-P2-GAMMON-UX-16';
 const failures=[];
 const warnings=[];
 const passes=[];
@@ -22,7 +22,7 @@ const wrangler=await text('wrangler.jsonc');
 for(const token of ['"directory":"./public"','"binding":"ASSETS"','"not_found_handling":"single-page-application"'])wrangler.includes(token)?pass(`wrangler: ${token}`):fail(`wrangler missing ${token}`);
 for(const token of ['GameHub','PropHuntRoom','IslandLifeRoom'])wrangler.includes(token)?pass(`durable object: ${token}`):fail(`wrangler missing Durable Object ${token}`);
 const stagingWrangler=await text('wrangler.staging.jsonc');
-for(const token of ['"name": "black-family-game-night-phase-q-staging"','"directory":"./public"','"binding":"ASSETS"','"not_found_handling":"single-page-application"'])stagingWrangler.includes(token)?pass(`staging wrangler: ${token}`):fail(`staging wrangler missing ${token}`);
+for(const token of ['"name": "black-family-game-night-phase-r-staging"','"directory":"./public"','"binding":"ASSETS"','"not_found_handling":"single-page-application"'])stagingWrangler.includes(token)?pass(`staging wrangler: ${token}`):fail(`staging wrangler missing ${token}`);
 for(const token of ['GameHub','PropHuntRoom','IslandLifeRoom'])stagingWrangler.includes(token)?pass(`staging durable object: ${token}`):fail(`staging wrangler missing Durable Object ${token}`);
 
 const manifest=JSON.parse(await text('public/models/manifest.json'));
@@ -92,8 +92,8 @@ for(const [file,s] of allPublic){
 if(cdnHits.length)warn(`core 3D CDN dependency remains (${[...new Set(cdnHits)].join(', ')})`); else pass('no Three.js / addon runtime CDN references');
 
 const app=await text('public/app.js'),sw=await text('public/sw.js'),idx=await text('public/index.html'),ng=await text('public/new-games.html'),il=await text('public/island-life.html');
-const worker=await text('worker.mjs'),extra=await text('extraGames.mjs'),three=await text('threeNewGames.mjs'),black=await text('blackGammon.mjs'),styles=await text('public/styles.css'),studio=await text('public/shared-3d-studio.mjs');
-app.includes(BUILD)&&sw.includes('black-family-game-night-staging-phase-q-mobile-tabletop-ux-15')&&idx.includes(BUILD)&&ng.includes(BUILD)&&il.includes(BUILD)?pass('staging cache/version markers are consistent'):fail('staging cache/version markers are inconsistent');
+const worker=await text('worker.mjs'),extra=await text('extraGames.mjs'),three=await text('threeNewGames.mjs'),black=await text('blackGammon.mjs'),styles=await text('public/styles.css'),studio=await text('public/shared-3d-studio.mjs'),prop3d=await text('public/prop-hunt-3d.js');
+app.includes(BUILD)&&sw.includes('black-family-game-night-staging-phase-r-prop-hunt-p2-gammon-ux-16')&&idx.includes(BUILD)&&ng.includes(BUILD)&&il.includes(BUILD)?pass('staging cache/version markers are consistent'):fail('staging cache/version markers are inconsistent');
 sw.includes('/phase-e-qa.mjs')?pass('staging diagnostics module precached'):fail('phase-e diagnostics missing from service worker shell');
 app.includes("s.gameType===GAME.SMEAR")&&app.includes('YOUR 6-CARD HAND · REVIEW IT BEFORE YOU BID')?pass('Smear six-card hand is rendered during bidding'):fail('Smear bidding-hand presentation marker missing');
 app.includes("PROFILE_KEY='gn_profile_v1'")&&app.includes('homeAvatarHubHTML')&&app.includes('Character → outfit → player colour')?pass('persistent Avatar Hub profile flow present'):fail('Avatar Hub profile flow incomplete');
@@ -112,6 +112,15 @@ app.includes("botDifficultyOptions(current='easy')")&&worker.includes("makeBot(r
 app.includes('--die-color')&&styles.includes('.die[style*="--die-color"]')?pass('player-colour dice presentation present for Backgammon family'):fail('player-colour dice presentation missing');
 for(const token of ['mexican-train-table','skipbo-table','backgammon-table','mt-open-avatar-marker','mt-score-sheet'])app.includes(token)?pass(`new tabletop UI: ${token}`):fail(`new tabletop UI marker missing: ${token}`);
 for(const token of ['.domino-tile','.skipbo-card','.bg-board','.bg-checker-stack','.bg-cube'])styles.includes(token)?pass(`new tabletop styling: ${token}`):fail(`new tabletop styling missing: ${token}`);
+
+// Phase R focused gates: Prop Hunt P2 + screen-first Gammon UX.
+app.includes('function gammonGameplay')&&app.includes('[GAME.BACKGAMMON,GAME.BLACK_GAMMON].includes(s.gameType)')?pass('Phase R dedicated Gammon gameplay route present'):fail('Phase R dedicated Gammon gameplay route missing');
+styles.includes('.gammon-focus-surface')&&styles.includes('.gammon-board-viewport')?pass('Phase R screen-first Gammon layout styles present'):fail('Phase R Gammon layout styles missing');
+styles.includes('.three-new-roster>div>span:before{display:none!important;content:none!important}')?pass('Phase R vertical roster-line artifact disabled at source'):fail('Phase R roster-line artifact cleanup missing');
+app.includes("['bgOpeningRoll','bgRoll','blackRoll','blackBigRoll'].includes(a.action)")&&app.includes('const fresh=await fetchState(session.roomId,session.playerToken);setRoomState(fresh);render()')?pass('Phase R roll actions explicitly refresh visible room state'):fail('Phase R roll refresh contract missing');
+manifest.characters?.john?.phase==='P2'&&manifest.characters?.john?.flagshipBenchmark==='PH-CHAR-01-P2'&&manifest.characters?.john?.animations?.length===19?pass('Phase R John P2 benchmark metadata and 19-clip contract present'):fail('Phase R John P2 benchmark contract incomplete');
+prop3d.includes('P2 fireplace glow')&&prop3d.includes('P2 shop work-bay fill')&&prop3d.includes('P2 barn soft fill')?pass('Phase R Papa Shop local benchmark lighting present'):fail('Phase R Papa Shop benchmark lighting missing');
+if(exists('MASTER_NEXT_BUILD_DEVELOPMENT_DIRECTIVE.md')){const directive=await text('MASTER_NEXT_BUILD_DEVELOPMENT_DIRECTIVE.md');directive.includes('Prop Hunt P2 Character & Animation Visual Gate')&&directive.includes('Critical dice-roll fix')?pass('Phase R governing next-build directive packaged'):fail('Phase R directive missing required focus');}else fail('Phase R governing next-build directive missing');
 
 const wranglerBin=path.join(ROOT,'node_modules','.bin','wrangler');
 if(existsSync(wranglerBin))pass('Wrangler executable available for deployment smoke test'); else warn('Wrangler executable unavailable: actual Cloudflare deployment remains UNVERIFIED');
