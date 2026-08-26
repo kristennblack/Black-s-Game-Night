@@ -15,7 +15,7 @@
  *   deterministic enough to remain stable on phones and private multiplayer
  */
 
-export const STUDIO_3D_VERSION='2.0.0';
+export const STUDIO_3D_VERSION='2.1.0';
 export const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 export const damp=(current,target,lambda,dt)=>current+(target-current)*(1-Math.exp(-lambda*Math.max(0,dt)));
 export const wrapAngle=a=>{while(a>Math.PI)a-=Math.PI*2;while(a<-Math.PI)a+=Math.PI*2;return a};
@@ -26,7 +26,7 @@ export function seededRandom(seed=1){let s=(Number(seed)>>>0)||1;return()=>{s=(M
 
 export const DEFAULT_MODEL_MANIFEST=Object.freeze({
   version:3,
-  characters:{john:{file:'/models/characters/john-production-skinned.glb',scale:.991826,production:true,rig:'skinned-humanoid',referenceHeight:1.82,animations:['Idle','Walk','Run','Turn_Left','Turn_Right','Jump','Fall','Land','Aim','Fire','Hit_Reaction','Wave','Celebrate','Sit'],games:['propHunt','islandLife','birthdaySeat']}},
+  characters:{john:{file:'/models/characters/john-production-skinned.glb',scale:.991826,production:true,rig:'skinned-humanoid',referenceHeight:1.82,animations:['Idle','Walk','Run','Sprint','Start_Move','Stop_Move','Turn_Left','Turn_Right','Jump','Fall','Land','Mantle','Crouch','Aim','Fire','Hit_Reaction','Wave','Celebrate','Sit'],games:['propHunt','islandLife','birthdaySeat']}},
   dogs:{gunner:{file:'/models/dogs/gunner.glb',games:['propHunt','islandLife','birthdaySeat']}},
   props:{propZapper:{file:'/models/props/prop-zapper.glb',games:['propHunt']},tractor:{file:'/models/props/tractor.glb',games:['propHunt']},motorcycle:{file:'/models/props/motorcycle.glb',games:['propHunt']}},
   furniture:{papaChair:{file:'/models/furniture/papa-chair.glb',games:['propHunt']},fireplace:{file:'/models/furniture/fireplace.glb',games:['propHunt']},workbench:{file:'/models/furniture/workbench.glb',games:['propHunt']},toolChest:{file:'/models/furniture/tool-chest.glb',games:['propHunt']},shelving:{file:'/models/furniture/shelving.glb',games:['propHunt']}},
@@ -77,6 +77,12 @@ export function createAuthoredAssetPipeline(THREE,{manifestUrl='/models/manifest
   const has=(category,id)=>!!entry(category,id)?.file&&!failed.has(`${category}:${id}`);
   const reportMissing=(category,id,{fallbackUsed=true,context='runtime character'}={})=>{const e=entry(category,id);return report({kind:'missing-authored-asset',asset:`${category}:${id}`,category,id,file:e?.file||null,error:`REAL 3D AVATAR ASSET MISSING for ${context}`,fallbackUsed})};
   return {ensureManifest,setManifest:m=>{manifest=m||DEFAULT_MODEL_MANIFEST},getManifest:()=>manifest,entry,has,load,loadCharacter:(id,o)=>load('characters',id,o),loadDog:(id,o)=>load('dogs',id,o),loadProp:(id,o)=>load('props',id,o),loadFurniture:(id,o)=>load('furniture',id,o),loadEnvironment:(id,o)=>load('environments',id,o),loadSet:(id,o)=>load('sets',id,o),reportMissing,getLastError:()=>lastError,failed};
+}
+
+/** Reduce shadow/draw-state cost for large static authored sets without changing geometry. */
+export function optimizeStaticAuthoredScene(root,{shadowMinRadius=.18,receiveShadow=true,freezeTransforms=true}={}){
+  if(!root)return{meshes:0,shadowCasters:0};let meshes=0,shadowCasters=0;
+  root.updateMatrixWorld?.(true);root.traverse?.(o=>{if(!o?.isMesh)return;meshes++;let radius=1;try{o.geometry?.computeBoundingSphere?.();radius=(o.geometry?.boundingSphere?.radius||1)*Math.max(Math.abs(o.scale?.x||1),Math.abs(o.scale?.y||1),Math.abs(o.scale?.z||1))}catch{}o.castShadow=radius>=shadowMinRadius;o.receiveShadow=receiveShadow;if(o.castShadow)shadowCasters++;o.frustumCulled=true;if(freezeTransforms){o.updateMatrix?.();o.matrixAutoUpdate=false}});root.userData.staticOptimization={meshes,shadowCasters,shadowMinRadius};return root.userData.staticOptimization;
 }
 
 export function findRigNode(root,names=[]){const targets=names.map(canonicalName);let exact=null,fuzzy=null;root?.traverse?.(o=>{const n=canonicalName(o.name||'');if(!n)return;if(!exact&&targets.includes(n))exact=o;else if(!fuzzy&&targets.some(t=>n.endsWith(t)||n.includes(t)))fuzzy=o});return exact||fuzzy}
@@ -136,9 +142,9 @@ export function hasAuthoredAnimationClips(root){return !!root?.userData?.authore
 export function attachToRigSocket(root,obj,{socket='rightHand',position=[0,0,0],rotation=[0,0,0],scale=1}={}){if(!root||!obj)return null;const aliases={rightHand:['righthandsocket','right_hand_socket','righthand','right_hand','hand_r','mixamorigrighthand','r_hand','wrist_r'],leftHand:['lefthandsocket','left_hand_socket','lefthand','left_hand','hand_l','mixamoriglefthand','l_hand','wrist_l'],head:['headsocket','head_socket','head','mixamorighead','neck_02'],back:['backsocket','back_socket','spine2','spine_02','mixamorigspine2','upperchest','chest']}[socket]||[socket],node=findRigNode(root,aliases)||root;node.add(obj);obj.position.set(...position);obj.rotation.set(...rotation);obj.scale.multiplyScalar(scale);obj.userData.rigSocket=socket;return node}
 
 export const SEMANTIC_CLIP_ALIASES=Object.freeze({
-  idle:['idle','Idle','idle_relaxed','stand'],walk:['walk','Walk','walking'],run:['run','Run','jog','sprint'],backward:['walk_backward','backward'],
+  idle:['idle','Idle','idle_relaxed','stand'],walk:['walk','Walk','walking'],run:['run','Run','jog'],sprint:['sprint','Sprint','run'],startMove:['start_move','Start_Move','walk'],stopMove:['stop_move','Stop_Move','idle'],backward:['walk_backward','backward'],
   strafeLeft:['strafe_left','left'],strafeRight:['strafe_right','right'],turnLeft:['turn_left'],turnRight:['turn_right'],jump:['jump','jump_start'],fall:['fall','air'],
-  land:['land','landing'],hardLand:['hard_land','land_heavy'],mantle:['mantle','climb'],aim:['aim','rifle_aim'],fire:['fire','shoot'],hit:['hit','hit_react'],
+  land:['land','landing'],hardLand:['hard_land','land_heavy'],mantle:['mantle','Mantle','climb'],crouch:['crouch','Crouch'],aim:['aim','rifle_aim'],fire:['fire','shoot'],hit:['hit','hit_react'],
   wave:['wave'],celebrate:['celebrate','cheer'],sit:['sit'],sleep:['sleep'],drink:['drink'],eat:['eat'],fish:['fish','fishing'],cast:['cast','fish_cast'],reel:['reel','fish_reel'],
   chop:['chop','axe'],mine:['mine','pickaxe'],dig:['dig','shovel'],water:['water','watering'],cook:['cook'],work:['work'],carry:['carry'],inspect:['inspect'],dance:['dance'],
   transform:['transform'],throw:['throw'],place:['place'],scratch:['scratch'],shake:['shake'],pant:['pant'],sniff:['sniff'],lie:['lie_down','lay']
@@ -151,13 +157,63 @@ export function findSemanticClip(clips,semantic){
   return null;
 }
 
-/** AnimationMixer-backed crossfader for authored rigs. */
+/**
+ * AnimationMixer-backed controller for authored rigs.
+ *
+ * In addition to ordinary full-body crossfades, this supports a true two-layer
+ * pose: legs/hips continue locomotion while chest/arms/head aim or fire.  The
+ * clips use disjoint tracks, so the player no longer freezes into an Aim pose
+ * every time the weapon comes up.
+ */
 export class SemanticAnimationMixer{
-  constructor(THREE,root,clips=[],{fade=.18}={}){this.THREE=THREE;this.root=root;this.clips=clips;this.fade=fade;this.mixer=clips?.length?new THREE.AnimationMixer(root):null;this.current=null;this.currentSemantic='idle';this.currentSemanticBefore='idle';this.actions=new Map();this.targetTimeScale=1;this.oneShotSemantics=new Set(['fire','hit','land','hardLand','mantle'])}
-  actionFor(semantic){if(!this.mixer)return null;if(this.actions.has(semantic))return this.actions.get(semantic);const fallback={run:['walk','idle'],walk:['idle'],backward:['walk','idle'],strafeLeft:['walk','idle'],strafeRight:['walk','idle'],jump:['fall','idle'],land:['idle'],hardLand:['land','idle'],aim:['idle'],fire:['aim','idle'],hit:['idle'],mantle:['jump','idle']}[semantic]||['idle'];let clip=findSemanticClip(this.clips,semantic);if(!clip)for(const alt of fallback){clip=findSemanticClip(this.clips,alt);if(clip)break}const a=clip?this.mixer.clipAction(clip):null;if(a)this.actions.set(semantic,a);return a}
-  play(semantic,{fade=this.fade,loop=true,timeScale=1,once=false}={}){const next=this.actionFor(semantic);this.currentSemantic=semantic;this.targetTimeScale=Math.max(.05,Number(timeScale)||1);if(!next)return false;if(next===this.current)return true;const previous=this.current,previousSemantic=this.currentSemanticBefore||this.currentSemantic,nextClip=next.getClip?.(),prevClip=previous?.getClip?.(),locomotion=new Set(['walk','run','backward','strafeLeft','strafeRight']),phaseMatch=previous&&locomotion.has(previousSemantic)&&locomotion.has(semantic)&&prevClip?.duration&&nextClip?.duration;next.enabled=true;if(phaseMatch){const phase=(previous.time%prevClip.duration)/prevClip.duration;next.reset();next.time=phase*nextClip.duration}else next.reset();next.timeScale=this.targetTimeScale;next.setEffectiveWeight(1);const shouldOnce=once||this.oneShotSemantics.has(semantic);if(shouldOnce){next.setLoop(this.THREE.LoopOnce,1);next.clampWhenFinished=true}else if(loop){next.setLoop(this.THREE.LoopRepeat,Infinity);next.clampWhenFinished=false}const transition=(semantic==='fire'||semantic==='hit')?0.08:(semantic==='jump'||semantic==='land')?0.11:fade;if(previous){previous.crossFadeTo(next,transition,phaseMatch)}else next.fadeIn(transition);next.play();this.current=next;this.currentSemanticBefore=semantic;return true}
-  update(dt){const step=Math.max(0,dt);if(this.current){const k=1-Math.exp(-step*12);this.current.timeScale+=(this.targetTimeScale-this.current.timeScale)*k}this.mixer?.update(step)}
-  stop(fade=.15){this.current?.fadeOut(fade);this.current=null;this.currentSemanticBefore='idle'}
+  constructor(THREE,root,clips=[],{fade=.18}={}){
+    this.THREE=THREE;this.root=root;this.clips=clips;this.fade=fade;
+    this.mixer=clips?.length?new THREE.AnimationMixer(root):null;
+    this.current=null;this.currentSemantic='idle';this.actions=new Map();
+    this.layerActions=new Map();this.layerClips=new Map();this.baseAction=null;this.overlayAction=null;
+    this.baseSemantic=null;this.overlaySemantic=null;this.mode='full';
+  }
+  clipFor(semantic){
+    const fallback={sprint:['run','walk','idle'],startMove:['walk','idle'],stopMove:['idle'],run:['walk','idle'],walk:['idle'],backward:['walk','idle'],strafeLeft:['walk','idle'],strafeRight:['walk','idle'],jump:['fall','idle'],land:['idle'],hardLand:['land','idle'],aim:['idle'],fire:['aim','idle'],hit:['idle'],mantle:['jump','idle'],crouch:['idle']}[semantic]||['idle'];
+    let clip=findSemanticClip(this.clips,semantic);if(!clip)for(const alt of fallback){clip=findSemanticClip(this.clips,alt);if(clip)break}return clip||null;
+  }
+  actionFor(semantic){if(!this.mixer)return null;if(this.actions.has(semantic))return this.actions.get(semantic);const clip=this.clipFor(semantic),a=clip?this.mixer.clipAction(clip):null;if(a)this.actions.set(semantic,a);return a}
+  _trackIsLower(track){const n=canonicalName(String(track?.name||'').split('.')[0]);return /(^|_)(hips|lefthip|leftknee|leftfoot|righthip|rightknee|rightfoot)(_|$)/.test(n)}
+  _maskedClip(semantic,layer){
+    const key=`${layer}:${semantic}`;if(this.layerClips.has(key))return this.layerClips.get(key);
+    const clip=this.clipFor(semantic);if(!clip)return null;
+    const wantLower=layer==='lower',tracks=(clip.tracks||[]).filter(t=>this._trackIsLower(t)===wantLower).map(t=>t.clone?.()||t);
+    if(!tracks.length)return null;
+    const masked=new this.THREE.AnimationClip(`${clip.name}__${layer}`,clip.duration,tracks,clip.blendMode);this.layerClips.set(key,masked);return masked;
+  }
+  _layerAction(semantic,layer){
+    if(!this.mixer)return null;const key=`${layer}:${semantic}`;if(this.layerActions.has(key))return this.layerActions.get(key);const clip=this._maskedClip(semantic,layer),a=clip?this.mixer.clipAction(clip):null;if(a)this.layerActions.set(key,a);return a;
+  }
+  _start(action,{fade=this.fade,timeScale=1,once=false}={}){
+    if(!action)return false;action.enabled=true;action.timeScale=timeScale;action.setEffectiveWeight(1);
+    if(once){action.setLoop(this.THREE.LoopOnce,1);action.clampWhenFinished=true}else{action.setLoop(this.THREE.LoopRepeat,Infinity);action.clampWhenFinished=false}
+    if(!action.isRunning?.())action.reset().fadeIn(fade).play();return true;
+  }
+  _fade(action,fade=this.fade){if(action){action.fadeOut(fade);return true}return false}
+  play(semantic,{fade=this.fade,loop=true,timeScale=1,once=false}={}){
+    const next=this.actionFor(semantic);this.currentSemantic=semantic;if(!next)return false;
+    if(this.mode==='layered'){this._fade(this.baseAction,fade);this._fade(this.overlayAction,fade);this.baseAction=this.overlayAction=null;this.baseSemantic=this.overlaySemantic=null}
+    this.mode='full';if(next===this.current){next.timeScale=timeScale;return true}
+    next.enabled=true;next.reset();next.timeScale=timeScale;next.setEffectiveWeight(1);
+    if(once){next.setLoop(this.THREE.LoopOnce,1);next.clampWhenFinished=true}else if(loop){next.setLoop(this.THREE.LoopRepeat,Infinity);next.clampWhenFinished=false}
+    if(this.current){this.current.crossFadeTo(next,fade,false)}else next.fadeIn(fade);next.play();this.current=next;return true;
+  }
+  playLayered(baseSemantic='idle',overlaySemantic='aim',{fade=this.fade,baseTimeScale=1,overlayTimeScale=1,overlayOnce=false}={}){
+    if(!this.mixer)return false;const base=this._layerAction(baseSemantic,'lower')||this.actionFor(baseSemantic),overlay=this._layerAction(overlaySemantic,'upper')||this.actionFor(overlaySemantic);if(!base||!overlay)return this.play(overlaySemantic,{fade,timeScale:overlayTimeScale,once:overlayOnce});
+    if(this.mode==='full'&&this.current){this._fade(this.current,fade);this.current=null}
+    this.mode='layered';this.currentSemantic=overlaySemantic;
+    if(base!==this.baseAction){this._fade(this.baseAction,fade);this.baseAction=base;this.baseSemantic=baseSemantic;this._start(base,{fade,timeScale:baseTimeScale})}else base.timeScale=baseTimeScale;
+    if(overlay!==this.overlayAction){this._fade(this.overlayAction,fade);this.overlayAction=overlay;this.overlaySemantic=overlaySemantic;this._start(overlay,{fade,timeScale:overlayTimeScale,once:overlayOnce})}else overlay.timeScale=overlayTimeScale;
+    return true;
+  }
+  update(dt){this.mixer?.update(Math.max(0,dt))}
+  stop(fade=.15){this._fade(this.current,fade);this._fade(this.baseAction,fade);this._fade(this.overlayAction,fade);this.current=this.baseAction=this.overlayAction=null;this.baseSemantic=this.overlaySemantic=null}
+  getState(){return{mode:this.mode,full:this.currentSemantic,base:this.baseSemantic,overlay:this.overlaySemantic}}
 }
 
 export const EXPRESSIONS=Object.freeze({
@@ -270,4 +326,4 @@ export function createCinematicCamera(cameraRig){let shot=null;function start({d
 export function computeStereoPan(listenerYaw,listener,target){const dx=target.x-listener.x,dz=target.z-listener.z,a=Math.atan2(dx,-dz),rel=wrapAngle(a-listenerYaw);return clamp(Math.sin(rel),-1,1)}
 
 /** Returns a compact feature manifest used by QA and in-game diagnostics. */
-export function studioFeatureManifest(){return{version:STUDIO_3D_VERSION,authoredAssets:true,skeletonSafeCloning:true,authoredRigSockets:true,semanticAnimationMixer:true,proceduralIK:true,faceStates:true,networkSnapshotBuffer:true,navGrid:true,cornerSafePathing:true,npcRoutines:true,weather:true,shaderWater:true,shorelineFoam:true,heightfieldTerrain:true,selectivePhysics:true,webAudio:true,surfaceAudio:true,cinematics:true}}
+export function studioFeatureManifest(){return{version:STUDIO_3D_VERSION,authoredAssets:true,skeletonSafeCloning:true,authoredRigSockets:true,semanticAnimationMixer:true,layeredAimLocomotion:true,staticSceneOptimization:true,proceduralIK:true,faceStates:true,networkSnapshotBuffer:true,navGrid:true,cornerSafePathing:true,npcRoutines:true,weather:true,shaderWater:true,shorelineFoam:true,heightfieldTerrain:true,selectivePhysics:true,webAudio:true,surfaceAudio:true,cinematics:true}}

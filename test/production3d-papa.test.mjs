@@ -28,7 +28,7 @@ test('Papa production slice ships real GLB binaries for benchmark characters and
 });
 
 test('production manifest calibrates John and Gunner to gameplay-scale authored models',()=>{
-  assert.equal(manifest.version,3);
+  assert.equal(manifest.version,4);
   assert.ok(manifest.characters.john.production);assert.ok(Math.abs(manifest.characters.john.referenceHeight-1.82)<.001);
   assert.ok(manifest.dogs.gunner.production);assert.ok(Math.abs(manifest.dogs.gunner.referenceHeight-1.08)<.001);
   assert.equal(manifest.props.tractor.production,true);assert.equal(manifest.props.motorcycle.production,true);

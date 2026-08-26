@@ -1,6 +1,7 @@
 import crypto from 'node:crypto';
 import { GAME_TYPES, SUITS, RANKS, shuffle, nextClockwise } from './gameEngine.mjs';
 import { THREE_NEW_TYPES, THREE_NEW_META, threeNewDefaults, applyThreeNewSettings, startThreeNewGame, publicThreeNewGame, actionThreeNewGame } from './threeNewGames.mjs';
+import { BLACK_GAMMON_META, BLACK_GAMMON_DEFAULTS, startBlackGammon, publicBlackGammon, actionBlackGammon } from './blackGammon.mjs';
 
 const gid=(p='x')=>`${p}-${crypto.randomUUID().slice(0,10)}`;
 const rankNum=r=>({A:14,K:13,Q:12,J:11,'10':10,'9':9,'8':8,'7':7,'6':6,'5':5,'4':4,'3':3,'2':2}[r]||0);
@@ -19,7 +20,7 @@ export const EXTRA_TYPES=new Set([
   GAME_TYPES.CAMPFIRE,GAME_TYPES.TRAIL,GAME_TYPES.PRAIRIE,GAME_TYPES.BURN_LOGS,GAME_TYPES.DECK_SWEEP,
   GAME_TYPES.CRIBBAGE,GAME_TYPES.MARBLES,GAME_TYPES.EUCHRE,GAME_TYPES.THIRTY_ONE,GAME_TYPES.GOLF,
   GAME_TYPES.CRAZY_EIGHTS,GAME_TYPES.MITTS,GAME_TYPES.POKER,GAME_TYPES.PRESIDENT,GAME_TYPES.LAST_HAVEN,
-  ...THREE_NEW_TYPES
+  ...THREE_NEW_TYPES,GAME_TYPES.BLACK_GAMMON
 ]);
 
 export const EXTRA_META={
@@ -38,7 +39,8 @@ export const EXTRA_META={
  [GAME_TYPES.POKER]:{name:'Poker',icon:'♠️',sub:'Texas Hold’em with virtual chips only',min:2,max:10},
  [GAME_TYPES.PRESIDENT]:{name:'President',icon:'👑',sub:'Climb the ranks, clear quads and survive the exchanges',min:3,max:8},
  [GAME_TYPES.LAST_HAVEN]:{name:'Last Haven',icon:'☢️',sub:'Post-collapse settlements, supplies, trading and raider cycles',min:2,max:8},
- ...THREE_NEW_META
+ ...THREE_NEW_META,
+ [GAME_TYPES.BLACK_GAMMON]:BLACK_GAMMON_META
 };
 
 export const isExtraGame=t=>EXTRA_TYPES.has(t);
@@ -57,6 +59,7 @@ export function extraDefaults(t){
  if(t===GAME_TYPES.POKER)Object.assign(d,{mode:'tournament',startingChips:1000,smallBlind:10,bigBlind:20,blindIncrease:false});
  if(t===GAME_TYPES.PRESIDENT)Object.assign(d,{roundCount:5});
  Object.assign(d,threeNewDefaults(t));
+ if(t===GAME_TYPES.BLACK_GAMMON)Object.assign(d,BLACK_GAMMON_DEFAULTS);
  return d;
 }
 export function applyExtraSettings(room,b){const t=room.gameType,s=room.settings;
@@ -71,6 +74,7 @@ export function applyExtraSettings(room,b){const t=room.gameType,s=room.settings
  if(t===GAME_TYPES.POKER){if(['cash','tournament'].includes(b.mode))s.mode=b.mode;if(Number(b.startingChips)>=100)s.startingChips=Math.floor(Number(b.startingChips));if(Number(b.smallBlind)>=1)s.smallBlind=Math.floor(Number(b.smallBlind));if(Number(b.bigBlind)>Number(s.smallBlind))s.bigBlind=Math.floor(Number(b.bigBlind));s.blindIncrease=!!b.blindIncrease}
  if(t===GAME_TYPES.PRESIDENT&&Number(b.roundCount)>=1)s.roundCount=Math.min(50,Math.floor(Number(b.roundCount)));
  applyThreeNewSettings(room,b);
+ if(t===GAME_TYPES.BLACK_GAMMON)s.beginnerHelp=b.beginnerHelp!==false&&b.beginnerHelp!=='false';
 }
 export function validateExtraStart(room){const m=EXTRA_META[room.gameType],n=room.players.size;if(n<m.min||n>m.max)throw new Error(`${m.name} needs ${m.min===m.max?m.min:`${m.min}-${m.max}`} players`);if(!allReady(room))throw new Error('Everyone must press Ready');if(room.gameType===GAME_TYPES.TRAIL){if(room.settings.teamMode==='teams2'&&![4,6].includes(n))throw new Error('2-player teams need 4 or 6 players');if(room.settings.teamMode==='teams3'&&n!==6)throw new Error('3-player teams need exactly 6 players')}if(room.gameType===GAME_TYPES.MARBLES&&room.settings.teamMode==='teams'&&![4,6,8].includes(n))throw new Error('Marbles teams need 4, 6, or 8 players')}
 function resetPlayerRound(room){for(const p of room.players.values()){p.hand=[];p.bid=null;p.tricks=0;p.continued=false}}
@@ -348,14 +352,14 @@ function havenCheckWin(room){havenUpdateAwards(room);const ids=order(room),wins=
 
 // ---------------- START / PUBLIC / ACTION DISPATCH ----------------
 export function startExtraGame(room){validateExtraStart(room);const t=room.gameType;
- if(THREE_NEW_TYPES.has(t))return startThreeNewGame(room);
+ if(THREE_NEW_TYPES.has(t))return startThreeNewGame(room);if(t===GAME_TYPES.BLACK_GAMMON)return startBlackGammon(room);
  if(t===GAME_TYPES.CAMPFIRE)return campStart(room);if(t===GAME_TYPES.THIRTY_ONE)return thirtyDeal(room);if(t===GAME_TYPES.CRAZY_EIGHTS)return crazyStart(room);if(t===GAME_TYPES.PRESIDENT)return presidentDeal(room);if(t===GAME_TYPES.GOLF)return golfDeal(room);if(t===GAME_TYPES.EUCHRE)return euchreDeal(room);if(t===GAME_TYPES.CRIBBAGE)return cribDeal(room);if(t===GAME_TYPES.TRAIL)return trailStart(room);if(t===GAME_TYPES.MARBLES)return marblesStart(room);if(t===GAME_TYPES.PRAIRIE)return prairieDeal(room);if(t===GAME_TYPES.BURN_LOGS)return burnDeal(room);if(t===GAME_TYPES.DECK_SWEEP)return sweepDeal(room);if(t===GAME_TYPES.MITTS)return mittStart(room);if(t===GAME_TYPES.POKER)return pokerDeal(room);if(t===GAME_TYPES.LAST_HAVEN)return havenStart(room);throw new Error('Unsupported game')}
-export function extraPublicState(room,viewer){const t=room.gameType;if(THREE_NEW_TYPES.has(t))return publicThreeNewGame(room,viewer);if(t===GAME_TYPES.CAMPFIRE)return campPublic(room,viewer);if(t===GAME_TYPES.THIRTY_ONE)return thirtyPublic(room,viewer);if(t===GAME_TYPES.CRAZY_EIGHTS)return crazyPublic(room,viewer);if(t===GAME_TYPES.PRESIDENT)return presidentPublic(room,viewer);if(t===GAME_TYPES.GOLF)return golfPublic(room,viewer);if(t===GAME_TYPES.EUCHRE)return euchrePublic(room,viewer);if(t===GAME_TYPES.CRIBBAGE)return cribPublic(room,viewer);if(t===GAME_TYPES.TRAIL)return trailPublic(room,viewer);if(t===GAME_TYPES.MARBLES)return marblesPublic(room,viewer);if(t===GAME_TYPES.PRAIRIE)return prairiePublic(room,viewer);if(t===GAME_TYPES.BURN_LOGS)return burnPublic(room,viewer);if(t===GAME_TYPES.DECK_SWEEP)return sweepPublic(room,viewer);if(t===GAME_TYPES.MITTS)return mittPublic(room,viewer);if(t===GAME_TYPES.POKER)return pokerPublic(room,viewer);if(t===GAME_TYPES.LAST_HAVEN)return havenPublic(room,viewer);return null}
+export function extraPublicState(room,viewer){const t=room.gameType;if(THREE_NEW_TYPES.has(t))return publicThreeNewGame(room,viewer);if(t===GAME_TYPES.BLACK_GAMMON)return publicBlackGammon(room,viewer);if(t===GAME_TYPES.CAMPFIRE)return campPublic(room,viewer);if(t===GAME_TYPES.THIRTY_ONE)return thirtyPublic(room,viewer);if(t===GAME_TYPES.CRAZY_EIGHTS)return crazyPublic(room,viewer);if(t===GAME_TYPES.PRESIDENT)return presidentPublic(room,viewer);if(t===GAME_TYPES.GOLF)return golfPublic(room,viewer);if(t===GAME_TYPES.EUCHRE)return euchrePublic(room,viewer);if(t===GAME_TYPES.CRIBBAGE)return cribPublic(room,viewer);if(t===GAME_TYPES.TRAIL)return trailPublic(room,viewer);if(t===GAME_TYPES.MARBLES)return marblesPublic(room,viewer);if(t===GAME_TYPES.PRAIRIE)return prairiePublic(room,viewer);if(t===GAME_TYPES.BURN_LOGS)return burnPublic(room,viewer);if(t===GAME_TYPES.DECK_SWEEP)return sweepPublic(room,viewer);if(t===GAME_TYPES.MITTS)return mittPublic(room,viewer);if(t===GAME_TYPES.POKER)return pokerPublic(room,viewer);if(t===GAME_TYPES.LAST_HAVEN)return havenPublic(room,viewer);return null}
 function findPawn(ex,id){for(const arr of Object.values(ex.pawns||{})){const q=arr.find(x=>x.id===id);if(q)return q}return null}
 function takeCardById(hand,id){const i=hand.findIndex(c=>c.id===id);if(i<0)return null;return hand.splice(i,1)[0]}
 function ensureTurn(ex,p){if(ex.turnPlayerId!==p.id)throw new Error('Not your turn')}
 
-export function extraGameAction(room,p,b){const ex=room.game.extra;if(!ex)throw new Error('Game not started');if(THREE_NEW_TYPES.has(room.gameType))return actionThreeNewGame(room,p,b);const a=String(b.action||''),args=b.args||{};
+export function extraGameAction(room,p,b){const ex=room.game.extra;if(!ex)throw new Error('Game not started');if(THREE_NEW_TYPES.has(room.gameType))return actionThreeNewGame(room,p,b);if(room.gameType===GAME_TYPES.BLACK_GAMMON)return actionBlackGammon(room,p,b);const a=String(b.action||''),args=b.args||{};
  // Campfire Chaos
  if(ex.type===GAME_TYPES.CAMPFIRE){if(a==='lastLog'){if(ex.lastLogVulnerable!==p.id)throw new Error('No Last Log call needed');ex.lastLogCalled.push(p.id);ex.lastLogVulnerable=null;return}if(a==='catchLog'){const v=P(room,ex.lastLogVulnerable);if(!v)throw new Error('Nobody to catch');for(let i=0;i<2;i++){const c=drawOne(ex);if(c)v.hand.push(c)}ex.message=`${v.name} forgot LAST LOG and drew 2.`;ex.lastLogVulnerable=null;return}ensureTurn(ex,p);if(a==='campChallengeRaid'){const ch=ex.draw4Challenge;if(!ch||ch.targetId!==p.id)throw new Error('No Supply Raid to challenge');if(ch.illegal){const offender=P(room,ch.playerId);for(let i=0;i<4;i++){const c=drawOne(ex);if(c)offender.hand.push(c)}ex.message=`Challenge won! ${offender.name} played Supply Raid illegally and drew 4.`;ex.pendingDraw=0;ex.draw4Challenge=null;return}else{for(let i=0;i<6;i++){const c=drawOne(ex);if(c)p.hand.push(c)}ex.message=`Challenge failed. ${p.name} drew 6.`;ex.pendingDraw=0;ex.draw4Challenge=null;campNext(room);return}}if(a==='campDrawPenalty'){const amount=ex.pendingDraw;for(let i=0;i<amount;i++){const c=drawOne(ex);if(c)p.hand.push(c)}ex.message=`${p.name} took ${amount} cards.`;ex.pendingDraw=0;ex.draw4Challenge=null;campNext(room);return}if(a==='campDraw'){if(ex.drawnCardId)throw new Error('Already drew');if(p.hand.some(c=>campMatch(c,ex.discard.at(-1),ex.currentColor)))throw new Error('You already have a playable card');const c=drawOne(ex);if(c)p.hand.push(c);if(c&&campMatch(c,ex.discard.at(-1),ex.currentColor))ex.drawnCardId=c.id;else campNext(room);return}if(a==='campKeepDraw'){if(!ex.drawnCardId)throw new Error('No drawn card to keep');ex.drawnCardId=null;campNext(room);return}if(a==='campPlay'){const c=p.hand.find(x=>x.id===args.cardId);if(!c)throw new Error('Card not found');if(ex.pendingDraw>0)ex.draw4Challenge=null;return campPlay(room,p,c,args)}throw new Error('Invalid Campfire action')}
  // 31

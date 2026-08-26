@@ -13,3 +13,8 @@
 
 /* Phase F Platform 04: universal match-end choices */
 .bc-win-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.bc-win-actions .btn{min-height:46px}@media(max-width:620px){.bc-win-actions{grid-template-columns:1fr}}
+
+
+/* Phase P0: keep Birthday Seat computer choices visible instead of black-on-black. */
+.bc-bot-row .select{background:linear-gradient(180deg,#fff7e5,#ead2a7);color:#2f2419!important;-webkit-text-fill-color:#2f2419;border:2px solid #a77645;color-scheme:light;font-weight:850}
+.bc-bot-row .select option{background:#fff7e5;color:#2f2419}

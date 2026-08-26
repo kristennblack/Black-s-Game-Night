@@ -7,7 +7,7 @@ const MODES=new Set(['classic','chaos']);
 const FAMILY_IDS=new Set(['john','kristen','holly','elizabeth','vanessa','logan','james','dorothy','nana','papa','kelsi','molly','gunner']);
 const safeName=v=>String(v||'Player').trim().slice(0,24)||'Player';
 const safeAvatar=v=>FAMILY_IDS.has(String(v||'').toLowerCase())?String(v).toLowerCase():'john';
-const safeDifficulty=v=>BOT_DIFFICULTIES.has(String(v||'').toLowerCase())?String(v).toLowerCase():'medium';
+const safeDifficulty=v=>BOT_DIFFICULTIES.has(String(v||'').toLowerCase())?String(v).toLowerCase():'easy';
 const json=(data,status=200)=>Response.json(data,{status,headers:{'Cache-Control':'no-store'}});
 const token=()=>crypto.randomUUID().replaceAll('-','')+crypto.randomUUID().replaceAll('-','').slice(0,8);
 const playerByToken=(room,t)=>room?.players?.find(p=>p.token===t)||null;

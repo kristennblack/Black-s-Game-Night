@@ -1,36 +1,53 @@
 BLACK FAMILY GAME NIGHT
-PHASE O REALISTIC ACTIONS STAGING BUILD MANIFEST
+PHASE P1 PROP HUNT FLAGSHIP UPGRADE MANIFEST
 
-Build ID: GAME-NIGHT-STAGING-PHASE-O-REALISTIC-ACTIONS-12
-Package version: 3.0.1-staging-phase-o-realistic-actions-12
+Build ID: GAME-NIGHT-STAGING-PHASE-P1-FLAGSHIP-UPGRADE-14
+Package version: 3.1.0-staging-phase-p1-flagship-upgrade-14
 Worker main: worker.mjs
 Cloudflare static asset directory: ./public
 Assets binding: ASSETS
 SPA fallback: single-page-application
 Staging config: wrangler.staging.jsonc
-Staging Worker name: black-family-game-night-phase-o-staging
-Service worker cache: black-family-game-night-staging-phase-o-realistic-actions-12
+Staging Worker name: black-family-game-night-phase-p1-staging
+Service-worker cache: black-family-game-night-staging-phase-p1-flagship-upgrade-14
 
-RETAINED CONTENT
-- All existing game engines and room/reconnect/bot/chat/rematch systems
-- Mexican Train, Skip-Bo and Backgammon
-- Phase N mobile layout tightening
-- John Character Lab 02 production runtime slot
-- Prop Hunt, Island Life and Birthday Seat shared 3D pipeline
+GOVERNING DIRECTIVE
+- MASTER_3D_DEVELOPMENT_DIRECTIVE.md
+- Prop Hunt is the flagship 3D benchmark.
+- Approved systems/assets are preservation-locked unless a requested change requires them to move.
+- Visual approval is a separate gate from automated tests.
 
-PHASE O CLIENT CHANGES
-- shared cross-render physical piece motion
-- card/domino stable motion keys
-- trick-taking card sweep/collection
-- deck and action tactile feedback
-- Backgammon checker/dice/cube physical motion
-- Cribbage/Golf/Poker/Prairie/Last Haven action detail animations
-- Family Mystery die animation
-- improved authored 3D clip crossfades and smoothed time scale
-- reduced-motion handling
+PHASE P1 FLAGSHIP UPGRADES
+- John PH-CHAR-01 production candidate rebuilt with one skinned rig and 19 authored clips.
+- John candidate marked stylized-realism / productionFlagship / PH-CHAR-01 in GLB metadata.
+- Shared Studio 3D advanced to v2.1 with masked layered locomotion + upper-body aim/fire.
+- Prop Hunt movement state recognizes sprint/start/stop and keeps locomotion active while aiming/firing.
+- Mild touch/gamepad aim assistance added without camera snapping and with muzzle obstruction revalidation retained.
+- Prop Hunt touch controls/crosshair receive phone usability polish.
+- Papa's Shop production visual scene receives static transform/small-shadow optimization and lighting adjustments while gameplay colliders/layout stay preserved.
+- Approved cabin composition is preserved.
+- Home Game Shelf upgraded to dimensional cabin-style controls and custom vector medallion icons.
 
-VALIDATION
-- 315 / 315 automated tests pass
-- build validator: 138 pass, 2 warnings, 0 failures
-- production 3D asset audit: PASS
-- actual Cloudflare deployment: UNVERIFIED
+PRESERVED FROM PHASE O / P0
+- Black Gammon and standard Backgammon remain separate.
+- BLACK_GAMMON_MASTER_RULES.md and BLACK_GAMMON_STARTING_SETUP.png retained.
+- Easy is default bot difficulty; Medium/Hard selectable.
+- Bot selectors remain readable.
+- Existing multiplayer/reconnect/chat/reactions/avatar/outfit/colour/leaderboard/rematch systems retained.
+- Existing repaired third-person camera/collision/movement recovery foundation retained.
+
+VALIDATION RECORDED
+- npm test: 339 / 339 PASS
+- npm run check: PASS + 339 / 339 tests PASS
+- staging validator: 144 PASS, 2 WARN, 0 FAIL
+- production asset audit: PASS
+- John/Papa vertical-slice technical asset audit: PASS
+
+DECLARED WARNINGS
+1. Core Three.js and selected addons still use external CDN URLs.
+2. Wrangler execution/deployed Cloudflare runtime is unavailable in this packaging environment, so live deployment is UNVERIFIED.
+3. Real-device PH-CHAR-01 and Papa's Shop visual/game-feel approval remains required.
+4. Full family character propagation intentionally waits for John benchmark approval.
+
+QA
+Follow PHONE_QA_PHASE_P1_FLAGSHIP_UPGRADE_14.md.

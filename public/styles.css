@@ -641,68 +641,68 @@ html{background:#e8dfcc}body{min-height:100svh;padding-bottom:env(safe-area-inse
   .bg-board{height:min(41vh,312px)}
 }
 
-/* Phase O: shared physical-motion and action-realism pass. */
-.card,.domino-tile,.skipbo-card,.physical-deck,.bg-checker-stack,.trail-marker,.marble-piece{transform-style:preserve-3d;backface-visibility:hidden}
-.card,.domino-tile,.skipbo-card{will-change:transform,filter;transition:box-shadow .16s ease,filter .16s ease,transform .16s ease}
-.hand-card:not(:disabled):active,.extra-hand-card:not(:disabled):active{transform:translateY(-8px) rotateX(7deg) scale(.985)!important}
-.hand-card.legal:hover .card,.extra-hand-card.playable:hover .card,.extra-hand-card.playable:hover .domino-tile{box-shadow:0 12px 24px rgba(0,0,0,.34),0 0 0 2px rgba(244,207,103,.62)}
-.played .card,.trick-seat-play .card,.feature-card .card{box-shadow:0 12px 23px rgba(0,0,0,.32),0 2px 4px rgba(255,255,255,.42) inset}
-.table-deck-button,.golf-deck-stack,.marble-deck,.skipbo-draw,.mt-boneyard{perspective:520px}
-.table-deck-button:not(:disabled):active .physical-deck,.golf-deck-stack:not(:disabled):active .physical-deck,.marble-deck:not(:disabled):active .physical-deck,.skipbo-draw:not(:disabled):active .physical-deck,.mt-boneyard:not(:disabled):active .domino-back-stack{transform:translateY(4px) rotateX(7deg) scale(.985)}
-.physical-deck,.domino-back-stack{transition:transform .14s cubic-bezier(.2,.8,.2,1),filter .14s ease}
-.draw-required .physical-deck,.draw-required .domino-back-stack{animation:physicalDeckReady 1.25s ease-in-out infinite alternate}
-@keyframes physicalDeckReady{from{filter:drop-shadow(0 4px 4px rgba(0,0,0,.34))}to{filter:drop-shadow(0 8px 10px rgba(255,206,89,.42)) brightness(1.08);transform:translateY(-2px)}}
 
-/* Backgammon: proper pip dice and animated checker flight. */
-.die{position:relative;perspective:380px;transform-style:preserve-3d;overflow:hidden}
-.die-pips{display:grid;width:72%;height:72%;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:2px}
-.die-pips em{display:block;place-self:center;width:6px;height:6px;border-radius:50%;background:transparent;box-shadow:none}
-.die-pips em.on{background:#2d2118;box-shadow:inset 0 1px 1px rgba(255,255,255,.26),0 1px 1px rgba(0,0,0,.18)}
-.die-number{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
-.motion-flying-checker{position:fixed;z-index:9999;width:34px;height:16px;border-radius:50%;pointer-events:none;background:radial-gradient(ellipse at 35% 20%,#fff 0 7%,color-mix(in srgb,var(--pc) 75%,#fff) 8% 28%,var(--pc) 30% 62%,color-mix(in srgb,var(--pc) 58%,#15100d) 82%);border:2px solid color-mix(in srgb,var(--pc) 55%,#fff);box-shadow:0 8px 10px rgba(0,0,0,.48),inset 0 2px 3px rgba(255,255,255,.5);transform:translate(-50%,-50%)}
-.bg-checker-stack.legal{animation:bgLegalBreath 1.05s ease-in-out infinite alternate}
-@keyframes bgLegalBreath{to{filter:drop-shadow(0 0 10px #ffd45e) brightness(1.08)}}
-.bg-cube>strong{transform-style:preserve-3d;backface-visibility:hidden}
-
-/* Dominoes land with more weight; cards retain a slight physical edge. */
-.domino-tile{box-shadow:inset 0 0 0 2px rgba(255,255,255,.65),0 7px 9px rgba(0,0,0,.3)}
-.mt-domino-chain .domino-tile{transform-origin:center center}
-.skipbo-build .skipbo-card,.skipbo-public-card .skipbo-card{filter:drop-shadow(0 5px 5px rgba(0,0,0,.24))}
-
-/* More tangible board tokens and score changes. */
-.trail-marker,.marble-piece{transition:filter .16s ease,box-shadow .16s ease}
-.trick-pile .mini-back{box-shadow:0 4px 5px rgba(0,0,0,.28)}
-.phase-card,.round-results-sheet,.extra-game-over{transform-origin:center 42%}
-
-/* Global tactile button feedback without changing layout. */
-.btn,button[data-extra-action],button[data-card],button[data-trail-pawn],button[data-marble-pawn],button[data-bg-from]{touch-action:manipulation;transform-origin:center}
-
-@media(max-width:650px){
- .motion-flying-checker{width:29px;height:14px}
- .die-pips em{width:5px;height:5px}
+/* Phase O: bot chooser readability and Easy-first defaults. */
+.bot-add-grid label,.bot-editor-row{color:#3b2a1d}
+.bot-add-grid select,.bot-inline-select{
+  width:100%;min-width:0;min-height:44px;
+  border:2px solid #a77645;border-radius:11px;
+  background:linear-gradient(180deg,#fff7e5,#ead2a7);
+  color:#2f2419;padding:9px 34px 9px 10px;font-weight:850;
+  -webkit-text-fill-color:#2f2419;color-scheme:light;
+  box-shadow:inset 0 1px 0 #fff8,0 2px 5px #0002;
 }
-@media(prefers-reduced-motion:reduce){
- .draw-required .physical-deck,.draw-required .domino-back-stack,.bg-checker-stack.legal{animation:none!important}
- .card,.domino-tile,.skipbo-card,.physical-deck,.domino-back-stack{transition:none!important}
+.bot-add-grid select:focus,.bot-inline-select:focus{outline:3px solid #d6ad55;outline-offset:1px}
+.bot-add-grid select option,.bot-inline-select option{background:#fff7e5;color:#2f2419}
+.bot-add-grid label>span{color:#5d4631;font-weight:950}
+@media(max-width:480px){
+  .bot-add-grid{grid-template-columns:1fr}
+  .bot-add-grid .btn{grid-column:1}
 }
 
-/* Phase O per-game action details. */
-.motion-collected-card{position:fixed;z-index:9998;pointer-events:none;transform-origin:center center}.motion-collected-card .card{width:100%;height:100%;box-sizing:border-box}
-.crib-hole.pegged b{animation:cribPegDrop .3s cubic-bezier(.2,.8,.25,1)}
-@keyframes cribPegDrop{from{transform:translateY(-10px) scale(.7);opacity:.3}70%{transform:translateY(2px) scale(1.08)}to{transform:none;opacity:1}}
-.crib-pegging .card{animation:cribCardSettle .28s cubic-bezier(.2,.78,.24,1)}
-@keyframes cribCardSettle{from{transform:translateY(-10px) rotate(-4deg);opacity:.35}to{transform:none;opacity:1}}
-.golf-cell.face-up .card{animation:golfCardFlip .38s cubic-bezier(.2,.75,.2,1);transform-origin:center}
-@keyframes golfCardFlip{from{transform:rotateY(86deg) scale(.92);filter:brightness(1.3)}65%{transform:rotateY(-8deg) scale(1.03)}to{transform:none;filter:none}}
-.community-row .card{animation:pokerDealSettle .36s cubic-bezier(.18,.78,.22,1)}
-@keyframes pokerDealSettle{from{transform:translateY(-24px) rotate(-5deg) scale(.86);opacity:.2}70%{transform:translateY(2px) rotate(1deg) scale(1.02);opacity:1}to{transform:none}}
-.pot.live .chip,.chip-stack.live .chip{animation:chipDrop .32s cubic-bezier(.18,.82,.24,1)}
-.pot.live .chip:nth-child(2n),.chip-stack.live .chip:nth-child(2n){animation-delay:.04s}.pot.live .chip:nth-child(3n),.chip-stack.live .chip:nth-child(3n){animation-delay:.08s}
-@keyframes chipDrop{from{transform:translateY(-10px) rotate(-12deg);opacity:.25}70%{transform:translateY(1px) rotate(2deg)}to{transform:none;opacity:1}}
-.haven-route.built{stroke-dasharray:14 5;animation:routeBuildIn .48s ease-out both}
-@keyframes routeBuildIn{from{stroke-dashoffset:80;opacity:.25}to{stroke-dashoffset:0;opacity:1}}
-.meld-rack span{animation:meldSettle .28s ease-out both}
-@keyframes meldSettle{from{transform:translateY(-6px) scale(.9);opacity:.35}to{transform:none;opacity:1}}
-.pile-plate,.call-plaque,.score-burst,.poker-pot{transform-origin:center;animation:tablePlaqueSettle .22s ease-out}
-@keyframes tablePlaqueSettle{from{transform:scale(.96);filter:brightness(1.08)}to{transform:scale(1);filter:none}}
-@media(prefers-reduced-motion:reduce){.crib-hole.pegged b,.crib-pegging .card,.golf-cell.face-up .card,.community-row .card,.pot.live .chip,.chip-stack.live .chip,.haven-route.built,.meld-rack span,.pile-plate,.call-plaque,.score-burst,.poker-pot{animation:none!important}}
+/* Phase O: player-coloured dice shared by Backgammon and Black Gammon. */
+.die[style*="--die-color"]{background:radial-gradient(circle at 35% 25%,color-mix(in srgb,var(--die-color) 20%,white),var(--die-color) 46%,color-mix(in srgb,var(--die-color) 68%,black) 100%);border-color:color-mix(in srgb,var(--die-color) 45%,#fff);color:#fff;text-shadow:0 1px 2px #000;box-shadow:inset 0 2px 5px #fff7,0 7px 10px #0008}
+.mini-die{display:grid!important;width:34px!important;height:34px!important;min-width:34px;border-radius:8px!important;font-style:normal}.mini-die b{font-size:1rem!important}.mini-cup{width:50px;height:38px;border-radius:7px 7px 17px 17px;font-size:.5rem}
+
+/* Black Gammon family house-rule board. */
+.black-gammon-table{position:relative;max-width:900px;width:100%}
+.black-board{position:relative;background:#ceb181}
+.black-point{isolation:isolate}
+.black-checker-stack{transition:filter .14s ease,transform .14s ease;z-index:6}
+.black-checker-stack.bottom-stack{transform:translateX(calc(-50% - 8px)) scale(.88);filter:brightness(.82)}
+.black-checker-stack.top-stack{transform:translateX(calc(-50% + 8px)) translateY(12px);z-index:7}
+.bg-point.bottom .black-checker-stack.bottom-stack{transform:translateX(calc(-50% - 8px)) scale(.88)}
+.bg-point.bottom .black-checker-stack.top-stack{transform:translateX(calc(-50% + 8px)) translateY(-12px)}
+.black-checker-stack.legal{box-shadow:0 0 0 4px #69aef6,0 0 20px #69aef6!important}
+.black-checker-stack.selected{filter:drop-shadow(0 0 11px #fff0a2);z-index:12}
+.black-point .bg-empty-hole{opacity:.45}
+.black-dest-actions{min-width:92px;z-index:24}
+.black-dest-actions button{border-width:3px;box-shadow:0 5px 9px #0006}
+.black-dest-actions button.forward{background:#235e9d;border-color:#86c1ff;color:#fff}
+.black-dest-actions button.backward{background:#963e3a;border-color:#ff9e96;color:#fff}
+.black-dest-actions button.rescue{background:#a87928;border-color:#ffe08a;color:#fff8dc}
+.black-bar{width:58px}.black-bar-stacks{display:flex;flex-direction:column;align-items:center;gap:7px;max-height:135px}.black-bar-stacks .black-checker-stack{position:relative!important;left:auto!important;top:auto!important;bottom:auto!important;transform:none!important;height:47px}
+.black-controls{gap:9px}.black-roll-panel{display:grid;gap:7px}.black-roll-panel>div{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:7px;align-items:center;padding:6px;border-radius:11px;border-left:5px solid var(--pc);background:#ead6ad;color:#362618}.black-roll-panel span{display:grid}.black-roll-panel small{font-size:.52rem;letter-spacing:.05em}.black-roll-panel i{display:flex;gap:4px;align-items:center;font-style:normal}
+.black-big-die{display:grid;gap:4px;padding:9px;border:2px solid #c59953;border-radius:12px;background:#e8d3aa;color:#332316;text-align:center}.black-big-die small{font-weight:1000;letter-spacing:.08em}.black-big-die strong{font-size:.68rem}.black-big-die span{font-size:.58rem}
+.black-assignment{display:flex;flex-wrap:wrap;gap:5px;padding:8px;border:1px solid #9e7448;border-radius:12px;background:#1d140f}.black-assignment>small{width:100%;color:#e8c989;font-weight:950;letter-spacing:.08em}.black-token{display:grid;min-width:70px;padding:5px 7px;border-radius:9px;border:2px solid #69aef6;background:#16375a;color:white}.black-token.backward{border-color:#f0877e;background:#6f2d2b}.black-token>b{font:1000 1rem Georgia,serif}.black-token small{font-size:.44rem;font-weight:900}
+.black-controller{padding:7px;border-radius:10px;background:#f3dfba;color:#3a281a;text-align:center;font-size:.7rem}.black-legend{grid-column:1/-1;display:flex;justify-content:center;gap:6px;flex-wrap:wrap}.black-legend span{padding:4px 7px;border-radius:999px;font-size:.52rem;font-weight:1000;color:#fff}.black-legend .forward{background:#235e9d}.black-legend .backward{background:#963e3a}.black-legend .rescue{background:#a87928}
+.extra-blackgammon .three-new-viewport{bottom:112px}.extra-blackgammon .three-new-table{padding-bottom:112px}
+@media(max-width:700px){.extra-blackgammon .three-new-viewport{bottom:112px}.black-gammon-table{padding:7px}.black-board{min-height:330px}.black-controls{grid-template-columns:1fr 1fr}.black-roll-panel{grid-column:1/-1}.black-assignment{grid-column:1/-1}.black-big-die{grid-column:1/-1}.black-bar{width:38px}.black-checker-stack.bottom-stack{transform:translateX(calc(-50% - 5px)) scale(.82)}.black-checker-stack.top-stack{transform:translateX(calc(-50% + 5px)) translateY(9px)}.bg-point.bottom .black-checker-stack.bottom-stack{transform:translateX(calc(-50% - 5px)) scale(.82)}.bg-point.bottom .black-checker-stack.top-stack{transform:translateX(calc(-50% + 5px)) translateY(-9px)}}
+@media(max-width:430px){.black-board{min-height:300px}.black-roll-panel>div{grid-template-columns:32px 1fr auto}.mini-die{width:30px!important;height:30px!important;min-width:30px}.black-token{min-width:62px}}
+
+/* Phase P1 approved-cabin UI: crafted plaques instead of flat web cards. */
+.lodge-home .lodge-shelf{background:linear-gradient(145deg,#3f291c 0%,#281912 48%,#362318 100%);border:1px solid #6f4b30;box-shadow:inset 0 1px 0 #d6b37d22,inset 0 -18px 34px #130b0780,0 15px 35px #1d120b22}
+.lodge-home .shelf-heading h2{letter-spacing:.035em;text-shadow:0 2px 1px #140c08,0 0 16px #d9aa6420}
+.lodge-home .lodge-game-card{overflow:hidden;border:1px solid #765031;background:linear-gradient(155deg,#4a3020 0%,#2d1d15 58%,#241710 100%);box-shadow:inset 0 0 0 2px #130c0875,inset 0 1px 0 #e4c38a30,0 7px 15px #130c075e;color:#f1e6d5}
+.lodge-home .lodge-game-card:before{content:"";position:absolute;inset:7px;border:1px solid #b7854c45;border-radius:12px;pointer-events:none;box-shadow:inset 0 0 12px #0003}
+.lodge-home .lodge-game-card:after{content:"";position:absolute;left:13%;right:13%;bottom:-8px;height:16px;border-radius:50%;background:#0d090680;filter:blur(8px);z-index:-1}
+.lodge-home .lodge-game-card h3{position:relative;z-index:1;color:#fff0cf;letter-spacing:.018em;text-shadow:0 2px 0 #160d08;font-weight:800}
+.lodge-home .lodge-game-card p,.lodge-home .game-card-meta{position:relative;z-index:1;color:#cdbda8}.lodge-home .game-card-actions{position:relative;z-index:2}
+.lodge-home .lodge-game-card .btn{border-width:1px;box-shadow:inset 0 1px 0 #fff4,0 3px 0 #130c08,0 5px 9px #0004;transition:transform .12s,box-shadow .12s}.lodge-home .lodge-game-card .btn:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #fff3,0 1px 0 #130c08,0 2px 5px #0004}
+.lodge-home .game-icon{width:64px;height:58px;display:grid;place-items:center;filter:none}.premium-game-icon{position:relative;display:grid;place-items:center;width:62px;height:54px;border-radius:15px;background:linear-gradient(145deg,#3c4547,#181e1f);border:1px solid #b98b4d;box-shadow:inset 0 1px 0 #f6dca84a,inset 0 -9px 15px #0008,0 4px 8px #0007;color:#e9c77c}.premium-game-icon svg{position:absolute;inset:4px;width:54px;height:46px;overflow:visible}.premium-game-icon svg g{fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;opacity:.82}.premium-game-icon b{position:absolute;right:3px;bottom:1px;min-width:22px;padding:1px 3px;border-radius:6px;background:#17100dd9;border:1px solid #9f7847;color:#fff0cf;font:800 .48rem/1.2 system-ui;letter-spacing:.06em;text-align:center}.motif-target{color:#f0ca74}.motif-island{color:#91c4a5}.motif-mountain{color:#e3b08a}.motif-gammon{color:#e5c16c}.motif-domino{color:#d3d5d0}
+.home-john-frame{position:relative;border-radius:18px!important;border:5px solid #684526!important;box-shadow:inset 0 0 0 2px #d7ad6766,0 17px 38px #000b,0 0 28px #e89b3d16!important}.home-john-frame:after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,#ffca7430 0%,transparent 40%,#0005 100%);mix-blend-mode:screen;pointer-events:none;animation:johnFireKiss 3.2s ease-in-out infinite alternate}.home-john-feature figcaption{padding:9px 12px;border-radius:12px;background:#17100cc2;border:1px solid #795333;box-shadow:inset 0 1px 0 #f8d6991c,0 7px 18px #0005}
+.home-destination-row button{background:linear-gradient(#332117d9,#21150fdd);border:1px solid #775137;box-shadow:inset 0 1px 0 #f4d7a127,0 3px 0 #120b07}.home-destination-row button:active{transform:translateY(2px);box-shadow:inset 0 1px 0 #f4d7a120,0 1px 0 #120b07}
+@keyframes johnFireKiss{from{opacity:.38}to{opacity:.72}}
+@media(hover:hover){.lodge-home .lodge-game-card:hover{transform:translateY(-5px) rotateX(.8deg);border-color:#a37340;box-shadow:inset 0 0 0 2px #130c0875,inset 0 1px 0 #e4c38a38,0 15px 25px #130c0780}.lodge-home .lodge-game-card:hover .premium-game-icon{transform:translateY(-1px);box-shadow:inset 0 1px 0 #f6dca85e,inset 0 -9px 15px #0008,0 7px 13px #0008}}
+@media(max-width:620px){.lodge-home .game-icon{width:55px;height:51px}.premium-game-icon{width:54px;height:48px}.premium-game-icon svg{width:47px;height:41px}.lodge-home .lodge-game-card{border-radius:14px}}
+@media(prefers-reduced-motion:reduce){.home-john-frame:after{animation:none!important}}

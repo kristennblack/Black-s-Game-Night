@@ -5,7 +5,7 @@ export const GAME_TYPES = {
   CAMPFIRE:'campfire', TRAIL:'trail', PRAIRIE:'prairie', BURN_LOGS:'burnlogs', DECK_SWEEP:'decksweep',
   CRIBBAGE:'cribbage', MARBLES:'marbles', EUCHRE:'euchre', THIRTY_ONE:'thirtyone', GOLF:'golf',
   CRAZY_EIGHTS:'crazy8', MITTS:'mitts', POKER:'poker', PRESIDENT:'president', LAST_HAVEN:'lasthaven',
-  MEXICAN_TRAIN:'mexicantrain', SKIP_BO:'skipbo', BACKGAMMON:'backgammon'
+  MEXICAN_TRAIN:'mexicantrain', SKIP_BO:'skipbo', BACKGAMMON:'backgammon', BLACK_GAMMON:'blackgammon'
 };
 export const SUITS = ['hearts', 'clubs', 'diamonds', 'spades'];
 export const TRUMP_CYCLE = ['hearts', 'clubs', 'diamonds', 'spades', 'none'];

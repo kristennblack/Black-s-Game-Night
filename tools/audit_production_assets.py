@@ -8,7 +8,7 @@ PUB=ROOT/'public'
 manifest=json.loads((PUB/'models/manifest.json').read_text())
 
 checks=[
- ('characters','john',['JohnLab02Rig','JohnLab02Body','hips','upperBody','head','leftShoulder','leftElbow','leftHand','rightShoulder','rightElbow','rightHand','leftHip','leftKnee','leftFoot','rightHip','rightKnee','rightFoot','rightHandSocket']),
+ ('characters','john',['JohnRig','JohnBody','hips','upperBody','head','leftShoulder','leftElbow','leftHand','rightShoulder','rightElbow','rightHand','leftHip','leftKnee','leftFoot','rightHip','rightKnee','rightFoot','rightHandSocket']),
  ('dogs','gunner',['GunnerRig','approvedFacePatch','body','chestPivot','head','jaw','frontLeft','frontLeftKnee','frontRight','frontRightKnee','rearLeft','rearLeftKnee','rearRight','rearRightKnee','tail','backSocket']),
  ('props','propZapper',['PropZapper','muzzle']),
  ('props','tractor',['Tractor']),
@@ -36,7 +36,7 @@ for cat,key,required in checks:
     missing=[n for n in required if n not in names]
     if missing: failed.append(f'{path}: missing nodes {missing}')
     if key in ('john','gunner'):
-        expected_mat='John_Face' if key=='john' else 'Gunner_FacePhoto'
+        expected_mat='John_FacePhoto' if key=='john' else 'Gunner_FacePhoto'
         mats=[getattr(getattr(g.visual,'material',None),'name',None) for g in scene.geometry.values()]
         textured=[getattr(getattr(g.visual,'material',None),'baseColorTexture',None) is not None for g in scene.geometry.values() if getattr(getattr(g.visual,'material',None),'name',None)==expected_mat]
         if expected_mat not in mats or not any(textured): failed.append(f'{path}: missing embedded face texture {expected_mat}')

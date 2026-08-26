@@ -4,7 +4,7 @@ import path from 'node:path';
 
 const ROOT=process.cwd();
 const PUBLIC=path.join(ROOT,'public');
-const BUILD='GAME-NIGHT-STAGING-PHASE-O-REALISTIC-ACTIONS-12';
+const BUILD='GAME-NIGHT-STAGING-PHASE-P1-FLAGSHIP-UPGRADE-14';
 const failures=[];
 const warnings=[];
 const passes=[];
@@ -14,7 +14,7 @@ const warn=m=>warnings.push(m);
 const text=async p=>readFile(path.join(ROOT,p),'utf8');
 const exists=p=>existsSync(path.join(ROOT,p));
 
-for(const p of ['public','public/index.html','public/new-games.html','public/island-life.html','public/app.js','public/prop-hunt-3d.js','public/island-life.js','public/birthday-climb.js','public/phase-e-qa.mjs','worker.mjs','threeNewGames.mjs','wrangler.jsonc','wrangler.staging.jsonc']){
+for(const p of ['public','public/index.html','public/new-games.html','public/island-life.html','public/app.js','public/prop-hunt-3d.js','public/island-life.js','public/birthday-climb.js','public/phase-e-qa.mjs','worker.mjs','threeNewGames.mjs','blackGammon.mjs','wrangler.jsonc','wrangler.staging.jsonc']){
   exists(p)?pass(`exists: ${p}`):fail(`missing: ${p}`);
 }
 
@@ -22,7 +22,7 @@ const wrangler=await text('wrangler.jsonc');
 for(const token of ['"directory":"./public"','"binding":"ASSETS"','"not_found_handling":"single-page-application"'])wrangler.includes(token)?pass(`wrangler: ${token}`):fail(`wrangler missing ${token}`);
 for(const token of ['GameHub','PropHuntRoom','IslandLifeRoom'])wrangler.includes(token)?pass(`durable object: ${token}`):fail(`wrangler missing Durable Object ${token}`);
 const stagingWrangler=await text('wrangler.staging.jsonc');
-for(const token of ['"name": "black-family-game-night-phase-o-staging"','"directory":"./public"','"binding":"ASSETS"','"not_found_handling":"single-page-application"'])stagingWrangler.includes(token)?pass(`staging wrangler: ${token}`):fail(`staging wrangler missing ${token}`);
+for(const token of ['"name": "black-family-game-night-phase-p1-staging"','"directory":"./public"','"binding":"ASSETS"','"not_found_handling":"single-page-application"'])stagingWrangler.includes(token)?pass(`staging wrangler: ${token}`):fail(`staging wrangler missing ${token}`);
 for(const token of ['GameHub','PropHuntRoom','IslandLifeRoom'])stagingWrangler.includes(token)?pass(`staging durable object: ${token}`):fail(`staging wrangler missing Durable Object ${token}`);
 
 const manifest=JSON.parse(await text('public/models/manifest.json'));
@@ -92,8 +92,8 @@ for(const [file,s] of allPublic){
 if(cdnHits.length)warn(`core 3D CDN dependency remains (${[...new Set(cdnHits)].join(', ')})`); else pass('no Three.js / addon runtime CDN references');
 
 const app=await text('public/app.js'),sw=await text('public/sw.js'),idx=await text('public/index.html'),ng=await text('public/new-games.html'),il=await text('public/island-life.html');
-const worker=await text('worker.mjs'),extra=await text('extraGames.mjs'),three=await text('threeNewGames.mjs'),styles=await text('public/styles.css'),studio=await text('public/shared-3d-studio.mjs');
-app.includes(BUILD)&&sw.includes('black-family-game-night-staging-phase-o-realistic-actions-12')&&idx.includes(BUILD)&&ng.includes(BUILD)&&il.includes(BUILD)?pass('staging cache/version markers are consistent'):fail('staging cache/version markers are inconsistent');
+const worker=await text('worker.mjs'),extra=await text('extraGames.mjs'),three=await text('threeNewGames.mjs'),black=await text('blackGammon.mjs'),styles=await text('public/styles.css'),studio=await text('public/shared-3d-studio.mjs');
+app.includes(BUILD)&&sw.includes('black-family-game-night-staging-phase-p1-flagship-upgrade-14')&&idx.includes(BUILD)&&ng.includes(BUILD)&&il.includes(BUILD)?pass('staging cache/version markers are consistent'):fail('staging cache/version markers are inconsistent');
 sw.includes('/phase-e-qa.mjs')?pass('staging diagnostics module precached'):fail('phase-e diagnostics missing from service worker shell');
 app.includes("s.gameType===GAME.SMEAR")&&app.includes('YOUR 6-CARD HAND · REVIEW IT BEFORE YOU BID')?pass('Smear six-card hand is rendered during bidding'):fail('Smear bidding-hand presentation marker missing');
 app.includes("PROFILE_KEY='gn_profile_v1'")&&app.includes('homeAvatarHubHTML')&&app.includes('Character → outfit → player colour')?pass('persistent Avatar Hub profile flow present'):fail('Avatar Hub profile flow incomplete');
@@ -101,11 +101,15 @@ app.includes("api('requests'")&&app.includes("api('leaderboard'")&&worker.includ
 app.includes('KEEP PLAYING')&&app.includes('RETURN TO GAME SHELF')&&worker.includes("/api/rematch")?pass('shared room rematch/end-of-game flow present'):fail('shared room rematch/end-of-game flow incomplete');
 extra.includes('TRAIL_HAND_SIZE=5')&&extra.includes('trailDrawTo')&&extra.includes('trailDiscardCard')&&app.includes('bindTrailBoardGestures')&&styles.includes('touch-action:none')?pass('Trail Trouble five-card hand and gesture board controls present'):fail('Trail Trouble Phase F markers incomplete');
 studio.includes('applyPrimaryClothingColor')?pass('future authored GLB primary-clothing tint contract present'):fail('primary clothing tint contract missing');
-for(const token of ["MEXICAN_TRAIN:'mexicantrain'","SKIP_BO:'skipbo'","BACKGAMMON:'backgammon'"])(await text('gameEngine.mjs')).includes(token)?pass(`new game type: ${token}`):fail(`new game type missing: ${token}`);
+for(const token of ["MEXICAN_TRAIN:'mexicantrain'","SKIP_BO:'skipbo'","BACKGAMMON:'backgammon'","BLACK_GAMMON:'blackgammon'"])(await text('gameEngine.mjs')).includes(token)?pass(`new game type: ${token}`):fail(`new game type missing: ${token}`);
 extra.includes("from './threeNewGames.mjs'")&&extra.includes('THREE_NEW_META')?pass('three new games are integrated through the shared extra-game adapter'):fail('three-new-game adapter integration missing');
 three.includes('createDouble12Set')&&three.includes('roundCount:3')&&three.includes('unresolvedDouble')?pass('Mexican Train Double-12, three-round and double-obligation engine present'):fail('Mexican Train engine markers incomplete');
 three.includes('createSkipBoDeck')&&three.includes('builds:[[],[],[],[]]')&&three.includes('discards[id]=[[],[],[],[]]')&&three.includes('Stock Pile cleared')?pass('Skip-Bo Stock, four Discard, four Building and win engine present'):fail('Skip-Bo engine markers incomplete');
 three.includes('bgLegalSequences')&&three.includes('bgCanBear')&&three.includes('pendingDouble')&&three.includes("kind='backgammon'")?pass('Backgammon legal-sequence, bar/bear-off and cube scoring engine present'):fail('Backgammon engine markers incomplete');
+black.includes('BLACK_GAMMON_BIG_DIE_VALUES')&&black.includes('blackAllocationPlans')&&black.includes('blackLegalMoves')&&black.includes('riskDue')&&black.includes('overDue')?pass('Black Gammon shared-dice, direction, rescue and overstack engine present'):fail('Black Gammon engine markers incomplete');
+app.includes('blackGammonBoard')&&app.includes('BLUE · FORWARD')&&app.includes('RED · BACKWARD')&&app.includes('GOLD · RESCUE')?pass('Black Gammon board and direction/rescue UI present'):fail('Black Gammon UI markers incomplete');
+app.includes("botDifficultyOptions(current='easy')")&&worker.includes("makeBot(room,difficulty='easy'")&&styles.includes('#fff7e5')?pass('Easy-first readable bot selector contract present'):fail('Easy-first bot selector contract incomplete');
+app.includes('--die-color')&&styles.includes('.die[style*="--die-color"]')?pass('player-colour dice presentation present for Backgammon family'):fail('player-colour dice presentation missing');
 for(const token of ['mexican-train-table','skipbo-table','backgammon-table','mt-open-avatar-marker','mt-score-sheet'])app.includes(token)?pass(`new tabletop UI: ${token}`):fail(`new tabletop UI marker missing: ${token}`);
 for(const token of ['.domino-tile','.skipbo-card','.bg-board','.bg-checker-stack','.bg-cube'])styles.includes(token)?pass(`new tabletop styling: ${token}`):fail(`new tabletop styling missing: ${token}`);
 

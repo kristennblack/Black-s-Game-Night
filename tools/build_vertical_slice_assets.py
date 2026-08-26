@@ -56,10 +56,11 @@ def john_face_crop():
     ref=Image.open(ROOT/'JOHN_16_LOOKS_REFERENCE.jpg').convert('RGB')
     # Top-row third portrait is frontal and consistent with approved styling.
     cell=ref.crop((512,0,768,256))
-    crop=cell.crop((42,18,224,232)).resize((512,600),Image.Resampling.LANCZOS)
-    # soften outer edges because this is a front-of-head texture patch
-    alpha=Image.new('L',crop.size,0);d=ImageDraw.Draw(alpha);d.ellipse((22,8,crop.size[0]-22,crop.size[1]-8),fill=255)
-    alpha=alpha.filter(ImageFilter.GaussianBlur(20))
+    crop=cell.crop((48,20,218,230)).resize((512,600),Image.Resampling.LANCZOS)
+    # Tighter feathering keeps the likeness on the actual face instead of wrapping
+    # photo background around the temples / rear of the head.
+    alpha=Image.new('L',crop.size,0);d=ImageDraw.Draw(alpha);d.ellipse((48,18,crop.size[0]-48,crop.size[1]-18),fill=255)
+    alpha=alpha.filter(ImageFilter.GaussianBlur(16))
     out=crop.convert('RGBA');out.putalpha(alpha);return out
 
 def make_plaid(size=512):
@@ -345,22 +346,42 @@ def build_skinned_john():
         x=side*.31
         prims.append(add_tube(1.105,.79,x,0,.076,.070,.059,.056,joint_index[name+'Elbow'],joint_index[name+'Hand'],m_skin,segments=22,rings=8))
         prims.append(add_ellipsoid_prim((x,.735,-.012),(.066,.082,.052),joint_index[name+'Hand'],m_skin,seg=20,rings=12))
-        prims.append(add_boot_wedge((x,.015,-.035),side,joint_index[name+'Foot'],m_boot))
+        prims.append(add_boot_wedge((side*.135,.015,-.035),side,joint_index[name+'Foot'],m_boot))
     # neck
     prims.append(add_tube(1.47,1.56,0,0,.064,.064,.061,.061,joint_index['neck'],joint_index['neck'],m_skin,segments=20,rings=3))
     # head and face texture
     prims.append(add_ellipsoid_prim((0,1.66,0),(.205,.198,.218),joint_index['head'],m_skin,seg=34,rings=20))
     prims.append(add_face_patch((0,1.66,0),(.205,.198,.220),joint_index['head'],m_face,cols=34,rows=34))
-    # hair cap: flattened ellipsoid slightly above, and beard volume behind face photo patch
-    prims.append(add_ellipsoid_prim((0,1.765,.018),(.200,.078,.198),joint_index['head'],m_hair,seg=28,rings=14))
-    # beard/chin low profile; preserve facial photo as primary likeness
-    prims.append(add_ellipsoid_prim((0,1.575,-.205),(.155,.073,.030),joint_index['head'],m_beard,seg=24,rings=12))
-    # ears and a small nose give the textured face a genuinely dimensional silhouette.
+    # Hair is built as several overlapping volumes rather than a helmet-cap.  The
+    # asymmetry matters in the rear/three-quarter gameplay view where the face photo
+    # cannot carry the silhouette by itself.
+    prims.append(add_ellipsoid_prim((0,1.767,.020),(.200,.074,.198),joint_index['head'],m_hair,seg=30,rings=15))
+    for hx,hz,rx,rz in [(-.125,-.055,.082,.115),(-.048,-.095,.090,.105),(.045,-.100,.086,.108),(.126,-.050,.078,.118)]:
+        prims.append(add_ellipsoid_prim((hx,1.802,hz),(rx,.052,rz),joint_index['head'],m_hair,seg=18,rings=9))
+    # Beard/jaw/chin volumes keep John recognisable in side views without trying to
+    # fake a second face texture on the back of the head.
+    prims.append(add_ellipsoid_prim((0,1.575,-.207),(.158,.076,.032),joint_index['head'],m_beard,seg=26,rings=13))
+    prims.append(add_ellipsoid_prim((-.112,1.604,-.202),(.055,.088,.027),joint_index['head'],m_beard,seg=16,rings=9))
+    prims.append(add_ellipsoid_prim(( .112,1.604,-.202),(.055,.088,.027),joint_index['head'],m_beard,seg=16,rings=9))
+    # Ears, nose bridge/tip, brow and chin give the textured face a truly dimensional silhouette.
     prims.append(add_ellipsoid_prim((-.210,1.66,0),(.034,.056,.030),joint_index['head'],m_skin,seg=14,rings=8))
     prims.append(add_ellipsoid_prim(( .210,1.66,0),(.034,.056,.030),joint_index['head'],m_skin,seg=14,rings=8))
-    prims.append(add_ellipsoid_prim((0,1.66,-.225),(.034,.050,.040),joint_index['head'],m_skin,seg=14,rings=8))
-    # collar, belt, buckle all skin to torso/hips
+    prims.append(add_ellipsoid_prim((0,1.676,-.224),(.030,.047,.038),joint_index['head'],m_skin,seg=14,rings=8))
+    prims.append(add_ellipsoid_prim((0,1.638,-.238),(.038,.032,.031),joint_index['head'],m_skin,seg=14,rings=8))
+    prims.append(add_ellipsoid_prim((0,1.555,-.205),(.080,.038,.025),joint_index['head'],m_skin,seg=16,rings=8))
+    # Knuckle/finger volumes stop the authored hands from reading as mittens at the
+    # over-the-shoulder weapon distance.  They stay skinned to the hand joints.
+    for side,name in [(-1,'left'),(1,'right')]:
+        x=side*.31
+        for fi in range(4):
+            fx=x+side*(-.036+fi*.024)
+            prims.append(add_ellipsoid_prim((fx,.700,-.035),(.018,.049,.019),joint_index[name+'Hand'],m_skin,seg=10,rings=6))
+        prims.append(add_ellipsoid_prim((x-side*.058,.724,-.018),(.022,.045,.021),joint_index[name+'Hand'],m_skin,seg=10,rings=6))
+    # Collar, shirt placket, chest pockets, belt and buckle add readable clothing form.
     prims.append(add_box_prim((0,1.465,-.188),(.30,.055,.025),joint_index['chest'],m_shirt))
+    prims.append(add_box_prim((0,1.270,-.128),(.025,.315,.016),joint_index['chest'],m_shirt))
+    prims.append(add_box_prim((-.135,1.285,-.132),(.145,.115,.018),joint_index['chest'],m_shirt))
+    prims.append(add_box_prim(( .135,1.285,-.132),(.145,.115,.018),joint_index['chest'],m_shirt))
     prims.append(add_box_prim((0,.955,0),(.49,.055,.25),joint_index['hips'],m_boot))
     prims.append(add_box_prim((0,.955,-.135),(.08,.068,.025),joint_index['hips'],m_metal))
 
@@ -430,11 +451,17 @@ def build_skinned_john():
     clip('Walk',1.0,[rot_track('leftHip',t,[.48,0,-.48,0,.48]),rot_track('rightHip',t,[-.48,0,.48,0,-.48]),rot_track('leftKnee',t,[.08,.36,.08,.03,.08]),rot_track('rightKnee',t,[.08,.03,.08,.36,.08]),rot_track('leftShoulder',t,[-.42,0,.42,0,-.42]),rot_track('rightShoulder',t,[.42,0,-.42,0,.42]),rot_track('chest',t,[.025,0,-.025,0,.025],(0,1,0))])
     tr=[0,.18,.36,.54,.72]
     clip('Run',.72,[rot_track('leftHip',tr,[.82,0,-.82,0,.82]),rot_track('rightHip',tr,[-.82,0,.82,0,-.82]),rot_track('leftKnee',tr,[.12,.62,.12,.05,.12]),rot_track('rightKnee',tr,[.12,.05,.12,.62,.12]),rot_track('leftShoulder',tr,[-.72,0,.72,0,-.72]),rot_track('rightShoulder',tr,[.72,0,-.72,0,.72]),rot_track('chest',tr,[.045,0,-.045,0,.045],(0,1,0))])
+    sr=[0,.14,.28,.42,.56]
+    clip('Sprint',.56,[rot_track('leftHip',sr,[1.02,0,-1.02,0,1.02]),rot_track('rightHip',sr,[-1.02,0,1.02,0,-1.02]),rot_track('leftKnee',sr,[.16,.80,.15,.04,.16]),rot_track('rightKnee',sr,[.16,.04,.15,.80,.16]),rot_track('leftShoulder',sr,[-.86,0,.86,0,-.86]),rot_track('rightShoulder',sr,[.86,0,-.86,0,.86]),rot_track('chest',sr,[.075,.035,-.075,-.035,.075],(0,1,0))])
+    clip('Start_Move',.30,[rot_track('leftHip',[0,.15,.30],[0,.32,.48]),rot_track('rightHip',[0,.15,.30],[0,-.25,-.40]),rot_track('chest',[0,.15,.30],[0,-.045,-.02],(1,0,0)),trans_track('hips',[0,.15,.30],[(0,0,0),(0,-.012,-.012),(0,0,-.025)])])
+    clip('Stop_Move',.34,[rot_track('leftHip',[0,.17,.34],[.42,.16,0]),rot_track('rightHip',[0,.17,.34],[-.34,-.12,0]),rot_track('chest',[0,.17,.34],[-.02,.055,0],(1,0,0)),trans_track('hips',[0,.17,.34],[(0,0,0),(0,-.015,0),(0,0,0)])])
     clip('Turn_Left',.65,[rot_track('hips',[0,.32,.65],[0,.28,0],(0,1,0)),rot_track('chest',[0,.32,.65],[0,-.16,0],(0,1,0)),rot_track('rightHip',[0,.32,.65],[0,-.25,0])])
     clip('Turn_Right',.65,[rot_track('hips',[0,.32,.65],[0,-.28,0],(0,1,0)),rot_track('chest',[0,.32,.65],[0,.16,0],(0,1,0)),rot_track('leftHip',[0,.32,.65],[0,-.25,0])])
     clip('Jump',.55,[rot_track('leftHip',[0,.2,.55],[0,-.45,-.15]),rot_track('rightHip',[0,.2,.55],[0,-.45,-.15]),rot_track('leftKnee',[0,.2,.55],[0,.62,.25]),rot_track('rightKnee',[0,.2,.55],[0,.62,.25]),rot_track('leftShoulder',[0,.25,.55],[0,-.5,-.25]),rot_track('rightShoulder',[0,.25,.55],[0,-.5,-.25])])
     clip('Fall',.75,[rot_track('leftShoulder',[0,.75],[-.22,-.22]),rot_track('rightShoulder',[0,.75],[-.22,-.22]),rot_track('leftHip',[0,.75],[.18,.18]),rot_track('rightHip',[0,.75],[.18,.18])])
     clip('Land',.42,[rot_track('leftKnee',[0,.16,.42],[0,.7,0]),rot_track('rightKnee',[0,.16,.42],[0,.7,0]),rot_track('leftHip',[0,.16,.42],[0,-.25,0]),rot_track('rightHip',[0,.16,.42],[0,-.25,0]),rot_track('chest',[0,.16,.42],[0,.16,0])])
+    clip('Mantle',.72,[rot_track('leftShoulder',[0,.20,.48,.72],[0,-1.35,-.65,0]),rot_track('rightShoulder',[0,.20,.48,.72],[0,-1.35,-.65,0]),rot_track('leftElbow',[0,.20,.48,.72],[0,-.72,-.35,0]),rot_track('rightElbow',[0,.20,.48,.72],[0,-.72,-.35,0]),rot_track('leftHip',[0,.28,.52,.72],[0,-.52,.45,0]),rot_track('rightHip',[0,.28,.52,.72],[0,.38,-.45,0]),rot_track('chest',[0,.28,.52,.72],[0,-.18,.16,0],(1,0,0))])
+    clip('Crouch',1.0,[rot_track('leftHip',[0,.35,1],[0,-.38,-.38]),rot_track('rightHip',[0,.35,1],[0,-.38,-.38]),rot_track('leftKnee',[0,.35,1],[0,.62,.62]),rot_track('rightKnee',[0,.35,1],[0,.62,.62]),trans_track('hips',[0,.35,1],[(0,0,0),(0,-.13,0),(0,-.13,0)])])
     clip('Aim',1.0,[rot_track('rightShoulder',[0,1],[1.18,1.18]),rot_track('leftShoulder',[0,1],[1.05,1.05]),rot_track('rightElbow',[0,1],[-.45,-.45]),rot_track('leftElbow',[0,1],[-.85,-.85])])
     clip('Fire',.25,[rot_track('rightShoulder',[0,.08,.25],[1.18,1.32,1.18]),rot_track('leftShoulder',[0,.08,.25],[1.05,1.18,1.05]),rot_track('chest',[0,.08,.25],[0,-.05,0],(0,1,0))])
     clip('Hit_Reaction',.48,[rot_track('chest',[0,.16,.48],[0,.22,0],(0,0,1)),rot_track('head',[0,.16,.48],[0,-.20,0],(0,1,0)),rot_track('leftShoulder',[0,.16,.48],[0,-.35,0]),rot_track('rightShoulder',[0,.16,.48],[0,.25,0])])
@@ -443,7 +470,7 @@ def build_skinned_john():
     clip('Sit',1.0,[rot_track('leftHip',[0,1],[0,1.35]),rot_track('rightHip',[0,1],[0,1.35]),rot_track('leftKnee',[0,1],[0,-1.25]),rot_track('rightKnee',[0,1],[0,-1.25])])
 
     # Helpful extras for automated provenance/QA.
-    b.doc['asset']['extras']={'productionVerticalSlice':True,'sourceReference':'JOHN_16_LOOKS_REFERENCE.jpg','character':'John','authoredClipCount':len(b.doc['animations']),'skinned':True}
+    b.doc['asset']['extras']={'productionVerticalSlice':True,'productionFlagship':True,'flagshipBenchmark':'PH-CHAR-01','phase':'P1','sourceReference':'JOHN_16_LOOKS_REFERENCE.jpg','character':'John','authoredClipCount':len(b.doc['animations']),'skinned':True,'artDirection':'stylized-realism'}
     size=b.finish(MODELS/'characters'/'john-production-skinned.glb')
     print('WROTE skinned John',size/1024,'KiB clips',len(b.doc['animations']))
 

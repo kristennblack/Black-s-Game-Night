@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "characters": {
     "john": {
       "file": "/models/characters/john-production-skinned.glb",
@@ -11,11 +11,16 @@
         "Idle",
         "Walk",
         "Run",
+        "Sprint",
+        "Start_Move",
+        "Stop_Move",
         "Turn_Left",
         "Turn_Right",
         "Jump",
         "Fall",
         "Land",
+        "Mantle",
+        "Crouch",
         "Aim",
         "Fire",
         "Hit_Reaction",
@@ -28,7 +33,10 @@
         "propHunt",
         "islandLife",
         "birthdaySeat"
-      ]
+      ],
+      "flagshipBenchmark": "PH-CHAR-01",
+      "artDirection": "stylized-realism",
+      "phase": "P1"
     }
   },
   "dogs": {

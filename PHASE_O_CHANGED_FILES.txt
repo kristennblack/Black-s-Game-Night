@@ -1,30 +1,28 @@
-Phase O primary functional files
+Phase O primary changed/added files
+- blackGammon.mjs
+- gameEngine.mjs
+- extraGames.mjs
+- worker.mjs
 - public/app.js
 - public/styles.css
-- public/new-games.html
-- public/shared-3d-studio.mjs
-
-Release/cache/build identity
-- package.json
-- VERSION.txt
-- START_HERE.txt
-- BUILD_MANIFEST.txt
-- README.md
-- public/index.html
-- public/island-life.html
-- public/phase-e-qa.mjs
-- public/prop-hunt-3d.js
 - public/sw.js
+- public/index.html
+- public/new-games.html
+- public/island-life.html
+- public/prop-hunt-3d.js
+- public/phase-e-qa.mjs
+- package.json
 - wrangler.staging.jsonc
 - tools/phase_e_validate.mjs
-- current build-ID assertions in test/*.mjs
-
-New QA/tests/docs
-- test/phase-o-animation-realism.test.mjs
-- PHASE_O_REALISTIC_ACTIONS_REPORT.md
-- PHONE_QA_PHASE_O_REALISTIC_ACTIONS_12.md
-- PHASE_O_TEST_RESULTS.txt
-- PHASE_O_CHANGED_FILES.txt
-- FINAL_TEST_OUTPUT.tap
-- FINAL_BUILD_VALIDATION.txt
-- FINAL_ASSET_AUDIT.txt
+- test/black-gammon.test.mjs
+- test/phase-o-black-gammon-bots.test.mjs
+- test/phase-l-new-games-shelf.test.mjs
+- build/cache identity assertions in existing regression tests
+- BLACK_GAMMON_MASTER_RULES.md
+- BLACK_GAMMON_STARTING_SETUP.png
+- PHASE_O_BLACK_GAMMON_BOTS_REPORT.md
+- PHONE_QA_PHASE_O_BLACK_GAMMON_BOTS_12.md
+- README.md
+- BUILD_MANIFEST.txt
+- START_HERE.txt
+- VERSION.txt

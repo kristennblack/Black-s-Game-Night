@@ -2,8 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
-const build='GAME-NIGHT-STAGING-PHASE-O-REALISTIC-ACTIONS-12';
-const cache='black-family-game-night-staging-phase-o-realistic-actions-12';
+const build='GAME-NIGHT-STAGING-PHASE-P1-FLAGSHIP-UPGRADE-14';
+const cache='black-family-game-night-staging-phase-p1-flagship-upgrade-14';
 
 function parseGlbJson(path){
   const b=fs.readFileSync(path);
@@ -23,18 +23,20 @@ test('Phase K build and cache markers are isolated from Phase I',()=>{
   assert.doesNotMatch(app,/GAME-NIGHT-STAGING-PHASE-I-THREE-GAMES-07/);
 });
 
-test('John Character Lab 02 occupies the production runtime slot',()=>{
+test('John Phase P1 flagship character occupies the production runtime slot',()=>{
   const doc=parseGlbJson('public/models/characters/john-production-skinned.glb');
-  assert.equal(doc.asset?.extras?.characterLab,'02');
+  assert.equal(doc.asset?.extras?.flagshipBenchmark,'PH-CHAR-01');
+  assert.equal(doc.asset?.extras?.productionFlagship,true);
+  assert.equal(doc.asset?.extras?.phase,'P1');
   assert.equal(doc.asset?.extras?.character,'John');
   assert.equal(doc.skins?.length,1);
   assert.equal(doc.images?.length,3);
 });
 
-test('John Character Lab 02 preserves the shared 14-clip animation contract',()=>{
+test('John Phase P1 expands the shared authored animation contract',()=>{
   const doc=parseGlbJson('public/models/characters/john-production-skinned.glb');
   const names=(doc.animations||[]).map(a=>a.name);
-  assert.deepEqual(names,['Idle','Walk','Run','Turn_Left','Turn_Right','Jump','Fall','Land','Aim','Fire','Hit_Reaction','Wave','Celebrate','Sit']);
+  assert.deepEqual(names,['Idle','Walk','Run','Sprint','Start_Move','Stop_Move','Turn_Left','Turn_Right','Jump','Fall','Land','Mantle','Crouch','Aim','Fire','Hit_Reaction','Wave','Celebrate','Sit']);
 });
 
 test('all three new game modules remain present in the release source',()=>{

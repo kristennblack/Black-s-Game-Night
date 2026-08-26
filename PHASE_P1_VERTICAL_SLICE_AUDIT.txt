@@ -1,0 +1,6 @@
+PASS John: 2622.0 KiB, skins=1, clips=19, triangles=46,270, embeddedImages=3
+PASS Papa shop + barn: 410.8 KiB, nodes=927, triangles=16,524, materials=79
+PASS Papa production prop set: 193.7 KiB, nodes=172, triangles=16,716, materials=22
+INFO optional offline proof render not packaged; running-game and phone proof remain separate QA gates
+PASS Phase G asset bundle fingerprint: a61d943b95570974cdb9ed9c24d1a44dd9547f20cbd0812738180dd1b5cb1766
+STATUS: technical asset gate PASS; real-phone visual gate remains UNVERIFIED.

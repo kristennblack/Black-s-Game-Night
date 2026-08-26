@@ -1,112 +1,81 @@
 # Black Family Game Night
 
-**Build:** `GAME-NIGHT-STAGING-PHASE-O-REALISTIC-ACTIONS-12`  
-**Package:** `3.0.1-staging-phase-o-realistic-actions-12`  
-**Status:** Staging / real-device QA candidate
+**Build:** `GAME-NIGHT-STAGING-PHASE-P1-FLAGSHIP-UPGRADE-14`  
+**Package:** `3.1.0-staging-phase-p1-flagship-upgrade-14`  
+**Status:** Staging / real-device flagship QA candidate
 
-## What is new in Phase O
+## Phase P1: Prop Hunt flagship upgrade
 
-Phase O adds a shared physical-motion layer across the game shelf: cards and dominoes animate between real UI locations instead of teleporting between server states, trick cards sweep to winners, Backgammon gets checker/dice/cube motion, Cribbage/Golf/Poker/Prairie/Last Haven receive action-specific motion details, Family Mystery gets an animated pip die, and authored 3D clips use smoother phase-matched crossfades/playback speeds. The Phase N phone-layout work and the three new table games are retained. See `PHASE_O_REALISTIC_ACTIONS_REPORT.md` and `PHONE_QA_PHASE_O_REALISTIC_ACTIONS_12.md`.
+Phase P1 follows `MASTER_3D_DEVELOPMENT_DIRECTIVE.md`: **Family Prop Hunt is the first 3D quality benchmark**, and the shared systems are improved there before being propagated to Island Life, Birthday Seat or future 3D games.
 
-## What is new in Phase I
+### John PH-CHAR-01
 
-This full-replacement staging source adds three playable multiplayer game modules to the existing Black Family Game Night application:
+The current John production candidate has been rebuilt as the first flagship character benchmark:
 
-### Mexican Train
+- one skinned humanoid rig
+- 19 authored clips covering idle, locomotion, start/stop/turn, jump/fall/land, mantle, crouch, aim, fire, hit reaction and social states
+- tighter John facial reference treatment and additional facial/hair/beard silhouette detail
+- added hand/clothing detail and corrected boot placement found during offline QA
+- explicit PH-CHAR-01 / Phase P1 / stylized-realism metadata
 
-- 2–8 humans/bots through the existing private-room architecture
-- complete unique Double-12 set
-- supplied rack sizes: 15 for 2–4 players, 12 for 5–6, 11 for 7–8
-- temporary high-pip draw for the initial first player
-- highest-double engine search
-- private trains, shared Family/Mexican Train, boneyard and open-train states
-- miniature saved family-avatar marker on open private trains
-- forced double closure
-- one-tile warning
-- three rounds, automatic remaining-pip scoring and lowest-total winner
-- complete three-round score sheet
-- private racks, responsive table zoom/pan and guided tutorial scene
+Technical asset audit: 46,270 triangles, 3 embedded images, calibrated height about 1.828 m.
 
-### Skip-Bo
+### Animation, movement and aiming
 
-- 2–6 humans/bots
-- 162-card original Black Family visual deck: 144 numbered cards plus 18 Wilds
-- host-selectable 10, 20 or 30-card Stock Piles, with the 30-card option limited to 2–4 players
-- private five-card hands and private future Stock cards
-- public Stock top/count and four public Discard Piles for every player
-- four shared Building Piles
-- draw-to-five, unlimited legal building plays and immediate five-card refill when the hand empties mid-turn
-- play from hand, Stock top or Discard top
-- Wild cards display the value they represent
-- completed 1–12 Building Piles recycle into the Draw Pile
-- discarding one hand card into one of four Discard Piles ends the turn
-- first player to clear their Stock Pile wins
-- responsive table zoom/pan and guided tutorial scene
+Studio 3D is upgraded to v2.1 with masked animation layering, allowing lower-body walking/running/sprinting to continue while the upper body aims or fires. Prop Hunt retains the repaired third-person camera, movement, collision, jump/mantle and shot obstruction systems.
 
-### Backgammon
+Touch/gamepad aiming now includes mild assistance only for targets already very close to the crosshair. It does not rotate the camera, and shots are still revalidated from the weapon muzzle so solid geometry can block them.
 
-- 2-player human/human or human/bot play
-- standard mirrored 15-checker setup on 24 points
-- opposite movement directions
-- complete legal-turn-sequence generation
-- both-dice rule, larger-die rule and four-move doubles
-- blocked points, blots/hits, center Bar and forced re-entry
-- exact and oversized bearing off
-- normal, gammon and backgammon scoring
-- server-authoritative dice results
-- doubling cube with offer, accept, decline, ownership and redoubles
-- optional Automatic Doubles, Beavers and Jacoby settings
-- dimensional crafted-board presentation, checker stacks, dice, cup and cube
-- responsive board zoom/pan and guided tutorial scene
+### Papa's Shop
 
-## Existing systems reused
+The working Papa's Shop gameplay/collider layout is preserved. The authored shop/barn and production prop set remain the visual foundation while Phase P1 adds static-scene optimization and lighting/readability adjustments. Important production assets remain present, including tractor, motorcycle, workbench, tool chest, shelving, fireplace and Papa's yellow chair.
 
-The three modules use the existing:
+### Approved cabin home screen
 
-- game shelf and room/lobby flow
-- Durable Object persistence
-- humans, bots and reconnect
-- saved family avatar/outfit/player colour
-- chat and Quick Reactions
-- Leaderboards and duplicate-safe result recording
-- Keep Playing / Return to Game Shelf flow
-- in-game How to Play / Game School framework
-- phone-first table zoom and pan controls
+The approved cabin composition remains in place using the existing cabin and John home assets. The Game Shelf now uses custom vector medallions and more dimensional cabin-style plaques rather than flat/emoji-like controls.
 
-The package also retains all previously accepted Phase E–H gameplay, tabletop, Trail Trouble, Cribbage, Marbles & Jokers, profile, Requests and 3D-controller work.
+### Preserved game systems
 
-## Validation recorded for this source
-
-- `npm run check`: **303 / 303 automated tests passing**
-- `npm run build`: **138 passes, 2 warnings, 0 failures**
-- manifest/static asset audit: **PASS**
-- 13 packaged GLBs present and valid
-
-The two declared warnings are:
-
-1. Three.js and selected addons still load from public CDNs.
-2. Wrangler is not installed in the packaging environment, so actual Cloudflare deployment is **UNVERIFIED**.
-
-## Staging limitations
-
-- The three new games are complete staging implementations of their standard individual-play rule sets, but real-phone visual/game-feel QA is still required.
-- Skip-Bo partnership/team mode and optional multi-match scoring are not enabled in this first staging module.
-- Backgammon is presented as a dimensional DOM/CSS physical board with authoritative dice and settle animation; it is not a rigid-body WebGL physics simulation.
-- Mexican Train automatically announces one tile remaining; it does not require a separate manual announcement button.
-- Existing Prop Hunt visual art still has not passed the final approved-John/Papa’s-Shop art gate.
+- Black Gammon and standard Backgammon remain separate games.
+- Black Gammon rules/setup remain packaged.
+- Easy remains the default bot difficulty, with Medium/Hard selectable.
+- Bot selector readability fixes remain in place.
+- Existing room/lobby, reconnect, avatars/outfits/player colours, chat/reactions, leaderboards/rematch and retained games remain in the build.
 
 ## Validate locally
 
 ```bash
-npm install
 npm run check
 npm run build
+python tools/audit_production_assets.py
+python tools/audit_phase_g_vertical_slice.py
 ```
 
-Expected:
+Recorded Phase P1 technical results:
 
-- 303 tests pass
-- 0 build-validation failures
+- `npm test`: 339 / 339 PASS
+- `npm run check`: PASS + 339 / 339 tests PASS
+- staging validator: 144 PASS, 2 WARN, 0 FAIL
+- production 3D asset audit: PASS
+- John/Papa vertical-slice technical audit: PASS
+
+## Important visual status
+
+Passing automated tests is **not** visual approval. The offline John bind-pose geometry preview was inspected and a boot-placement defect was corrected, but the actual Three.js running-game appearance must still pass the real-device PH-CHAR-01 and Papa's Shop visual gates before those components are locked as final.
+
+See:
+
+- `PHASE_P1_FLAGSHIP_UPGRADE_REPORT.md`
+- `PHONE_QA_PHASE_P1_FLAGSHIP_UPGRADE_14.md`
+- `PROP_HUNT_FLAGSHIP_AUDIT_AND_PLAN.md`
+- `LOCKED_COMPONENTS_REGISTER.md`
+
+## Known staging limitations
+
+- Actual Cloudflare deployment remains unverified in the packaging environment because Wrangler execution is unavailable.
+- Core Three.js/addon loading still includes external CDN URLs.
+- Full-family authored character propagation intentionally waits for approval of the John flagship benchmark.
+- Real-device visual/game-feel QA is still required before production signoff.
 
 ## Deploy to staging
 
@@ -114,8 +83,6 @@ Expected:
 npm run deploy:staging
 ```
 
-Confirm that the loaded screen displays:
+Confirm the visible build ID is:
 
-`GAME-NIGHT-STAGING-PHASE-O-REALISTIC-ACTIONS-12`
-
-Then follow `PHONE_QA_PHASE_I_THREE_GAMES_07.md` before replacing production.
+`GAME-NIGHT-STAGING-PHASE-P1-FLAGSHIP-UPGRADE-14`

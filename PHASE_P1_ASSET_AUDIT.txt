@@ -1,0 +1,13 @@
+Production3D asset audit
+  characters.john          2622.0 KiB  nodes= 71 rawH=1.843 finalH=1.828
+  dogs.gunner         273.3 KiB  nodes= 51 rawH=1.515 finalH=1.080
+  props.propZapper      22.8 KiB  nodes= 12 rawH=0.448 finalH=0.448
+  props.tractor         64.7 KiB  nodes= 71 rawH=2.565 finalH=2.565
+  props.motorcycle      84.2 KiB  nodes= 45 rawH=1.160 finalH=1.160
+  furniture.papaChair       41.7 KiB  nodes= 12 rawH=1.588 finalH=1.556
+  furniture.fireplace       26.8 KiB  nodes= 42 rawH=1.910 finalH=1.996
+  furniture.workbench       15.1 KiB  nodes= 30 rawH=1.925 finalH=1.925
+  furniture.toolChest       15.3 KiB  nodes= 23 rawH=1.188 finalH=1.188
+  furniture.shelving         9.9 KiB  nodes= 23 rawH=2.420 finalH=2.251
+
+PASS: manifest, GLB headers, hierarchy and calibrated benchmark heights are valid.

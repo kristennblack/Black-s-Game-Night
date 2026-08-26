@@ -34,7 +34,7 @@ const BOT_PERSONAS=[
   ['John','john'],['Kristen','kristen'],['Holly','holly'],['Elizabeth','elizabeth'],['Vanessa','vanessa'],['Logan','logan'],['James','james'],['Dorothy','dorothy'],['Nana','nana'],['Papa','papa'],['Kelsi','kelsi'],['Molly','molly'],['Gunner','gunner']
 ];
 const BOT_COLORS=['#9b3e3a','#305c9b','#2f6b4f','#95752a','#6c468f','#287878','#b5672f','#8b6d55','#171717','#a86d7b','#82b978','#83afe2','#e2bf54'];
-const normalizeDifficulty=d=>BOT_DIFFICULTIES.has(String(d||'').toLowerCase())?String(d).toLowerCase():'medium';
+const normalizeDifficulty=d=>BOT_DIFFICULTIES.has(String(d||'').toLowerCase())?String(d).toLowerCase():'easy';
 const requestCategories=new Set(['New Game','Fix a Game','Improvement','Bug','Other']);
 const profileIdFrom=b=>String(b?.profileId||'').trim().slice(0,80)||null;
 const playerProfile=(b,nameFallback='Player')=>({profileId:profileIdFrom(b),name:String(b?.name||nameFallback).trim().slice(0,24)||nameFallback,avatar:String(b?.avatar||'').trim()||defaultAvatarForName(b?.name||nameFallback),variant:Number(b?.variant??defaultVariantForName(b?.name||nameFallback)),outfitVariant:Number(b?.outfitVariant||0),color:String(b?.color||'#2f6b4f')});
@@ -98,7 +98,7 @@ function uniqueBotName(room,baseName,ignoreId=null){
   if(!used.has(`${baseName} Computer`))return `${baseName} Computer`;
   let n=2;while(used.has(`${baseName} Computer ${n}`))n++;return `${baseName} Computer ${n}`;
 }
-function makeBot(room,difficulty='medium',requestedAvatar=null){
+function makeBot(room,difficulty='easy',requestedAvatar=null){
   if(room.players.size>=room.maxSeats)throw new Error('Room is full');
   let persona=botPersonaForAvatar(requestedAvatar);
   if(!persona){const used=new Set([...room.players.values()].map(p=>p.avatar));persona=BOT_PERSONAS.find(([,avatar])=>!used.has(avatar))||BOT_PERSONAS[room.players.size%BOT_PERSONAS.length]}
@@ -161,15 +161,16 @@ function applyStandardPlay(room,p,cardId){
   g.turnPlayerId=nextClockwise(order,p.id);return{trickComplete:false,order};
 }
 function scheduleTrickAdvance(room,result){if(!result?.trickComplete)return;setTimeout(()=>{const g=room.game;if(g.phase!=='playing')return;g.currentTrick=[];if(result.order.every(id=>room.players.get(id).hand.length===0))finishRound(room);else{g.leaderId=result.winner;g.turnPlayerId=result.winner;broadcast(room)}},700)}
-function botActionScore(a,diff){
+function botActionScore(a,diff,room=null,p=null){
   const text=`${a.action||''} ${a.label||''}`.toLowerCase();let score=Math.random()*2;
   if(/win|home|finish|stronghold|build camp|build route|sweep|last log|lay|claim/.test(text))score+=diff==='hard'?10:4;
   if(/draw|roll|continue|end turn|discard/.test(text))score+=2;
   if(/fold|decline/.test(text))score-=diff==='hard'?3:0;
   if(/raise|bid|call|trade/.test(text))score+=diff==='hard'?2:0;
+  if(room?.gameType===GAME_TYPES.BLACK_GAMMON){const q=a.args||{},hard=diff==='hard';if(a.action==='blackMove'){if(q.to==='off')score+=hard?22:10;if(q.rescue)score+=hard?18:8;if(q.hit)score+=hard?14:7;if(q.entry)score+=hard?9:4;score+=Math.max(0,Number(q.count||1)-1)*(hard?3:1.5);if(q.direction==='forward')score+=hard?2:1}if(a.action==='blackAllocate'&&p){const name=String(p.name||'').toLowerCase();if(text.includes(`${name}: triple`))score+=hard?12:6;if(text.includes(`${name}:`)&&text.includes('forward'))score+=hard?2:1;if(text.includes('backward'))score+=hard?1.5:.5}}
   return score;
 }
-function chooseExtraBotAction(room,p,actions){const d=normalizeDifficulty(p.botDifficulty);if(!actions?.length)return null;if(d==='easy')return actions[Math.floor(Math.random()*actions.length)];return [...actions].sort((a,b)=>botActionScore(b,d)-botActionScore(a,d))[0]}
+function chooseExtraBotAction(room,p,actions){const d=normalizeDifficulty(p.botDifficulty);if(!actions?.length)return null;if(d==='easy')return actions[Math.floor(Math.random()*actions.length)];return [...actions].sort((a,b)=>botActionScore(b,d,room,p)-botActionScore(a,d,room,p))[0]}
 function tickBot(room){
   const g=room.game;if(g.phase==='lobby'||g.phase==='gameOver')return false;
   if(isExtraGame(room.gameType)){

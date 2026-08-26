@@ -6,7 +6,7 @@
 .ph3d-chip{min-width:0;background:#10110fe6;border:1px solid #ffffff2c;border-radius:12px;padding:8px 10px;font-size:12px;font-weight:900;box-shadow:0 6px 18px #0007;backdrop-filter:blur(8px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ph3d-chip.health{color:#ff938b}.ph3d-chip.role{color:#ffe099}.ph3d-chip.map{color:#bddcbf;text-align:center}
 .ph3d-crosshair{position:absolute;left:50%;top:46%;width:27px;height:27px;transform:translate(-50%,-50%);z-index:6;pointer-events:none;filter:drop-shadow(0 1px 3px #000)}
-.ph3d-crosshair:before,.ph3d-crosshair:after{content:"";position:absolute;background:#fff;border-radius:2px;box-shadow:0 0 0 1px #0008}.ph3d-crosshair:before{left:0;right:0;top:12px;height:2px}.ph3d-crosshair:after{top:0;bottom:0;left:12px;width:2px}
+.ph3d-crosshair:before,.ph3d-crosshair:after{content:"";position:absolute;background:#fff;border-radius:2px;box-shadow:0 0 0 1px #0008;transition:background .12s,box-shadow .12s,transform .12s}.ph3d-crosshair:before{left:0;right:0;top:12px;height:2px}.ph3d-crosshair:after{top:0;bottom:0;left:12px;width:2px}.ph3d-crosshair.assisted:before,.ph3d-crosshair.assisted:after{background:#ffd56a;box-shadow:0 0 0 1px #2c1c08,0 0 9px #ffd56aaa}.ph3d-crosshair.assisted{transform:translate(-50%,-50%) scale(.88)}
 .ph3d-hit{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);z-index:7;color:#ffd45e;font-size:26px;font-weight:1000;opacity:0;pointer-events:none;text-shadow:0 2px 8px #000}.ph3d-hit.on{animation:phHit .28s ease-out}@keyframes phHit{0%{opacity:1;transform:translate(-50%,-50%) scale(.7)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.35)}}
 .ph3d-flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:20;transition:opacity .12s}.ph3d-flash.on{opacity:.95}
 .ph3d-controls{position:absolute;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom, 0px));display:flex;justify-content:space-between;align-items:end;gap:12px;z-index:8;pointer-events:none}
@@ -46,3 +46,16 @@
 
 /* Phase F Platform 04: clean shared match-end choices */
 .ph-match-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.ph-match-actions .btn{min-height:46px}@media(max-width:620px){.ph-match-actions{grid-template-columns:1fr}}
+
+
+/* Phase P0: readable Easy-first bot selectors on the Prop Hunt room screen. */
+.ph3-bot-add .select{background:linear-gradient(180deg,#fff7e5,#ead2a7);color:#2f2419!important;-webkit-text-fill-color:#2f2419;border:2px solid #a77645;color-scheme:light;font-weight:850}
+.ph3-bot-add .select option{background:#fff7e5;color:#2f2419}
+
+/* Phase P1 flagship control pass: larger thumb targets, clearer primary actions,
+   and a stable layout that does not cover the crosshair on narrow phones. */
+.ph3d-act{min-width:58px;min-height:48px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:inset 0 1px 0 #fff4,0 4px 12px #0005;touch-action:none}
+.ph3d-act.primary{min-width:74px;min-height:62px;font-size:.82rem;box-shadow:inset 0 1px 0 #fff7,0 6px 18px #0007}
+.ph3d-act.jump{min-width:66px;min-height:56px}.ph3d-act.aim.on,.ph3d-act.primary:active{transform:translateY(2px) scale(.97)}
+@media(max-width:680px){.ph3d-actions{gap:7px;max-width:224px}.ph3d-act{min-width:54px;min-height:46px;padding:7px 8px}.ph3d-act.primary{min-width:72px;min-height:60px}.ph3d-crosshair{top:44%}.ph3d-side{display:none}.ph3d-shell{grid-template-columns:1fr}}
+@media(max-width:420px){.ph3d-actions{max-width:205px;gap:5px}.ph3d-act{font-size:.64rem;min-width:50px}.ph3d-act.primary{min-width:68px}.ph3d-joystick{width:118px;height:118px}}

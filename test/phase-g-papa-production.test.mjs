@@ -26,7 +26,7 @@ test('Phase G John is a genuinely skinned GLB with an embedded semantic animatio
 });
 
 test('Phase G production manifest points John and Papa Shop at dedicated production-slice GLBs',async()=>{
-  assert.equal(manifest.version,3);
+  assert.equal(manifest.version,4);
   assert.equal(manifest.characters.john.file,'/models/characters/john-production-skinned.glb');
   assert.equal(manifest.characters.john.rig,'skinned-humanoid');
   assert.equal(manifest.environments.papaShop.file,'/models/environments/papa-shop-barn-production.glb');

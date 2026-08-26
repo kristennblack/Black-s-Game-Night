@@ -16,8 +16,8 @@ const manifest=JSON.parse(await readFile(new URL('../public/models/manifest.json
 
 function clip(name){return{name}}
 
-test('v2 Studio Realism module exposes the cross-game realism foundation',()=>{
-  assert.equal(STUDIO_3D_VERSION,'2.0.0');
+test('v2.1 Studio Realism module exposes the cross-game realism foundation',()=>{
+  assert.equal(STUDIO_3D_VERSION,'2.1.0');
   const f=studioFeatureManifest();
   for(const key of ['authoredAssets','skeletonSafeCloning','authoredRigSockets','semanticAnimationMixer','proceduralIK','networkSnapshotBuffer','navGrid','npcRoutines','weather','shaderWater','shorelineFoam','heightfieldTerrain','selectivePhysics','webAudio','surfaceAudio','cinematics'])assert.equal(f[key],true,key);
   for(const src of [prop,island,birthday])assert.ok(src.includes('/shared-3d-studio.mjs'));
