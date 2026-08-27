@@ -1,3 +1,16 @@
+# CURRENT CUMULATIVE RELEASE - PHASE W.7 PROP HUNT CHARACTER + COMBAT 32
+
+**Current release:** `GAME-NIGHT-STAGING-PHASE-W7-PROP-HUNT-CHARACTER-COMBAT-32`  
+**Package version:** `3.10.0-staging-phase-w7-prop-hunt-character-combat-32`
+
+Phase W.7 preserves every W.6 gameplay/UX repair and the W.5 approved-character lock, then makes John the first production Prop Hunt character/combat gate. The runtime now blocks an unapproved legacy John GLB from overriding the approved identity, corrects the visible two-hand Prop Zapper grip, uses a close right-shoulder hunter camera, centres the crosshair on the actual camera ray, and adds visible beam/muzzle/impact feedback while preserving physical muzzle obstruction and hider privacy.
+
+**Visual approval remains device-gated:** John must look correct, hold the weapon correctly and show readable shooting feedback on an actual phone before this system is propagated to the rest of the family.
+
+**31 Blind family rules are now recorded in the master directive:** three unseen face-down cards; flip-and-keep, blind-replace from discard, or pass; a flipped card remains face up. No extra scoring/end conditions are guessed.
+
+Governing W.7 directive: `MASTER_PHASE_W7_PROP_HUNT_CHARACTER_COMBAT_DIRECTIVE.md`.
+
 # CURRENT CUMULATIVE RELEASE — PHASE W.6 MULTIGAME UX 31
 
 **Current release:** `GAME-NIGHT-STAGING-PHASE-W6-MULTIGAME-UX-31`  

@@ -132,8 +132,8 @@ export function consumeMotionEvents(actor){
 export const CONTROL_PRESETS=Object.freeze({
   propHunt:{
     walkSpeed:2.75,runSpeed:4.6,groundAccel:16.5,groundBrake:21,airControl:.31,
-    jumpSpeed:6.15,gravity:18.5,cameraDistance:5.05,aimDistance:3.35,
-    cameraHeight:1.18,cameraLift:.17,minCameraDistance:1.68,recoveryPitch:.035,shoulder:.42,fov:58,aimFov:50,sprintFov:62,
+    jumpSpeed:6.15,gravity:18.5,cameraDistance:4.35,aimDistance:3.25,
+    cameraHeight:1.20,cameraLift:.18,minCameraDistance:1.40,recoveryPitch:.035,shoulder:.54,fov:59,aimFov:52,sprintFov:63,
     lookSensitivity:.00425,touchLookSensitivity:.00465,minPitch:-.16,maxPitch:.25
   },
   island:{
@@ -531,12 +531,20 @@ export function animateFamilyRig(actor,dt,{aim=false,recoil=0,lookPitch=0,turnRa
     poseBlend(p.rightLeg.knee,'x',moving?Math.max(0,leg)*.66:(anim==='jump'?-.28:0),22,dt);
     if(p.leftLeg.foot&&p.rightLeg.foot){const heelL=moving?clamp(-leg*.24,-.16,.16):0,heelR=moving?clamp(leg*.24,-.16,.16):0;poseBlend(p.leftLeg.foot,'x',heelL,18,dt);poseBlend(p.rightLeg.foot,'x',heelR,18,dt);poseBlend(p.leftLeg.foot,'y',turnInPlace,14,dt);poseBlend(p.rightLeg.foot,'y',-turnInPlace,14,dt);poseBlend(p.leftLeg.foot,'z',moving?clamp(turnLean*.18,-.035,.035):0,14,dt);poseBlend(p.rightLeg.foot,'z',moving?clamp(turnLean*.18,-.035,.035):0,14,dt)}
   }
+  const weaponGripActive=!!(aim||anim==='aim'||anim==='fire')&&p.weapon?.visible!==false;
+  if(p.weapon?.userData?.gripHands){
+    p.weapon.userData.gripHands.right.visible=weaponGripActive;p.weapon.userData.gripHands.left.visible=weaponGripActive;
+    if(p.leftArm?.hand)p.leftArm.hand.visible=!weaponGripActive;if(p.leftArm?.thumb)p.leftArm.thumb.visible=!weaponGripActive;
+    if(p.rightArm?.hand)p.rightArm.hand.visible=!weaponGripActive;if(p.rightArm?.thumb)p.rightArm.thumb.visible=!weaponGripActive;
+  }
   if(p.weaponAnchor){
-    poseBlend(p.weaponAnchor,'x',aim?-lookPitch*.18:0,12,dt);
-    poseBlend(p.weaponAnchor,'y',moving?Math.sin(phase)*.018:0,12,dt);
-    posBlend(p.weaponAnchor,'y',basePos(p.weaponAnchor,'y',.32)+bob*.6,14,dt);
-    posBlend(p.weaponAnchor,'x',basePos(p.weaponAnchor,'x',.14)+(aim?0:Math.sin(phase)*.006),14,dt);
-    posBlend(p.weaponAnchor,'z',basePos(p.weaponAnchor,'z',-.28)+recoil*.04,18,dt);
+    // Weapon owns the aim direction. Both hands visually lock to its grip sockets while the shoulders/elbows support it.
+    poseBlend(p.weaponAnchor,'x',aim?-lookPitch*.30:0,16,dt);
+    poseBlend(p.weaponAnchor,'y',moving?Math.sin(phase)*.012:0,14,dt);
+    posBlend(p.weaponAnchor,'y',basePos(p.weaponAnchor,'y',.36)+bob*.45,16,dt);
+    posBlend(p.weaponAnchor,'x',basePos(p.weaponAnchor,'x',.16)+(aim?0:Math.sin(phase)*.004),16,dt);
+    posBlend(p.weaponAnchor,'z',basePos(p.weaponAnchor,'z',-.34)+recoil*.06,20,dt);
+    const coil=p.weapon?.userData?.energyCoil;if(coil){const pulse=1+Math.max(0,recoil)*.35;scaleBlend(coil,'x',pulse,24,dt);scaleBlend(coil,'z',pulse,24,dt)}
   }
   if(p.leftArm&&p.rightArm){
     if(anim==='hit'){
@@ -585,8 +593,9 @@ export function animateFamilyRig(actor,dt,{aim=false,recoil=0,lookPitch=0,turnRa
       // Occasional sleeve/face adjustment. This is intentionally rare so idle still feels calm.
       poseBlend(p.rightArm.shoulder,'x',-.22-idleFidget*.58,12,dt);poseBlend(p.rightArm.elbow,'x',-.08-idleFidget*.86,12,dt);poseBlend(p.rightArm.shoulder,'z',-.04-idleFidget*.08,12,dt);poseBlend(p.leftArm.shoulder,'x',idleShift*.025,10,dt);poseBlend(p.head,'y',idleGlance+idleFidget*.035,9,dt);
     }else if(aim||anim==='aim'){
-      poseBlend(p.rightArm.shoulder,'x',-1.05-recoil*.08,18,dt);poseBlend(p.rightArm.shoulder,'z',-.12,18,dt);poseBlend(p.rightArm.elbow,'x',-.55,18,dt);
-      poseBlend(p.leftArm.shoulder,'x',-.9,18,dt);poseBlend(p.leftArm.shoulder,'z',.2,18,dt);poseBlend(p.leftArm.elbow,'x',-.82,18,dt);
+      // Two-hand hunter stance: trigger arm tucked, support arm reaches under the fore-end.
+      poseBlend(p.rightArm.shoulder,'x',-1.24-recoil*.10,22,dt);poseBlend(p.rightArm.shoulder,'z',-.18,22,dt);poseBlend(p.rightArm.elbow,'x',-.94-recoil*.08,22,dt);poseBlend(p.rightArm.elbow,'z',-.04,18,dt);
+      poseBlend(p.leftArm.shoulder,'x',-1.08,22,dt);poseBlend(p.leftArm.shoulder,'z',.28,22,dt);poseBlend(p.leftArm.elbow,'x',-1.12,22,dt);poseBlend(p.leftArm.elbow,'z',.06,18,dt);
     }else{
       const swing=moving?Math.sin(phase)*amount*.62:idleShift*.025;
       poseBlend(p.leftArm.shoulder,'x',-swing,18,dt);poseBlend(p.rightArm.shoulder,'x',swing,18,dt);poseBlend(p.leftArm.shoulder,'z',0,16,dt);poseBlend(p.rightArm.shoulder,'z',0,16,dt);poseBlend(p.leftArm.elbow,'x',moving?(run?-.22-.08*Math.max(0,Math.sin(phase)):-.1):-.015*Math.max(0,idleShift),16,dt);poseBlend(p.rightArm.elbow,'x',moving?(run?-.22-.08*Math.max(0,-Math.sin(phase)):-.1):-.015*Math.max(0,-idleShift),16,dt);

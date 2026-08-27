@@ -713,3 +713,5 @@ When there is a conflict between a generic improvement and an explicitly approve
 The objective is not simply to generate more code.
 
 The objective is to make the game visibly, measurably and experientially better.
+## Phase W.7 Prop Hunt character/combat override
+For Prop Hunt hunter characters, approved turnaround identity has higher precedence than older realism language. A legacy GLB with `approvedModel !== true` must not replace the approved procedural fallback. Use a close shoulder camera, two-hand Prop Zapper grip, center-screen ray-matched crosshair, muzzle-origin obstruction validation, visible 3D tracer and visible impact burst. John is the first real-device vertical-slice gate before propagation to the rest of the family.

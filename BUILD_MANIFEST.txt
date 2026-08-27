@@ -1,33 +1,39 @@
 BLACK FAMILY GAME NIGHT
-PHASE W.6 MULTIGAME UX MANIFEST
+PHASE W.7 PROP HUNT CHARACTER + COMBAT VERTICAL SLICE MANIFEST
 
-Current release: GAME-NIGHT-STAGING-PHASE-W6-MULTIGAME-UX-31
-Package version: 3.9.6-staging-phase-w6-multigame-ux-31
+Current release: GAME-NIGHT-STAGING-PHASE-W7-PROP-HUNT-CHARACTER-COMBAT-32
+Package version: 3.10.0-staging-phase-w7-prop-hunt-character-combat-32
 Worker main: worker.mjs
 Cloudflare static asset directory: ./public
 Assets binding: ASSETS
 Staging config: wrangler.staging.jsonc
-Service-worker cache: black-family-game-night-staging-phase-w6-multigame-ux-31
+Service-worker cache: black-family-game-night-staging-phase-w7-prop-hunt-character-combat-32
 
-CURRENT W.6 WORK
-- Vanessa grey GMC destination-win truck-wash flow and 3D-style art pass.
-- Logan easy-start journey, starter clue, dirt-bike art and per-profile visual tutorial choice.
-- Visual How To coverage across arcade plus existing guided tabletop/card demos.
-- Mexican Train board-first full rearrangeable domino rack.
-- Golf discard-without-flip rule and expanded 8-card/opponent visual table.
-- Mitt capture mats with captured cards and points.
-- Nana animal-definition and scoring-guide upgrade.
-- Kelsi's Rock 'n' Roll Rescue replaces Neon Star Patrol; old Kelsi URL redirects.
-- 31 Blind mode deliberately pending exact family definition.
+CURRENT W.7 WORK
+- John first production character/combat gate.
+- Approved-turnaround precedence; unapproved legacy John GLB is withheld.
+- Shared right-trigger/left-support Prop Zapper grip system.
+- Backwards procedural hand meshes hidden during aim.
+- Larger visible Prop Zapper and energy coil.
+- Close right-shoulder hunter aim camera.
+- True centre-screen crosshair tied to camera ray.
+- Visible shot beam/tracer, muzzle flash/light and impact burst.
+- Muzzle-obstruction validation remains authoritative.
+- Prop/hider hit shake without early identity reveal.
+- 31 Blind family-rule definition recorded in master directive.
 
 CUMULATIVE PRESERVATION
+- W.6 multigame gameplay/UX repairs remain included.
 - W.5 approved character identity registry/turnarounds remain locked.
 - W.4 Gammon/mobile hand repairs remain included.
 - W.3-W.1 gameplay and living-app repairs remain included.
 
-VALIDATION COUNTS
-- npm run check: 457 / 457 tests pass.
+WORKING-TREE VALIDATION COUNTS
+- npm test: 465 / 465 tests pass.
 - staging validator: 208 pass, 0 fail, 2 environment warnings.
-- Cold-extracted release ZIP: 457 / 457 tests pass.
-- Cold-extracted staging validator: 208 pass, 0 fail, 2 environment warnings.
-- ZIP integrity: no compressed-data errors.
+
+FINAL PACKAGE REQUIREMENT
+- Cold-extracted release ZIP must reproduce 465 / 465 tests.
+- Cold-extracted staging validator must reproduce 208 pass, 0 fail, 2 environment warnings.
+- ZIP integrity must report no compressed-data errors.
+- Actual-device John visual QA remains required.

@@ -27,7 +27,3 @@ A dedicated W.6 regression file covers the new behavior in addition to the compl
 - `npm run check`: **457 / 457 tests passed**.
 - `npm run staging:validate`: **208 pass, 0 fail, 2 environment warnings**.
 - Warnings: existing Three.js CDN dependency and live Cloudflare deployment unavailable from the local validation environment.
-
-## Cold package verification
-
-The packaged release was extracted into a clean directory and rerun through both gates: **457 / 457 tests passed** and **208 / 208 staging checks passed**, with the same two environment warnings. ZIP integrity reported no compressed-data errors.

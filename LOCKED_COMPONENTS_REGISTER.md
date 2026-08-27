@@ -39,3 +39,13 @@ Automated tests may establish technical health. They do not constitute visual ap
 - Nana: persistent scoring/avoid guide and dimensional animal drawing.
 - Kelsi's Rock 'n' Roll Rescue replaces Neon Star Patrol; legacy Kelsi URL redirects.
 - 31 Blind remains pending exact family rules and must not be guessed.
+
+## Phase W.7 Prop Hunt character/combat locks
+- Approved turnaround identity overrides legacy character models unless `approvedModel: true`.
+- John is the first Prop Hunt character/combat vertical-slice gate.
+- Hunter hand orientation: right trigger grip, left support grip, no backwards palms.
+- Prop Zapper must remain visible in the normal phone camera.
+- Hunter camera uses aim shoulder mode during the hunt.
+- Visible crosshair is exactly centered on the camera shot ray.
+- Shots use muzzle-origin obstruction validation plus visible tracer and impact feedback.
+- Disguised hider hit feedback must not reveal identity before elimination.

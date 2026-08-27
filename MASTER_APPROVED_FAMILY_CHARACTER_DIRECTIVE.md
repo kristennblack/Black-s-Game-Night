@@ -255,3 +255,17 @@ Blonde high updo/bun; **no glasses**; blue long-sleeve dress/top; cream floral a
 When any old photo-based reference, old `characters3d` PNG, old GLB, previous prompt, generated image or generic family style conflicts with an explicitly approved turnaround in this directive:
 
 **THE APPROVED TURNAROUND WINS.**
+
+---
+
+## 10. PHASE W.7 PROP HUNT RUNTIME ENFORCEMENT
+
+For Prop Hunt, an approved turnaround is not merely an art reference. It is a runtime identity gate.
+
+- If an authored GLB has `approvedModel: false`, it MUST NOT replace the approved-style procedural/fallback character in Prop Hunt.
+- Do not promote a model merely because a file exists or loads successfully.
+- John is the first production vertical slice. His actual-phone visual gate must pass before the shared combat-character implementation is propagated to other family members.
+- Shared humanoid rig contract: correct forward palms, right trigger-hand weapon socket, left support-hand IK/grip target, upper-body aim layer and compatible movement/jump animation.
+- The Prop Zapper and its grip must remain clearly visible in the close right-shoulder camera.
+- Crosshair, camera ray, muzzle validation, tracer and impact feedback must describe the same shot.
+- Simplification is allowed only in topology/material complexity. Identity features from the approved turnaround remain locked.

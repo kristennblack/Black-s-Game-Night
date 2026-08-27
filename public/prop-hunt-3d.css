@@ -1,13 +1,13 @@
-/* v3.0.1-playability-recovery: detailed WebGL Family Prop Hunt + unified controls */
+/* v3.10.0-phase-w7-character-combat: approved-character hunter vertical slice + readable shooting */
 .ph3d-shell{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:14px;align-items:start}
 .ph3d-stage{position:relative;min-height:720px;border-radius:24px;overflow:hidden;border:1px solid #5b4c3c;background:#0f1514;box-shadow:0 18px 50px #0008;touch-action:none;user-select:none;isolation:isolate}
 .ph3d-canvas{display:block;width:100%;height:720px;background:#0f1514;touch-action:none;outline:none}
 .ph3d-top{position:absolute;left:12px;right:12px;top:12px;display:grid;grid-template-columns:minmax(92px,.8fr) minmax(150px,1.35fr) auto;gap:8px;align-items:start;pointer-events:none;z-index:5}
 .ph3d-chip{min-width:0;background:#10110fe6;border:1px solid #ffffff2c;border-radius:12px;padding:8px 10px;font-size:12px;font-weight:900;box-shadow:0 6px 18px #0007;backdrop-filter:blur(8px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ph3d-chip.health{color:#ff938b}.ph3d-chip.role{color:#ffe099}.ph3d-chip.map{color:#bddcbf;text-align:center}
-.ph3d-crosshair{position:absolute;left:50%;top:46%;width:27px;height:27px;transform:translate(-50%,-50%);z-index:6;pointer-events:none;filter:drop-shadow(0 1px 3px #000)}
+.ph3d-crosshair{position:absolute;left:50%;top:50%;width:27px;height:27px;transform:translate(-50%,-50%);z-index:6;pointer-events:none;filter:drop-shadow(0 1px 3px #000)}
 .ph3d-crosshair:before,.ph3d-crosshair:after{content:"";position:absolute;background:#fff;border-radius:2px;box-shadow:0 0 0 1px #0008;transition:background .12s,box-shadow .12s,transform .12s}.ph3d-crosshair:before{left:0;right:0;top:12px;height:2px}.ph3d-crosshair:after{top:0;bottom:0;left:12px;width:2px}.ph3d-crosshair.assisted:before,.ph3d-crosshair.assisted:after{background:#ffd56a;box-shadow:0 0 0 1px #2c1c08,0 0 9px #ffd56aaa}.ph3d-crosshair.assisted{transform:translate(-50%,-50%) scale(.88)}
-.ph3d-hit{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);z-index:7;color:#ffd45e;font-size:26px;font-weight:1000;opacity:0;pointer-events:none;text-shadow:0 2px 8px #000}.ph3d-hit.on{animation:phHit .28s ease-out}@keyframes phHit{0%{opacity:1;transform:translate(-50%,-50%) scale(.7)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.35)}}
+.ph3d-hit{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:7;color:#ffd45e;font-size:26px;font-weight:1000;opacity:0;pointer-events:none;text-shadow:0 2px 8px #000}.ph3d-hit.on{animation:phHit .28s ease-out}@keyframes phHit{0%{opacity:1;transform:translate(-50%,-50%) scale(.7)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.35)}}
 .ph3d-flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:20;transition:opacity .12s}.ph3d-flash.on{opacity:.95}
 .ph3d-controls{position:absolute;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom, 0px));display:flex;justify-content:space-between;align-items:end;gap:12px;z-index:8;pointer-events:none}
 .ph3d-joystick{width:124px;height:124px;border-radius:50%;border:2px solid #ffffff31;background:#090b0a66;position:relative;pointer-events:auto;touch-action:none;backdrop-filter:blur(6px);box-shadow:inset 0 0 28px #0006}
@@ -57,7 +57,7 @@
 .ph3d-act{min-width:58px;min-height:48px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:inset 0 1px 0 #fff4,0 4px 12px #0005;touch-action:none}
 .ph3d-act.primary{min-width:74px;min-height:62px;font-size:.82rem;box-shadow:inset 0 1px 0 #fff7,0 6px 18px #0007}
 .ph3d-act.jump{min-width:66px;min-height:56px}.ph3d-act.primary:active{transform:translateY(2px) scale(.97)}
-@media(max-width:680px){.ph3d-actions{gap:7px;max-width:224px}.ph3d-act{min-width:54px;min-height:46px;padding:7px 8px}.ph3d-act.primary{min-width:72px;min-height:60px}.ph3d-crosshair{top:44%}.ph3d-side{display:none}.ph3d-shell{grid-template-columns:1fr}}
+@media(max-width:680px){.ph3d-actions{gap:7px;max-width:224px}.ph3d-act{min-width:54px;min-height:46px;padding:7px 8px}.ph3d-act.primary{min-width:72px;min-height:60px}.ph3d-crosshair{top:50%}.ph3d-side{display:none}.ph3d-shell{grid-template-columns:1fr}}
 @media(max-width:420px){.ph3d-actions{max-width:205px;gap:5px}.ph3d-act{font-size:.64rem;min-width:50px}.ph3d-act.primary{min-width:68px}.ph3d-joystick{width:118px;height:118px}}
 
 /* Phase T / P3 gameplay + animation feel pass */
@@ -87,3 +87,10 @@
 .ph3d-disguise-tray[hidden]{display:none}.ph3d-disguise-tray>strong{display:block;font-size:12px;letter-spacing:.08em}.ph3d-disguise-tray>small{display:block;color:#c9bda9;font-size:10px;line-height:1.35;margin:4px 0 9px}.ph3d-disguise-tray>div{display:grid;grid-template-columns:1fr 1fr;gap:7px}.ph3d-disguise-tray button{min-height:48px;border:1px solid #ffffff25;border-radius:12px;background:#294d37;color:#fff;padding:7px 9px;text-align:left;font-weight:850;display:flex;justify-content:space-between;align-items:center;gap:8px}.ph3d-disguise-tray button b{color:#ffe08a;font-size:10px}.ph3d-disguise-tray button:active{transform:scale(.98);filter:brightness(1.16)}
 .ph3d-ghost-free{top:101px;background:#1d3040e8;color:#cfe9ff;border-color:#81bfe55c}.ph3d-ghost-free.active{background:#284f67}.ph3d-act.interact{background:#6c5931}.ph3d-choice-list{display:block;margin-top:6px;padding-top:6px;border-top:1px solid #ffffff12;color:#bfc9af}.ph-mvp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}.ph-mvp-grid>div{padding:12px;border:1px solid #ffffff1d;border-radius:14px;background:#1c1712;display:grid;gap:4px}.ph-mvp-grid span{font-size:9px;letter-spacing:.12em;color:#d6b66d}.ph-mvp-grid b{font-size:16px}.ph-mvp-grid small{font-size:11px;color:#cbbfb0}
 @media(max-width:700px){.ph3d-disguise-tray{right:8px;bottom:126px;width:min(300px,75vw);padding:10px}.ph3d-disguise-tray>div{grid-template-columns:1fr}.ph3d-disguise-tray button{min-height:43px}.ph3d-ghost-free{top:88px}.ph-mvp-grid{grid-template-columns:1fr}}
+
+
+/* Phase W.7 character-combat vertical slice: the visible reticle is exactly the camera ray. */
+.ph3d-crosshair.impact:before,.ph3d-crosshair.impact:after{background:#9ff7ff;box-shadow:0 0 0 1px #08252a,0 0 13px #76efffd9;transform:scale(.78)}
+.ph3d-crosshair.target-hit:before,.ph3d-crosshair.target-hit:after{background:#ffe071;box-shadow:0 0 0 1px #2a1b08,0 0 14px #ffd34de8}
+.ph3d-crosshair:after,.ph3d-crosshair:before{transform-origin:center}
+@media(max-width:700px){.ph3d-crosshair,.ph3d-hit{top:50%}.ph3d-crosshair{width:30px;height:30px}.ph3d-crosshair:before{top:14px}.ph3d-crosshair:after{left:14px}}

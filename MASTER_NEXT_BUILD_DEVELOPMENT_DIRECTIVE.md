@@ -1289,3 +1289,110 @@ Phase W.6 is cumulative with W.1-W.5. These requirements supersede older conflic
 ## Release gate
 - Regression tests must cover destination-only Vanessa wins, Logan tutorial choice/easy progression, full Mexican Train rack/reorder, Golf discard-without-flip, Mitt capture mats, Nana scoring guide, Kelsi replacement, and the intentional 31 Blind pending state.
 - Real-device/mobile visual QA remains required after deployment.
+
+---
+
+# PHASE W.7 LOCKED ADDENDUM - PROP HUNT CHARACTER + COMBAT VERTICAL SLICE
+
+Phase W.7 is cumulative with W.1-W.6. These requirements have higher precedence than older Prop Hunt presentation notes when they conflict.
+
+## 1. Production strategy
+- Prop Hunt character/combat quality is developed as a vertical slice before expanding to the whole family.
+- John is the first production gate because his turnaround is approved and his silhouette tests hair, beard, plaid clothing, hand rigging and weapon presentation.
+- Do not propagate a broken rig to all family members. The John slice must pass first, then the shared skeleton/weapon/camera foundation can be reused.
+
+## 2. Approved character identity
+- The approved turnaround remains the source of truth for character identity.
+- Simplify geometry, not identity.
+- Skin tone, hair colour/style, facial hair, face read, clothing colours and silhouette may not be redesigned by runtime art code.
+- A legacy authored GLB whose `approvedModel` flag is not exactly `true` must NOT replace an approved-turnaround procedural fallback.
+- The current legacy John GLB remains available as a historical/runtime asset but is intentionally withheld in Prop Hunt until a replacement passes approved-turnaround comparison.
+
+## 3. Shared humanoid rig contract
+- Use one reusable humanoid skeleton/semantic rig for adults, teens and children, with approved character-specific scaling/proportions.
+- Required semantic parts: hips, upper body, head, left/right shoulder, elbow and hand, left/right legs, weapon anchor, right-hand grip and left-hand support grip.
+- Palms must face naturally. The backwards-hand artifact is a release blocker.
+- Hunter grip is right hand on the trigger/pistol grip and left hand supporting the fore-end.
+- For lightweight procedural characters, weapon-mounted grip-hand visuals may replace the old end-of-arm hand meshes while aiming so palm orientation cannot invert.
+- Authored GLBs should ultimately expose real rightHandSocket / leftHandSocket nodes and use IK, but procedural fallback must remain visually correct until those models exist.
+
+## 4. Hunter body animation
+- Hunter always faces the crosshair/camera aim direction while able to shoot.
+- Upper body remains on an aiming layer while legs support forward walk, backpedal and strafing.
+- Required states: idle/aim, walk, run/sprint, backward, strafe left/right, jump, fall, land, mantle, fire, hit reaction and celebrate.
+- Gun raises into a two-hand ready position during the hunt.
+- No traditional reload is required because the Prop Zapper has unlimited ammunition. Use recoil plus a short energy/recharge pulse instead.
+- Character-specific personality should not change gameplay timing. Personality differences belong in idle/reaction animation only.
+
+## 5. Prop Zapper presentation
+- The Prop Zapper must be visibly readable on a phone from the normal third-person camera.
+- Use a chunky family-safe sci-fi/tool blaster silhouette, not a realistic firearm.
+- Keep the weapon visible while moving, jumping and aiming when practical.
+- Weapon muzzle must have a real 3D muzzle socket.
+- If the physical muzzle is blocked by a wall, the shot hits that wall even if the camera crosshair can see beyond it.
+- Recoil affects gun, arms and camera subtly. Unlimited ammo uses a short visible energy-coil pulse instead of reload.
+
+## 6. Third-person hunter camera
+- Hunter view is a close right-shoulder third-person camera by default.
+- The character and weapon must both remain readable. Target view is roughly thigh/waist-up at ordinary play distance rather than a distant tiny avatar.
+- Aim camera uses the shared Prop Hunt aim distance and full shoulder offset; do not collapse to the old nearly centered distant camera.
+- Shoulder swap remains available.
+- Camera collision/recovery rules remain in force.
+- The visible crosshair must be at the exact screen point used by the camera ray. No vertical offset mismatch is allowed.
+
+## 7. Phone controls
+- Left thumb joystick controls movement.
+- Right-side drag controls camera/aim.
+- Separate large SHOOT and JUMP controls remain.
+- Sprint remains available through the existing button/joystick preference system.
+- No separate aim button is required. Hunter weapon is ready during the hunt.
+- Mild mobile/gamepad aim assist is allowed only inside a small cone and may not rotate the player's camera.
+
+## 8. Shot visibility and hit feedback
+- Gameplay remains hitscan for responsiveness.
+- Every shot renders a fast visible 3D energy tracer from the physical muzzle to the validated impact point.
+- Muzzle flash/light is required.
+- Every shot has a visible impact burst at the actual hit point, including misses that hit the environment.
+- The crosshair pulses on impact. Hider hits use a stronger target-hit marker.
+- Hitting a disguised hider produces a tiny prop shake and impact effect but does NOT reveal the hider's identity until elimination.
+- Do not use giant floating damage numbers by default.
+
+## 9. John vertical-slice release gate
+Before the shared solution is propagated to the rest of the family, John must demonstrate on an actual phone:
+1. recognisable approved John identity and colours;
+2. no legacy unapproved GLB silently replacing the approved fallback;
+3. correct palm/hand orientation;
+4. right trigger hand and left support hand visibly gripping the Prop Zapper;
+5. weapon clearly visible from the normal camera;
+6. crosshair exactly matching the actual shot ray;
+7. visible muzzle flash/tracer;
+8. clearly visible world impact;
+9. clear hider hit marker without premature identity reveal;
+10. movement, jump, strafe and aim without broken arms;
+11. physical muzzle obstruction respected;
+12. phone controls do not cover the crosshair or weapon.
+
+## 10. Expansion after John approval
+Once John passes the phone gate, reuse the shared foundation for Kristen, Holly, Vanessa, Lizzie, Logan, James, Dorothy and later approved Papa/Nana/dog assets. Do not rebuild separate incompatible combat rigs per character.
+
+## 11. 31 Blind rule clarification, superseding W.6 pending note
+The family definition is now known and must be preserved for the next 31 implementation pass:
+- A Blind player starts with exactly 3 face-down cards and does not see them.
+- On a turn the Blind player may flip one of their own face-down cards and keep it; that card stays face up for the rest of the round.
+- Or the player may take the top discard card and replace one of their face-down cards without looking at the replaced card.
+- Or the player may pass and wait for the next turn hoping for a better option.
+- Do not invent additional Blind scoring/end conditions beyond the established 31 rules without an explicit family rule.
+
+## 12. W.7 automated gate
+Regression/source validation must confirm:
+- approved-model withholding for John;
+- two weapon grip sockets and grip hands;
+- old arm-end hands hidden during hunter aim;
+- hunter aim camera is enabled and uses the aim shoulder offset;
+- crosshair and hit marker are centered on the ray;
+- muzzle-origin shot revalidation remains active;
+- visible beam tracer and impact burst exist;
+- prop hit shake exists without identity reveal;
+- W.6 multigame fixes and W.5 character locks remain intact.
+
+Real-device visual QA is still required. Automated tests can prove contracts and regressions, but cannot certify that John actually looks correct on the user's phone.

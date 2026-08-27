@@ -500,11 +500,16 @@ export function create3DArtKit(THREE){
   }
 
   function buildPropZapper(scale=1){
-    const g=new THREE.Group(),body=material('paintedMetal',0x59636a,{seed:5}),dark=material('rubber',0x202427),accent=material('paintedMetal',0x98533e,{seed:7}),steel=material('metal',0x929794),energy=new THREE.MeshStandardMaterial({color:0x77c7d0,emissive:0x37a9b7,emissiveIntensity:1.8,roughness:.24,metalness:.18});
-    g.add(box(.18,.18,.38,body,[0,0,-.08]));g.add(box(.15,.17,.23,dark,[0,-.02,.24],[.1,0,0]));g.add(box(.09,.27,.12,dark,[0,-.19,.02],[-.18,0,0]));
-    const barrel=cylinder(.032,.038,.38,steel,[0,.015,-.48],[Math.PI/2,0,0],12);g.add(barrel);for(let i=0;i<3;i++)g.add(torus(.065,.015,accent,[0,.015,-.31-i*.09],[Math.PI/2,0,0]));
-    const coil=cylinder(.045,.045,.18,energy,[0,.015,-.71],[Math.PI/2,0,0],16);g.add(coil);g.add(torus(.082,.018,steel,[0,.015,-.82],[Math.PI/2,0,0]));g.add(cylinder(.055,.07,.08,accent,[0,.015,-.88],[Math.PI/2,0,0],16));
-    g.add(box(.075,.07,.12,accent,[0,.13,-.2]));g.add(box(.035,.035,.29,steel,[.12,.02,-.08]));const muzzle=new THREE.Object3D();muzzle.position.set(0,.015,-.94);g.add(muzzle);g.userData.muzzle=muzzle;g.userData.leftGrip=new THREE.Vector3(-.08,-.02,-.38);g.userData.rightGrip=new THREE.Vector3(0,-.17,.01);g.scale.setScalar(scale);return g;
+    const g=new THREE.Group(),body=material('paintedMetal',0x59636a,{seed:5}),dark=material('rubber',0x202427),accent=material('paintedMetal',0x98533e,{seed:7}),steel=material('metal',0x929794),energy=new THREE.MeshStandardMaterial({color:0x86e7ef,emissive:0x43d6e2,emissiveIntensity:2.5,roughness:.18,metalness:.12});
+    // Chunkier silhouette than the old placeholder so the hunter can actually read the weapon on a phone.
+    g.add(box(.22,.20,.42,body,[0,.015,-.08]));g.add(box(.17,.18,.25,dark,[0,-.015,.24],[.1,0,0]));g.add(box(.10,.30,.13,dark,[0,-.205,.025],[-.18,0,0]));
+    const barrel=cylinder(.038,.045,.44,steel,[0,.02,-.53],[Math.PI/2,0,0],14);g.add(barrel);for(let i=0;i<3;i++)g.add(torus(.074,.017,accent,[0,.02,-.33-i*.105],[Math.PI/2,0,0]));
+    const coil=cylinder(.052,.052,.21,energy,[0,.02,-.77],[Math.PI/2,0,0],18);g.add(coil);g.add(torus(.092,.02,steel,[0,.02,-.89],[Math.PI/2,0,0]));g.add(cylinder(.065,.078,.09,accent,[0,.02,-.955],[Math.PI/2,0,0],18));
+    g.add(box(.085,.075,.13,accent,[0,.145,-.21]));g.add(box(.04,.04,.32,steel,[.135,.025,-.10]));
+    const muzzle=new THREE.Object3D();muzzle.position.set(0,.02,-1.02);g.add(muzzle);
+    const rightGripSocket=new THREE.Object3D();rightGripSocket.position.set(0,-.185,.035);rightGripSocket.rotation.set(-.24,0,0);g.add(rightGripSocket);
+    const leftGripSocket=new THREE.Object3D();leftGripSocket.position.set(0,-.015,-.47);leftGripSocket.rotation.set(0,0,0);g.add(leftGripSocket);
+    g.userData.muzzle=muzzle;g.userData.leftGripSocket=leftGripSocket;g.userData.rightGripSocket=rightGripSocket;g.userData.energyCoil=coil;g.userData.leftGrip=new THREE.Vector3(0,-.015,-.47);g.userData.rightGrip=new THREE.Vector3(0,-.185,.035);g.scale.setScalar(scale);return g;
   }
 
   function buildHumanRig(style={},opts={}){
@@ -527,7 +532,13 @@ export function create3DArtKit(THREE){
     const addFacialHair=(full=false)=>{upperBody.add(box(.115,.032,.015,hairM,[0,.895,-.216]));if(full){upperBody.add(capsule(.022,.16,hairM,[-.082,.875,-.193],[0,0,-.28],[.9,1,.8]));upperBody.add(capsule(.022,.16,hairM,[.082,.875,-.193],[0,0,.28],[.9,1,.8]));upperBody.add(box(.13,.05,.014,hairM,[0,.835,-.19]));}};
     const addLongBackHair=(length=.48)=>{for(const sx of [-.17,-.07,.07,.17])upperBody.add(capsule(.052,length,hairM,[sx,.75,.13],[.12,0,sx*.18],[.86,1,.78]));};
     const addHood=()=>{const hood=torus(.24,.065,trim,[0,.64,.13],[Math.PI/2,0,0],Math.PI*1.35);upperBody.add(hood);};
-    if(id==='john'){addFacialHair(true);upperBody.add(box(.18,.025,.012,material('paintedMetal',0xc49352),[0,.18,-.265]));}
+    if(id==='john'){
+      addFacialHair(true);upperBody.add(box(.18,.025,.012,material('paintedMetal',0xc49352),[0,.18,-.265]));
+      // Approved John silhouette: short side-swept brown hair rather than a smooth cap.
+      for(const [xx,yy,zz,rz] of [[-.13,1.09,-.12,-.18],[-.05,1.12,-.15,-.08],[.04,1.11,-.15,.03],[.13,1.07,-.11,.18]]){
+        const lock=capsule(.034,.16,hairM,[xx,yy,zz],[.15,0,rz],[.9,1,.78]);upperBody.add(lock);
+      }
+    }
     if(id==='james'){addGlasses();addFacialHair(false);upperBody.add(box(.31,.018,.012,denim,[0,.48,-.262]));}
     if(id==='papa'){
       addFacialHair(false);const hat=new THREE.Group(),felt=material('fabric',0x70543a,{seed:72});hat.add(cylinder(.19,.21,.11,felt,[0,.04,0],[],18));hat.add(cylinder(.31,.31,.028,felt,[0,-.005,0],[],24));hat.position.set(0,1.18,0);upperBody.add(hat);
@@ -572,8 +583,12 @@ export function create3DArtKit(THREE){
     const proportions=opts.proportions||{},bodyWidth=clamp(Number(proportions.bodyWidth)||1,.82,1.16),hipWidth=clamp(Number(proportions.hipWidth)||1,.84,1.14),headScale=clamp(Number(proportions.headScale)||1,.9,1.18);
     upperBody.scale.x=bodyWidth;hips.scale.x=hipWidth;leftLeg.hip.position.x=-.145*hipWidth;rightLeg.hip.position.x=.145*hipWidth;
     if(headScale!==1){head.scale.multiplyScalar(headScale);hair.scale.multiplyScalar(headScale);face.scale.multiplyScalar(headScale);face.position.z=-.204-(headScale-1)*.18;for(const ear of ears){ear.scale.multiplyScalar(headScale);ear.position.x*=headScale;ear.position.y=.94+(headScale-1)*.03}}
-    const weaponAnchor=new THREE.Group();weaponAnchor.position.set(.14,.32,-.28);upperBody.add(weaponAnchor);const weapon=buildPropZapper(.68);weaponAnchor.add(weapon);weapon.visible=opts.role==='hunter';
-    const visualScale=Math.max(.6,Math.min(1.25,Number(opts.scale)||1));g.scale.setScalar(visualScale);g.userData.visualScale=visualScale;g.userData.proportions={bodyWidth,hipWidth,headScale};g.userData.parts={hips,upperBody,torso,head,face,eyes,brows,mouth,lowerLip,hair,leftArm,rightArm,leftLeg,rightLeg,weaponAnchor,weapon};g.userData.rigKind='procedural-human';tagRig(g);return g;
+    const weaponAnchor=new THREE.Group();weaponAnchor.position.set(.16,.36,-.34);upperBody.add(weaponAnchor);const weapon=buildPropZapper(.82);weaponAnchor.add(weapon);weapon.visible=opts.role==='hunter';
+    // Hunter grip hands are children of the weapon sockets. The normal end-of-arm hands are hidden while aiming.
+    // This keeps both palms facing the gun correctly and prevents the old backwards-hand artifact.
+    const buildGripHand=(socket,side)=>{const handRoot=new THREE.Group(),palm=box(.12,.075,.105,skin,[0,0,0]),thumb=capsule(.022,.07,skin,[side*.062,-.005,-.02],[0,0,side>0?-.45:.45],[.75,1,.75]);handRoot.add(palm);handRoot.add(thumb);socket.add(handRoot);handRoot.userData.palm=palm;handRoot.userData.thumb=thumb;return handRoot};
+    const rightGripHand=buildGripHand(weapon.userData.rightGripSocket,1),leftGripHand=buildGripHand(weapon.userData.leftGripSocket,-1);rightGripHand.visible=leftGripHand.visible=opts.role==='hunter';weapon.userData.gripHands={right:rightGripHand,left:leftGripHand};
+    const visualScale=Math.max(.6,Math.min(1.25,Number(opts.scale)||1));g.scale.setScalar(visualScale);g.userData.visualScale=visualScale;g.userData.proportions={bodyWidth,hipWidth,headScale};g.userData.parts={hips,upperBody,torso,head,face,eyes,brows,mouth,lowerLip,hair,leftArm,rightArm,leftLeg,rightLeg,weaponAnchor,weapon,rightGripHand,leftGripHand};g.userData.rigKind='procedural-human';tagRig(g);return g;
   }
 
   function buildDogRig(style={},opts={}){

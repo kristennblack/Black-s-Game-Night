@@ -188,5 +188,5 @@ test('v1.8 realism layer is shared: renderer, shadows, contact FX, attention, do
   assert.ok(prop.includes('buildSwingDoor'));assert.ok(island.includes('buildSwingDoor'));assert.ok(gameplay.includes('effectiveShoulderSign'));assert.ok(gameplay.includes('autoShoulder'));
   assert.ok(birthday.includes('buildLampPost(deco,-4.2,24.5,2.45'));
   assert.ok(prop.includes('spawnPoof'));
-  assert.ok(gameplay.includes("basePos(p.weaponAnchor,'z',-.28)+recoil*.04"));
+  assert.ok(gameplay.includes("basePos(p.weaponAnchor,'z',-.34)+recoil*.06"));
 });

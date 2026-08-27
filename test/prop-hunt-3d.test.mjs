@@ -91,7 +91,7 @@ test('Prop Hunt is a real WebGL scene instead of the old Canvas 2D projection',(
 test('all-angle humans, quadruped dogs and skeleton-attached weapons are built as detailed 3D mesh hierarchies',()=>{
   for(const token of ['buildHumanRig','buildDogRig','buildPropZapper','weaponAnchor','upperBody','leftArm','rightArm','leftLeg','rightLeg','tailPivot','SphereGeometry','CylinderGeometry'])assert.ok(artjs.includes(token),token);
   assert.ok(artjs.includes("face.position.set(0,.94,-.204)"),'face details should exist only on the front of the 3D head');
-  assert.ok(artjs.includes('const weapon=buildPropZapper(.68)'));
+  assert.ok(artjs.includes('const weapon=buildPropZapper(.82)'));
   assert.ok(artjs.includes('const weapon=buildPropZapper(.46)'));
   assert.ok(js.includes('return art.buildHumanRig'));assert.ok(js.includes('return art.buildDogRig'));
 });

@@ -63,7 +63,7 @@ test('standard 3D play hides developer warnings and QA controls unless qa3d mode
 });
 
 test('3D phone cleanup keeps core recovery while using more readable per-game camera framing',()=>{
-  for(const token of ['propHunt:{','cameraDistance:5.05','minCameraDistance:1.68','maxPitch:.25','island:{','cameraDistance:5.15','maxPitch:.29','birthday:{','cameraDistance:4.95','maxPitch:.31'])assert.ok(gameplay.includes(token),token);
+  for(const token of ['propHunt:{','cameraDistance:4.35','minCameraDistance:1.40','maxPitch:.25','island:{','cameraDistance:5.15','maxPitch:.29','birthday:{','cameraDistance:4.95','maxPitch:.31'])assert.ok(gameplay.includes(token),token);
   for(const src of [prop,island,birthday]){
     assert.ok(src.includes('resetPlayableView'));
     assert.ok(src.includes('mountZoomButtons'));

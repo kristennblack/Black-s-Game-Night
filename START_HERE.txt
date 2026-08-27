@@ -1,28 +1,33 @@
-BLACK FAMILY GAME NIGHT - STAGING PHASE W.6 MULTIGAME UX 31
+BLACK FAMILY GAME NIGHT - STAGING PHASE W.7 PROP HUNT CHARACTER + COMBAT 32
 
 CURRENT RELEASE
-GAME-NIGHT-STAGING-PHASE-W6-MULTIGAME-UX-31
+GAME-NIGHT-STAGING-PHASE-W7-PROP-HUNT-CHARACTER-COMBAT-32
 
-NEW IN W.6
-- Vanessa: grey GMC wash-truck destination win, pink GMC letters only, automatic next level, stronger 3D pipe/truck drawing.
-- Logan: 5x5 beginner start, one locked starter bike on early levels, per-profile Show Tutorial / Skip choice, richer dirt-bike drawing.
-- Visual How To: shared visual rules path for arcade games plus guided tabletop/card demos; self-contained legacy arcade pages now have visual How To overlays too.
-- Mexican Train: board-first layout, complete visible rack, touch and drag reordering.
-- Golf: stock draw may be discarded without flipping/replacing; complete 8-card own grid plus opponent grids and final-turn banner.
-- Mitts / Gloves / Socks: captured cards and points stay visible on capture mats in front of the team/player.
-- Nana's Goat Whack: more dimensional animals and visible points / DO NOT HIT guide.
-- Kelsi's Rock 'n' Roll Rescue replaces Neon Star Patrol; the older Kelsi game URL redirects to it.
-- 31 Blind: pending exact family definition; unchanged for now.
+NEW IN W.7
+- John is the first Prop Hunt production-quality character/combat vertical slice.
+- Approved-turnaround identity now wins at runtime; an unapproved legacy John GLB cannot silently replace the approved-style fallback.
+- Two-hand Prop Zapper rig: right trigger hand + left support hand; old backwards procedural hand meshes are hidden while aiming.
+- Larger/readable Prop Zapper with brighter energy coil.
+- Close right-shoulder hunter aim camera with aim FOV/distance tuned for phone play.
+- Crosshair is exactly centred on the same camera ray used by shooting.
+- Hitscan remains responsive but now has visible beam/tracer, muzzle flash/light and impact burst.
+- Physical muzzle obstruction is preserved so shots cannot cheat through a nearby wall.
+- Disguised-player hits get readable shake/hit feedback without revealing identity early.
+- Master directives now make John actual-phone approval the gate before copying this system to the rest of the family.
+- Clarified 31 Blind rules are recorded in the master directive without inventing extra scoring/end conditions.
 
 PRESERVED
-- Phase W.5 approved character locks and turnarounds.
-- W.4 Gammon/mobile card-hand repairs.
-- W.3 Vanessa/Logan foundation.
-- W.2 Trail Trouble/Prairie Pots start repair.
-- W.1 join response flow and Dorothy Garden upgrade.
+- Phase W.6 multigame UX/rules work.
+- Phase W.5 approved family-character identity lock and approved turnarounds.
+- W.4 Gammon/mobile card-hand repair and earlier cumulative releases.
 
 VALIDATE
 npm test
 npm run staging:validate
 
-Real-device visual QA is still required after deployment.
+EXPECTED WORKING-TREE GATE
+- 465 / 465 tests pass.
+- 208 staging checks pass, 0 fail, 2 known environment warnings.
+
+FINAL VISUAL GATE
+John must be reviewed on an actual phone before this character-combat template is propagated to the family cast.
