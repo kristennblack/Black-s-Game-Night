@@ -1,0 +1,32 @@
+PHASE Q PRIMARY CHANGED/ADDED FILES
+
+ADDED
+- MASTER_MOBILE_TABLETOP_UX_DIRECTIVE.md
+- PHASE_Q_MOBILE_TABLETOP_UX_REPORT.md
+- PHONE_QA_PHASE_Q_MOBILE_TABLETOP_UX_15.md
+- PHASE_Q_CHANGED_FILES.txt
+- test/phase-q-mobile-tabletop-ux.test.mjs
+
+CHANGED
+- public/app.js
+- public/styles.css
+- extraGames.mjs
+- public/sw.js
+- public/phase-e-qa.mjs
+- public/index.html
+- public/new-games.html
+- public/island-life.html
+- VERSION.txt
+- package.json
+- wrangler.staging.jsonc
+- START_HERE.txt
+- README.md
+- BUILD_MANIFEST.txt
+- tools/phase_e_validate.mjs
+- current-version regression assertions in existing test files
+
+PRESERVED
+- Phase P1 Prop Hunt 3D flagship code/assets
+- existing game engines except Cribbage public scoring evidence additions
+- Black Gammon rules/setup and regular Backgammon
+- existing multiplayer/reconnect/bot/player-color systems

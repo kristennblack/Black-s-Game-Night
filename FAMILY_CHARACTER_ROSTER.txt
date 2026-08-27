@@ -1,0 +1,30 @@
+BLACK FAMILY GAME NIGHT v1.0.7 - FAMILY CHARACTER ROSTER
+
+Featured family & pet characters:
+- John Black - Birthday Guy
+- Dorothy
+- James
+- Elizabeth
+- Holly
+- Vanessa
+- Logan
+- Papa
+- Nana
+- Kristen
+- Molly
+- Kelsi
+- Gunner
+
+Each has four selectable looks in the app:
+Cute / Goofy / Rugged / Glam
+
+All 20 original character families from v1.0.4 are still included below the family roster in the avatar picker.
+
+
+JOHN BLACK BIRTHDAY BOY EXPANSION (v1.0.7)
+- 16 exclusive selectable John looks
+- Birthday Guy is the default John look
+- All family, pet, and original characters remain available
+
+Total character identities: 33
+Total selectable styled looks: 144

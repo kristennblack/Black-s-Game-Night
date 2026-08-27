@@ -1,0 +1,16 @@
+BLACK FAMILY GAME NIGHT - PHASE Q TEST REPORT
+Build: GAME-NIGHT-STAGING-PHASE-Q-MOBILE-TABLETOP-UX-15
+
+npm test: 345 tests, 345 pass, 0 fail
+npm run check: PASS, including syntax/module checks and 345/345 tests
+npm run build / staging validator: 144 pass, 2 warning, 0 fail
+npm run assets:audit: PASS
+
+Warnings from staging validator:
+- Core 3D Three.js/addon CDN dependencies remain.
+- Live Cloudflare deployment is unverified in this packaging environment.
+
+Visual status:
+- Local headless Chromium navigation to the QA server was blocked by environment policy.
+- No browser screenshot is claimed as proof.
+- Real-device portrait QA remains required for Skip-Bo and Cribbage.

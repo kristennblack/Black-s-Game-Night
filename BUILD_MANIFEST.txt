@@ -1,0 +1,37 @@
+BLACK FAMILY GAME NIGHT
+PHASE W.5 APPROVED CHARACTER LOCK MANIFEST
+
+Current release: GAME-NIGHT-STAGING-PHASE-W5-APPROVED-CHARACTER-LOCK-30
+Package version: 3.9.5-staging-phase-w5-approved-character-lock-30
+Worker main: worker.mjs
+Cloudflare static asset directory: ./public
+Assets binding: ASSETS
+Staging config: wrangler.staging.jsonc
+Service-worker cache: black-family-game-night-staging-phase-w5-approved-character-lock-30
+
+CURRENT W.5 CHARACTER WORK
+- The newly approved ultra-simplified family lineup is the master character identity reference.
+- Turnarounds locked and packaged for John, Kristen, Holly, Vanessa, Lizzie, Logan, James and Dorothy.
+- Papa, Nana, Kelsi, Molly and Gunner remain explicitly pending individual turnaround approval.
+- New central runtime registry: public/approved-family-characters.mjs.
+- New master art contract: MASTER_APPROVED_FAMILY_CHARACTER_DIRECTIVE.md.
+- Approved fallback identity styling is connected to Prop Hunt, Island Life and Birthday Seat.
+- Reserved authored model filenames use /models/characters/approved/CHAR_*.glb.
+- Candidate GLBs are not considered approved until five-view comparison passes.
+
+CUMULATIVE PRESERVATION
+- W.4 Gammon + large-card-hand mobile repairs remain included.
+- W.3 Vanessa Pipe Problem and Logan Trail Logic upgrades remain included.
+- W.2 Trail Trouble/Prairie Pots start repairs remain included.
+- W.1 Ask-to-Join result flow and Dorothy Garden Merge remain included.
+
+GOVERNING CHARACTER RULE
+APPROVED TURNAROUND CONTROLS IDENTITY; SIMPLIFY GEOMETRY, NOT IDENTITY.
+
+DECLARED LIMITATION
+The packaged turnaround PNGs and procedural fallback definitions are not a substitute for authored, skinned GLB character meshes. Real-device visual QA is required when each authored GLB is introduced.
+
+VALIDATION
+- npm test: 446 / 446 pass.
+- staging validator: 208 pass, 0 fail, 2 environment warnings.
+- W.5 focused registry tests verify approved IDs, packaged turnarounds, pending-character exclusions, 3D-game integration, master-prompt precedence and manifest honesty.

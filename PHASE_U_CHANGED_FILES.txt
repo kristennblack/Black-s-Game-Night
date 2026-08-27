@@ -1,0 +1,13 @@
+Phase U new/changed files
+- public/breakout.html (new)
+- public/app.js (Arcade Corner, Cabin Breakout card/link/share, brick icon motif)
+- public/sw.js (precache breakout page)
+- public/index.html (current T1 cache-busting marker normalization)
+- public/new-games.html (current T1 cache-busting marker normalization)
+- public/island-life.html (current T1 cache-busting marker normalization)
+- test/phase-u-cabin-breakout.test.mjs (new)
+- MASTER_PHASE_U_CABIN_BREAKOUT_DIRECTIVE.md (new)
+- PHASE_U_CABIN_BREAKOUT_REPORT.md (new)
+- PHONE_QA_PHASE_U_CABIN_BREAKOUT_20.md (new)
+- PHASE_U_CHANGED_FILES.txt (new)
+- README.md (Phase U documentation)

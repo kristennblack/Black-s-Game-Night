@@ -1,0 +1,15 @@
+BLACK FAMILY GAME NIGHT - STAGING PHASE W.5 APPROVED CHARACTER LOCK 30
+
+Use this package as the cumulative base after Phase W.4.
+
+NEW IN W.5
+- Approved ultra-simplified master family lineup is locked into the package.
+- Approved turnaround sheets included for John, Kristen, Holly, Vanessa, Lizzie, Logan, James and Dorothy.
+- One central character code registry now governs their appearance in free-moving 3D games.
+- Master prompt now explicitly says: approved turnaround controls identity; simplify geometry, not identity.
+- Papa, Nana, Kelsi, Molly and Gunner are NOT falsely marked complete; their one-character turnaround approval is still pending.
+
+IMPORTANT
+The turnaround PNGs are art references. Finished game-ready GLBs must still be modeled, rigged and visually approved before the manifest can mark them as approved models.
+
+Run npm test and npm run staging:validate before deployment if the package is modified.
