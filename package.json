@@ -1,9 +1,9 @@
 {
   "name": "black-family-game-night",
-  "version": "3.9.5-staging-phase-w5-approved-character-lock-30",
+  "version": "3.9.6-staging-phase-w6-multigame-ux-31",
   "private": true,
   "type": "module",
-  "description": "Black Family Game Night Phase W.5: approved ultra-simplified family character turnaround registry and 3D identity lock, preserving all W.4 gameplay/mobile repairs.",
+  "description": "Black Family Game Night Phase W.6: multigame rules, visual How To, mobile table/rack improvements and Kelsi Rock n Roll Rescue, preserving W.5 approved character locks.",
   "scripts": {
     "test": "node --test",
     "check": "node --check worker.mjs && node --check propHuntRoom.mjs && node --check islandLifeRoom.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check threeNewGames.mjs && node --check blackGammon.mjs && node --check public/app.js && node --check public/prop-hunt-core.mjs && node --check public/shared-3d-art-kit.mjs && node --check public/shared-3d-gameplay.mjs && node --check public/approved-family-characters.mjs && node --check public/shared-3d-studio.mjs && node --check public/prop-hunt-3d.js && node --check public/island-life-core.mjs && node --check public/island-life.js && node --check public/birthday-climb.js && node --check public/phase-e-qa.mjs && node --check public/sw.js && node --test",

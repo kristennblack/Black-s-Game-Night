@@ -6,12 +6,12 @@ import {rotateMask,buildPipePuzzle,tracePipeFlow} from '../public/vanessas-pipe-
 
 const read=p=>readFile(new URL(p,import.meta.url),'utf8');
 
-test('Logan journey progresses 6x6 through expert 9x9',()=>{
-  assert.equal(sizeForJourneyLevel(1),6);assert.equal(sizeForJourneyLevel(6),7);assert.equal(sizeForJourneyLevel(11),8);assert.equal(sizeForJourneyLevel(16),9);
+test('Logan journey now starts at 5x5 and grows through expert 9x9',()=>{
+  assert.equal(sizeForJourneyLevel(1),5);assert.equal(sizeForJourneyLevel(4),6);assert.equal(sizeForJourneyLevel(9),7);assert.equal(sizeForJourneyLevel(14),8);assert.equal(sizeForJourneyLevel(19),9);
 });
 
 test('Logan generated terrain puzzles are connected and uniquely solvable at every supported size',()=>{
-  for(const n of [6,7,8,9])for(const seed of [11,29,47,83,131]){
+  for(const n of [5,6,7,8,9])for(const seed of [11,29,47,83,131]){
     const puzzle=generatePuzzle({n,seed});
     assert.equal(countSolutions(puzzle,2),1,`${n}x${n} seed ${seed} should be unique`);
     assert.equal(allRegionsConnected(puzzle),true,`${n}x${n} seed ${seed} should have connected regions`);
@@ -36,7 +36,7 @@ test('Logan page is fully re-themed from Minefield to dirt-bike and fishing trai
 test('home shelf identifies Logan as Trail Logic and Vanessa as detailed worksite service game',async()=>{
   const app=await read('../public/app.js');
   assert.match(app,/Logan's Trail Logic/);assert.match(app,/one per row, column and terrain region/);
-  assert.match(app,/Vanessa’s pink GMC and grey hauler/);
+  assert.match(app,/Vanessa’s grey GMC wash truck/);
 });
 
 test('Vanessa pipe rotation and flow core support full connected service networks',()=>{
@@ -46,9 +46,9 @@ test('Vanessa pipe rotation and flow core support full connected service network
   const flow=tracePipeFlow(p.target,6);assert.equal(flow.connected,true);assert.ok(flow.maxDepth>0);
 });
 
-test('Vanessa presentation contains dimensional pipes, grey hauler, pink GMC and repair hazards',async()=>{
+test('Vanessa presentation contains dimensional pipes, grey GMC with pink letters and repair hazards',async()=>{
   const html=await read('../public/vanessas-pipe-problem.html'),ui=await read('../public/vanessas-pipe-problem.mjs');
-  assert.match(html,/pink GMC pickup/);assert.match(html,/REPAIRS/);assert.match(html,/repair a damaged socket first/);
-  assert.match(ui,/GREY HAULER • SERVICE DECK/);assert.match(ui,/VANESSA’S PINK GMC/);assert.match(ui,/GMC/);
+  assert.match(html,/grey GMC/i);assert.match(html,/REPAIRS/);assert.match(html,/repair a damaged socket first/);
+  assert.match(ui,/GREY TRUCK • WASH LINE/);assert.match(ui,/fillText\('GMC'/);assert.match(ui,/#e85c9b/);
   assert.match(ui,/Couplers at each opening/);assert.match(ui,/drawHazard/);assert.match(ui,/lineDashOffset/);assert.match(ui,/rotate\(angle\)/);
 });

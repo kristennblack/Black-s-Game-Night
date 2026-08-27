@@ -11,7 +11,7 @@ const birthday=read('public/birthday-event.html');
 const garden=read('public/dorothys-garden-merge.html');
 const platform=read('public/phase-w-platform.mjs');
 
-const arcadeFiles=['papas-paddle-battle','gunners-goat-run','johns-shop-bomber','jamess-lumber-stack','dorothys-garden-merge','logans-minefield','nanas-goat-whack','hollys-memory-mayhem','lizzies-dramatic-lights','vanessas-pipe-problem','kelsis-rock-hunt','mollys-light-chase','gunners-snack-attack','breakout','space-shooter','rocket-gap','neon-snake'];
+const arcadeFiles=['papas-paddle-battle','gunners-goat-run','johns-shop-bomber','jamess-lumber-stack','dorothys-garden-merge','logans-minefield','nanas-goat-whack','hollys-memory-mayhem','lizzies-dramatic-lights','vanessas-pipe-problem','mollys-light-chase','gunners-snack-attack','breakout','space-shooter','rocket-gap','neon-snake'];
 
 test('Phase W home categories are rendered in the locked order',()=>{
   const a=app.indexOf("section('cards','Card Games'");
@@ -21,10 +21,12 @@ test('Phase W home categories are rendered in the locked order',()=>{
   assert.ok(a>=0&&a<b&&b<c&&c<d);
 });
 
-test('all 17 arcade games are integrated and general game names remain unchanged',()=>{
+test('all 16 active arcade games are integrated and Kelsi replaces Neon Star Patrol',()=>{
   for(const id of arcadeFiles) assert.match(app,new RegExp(id.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
-  for(const name of ['Cabin Breakout','Neon Star Patrol','Campfire Rocket','Neon Snake']) assert.match(app,new RegExp(name));
-  assert.match(app,/17 fast family games/);
+  for(const name of ['Cabin Breakout',"Kelsi's Rock 'n' Roll Rescue",'Campfire Rocket','Neon Snake']) assert.match(app,new RegExp(name));
+  assert.doesNotMatch(app,/name:'Neon Star Patrol'/);
+  assert.doesNotMatch(app,/kelsirocks:\{/);
+  assert.match(app,/16 fast family games/);
 });
 
 test('every arcade page receives the Phase W dimensional platform',()=>{

@@ -49,11 +49,11 @@ const GAMES={
  'hollys-memory-mayhem':{id:'hollys-memory-mayhem',person:'holly',name:'Holly',reaction:'That one was definitely cute.'},
  'lizzies-dramatic-lights':{id:'lizzies-dramatic-lights',person:'elizabeth',name:'Lizzie',reaction:'That deserved a better spotlight.'},
  'vanessas-pipe-problem':{id:'vanessas-pipe-problem',person:'vanessa',name:'Vanessa',reaction:'Obviously I had to fix it.'},
- 'kelsis-rock-hunt':{id:'kelsis-rock-hunt',person:'kelsi',name:'Kelsi',reaction:'Important rock acquired.'},
+ 
  'mollys-light-chase':{id:'mollys-light-chase',person:'molly',name:'Molly',reaction:'LIGHT!'},
  'gunners-snack-attack':{id:'gunners-snack-attack',person:'gunner',name:'Gunner',reaction:'Snack secured. Work avoided.'},
  'breakout':{id:'breakout',name:'Cabin Breakout',reaction:'Cabin clear!'},
- 'space-shooter':{id:'space-shooter',name:'Neon Star Patrol',reaction:'Sector clear.'},
+ 'space-shooter':{id:'space-shooter',person:'kelsi',name:"Kelsi's Rock 'n' Roll Rescue",reaction:'Important rock acquired.'},
  'rocket-gap':{id:'rocket-gap',name:'Campfire Rocket',reaction:'Threaded the gap.'},
  'neon-snake':{id:'neon-snake',name:'Neon Snake',reaction:'Clean turn.'}
 };
@@ -93,4 +93,12 @@ async function heartbeat(p,c){await fetch('/api/presence',{method:'POST',headers
 window.addEventListener('pagehide',()=>{const p=profile();navigator.sendBeacon?.('/api/presence',new Blob([JSON.stringify({profileId:p.profileId,action:'leave'})],{type:'application/json'}))});
 mountChrome();
 
+</script><style data-w6-how-inline>
+.w6-how-btn{position:fixed;right:12px;bottom:12px;z-index:80;border:1px solid #d2ad61;background:#241b12;color:#fff4dd;border-radius:999px;padding:10px 15px;font-weight:950;box-shadow:0 8px 28px #0009}.w6-how-overlay{position:fixed;inset:0;z-index:90;background:#090805df;display:grid;place-items:center;padding:14px}.w6-how-overlay[hidden]{display:none}.w6-how-card{width:min(92vw,560px);background:#f2e6cf;color:#21170e;border:3px solid #9b7542;border-radius:20px;padding:18px;box-shadow:0 24px 80px #000c}.w6-how-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.w6-how-head h2{margin:0}.w6-how-close{font-size:26px;border:0;background:transparent}.w6-how-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:14px}.w6-how-step{background:#e0cfad;border:1px solid #aa8759;border-radius:14px;padding:12px;text-align:center}.w6-how-step b{display:grid;place-items:center;height:78px;border-radius:12px;background:#26352c;color:#fff;font-size:38px;margin-bottom:8px}.w6-how-step strong{display:block;font-size:12px}.w6-how-step small{display:block;margin-top:5px;line-height:1.3}@media(max-width:520px){.w6-how-steps{grid-template-columns:1fr}.w6-how-step{display:grid;grid-template-columns:70px 1fr;column-gap:10px;text-align:left;align-items:center}.w6-how-step b{height:58px;margin:0;grid-row:1/3}.w6-how-step strong{align-self:end}.w6-how-step small{align-self:start}}
+</style><script data-w6-how-inline>
+(()=>{const id=(location.pathname.split('/').pop()||'').replace(/\.html$/,''),sets={
+'rocket-gap':{name:'Campfire Rocket',steps:[['🚀↗','BOOST','Tap, click or press Space to lift the rocket.'],['🌲  ◻  🌲','AIM FOR THE GAP','Thread the open space between the timber walls.'],['🏆','KEEP FLYING','Every cleared gap adds to your score.']]},
+'neon-snake':{name:'Neon Snake',steps:[['⬆️➡️','STEER','Swipe or use arrow keys to turn the snake.'],['●','EAT THE LIGHT','Collect the glowing food to grow and score.'],['▦','AVOID CRASHES','Do not hit the wall or your own body.']]},
+'breakout':{name:'Cabin Breakout',steps:[['↔️','MOVE THE PADDLE','Drag or move the paddle under the ball.'],['⚪↗','BOUNCE THE BALL','Keep the ball in play and aim rebounds at the bricks.'],['🧱💥','CLEAR THE CABIN','Break the brick wall and collect useful power-ups.']]}}
+;const x=sets[id];if(!x)return;const btn=document.createElement('button');btn.className='w6-how-btn';btn.type='button';btn.textContent='HOW TO';const box=document.createElement('div');box.className='w6-how-overlay';box.hidden=true;box.innerHTML=`<div class="w6-how-card"><div class="w6-how-head"><div><small>VISUAL HOW TO PLAY</small><h2>${x.name}</h2></div><button class="w6-how-close" type="button" aria-label="Close">×</button></div><div class="w6-how-steps">${x.steps.map(s=>`<div class="w6-how-step"><b>${s[0]}</b><strong>${s[1]}</strong><small>${s[2]}</small></div>`).join('')}</div></div>`;btn.onclick=()=>box.hidden=false;box.querySelector('.w6-how-close').onclick=()=>box.hidden=true;box.onclick=e=>{if(e.target===box)box.hidden=true};document.body.append(btn,box)})();
 </script></body></html>

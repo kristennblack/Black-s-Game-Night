@@ -1,0 +1,40 @@
+BUILD_MANIFEST.txt -> BUILD_MANIFEST.txt
+NEW CHANGED_FILES_PHASE_W6.txt
+CURRENT_RELEASE.txt -> CURRENT_RELEASE.txt
+LOCKED_COMPONENTS_REGISTER.md -> LOCKED_COMPONENTS_REGISTER.md
+MASTER_NEXT_BUILD_DEVELOPMENT_DIRECTIVE.md -> MASTER_NEXT_BUILD_DEVELOPMENT_DIRECTIVE.md
+NEW PHASE_W6_BUILD_VALIDATION.txt
+NEW PHASE_W6_MULTIGAME_UX_REPORT.md
+NEW PHASE_W6_TEST_RESULTS.txt
+README.md -> README.md
+START_HERE.txt -> START_HERE.txt
+extraGames.mjs -> extraGames.mjs
+package.json -> package.json
+public/app.js -> public/app.js
+public/breakout.html -> public/breakout.html
+public/gunners-goat-run.html -> public/gunners-goat-run.html
+public/gunners-snack-attack.html -> public/gunners-snack-attack.html
+public/hollys-memory-mayhem.html -> public/hollys-memory-mayhem.html
+public/jamess-lumber-stack.html -> public/jamess-lumber-stack.html
+public/johns-shop-bomber.html -> public/johns-shop-bomber.html
+public/kelsis-rock-hunt.html -> public/kelsis-rock-hunt.html
+public/lizzies-dramatic-lights.html -> public/lizzies-dramatic-lights.html
+public/logans-minefield.html -> public/logans-minefield.html
+public/logans-trail-logic-core.mjs -> public/logans-trail-logic-core.mjs
+public/mollys-light-chase.html -> public/mollys-light-chase.html
+public/nanas-goat-whack.html -> public/nanas-goat-whack.html
+public/neon-snake.html -> public/neon-snake.html
+public/papas-paddle-battle.html -> public/papas-paddle-battle.html
+public/phase-w-platform.css -> public/phase-w-platform.css
+public/phase-w-platform.mjs -> public/phase-w-platform.mjs
+public/rocket-gap.html -> public/rocket-gap.html
+public/space-shooter.html -> public/space-shooter.html
+public/styles.css -> public/styles.css
+public/sw.js -> public/sw.js
+public/vanessas-pipe-core.mjs -> public/vanessas-pipe-core.mjs
+public/vanessas-pipe-problem.html -> public/vanessas-pipe-problem.html
+public/vanessas-pipe-problem.mjs -> public/vanessas-pipe-problem.mjs
+test/phase-u1-arcade-expansion.test.mjs -> test/phase-u1-arcade-expansion.test.mjs
+test/phase-w-living-app.test.mjs -> test/phase-w-living-app.test.mjs
+test/phase-w3-vanessa-logan-upgrade.test.mjs -> test/phase-w3-vanessa-logan-upgrade.test.mjs
+Only in /mnt/data/gamefix/work_w6/test: phase-w6-multigame-ux.test.mjs

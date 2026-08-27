@@ -1,6 +1,11 @@
-# CURRENT CUMULATIVE RELEASE — PHASE W.5 APPROVED CHARACTER LOCK 30
+# CURRENT CUMULATIVE RELEASE — PHASE W.6 MULTIGAME UX 31
 
-The approved ultra-simplified family character pipeline is now locked through `MASTER_APPROVED_FAMILY_CHARACTER_DIRECTIVE.md` and `public/approved-family-characters.mjs`. Approved turnarounds currently include John, Kristen, Holly, Vanessa, Lizzie, Logan, James and Dorothy. Papa, Nana, Kelsi, Molly and Gunner remain pending individual turnaround approval.
+**Current release:** `GAME-NIGHT-STAGING-PHASE-W6-MULTIGAME-UX-31`  
+**Package version:** `3.9.6-staging-phase-w6-multigame-ux-31`
+
+Phase W.6 preserves the W.5 approved family-character identity lock and adds the current gameplay/UX pass: Vanessa destination-based truck-wash wins and grey GMC, Logan optional visual tutorial/easier progression, shared visual How To paths, board-first Mexican Train with full rearrangeable rack, corrected Golf discard/final-turn presentation, Mitt capture mats, improved Nana animal/point presentation, and Kelsi's Rock 'n' Roll Rescue replacing Neon Star Patrol.
+
+**31 Blind mode is intentionally pending the user's exact family rule and has not been guessed.**
 
 # Black Family Game Night
 

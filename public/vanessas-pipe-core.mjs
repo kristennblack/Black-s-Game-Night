@@ -30,5 +30,5 @@ export function tracePipeFlow(tiles,n){
       const ni=pipeIndex(nx,ny,n);if(depth[ni]>=0||!(tiles[ni]&b))continue;depth[ni]=depth[i]+1;queue.push([nx,ny]);
     }
   }
-  return {depth,connected:depth.every(v=>v>=0),maxDepth:Math.max(...depth)};
+  return {depth,connected:depth.every(v=>v>=0),destinationConnected:depth[n*n-1]>=0,destinationDepth:depth[n*n-1],maxDepth:Math.max(...depth)};
 }

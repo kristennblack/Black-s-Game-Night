@@ -1,15 +1,28 @@
-BLACK FAMILY GAME NIGHT - STAGING PHASE W.5 APPROVED CHARACTER LOCK 30
+BLACK FAMILY GAME NIGHT - STAGING PHASE W.6 MULTIGAME UX 31
 
-Use this package as the cumulative base after Phase W.4.
+CURRENT RELEASE
+GAME-NIGHT-STAGING-PHASE-W6-MULTIGAME-UX-31
 
-NEW IN W.5
-- Approved ultra-simplified master family lineup is locked into the package.
-- Approved turnaround sheets included for John, Kristen, Holly, Vanessa, Lizzie, Logan, James and Dorothy.
-- One central character code registry now governs their appearance in free-moving 3D games.
-- Master prompt now explicitly says: approved turnaround controls identity; simplify geometry, not identity.
-- Papa, Nana, Kelsi, Molly and Gunner are NOT falsely marked complete; their one-character turnaround approval is still pending.
+NEW IN W.6
+- Vanessa: grey GMC wash-truck destination win, pink GMC letters only, automatic next level, stronger 3D pipe/truck drawing.
+- Logan: 5x5 beginner start, one locked starter bike on early levels, per-profile Show Tutorial / Skip choice, richer dirt-bike drawing.
+- Visual How To: shared visual rules path for arcade games plus guided tabletop/card demos; self-contained legacy arcade pages now have visual How To overlays too.
+- Mexican Train: board-first layout, complete visible rack, touch and drag reordering.
+- Golf: stock draw may be discarded without flipping/replacing; complete 8-card own grid plus opponent grids and final-turn banner.
+- Mitts / Gloves / Socks: captured cards and points stay visible on capture mats in front of the team/player.
+- Nana's Goat Whack: more dimensional animals and visible points / DO NOT HIT guide.
+- Kelsi's Rock 'n' Roll Rescue replaces Neon Star Patrol; the older Kelsi game URL redirects to it.
+- 31 Blind: pending exact family definition; unchanged for now.
 
-IMPORTANT
-The turnaround PNGs are art references. Finished game-ready GLBs must still be modeled, rigged and visually approved before the manifest can mark them as approved models.
+PRESERVED
+- Phase W.5 approved character locks and turnarounds.
+- W.4 Gammon/mobile card-hand repairs.
+- W.3 Vanessa/Logan foundation.
+- W.2 Trail Trouble/Prairie Pots start repair.
+- W.1 join response flow and Dorothy Garden upgrade.
 
-Run npm test and npm run staging:validate before deployment if the package is modified.
+VALIDATE
+npm test
+npm run staging:validate
+
+Real-device visual QA is still required after deployment.

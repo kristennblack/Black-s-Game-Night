@@ -1,37 +1,33 @@
 BLACK FAMILY GAME NIGHT
-PHASE W.5 APPROVED CHARACTER LOCK MANIFEST
+PHASE W.6 MULTIGAME UX MANIFEST
 
-Current release: GAME-NIGHT-STAGING-PHASE-W5-APPROVED-CHARACTER-LOCK-30
-Package version: 3.9.5-staging-phase-w5-approved-character-lock-30
+Current release: GAME-NIGHT-STAGING-PHASE-W6-MULTIGAME-UX-31
+Package version: 3.9.6-staging-phase-w6-multigame-ux-31
 Worker main: worker.mjs
 Cloudflare static asset directory: ./public
 Assets binding: ASSETS
 Staging config: wrangler.staging.jsonc
-Service-worker cache: black-family-game-night-staging-phase-w5-approved-character-lock-30
+Service-worker cache: black-family-game-night-staging-phase-w6-multigame-ux-31
 
-CURRENT W.5 CHARACTER WORK
-- The newly approved ultra-simplified family lineup is the master character identity reference.
-- Turnarounds locked and packaged for John, Kristen, Holly, Vanessa, Lizzie, Logan, James and Dorothy.
-- Papa, Nana, Kelsi, Molly and Gunner remain explicitly pending individual turnaround approval.
-- New central runtime registry: public/approved-family-characters.mjs.
-- New master art contract: MASTER_APPROVED_FAMILY_CHARACTER_DIRECTIVE.md.
-- Approved fallback identity styling is connected to Prop Hunt, Island Life and Birthday Seat.
-- Reserved authored model filenames use /models/characters/approved/CHAR_*.glb.
-- Candidate GLBs are not considered approved until five-view comparison passes.
+CURRENT W.6 WORK
+- Vanessa grey GMC destination-win truck-wash flow and 3D-style art pass.
+- Logan easy-start journey, starter clue, dirt-bike art and per-profile visual tutorial choice.
+- Visual How To coverage across arcade plus existing guided tabletop/card demos.
+- Mexican Train board-first full rearrangeable domino rack.
+- Golf discard-without-flip rule and expanded 8-card/opponent visual table.
+- Mitt capture mats with captured cards and points.
+- Nana animal-definition and scoring-guide upgrade.
+- Kelsi's Rock 'n' Roll Rescue replaces Neon Star Patrol; old Kelsi URL redirects.
+- 31 Blind mode deliberately pending exact family definition.
 
 CUMULATIVE PRESERVATION
-- W.4 Gammon + large-card-hand mobile repairs remain included.
-- W.3 Vanessa Pipe Problem and Logan Trail Logic upgrades remain included.
-- W.2 Trail Trouble/Prairie Pots start repairs remain included.
-- W.1 Ask-to-Join result flow and Dorothy Garden Merge remain included.
+- W.5 approved character identity registry/turnarounds remain locked.
+- W.4 Gammon/mobile hand repairs remain included.
+- W.3-W.1 gameplay and living-app repairs remain included.
 
-GOVERNING CHARACTER RULE
-APPROVED TURNAROUND CONTROLS IDENTITY; SIMPLIFY GEOMETRY, NOT IDENTITY.
-
-DECLARED LIMITATION
-The packaged turnaround PNGs and procedural fallback definitions are not a substitute for authored, skinned GLB character meshes. Real-device visual QA is required when each authored GLB is introduced.
-
-VALIDATION
-- npm test: 446 / 446 pass.
+VALIDATION COUNTS
+- npm run check: 457 / 457 tests pass.
 - staging validator: 208 pass, 0 fail, 2 environment warnings.
-- W.5 focused registry tests verify approved IDs, packaged turnarounds, pending-character exclusions, 3D-game integration, master-prompt precedence and manifest honesty.
+- Cold-extracted release ZIP: 457 / 457 tests pass.
+- Cold-extracted staging validator: 208 pass, 0 fail, 2 environment warnings.
+- ZIP integrity: no compressed-data errors.

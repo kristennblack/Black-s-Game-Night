@@ -28,3 +28,14 @@ Automated tests may establish technical health. They do not constitute visual ap
 - Approved turnarounds: John, Kristen, Holly, Vanessa, Elizabeth/Lizzie, Logan, James, Dorothy.
 - Rule: **approved turnaround controls identity; simplify geometry, not identity.**
 - Papa, Nana, Kelsi, Molly and Gunner remain pending individual turnaround approval.
+
+
+## Phase W.6 gameplay/UX locks
+- Vanessa: destination-connected grey GMC wash-truck win, pink GMC letters only, automatic next level.
+- Logan: optional per-profile visual tutorial, 5x5 beginner levels, early locked starter bike, recognizable dirt-bike renderer.
+- Mexican Train: full visible/rearrangeable rack and board-first surface.
+- Golf: discard stock draw without forced flip/replacement; final-turn structure preserved.
+- Mitts: capture mats retain cards and points.
+- Nana: persistent scoring/avoid guide and dimensional animal drawing.
+- Kelsi's Rock 'n' Roll Rescue replaces Neon Star Patrol; legacy Kelsi URL redirects.
+- 31 Blind remains pending exact family rules and must not be guessed.

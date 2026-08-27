@@ -1233,3 +1233,59 @@ Phase W.4 is a focused playability and mobile-layout correction and is cumulativ
 ## Release gate
 - Automated tests must verify canonical point order, both authoritative starting setups, Black Gammon distinct-single allocation, dice-first renderer hooks, non-clipping Gammon CSS, and >8-card mobile hand access.
 - Real-device visual QA remains required after deployment; automated/source validation is not a substitute for phone approval.
+
+
+---
+
+# PHASE W.6 LOCKED ADDENDUM — MULTIGAME RULES + VISUAL HOW-TO + MOBILE TABLE UX
+
+Phase W.6 is cumulative with W.1-W.5. These requirements supersede older conflicting presentation/rule notes.
+
+## Vanessa's Pipe Problem / truck wash
+- The level is won as soon as connected water flow from the pump reaches the grey truck destination. Unrelated unused pipe cells do not need to be connected.
+- A win must visibly register, then automatically advance to the next level after a short celebration.
+- The vehicle is a detailed grey GMC-style truck. The only pink vehicle branding is the letters **GMC** in pink. Do not render a pink truck or a separate pink pickup.
+- Preserve dimensional pipes, couplers, sockets, repair hazards, shadows and animated water flow.
+
+## Visual How To Play contract
+- Every game must expose a clickable How to Play / Guided Demo / visual tutorial path. Rules should be demonstrated visually where practical, not only as a paragraph of text.
+- Arcade games use the shared Phase W visual HOW TO overlay; table/card games retain the guided demo/help panel.
+
+## Logan's Trail Logic
+- Per-player/profile tutorial choice is opt-in: first use offers **Show Tutorial** or **Skip for Me**, and How to Play can always reopen it later.
+- Journey difficulty starts at 5x5, then progresses through 6x6, 7x7, 8x8 and 9x9.
+- Early Journey levels pre-place one correct bike as a locked starter clue.
+- Dirt-bike art must read as a dirt bike with knobby wheels, rims/spokes, frame, engine, suspension/fork, seat/tank, number plate and handlebars.
+- Preserve exact one-per-row, one-per-column, one-per-terrain-region and no-touching rules.
+
+## Mexican Train
+- The board is the primary play surface and must not be trapped inside a cramped decorative table.
+- The player's entire domino rack remains visible/reachable on phones.
+- Players can rearrange their own domino rack using touch-friendly left/right controls and desktop drag/reorder.
+
+## Golf
+- A stock draw may be discarded without flipping or replacing any grid card.
+- The optional discard-and-flip path remains available when desired.
+- When another player closes/finishes the hole, remaining players receive their final turn; normal repeated discard turns do not continue beyond that final-turn structure.
+- The play surface shows the viewer's complete 2x4 eight-card grid and compact readable grids for the other players.
+
+## Mitts / Gloves / Socks
+- Captured piles are retained in public game state and rendered as physical capture mats in front of the appropriate player/team.
+- Show recent captured cards and points earned, while retaining the live centre pile.
+
+## Nana's Goat Whack
+- Animals use more rounded/dimensional drawing with gradients and defined facial/body features rather than blocky primitives.
+- A visible point guide identifies Goat +1, Pig +2, Chicken +2, Combo bonus, and the red toolbox as a negative **DO NOT HIT** target.
+
+## Kelsi arcade replacement
+- **Kelsi's Rock 'n' Roll Rescue** replaces Neon Star Patrol at `/space-shooter.html`.
+- Remove the separate old Kelsi game from the active home shelf; its old URL may redirect to the replacement for saved-link compatibility.
+- The game centers on Kelsi collecting good rocks/shiny rocks and avoiding muddy clumps.
+
+## 31 blind mode — PENDING FAMILY DEFINITION
+- Do **not** implement or guess the Blind rules until the user supplies the exact family rule.
+- Existing 31 behavior remains unchanged until that clarification is received.
+
+## Release gate
+- Regression tests must cover destination-only Vanessa wins, Logan tutorial choice/easy progression, full Mexican Train rack/reorder, Golf discard-without-flip, Mitt capture mats, Nana scoring guide, Kelsi replacement, and the intentional 31 Blind pending state.
+- Real-device/mobile visual QA remains required after deployment.

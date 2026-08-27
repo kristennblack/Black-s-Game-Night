@@ -17,9 +17,10 @@ export function shuffle(items,rng=Math.random){
 
 export function sizeForJourneyLevel(level){
   const n=Math.max(1,Number(level)||1);
-  if(n<=5)return 6;
-  if(n<=10)return 7;
-  if(n<=15)return 8;
+  if(n<=3)return 5;
+  if(n<=8)return 6;
+  if(n<=13)return 7;
+  if(n<=18)return 8;
   return 9;
 }
 
