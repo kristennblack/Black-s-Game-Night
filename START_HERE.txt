@@ -1,14 +1,17 @@
-BLACK FAMILY GAME NIGHT - STAGING PHASE W.2 GAMMON + START REPAIR 27
+BLACK FAMILY GAME NIGHT - STAGING PHASE W.3 VANESSA + LOGAN UPGRADE 28
 
 Use this package for the current family staging build.
 
-This release preserves Phase W.1 and adds:
-- Backgammon rebuilt around a board-first full-width physical case.
-- All checker stacks render every real checker instead of three discs plus a number.
-- Checker faces remain true round 1:1 discs with beveled dimensional styling.
-- The center Bar is a real vertical raised divider and can show both players' captured checkers.
-- Bear-off trays are physically integrated into the board and show borne-off checkers.
-- Player home orientation is bottom-right; Black Gammon shares the corrected geometry with a darker skin.
-- Trail Trouble and Prairie Pots lobby/start recovery with Ready & Start, clear blockers, and Quick Start vs Computer where valid.
+This release preserves all Phase W.1 and W.2 work and adds:
+- Vanessa's Pipe Problem upgraded with dimensional socketed metal pipes, couplers, animated flow and repair hazards.
+- Detailed grey transport/work truck with Vanessa's pink GMC-style pickup visibly carried on the service deck.
+- Logan's old Minefield gameplay replaced by Logan's Trail Logic while preserving the existing URL.
+- Logan rules: one dirt bike per row, column and connected terrain region; bikes may not touch, including diagonally.
+- Logan Journey progression from 6x6 through 9x9 plus deterministic Daily Puzzle, X marks, conflict feedback and three-stage hints.
+- Home shelf and offline service worker updated for the new game identities/modules.
 
-Run npm test and npm run build before deployment.
+Validation target for this exact release:
+- 434 automated tests passing.
+- Build validator 199 pass / 0 fail / 2 environment warnings.
+
+Run npm test and npm run build before deployment if the package is modified.

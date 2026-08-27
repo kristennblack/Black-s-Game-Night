@@ -1181,3 +1181,14 @@ These requirements are now part of the current living-app contract and must not 
 Backgammon and Black Gammon are the visual gate for the next release. The board must occupy approximately 90-95% of useful gameplay width, preserve long rectangular proportions, use a shallow dimensional presentation without distorting checker faces, and strongly favor landscape readability. Every checker in state must be physically visible. Checker faces are true round 1:1 beveled discs. Standard Backgammon keeps the authoritative 15-checker 2/5/3/5 mirrored setup. Black Gammon keeps its authoritative 4/4/4/3 setup and uses the same physical board geometry with a darker skin. The center Bar is a vertical raised physical divider and captured checkers visibly stack there. Bear-off trays are built into the board and visibly retain borne-off checkers. Player home is bottom-right from the viewer perspective. Point numbers remain subtle. Controls live beneath the board. Black Gammon retains blue Forward, red Backward and gold Rescue language.
 
 Trail Trouble and Prairie Pots must transition from lobby into gameplay reliably. Start controls must state why start is blocked. Host flow may combine readiness and start as Ready & Start. Valid solo testing should offer Quick Start vs Computer, adding a Medium bot and creating a valid start state. Team-mode player-count requirements remain authoritative.
+
+---
+
+# PHASE W.3 LOCKED ADDENDUM — VANESSA + LOGAN ARCADE UPGRADE
+
+Phase W.3 implements the approved Vanessa and Logan specifications as a cumulative non-regression update.
+
+- Vanessa's Pipe Problem: detailed dimensional pipes, physical rotation, animated flow, themed repair hazards, detailed grey transport/work truck, and Vanessa's signature pink GMC-style pickup on the transport deck.
+- Logan: replace Minefield rules with Trail Logic: exactly one dirt bike per row, column and connected terrain region; no touching including diagonals; 6x6 through 9x9 Journey progression; Daily Puzzle; outdoor dirt-bike/fishing presentation; conflict feedback; X marks; hints.
+- Preserve the legacy Logan URL `/logans-minefield.html` for saved links/platform compatibility while presenting the game as Logan's Trail Logic.
+- These changes are cumulative with W.1 and W.2 and must not regress prior join flow, Dorothy Garden, Gammon visual repair, Trail Trouble, or Prairie Pots fixes.
