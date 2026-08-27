@@ -1,9 +1,9 @@
 {
   "name": "black-family-game-night",
-  "version": "3.9.1-staging-phase-w1-join-garden-26",
+  "version": "3.9.2-staging-phase-w2-gammon-start-repair-27",
   "private": true,
   "type": "module",
-  "description": "Black Family Game Night Phase W.1: accepted/declined home-screen join flow with automatic room entry plus Dorothy cottage-garden merge visual and progression upgrade.",
+  "description": "Black Family Game Night Phase W.2: board-first Backgammon and Black Gammon visual repair plus Trail Trouble and Prairie Pots start-flow recovery.",
   "scripts": {
     "test": "node --test",
     "check": "node --check worker.mjs && node --check propHuntRoom.mjs && node --check islandLifeRoom.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check threeNewGames.mjs && node --check blackGammon.mjs && node --check public/app.js && node --check public/prop-hunt-core.mjs && node --check public/shared-3d-art-kit.mjs && node --check public/shared-3d-gameplay.mjs && node --check public/shared-3d-studio.mjs && node --check public/prop-hunt-3d.js && node --check public/island-life-core.mjs && node --check public/island-life.js && node --check public/birthday-climb.js && node --check public/phase-e-qa.mjs && node --check public/sw.js && node --test",

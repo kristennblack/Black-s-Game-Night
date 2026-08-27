@@ -875,3 +875,143 @@ html{background:#e8dfcc}body{min-height:100svh;padding-bottom:env(safe-area-inse
 .join-request-notice{margin:14px auto;padding:12px 14px;border:1px solid #6f8f70;border-radius:18px;background:linear-gradient(145deg,#173228,#211a13);display:flex;align-items:center;justify-content:space-between;gap:14px;box-shadow:0 10px 26px #0005}.join-request-notice.declined{border-color:#8a6257;background:linear-gradient(145deg,#36231f,#211713)}.join-request-notice div{min-width:0}.join-request-notice small,.join-request-notice strong,.join-request-notice span{display:block}.join-request-notice small{font-size:.58rem;letter-spacing:.15em;color:#b9cdb8;font-weight:1000}.join-request-notice strong{margin-top:2px;color:#fff0d5}.join-request-notice span{margin-top:3px;color:#cdbda7;font-size:.78rem;line-height:1.35}.join-request-notice button{min-height:38px;border:1px solid #9c7b50;border-radius:10px;background:#3a2a1d;color:#f6dfb7;padding:0 12px;font-weight:900}.presence-row button:disabled{opacity:.64;cursor:default;background:#3d3428;color:#d9ccb8;border-color:#62584b}
 @media(max-width:520px){.join-request-notice{align-items:flex-start}.join-request-notice button{flex:0 0 auto}.presence-row article{grid-template-columns:42px minmax(0,1fr) auto}.presence-row button{padding:0 8px}}
 .spectator-join-notice{margin:10px 0 2px;padding:11px 14px;border:1px solid #6f8f70;border-radius:15px;background:linear-gradient(145deg,#18362a,#232018);color:#eadfc8;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}.spectator-join-notice strong{color:#f7d990}.spectator-join-notice span{font-size:.78rem;line-height:1.35}
+
+/* ========================================================================== */
+/* Phase W.2: Backgammon / Black Gammon board-first visual gate               */
+/* ========================================================================== */
+
+/* The board owns the page. Secondary panels move beneath it instead of
+   stealing a permanent right-hand column. */
+.gammon-focus-layout{grid-template-columns:1fr!important;gap:10px!important}
+.gammon-focus-surface{overflow:visible!important;padding:clamp(5px,1vw,10px)!important}
+.gammon-secondary{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px!important}
+.gammon-secondary .panel{margin:0!important;min-width:0}
+
+/* Let the actual physical board determine the viewport height. This removes
+   the old tall empty canvas that made the board float in a strange page area. */
+.gammon-board-viewport{min-height:0!important;height:auto!important;overflow:hidden!important;border-radius:18px!important}
+.gammon-board-canvas{min-height:0!important;height:auto!important;padding:clamp(3px,.7vw,8px)!important;place-items:start center!important;transform-origin:50% 4%!important}
+.gammon-board-canvas>.extra-center{height:auto!important}
+.gammon-focus-surface .backgammon-table{display:grid!important;grid-template-columns:1fr!important;grid-template-rows:auto auto auto auto!important;gap:8px!important;width:100%!important;max-width:none!important;margin:0!important}
+
+/* One physical case: playing field plus built-in bear-off tray. */
+.gammon-focus-surface .bg-board-shell{display:grid!important;grid-template-columns:minmax(0,1fr) clamp(64px,8vw,96px)!important;gap:0!important;min-width:0!important;margin:0!important;padding:clamp(7px,1vw,12px)!important;border:clamp(7px,1vw,12px) solid #5a321b!important;border-radius:24px!important;background:repeating-linear-gradient(92deg,#8d542e 0 13px,#70401f 13px 27px,#9b6034 27px 41px,#643719 41px 54px)!important;box-shadow:inset 0 0 0 3px #d2a068,inset 0 0 26px #1b0d0788,0 14px 26px #3d21176b!important}
+.gammon-focus-surface .bg-board{grid-column:1;display:grid!important;grid-template-columns:minmax(0,1fr) clamp(42px,5.5vw,68px) minmax(0,1fr)!important;grid-template-rows:1fr 1fr!important;aspect-ratio:1.67/1!important;min-height:0!important;width:100%!important;padding:0!important;gap:0!important;border:0!important;border-radius:14px 0 0 14px!important;background:#c99e67!important;overflow:hidden!important;box-shadow:inset 0 0 28px #45251080!important;isolation:isolate}
+.gammon-focus-surface .bg-board:after{inset:0!important;border-radius:12px 0 0 12px!important;z-index:12!important;box-shadow:inset 0 0 0 3px #2b170c4f,inset 0 0 24px #2a13084a!important}
+.bg-quadrant{position:relative;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));min-width:0;min-height:0;background:linear-gradient(90deg,#cda574,#b98b59 50%,#cda574)}
+.bg-quadrant.top.left{grid-column:1;grid-row:1}.bg-quadrant.top.right{grid-column:3;grid-row:1}
+.bg-quadrant.bottom.left{grid-column:1;grid-row:2}.bg-quadrant.bottom.right{grid-column:3;grid-row:2}
+.bg-quadrant.left{box-shadow:inset 3px 0 #5b351f55}.bg-quadrant.right{box-shadow:inset -3px 0 #5b351f55}
+
+/* Proper vertical raised centre bar. */
+.gammon-focus-surface .bg-bar{grid-column:2!important;grid-row:1/3!important;position:relative!important;inset:auto!important;width:auto!important;min-width:0!important;display:grid!important;grid-template-rows:auto 1fr auto!important;align-items:center!important;justify-items:center!important;padding:5px 3px!important;border:0!important;border-inline:3px solid #d0a06a!important;background:repeating-linear-gradient(90deg,#3a1f12 0 8px,#6e4226 8px 16px,#4a2a18 16px 24px)!important;box-shadow:inset 5px 0 8px #0005,inset -5px 0 8px #0005,0 0 12px #0007!important;z-index:6}
+.gammon-focus-surface .bg-bar small{position:static!important;z-index:8;margin-top:1px;font:1000 clamp(.42rem,.75vw,.58rem) Georgia,serif!important;letter-spacing:.13em!important;color:#f1d09d!important}
+.gammon-focus-surface .bg-bar>b{position:static!important;z-index:8;align-self:end;writing-mode:vertical-rl;transform:rotate(180deg);max-height:44%;overflow:hidden;font-size:clamp(.36rem,.55vw,.47rem)!important;line-height:1.1;color:#dec49d!important;opacity:.88}
+.bg-bar-stacks{position:absolute;inset:9% 3px 9%;display:grid;grid-template-rows:1fr 1fr;align-items:center;justify-items:center;z-index:7;pointer-events:none}
+.bg-bar-stacks>.bg-checker-stack{pointer-events:auto}
+.bg-bar-empty{align-self:center;width:52%!important;aspect-ratio:1/1;height:auto!important;border-radius:50%!important}
+
+/* Triangles and subtle point numbers remain readable without dominating play. */
+.gammon-focus-surface .bg-point{min-width:0!important;overflow:visible!important}
+.gammon-focus-surface .bg-point:before{left:3%!important;right:3%!important;height:90%!important}
+.gammon-focus-surface .bg-point>span{z-index:11!important;font:900 clamp(.38rem,.72vw,.56rem) Georgia,serif!important;color:#f5dec0!important;opacity:.88!important;text-shadow:0 1px 2px #241208!important}
+.gammon-focus-surface .bg-point.top>span{top:3px!important}.gammon-focus-surface .bg-point.bottom>span{bottom:3px!important}
+.bg-empty-hole{width:72%!important;max-width:42px!important;height:auto!important;aspect-ratio:2.8/1!important}
+
+/* Checker STACK buttons are tall transparent hit targets. Every child <i> is
+   one real physical checker. No three-piece cap and no number replacement. */
+.gammon-focus-surface .bg-checker-stack{position:absolute!important;left:50%!important;right:auto!important;width:76%!important;max-width:50px!important;min-width:17px!important;height:86%!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:flex-start!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;cursor:pointer!important;transform:translateX(-50%)!important;overflow:visible!important;z-index:8!important}
+.gammon-focus-surface .bg-point.top .bg-checker-stack{top:9px!important;bottom:auto!important}
+.gammon-focus-surface .bg-point.bottom .bg-checker-stack{top:auto!important;bottom:9px!important;justify-content:flex-end!important}
+.gammon-focus-surface .bg-checker-stack:disabled{cursor:default!important;opacity:1!important}
+.gammon-focus-surface .bg-checker-stack i{position:relative!important;inset:auto!important;display:block!important;flex:0 0 auto!important;width:100%!important;height:auto!important;aspect-ratio:1/1!important;border-radius:50%!important;border:2px solid color-mix(in srgb,var(--pc) 48%,#fff)!important;background:radial-gradient(circle at 34% 24%,#fff 0 6%,color-mix(in srgb,var(--pc) 74%,#fff) 8% 20%,var(--pc) 30% 61%,color-mix(in srgb,var(--pc) 55%,#17100c) 79%,#160e0a 100%)!important;box-shadow:0 4px 0 color-mix(in srgb,var(--pc) 38%,#100b08),0 6px 7px #2110098a,inset 0 2px 3px #fff9,inset 0 -3px 4px #0005!important;transform:none!important;margin:0!important;box-sizing:border-box!important}
+.gammon-focus-surface .bg-checker-stack i:after{content:"";position:absolute;inset:7%;border-radius:50%;border:1px solid #fff3;box-shadow:inset 0 -2px 3px #0003}
+.gammon-focus-surface .bg-checker-stack i+i{margin-top:-42%!important}
+.gammon-focus-surface .bg-checker-stack.dense i+i{margin-top:-58%!important}
+.gammon-focus-surface .bg-checker-stack.very-dense i+i{margin-top:-73%!important}
+.gammon-focus-surface .bg-point.bottom .bg-checker-stack i:nth-child(n){top:auto!important;bottom:auto!important}
+.gammon-focus-surface .bg-checker-stack.legal i:first-child{box-shadow:0 0 0 3px #ffe16a,0 0 16px #ffbd38,0 4px 0 color-mix(in srgb,var(--pc) 38%,#100b08),0 6px 7px #2110098a!important}
+.gammon-focus-surface .bg-checker-stack.selected{transform:translateX(-50%) translateY(-4px) scale(1.045)!important;z-index:15!important}
+
+/* Bar checker stacks use the same circular pieces. Both players can be on the
+   bar at once, one stack in each half. */
+.gammon-focus-surface .bg-checker-stack.bar{position:relative!important;left:auto!important;top:auto!important;bottom:auto!important;width:72%!important;max-width:44px!important;height:92%!important;transform:none!important;align-self:stretch!important;justify-self:center!important;pointer-events:auto!important}
+.gammon-focus-surface .bg-checker-stack.bar.bar-side-0{grid-row:1;justify-content:flex-start!important}
+.gammon-focus-surface .bg-checker-stack.bar.bar-side-1{grid-row:2;justify-content:flex-end!important}
+.gammon-focus-surface .bg-checker-stack.bar.selected{transform:translateY(-3px) scale(1.04)!important}
+
+/* Bear-off trays are part of the physical case and show each borne-off piece
+   as a real round checker. */
+.gammon-focus-surface .bg-off-trays{grid-column:2!important;display:grid!important;grid-template-rows:1fr 1fr!important;gap:0!important;margin:0!important;border-left:5px solid #4a2917!important;border-radius:0 12px 12px 0!important;background:linear-gradient(90deg,#5b331d,#3b2114)!important;overflow:hidden!important;min-width:0!important}
+.gammon-focus-surface .bg-off-trays>div{position:relative;display:grid!important;grid-template-columns:1fr!important;grid-template-rows:auto auto 1fr!important;justify-items:center!important;align-content:start!important;gap:2px!important;padding:5px 3px!important;border:0!important;border-bottom:2px solid #bb895a66!important;border-radius:0!important;background:linear-gradient(145deg,#5a351f,#2f1b12)!important;color:#f2dab5!important;overflow:hidden!important}
+.gammon-focus-surface .bg-off-trays>div:last-child{border-bottom:0!important}
+.gammon-focus-surface .bg-off-trays .mini-avatar{width:clamp(24px,3vw,34px)!important;height:clamp(24px,3vw,34px)!important}
+.gammon-focus-surface .bg-off-trays span{text-align:center!important;line-height:1.02!important}.gammon-focus-surface .bg-off-trays span b{display:block;font-size:clamp(.42rem,.7vw,.58rem)!important}.gammon-focus-surface .bg-off-trays span small{font-size:clamp(.32rem,.54vw,.46rem)!important}
+.bg-off-pieces{align-self:stretch!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;width:100%!important;min-height:0!important;font-style:normal!important;overflow:hidden!important}
+.gammon-focus-surface .bg-off-pieces em{display:block!important;flex:0 0 auto!important;width:min(64%,34px)!important;height:auto!important;aspect-ratio:1/1!important;border-radius:50%!important;background:radial-gradient(circle at 34% 24%,#fff 0 6%,color-mix(in srgb,var(--pc) 74%,#fff) 8% 20%,var(--pc) 31% 61%,color-mix(in srgb,var(--pc) 52%,#160e0a) 82%)!important;border:1px solid color-mix(in srgb,var(--pc) 52%,#fff)!important;box-shadow:0 3px 0 color-mix(in srgb,var(--pc) 38%,#100b08),0 4px 5px #0007!important;margin:0!important}
+.gammon-focus-surface .bg-off-pieces em+em{margin-top:-58%!important}
+
+/* Dice and cube live directly beneath the board instead of in a tall side rail. */
+.gammon-focus-surface .bg-controls{display:grid!important;grid-template-columns:minmax(170px,.7fr) minmax(145px,.45fr) minmax(0,1.6fr)!important;align-items:center!important;align-content:center!important;gap:8px!important;min-width:0!important;padding:8px 10px!important;border-radius:13px!important;background:repeating-linear-gradient(92deg,#3e2416 0 12px,#4d2d1b 12px 24px,#2f1b12 24px 36px)!important;border:1px solid #bd8950!important;box-shadow:0 6px 14px #0005!important}
+.gammon-focus-surface .bg-dice{min-height:58px!important}.gammon-focus-surface .die{width:clamp(38px,4.2vw,50px)!important;height:clamp(38px,4.2vw,50px)!important}.gammon-focus-surface .die>b{font-size:clamp(1.05rem,2vw,1.45rem)!important}
+.gammon-focus-surface .bg-cube{grid-template-columns:auto auto auto!important;justify-content:center!important;column-gap:7px!important}.gammon-focus-surface .bg-cube>small{grid-column:1/-1!important}.gammon-focus-surface .bg-cube>strong{width:44px!important;height:44px!important}.gammon-focus-surface .bg-primary-actions{display:none!important}
+.gammon-focus-surface .bg-message{margin:0!important;padding:7px 10px!important;border-radius:10px!important;background:#f0dfc0!important;color:#513824!important}
+
+/* Black Gammon shares the exact geometry but gets its own dark family skin. */
+.extra-blackgammon .bg-board-shell{border-color:#241810!important;background:repeating-linear-gradient(92deg,#39271d 0 13px,#241913 13px 27px,#483024 27px 41px,#1d1510 41px 54px)!important;box-shadow:inset 0 0 0 3px #8f765e,inset 0 0 30px #000b,0 14px 28px #09060499!important}
+.extra-blackgammon .bg-board{background:#786451!important}
+.extra-blackgammon .bg-quadrant{background:linear-gradient(90deg,#6d6257,#554b43 50%,#6d6257)!important}
+.extra-blackgammon .bg-point:before{background:linear-gradient(180deg,#b89c78 0,#887052 52%,#584635 100%)!important}.extra-blackgammon .bg-point.dark:before{background:linear-gradient(180deg,#2f5360 0,#233c45 55%,#17282e 100%)!important}.extra-blackgammon .bg-point.bottom:before{background:linear-gradient(0deg,#b89c78 0,#887052 52%,#584635 100%)!important}.extra-blackgammon .bg-point.bottom.dark:before{background:linear-gradient(0deg,#2f5360 0,#233c45 55%,#17282e 100%)!important}
+.extra-blackgammon .bg-off-trays{background:linear-gradient(90deg,#2c211a,#17120f)!important;border-left-color:#15100c!important}.extra-blackgammon .bg-off-trays>div{background:linear-gradient(145deg,#2e241d,#17120f)!important}
+.extra-blackgammon .bg-controls{background:repeating-linear-gradient(92deg,#211a15 0 12px,#2f251e 12px 24px,#17120f 24px 36px)!important;border-color:#75604d!important}
+
+/* Mixed Black Gammon stacks sit side-by-side without scaling either player's
+   circular pieces into ovals. */
+.gammon-focus-surface .black-checker-stack.bottom-stack{left:38%!important;width:62%!important;transform:translateX(-50%)!important}
+.gammon-focus-surface .black-checker-stack.top-stack{left:62%!important;width:62%!important;transform:translateX(-50%)!important;z-index:10!important}
+.gammon-focus-surface .black-checker-stack.bottom-stack.selected{transform:translateX(-50%) translateY(-3px) scale(1.035)!important}
+.gammon-focus-surface .black-checker-stack.top-stack.selected{transform:translateX(-50%) translateY(-3px) scale(1.035)!important}
+.black-bar-stacks{display:grid!important;grid-template-rows:1fr 1fr!important;max-height:none!important;gap:0!important;width:100%!important}
+.black-bar-stacks .black-checker-stack{height:92%!important;width:72%!important}
+
+/* Black Gammon's controller/dice information becomes a compact row below the
+   board. Direction colours remain blue / red / gold. */
+.gammon-focus-surface .black-controls{grid-template-columns:minmax(0,1.4fr) minmax(150px,.75fr) minmax(0,1fr)!important}
+.gammon-focus-surface .black-roll-panel{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important}
+.gammon-focus-surface .black-roll-panel>div{min-width:0!important;grid-template-columns:32px minmax(0,1fr) auto!important;padding:5px!important}
+.gammon-focus-surface .black-big-die,.gammon-focus-surface .black-assignment{grid-column:auto!important;min-width:0!important}
+.gammon-focus-surface .black-controller{min-width:0!important}
+.gammon-focus-surface .black-legend{margin:0!important;padding:2px 0!important}
+
+@media(max-width:820px){
+ .gammon-secondary{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .gammon-focus-surface .bg-board-shell{grid-template-columns:minmax(0,1fr) clamp(52px,9vw,74px)!important}
+ .gammon-focus-surface .bg-board{grid-template-columns:minmax(0,1fr) clamp(34px,6.5vw,52px) minmax(0,1fr)!important}
+ .gammon-focus-surface .bg-controls,.gammon-focus-surface .black-controls{grid-template-columns:1fr 1fr!important}
+ .gammon-focus-surface .bg-dice,.gammon-focus-surface .black-roll-panel{grid-column:1/-1!important}
+ .gammon-focus-surface .black-assignment{grid-column:1/-1!important}
+}
+@media(max-width:560px){
+ .gammon-secondary{grid-template-columns:1fr!important}
+ .gammon-focus-surface .bg-board-shell{padding:5px!important;border-width:6px!important;border-radius:15px!important;grid-template-columns:minmax(0,1fr) 46px!important}
+ .gammon-focus-surface .bg-board{grid-template-columns:minmax(0,1fr) 31px minmax(0,1fr)!important;border-radius:8px 0 0 8px!important}
+ .gammon-focus-surface .bg-checker-stack{width:79%!important;min-width:12px!important}
+ .gammon-focus-surface .bg-point.top .bg-checker-stack{top:5px!important}.gammon-focus-surface .bg-point.bottom .bg-checker-stack{bottom:5px!important}
+ .gammon-focus-surface .bg-checker-stack i{border-width:1px!important;box-shadow:0 2px 0 color-mix(in srgb,var(--pc) 38%,#100b08),0 3px 4px #21100977,inset 0 1px 2px #fff8,inset 0 -2px 2px #0004!important}
+ .gammon-focus-surface .bg-off-trays .mini-avatar{display:none!important}
+ .gammon-focus-surface .bg-off-trays span b{font-size:.38rem!important}.gammon-focus-surface .bg-off-trays span small{font-size:.3rem!important}
+ .gammon-focus-surface .bg-controls,.gammon-focus-surface .black-controls{grid-template-columns:1fr!important;padding:6px!important}
+ .gammon-focus-surface .bg-dice,.gammon-focus-surface .black-roll-panel,.gammon-focus-surface .black-assignment{grid-column:1!important}
+ .gammon-focus-surface .bg-cube{grid-template-columns:auto auto auto!important}
+ .gammon-focus-surface .black-roll-panel{grid-template-columns:1fr 1fr!important}
+ .gammon-focus-surface .black-roll-panel>div{grid-template-columns:25px minmax(0,1fr)!important}.gammon-focus-surface .black-roll-panel>div>i{grid-column:1/-1!important;justify-content:center!important}
+ .gammon-focus-surface .black-big-die{grid-column:1!important}
+}
+@media(max-width:390px){
+ .gammon-focus-surface .bg-board-shell{grid-template-columns:minmax(0,1fr) 40px!important}
+ .gammon-focus-surface .bg-board{grid-template-columns:minmax(0,1fr) 27px minmax(0,1fr)!important}
+ .gammon-focus-surface .bg-point>span{font-size:.34rem!important}
+ .gammon-focus-surface .bg-checker-stack i+i{margin-top:-48%!important}
+ .gammon-focus-surface .bg-checker-stack.dense i+i{margin-top:-62%!important}
+ .gammon-focus-surface .bg-checker-stack.very-dense i+i{margin-top:-76%!important}
+}

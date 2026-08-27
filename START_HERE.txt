@@ -1,11 +1,14 @@
-BLACK FAMILY GAME NIGHT - STAGING PHASE W.1 JOIN + GARDEN 26
+BLACK FAMILY GAME NIGHT - STAGING PHASE W.2 GAMMON + START REPAIR 27
 
 Use this package for the current family staging build.
 
-This release adds:
-- Home-screen join requests now report accepted/declined outcomes to the requester.
-- Accepted requests automatically enter the approved room.
-- If a match is already underway, the accepted player enters safely as a spectator until the next game.
-- Dorothy's Garden Merge is rebuilt as a cozy dimensional cottage garden with real plant/flower art, named merge evolution, upgraded zones, merge-ready feedback, signature Dorothy garden props, and themed clearable garden obstacles.
+This release preserves Phase W.1 and adds:
+- Backgammon rebuilt around a board-first full-width physical case.
+- All checker stacks render every real checker instead of three discs plus a number.
+- Checker faces remain true round 1:1 discs with beveled dimensional styling.
+- The center Bar is a real vertical raised divider and can show both players' captured checkers.
+- Bear-off trays are physically integrated into the board and show borne-off checkers.
+- Player home orientation is bottom-right; Black Gammon shares the corrected geometry with a darker skin.
+- Trail Trouble and Prairie Pots lobby/start recovery with Ready & Start, clear blockers, and Quick Start vs Computer where valid.
 
 Run npm test and npm run build before deployment.
