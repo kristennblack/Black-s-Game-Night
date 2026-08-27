@@ -1,43 +1,45 @@
 BLACK FAMILY GAME NIGHT
-PHASE W.2 GAMMON + START REPAIR MANIFEST
+PHASE W.4 GAMMON + CARD MOBILE REPAIR MANIFEST
 
-Current release: GAME-NIGHT-STAGING-PHASE-W2-GAMMON-START-REPAIR-27
-Package version: 3.9.2-staging-phase-w2-gammon-start-repair-27
+Current release: GAME-NIGHT-STAGING-PHASE-W4-GAMMON-CARD-MOBILE-REPAIR-29
+Package version: 3.9.4-staging-phase-w4-gammon-card-mobile-repair-29
 Worker main: worker.mjs
 Cloudflare static asset directory: ./public
 Assets binding: ASSETS
-SPA fallback: single-page-application
 Staging config: wrangler.staging.jsonc
 Staging Worker name: black-family-game-night-phase-t1-staging (legacy deployment name retained)
-Service-worker cache: black-family-game-night-staging-phase-w2-gammon-start-repair-27
+Service-worker cache: black-family-game-night-staging-phase-w4-gammon-card-mobile-repair-29
 
-CURRENT W.2 UPGRADES
-- Backgammon and Black Gammon use a board-first, full-width physical-case layout.
-- Every checker in game state is physically rendered; no three-disc visual cap or count replacement.
-- Checker faces are true circular 1:1 beveled discs.
-- Four six-point quadrants surround a real vertical raised Bar.
-- Both players can visibly have captured checker stacks on the Bar.
-- Bear-off trays are integrated into the board and render borne-off checkers physically.
-- Player home is oriented bottom-right; Black Gammon shares geometry with a darker skin and blue/red/gold move language.
-- Trail Trouble and Prairie Pots have Ready & Start, explicit lobby blockers, and Quick Start vs Computer where valid.
-- Phase W.1 accepted/declined join flow and Dorothy cottage-garden merge remain preserved.
+CURRENT W.4 REPAIRS
+- Canonical physical Gammon point numbering for every viewer: top 13-24, bottom 12-1.
+- Standard Backgammon remains exact 2/5/3/5 mirrored start, 15 checkers each.
+- Black Gammon remains exact locked 4/4/4/3 start from BLACK_GAMMON_STARTING_SETUP.png.
+- Black Gammon keeps both players' rolled dice visible beside the physical board.
+- Black Gammon normal play is dice/set -> checker -> board destination; ordinary moves are not listed as actions.
+- Matching-set allocation/direction controls remain available where doubles/triples/related sets require a controller choice.
+- Four distinct singles are assigned by tapping the two dice the controller keeps.
+- Gammon mobile viewport no longer inherits generic max-height clipping; Fit may scale low enough to show the complete physical case.
+- Standard card hands with more than eight cards use a horizontally swipeable readable touch tray.
+
+CUMULATIVE PRESERVATION
+- W.3 Vanessa Pipe Problem and Logan Trail Logic upgrades remain included.
+- W.2 Trail Trouble/Prairie Pots start repairs remain included.
+- W.1 Ask-to-Join result flow and Dorothy Garden Merge remain included.
+- Previous tabletop, 3D, Prop Hunt, Island Life, Birthday Seat and family platform work remains packaged.
 
 GOVERNING DIRECTIVES
-- MASTER_NEXT_BUILD_DEVELOPMENT_DIRECTIVE.md, including Sections 47 and 48.
-- MASTER_PHASE_W_LIVING_APP_DIRECTIVE.md: living app foundation.
-- MASTER_PHASE_T1_PROP_HUNT_HUNTER_RELEASE_COMBAT_DIRECTIVE.md: preserved Prop Hunt combat/hide contract.
-- MASTER_MOBILE_TABLETOP_UX_DIRECTIVE.md: screen-first mobile standard.
-- BLACK_GAMMON_MASTER_RULES.md: locked Black Gammon rules.
+- MASTER_NEXT_BUILD_DEVELOPMENT_DIRECTIVE.md, including Sections 47-49 / W.1-W.4 addenda.
+- MASTER_PHASE_W_LIVING_APP_DIRECTIVE.md.
+- MASTER_MOBILE_TABLETOP_UX_DIRECTIVE.md.
+- BLACK_GAMMON_MASTER_RULES.md.
 
 VALIDATION
-- npm test: 427 / 427 pass.
-- npm run check: 427 / 427 pass after all JavaScript syntax checks.
-- build validator: 196 pass, 0 fail, 2 environment warnings.
-- Trail Trouble and Prairie Pots Quick Start backend regression tests pass.
-- W.2 Gammon visual-gate source tests pass for full checker rendering, circular geometry, vertical Bar, integrated bear-off trays and viewer orientation.
+- npm test: 440 / 440 pass.
+- staging validator: 199 pass, 0 fail, 2 environment warnings.
+- W.4 focused tests cover canonical point order, exact starts, distinct-single dice allocation, dice-first interaction hooks, mobile non-clipping rules and >8-card access.
 
 COMPATIBILITY NOTE
-VERSION.txt intentionally retains the historical T1 marker because legacy regression tests assert it exactly. CURRENT_RELEASE.txt, package.json, app current-build marker and service-worker cache identify the actual W.2 release.
+VERSION.txt intentionally retains the historical T1 marker because legacy regression tests assert it exactly. CURRENT_RELEASE.txt, package.json, app current-build marker and service-worker cache identify the actual W.4 release.
 
 DECLARED LIMITATION
 Real-device visual/gameplay QA remains required. Container Chromium screenshot capture is unreliable in this environment, so automated validation does not equal phone/tablet visual approval.

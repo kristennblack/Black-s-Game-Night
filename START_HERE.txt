@@ -1,17 +1,16 @@
-BLACK FAMILY GAME NIGHT - STAGING PHASE W.3 VANESSA + LOGAN UPGRADE 28
+BLACK FAMILY GAME NIGHT - STAGING PHASE W.4 GAMMON + CARD MOBILE REPAIR 29
 
 Use this package for the current family staging build.
 
-This release preserves all Phase W.1 and W.2 work and adds:
-- Vanessa's Pipe Problem upgraded with dimensional socketed metal pipes, couplers, animated flow and repair hazards.
-- Detailed grey transport/work truck with Vanessa's pink GMC-style pickup visibly carried on the service deck.
-- Logan's old Minefield gameplay replaced by Logan's Trail Logic while preserving the existing URL.
-- Logan rules: one dirt bike per row, column and connected terrain region; bikes may not touch, including diagonally.
-- Logan Journey progression from 6x6 through 9x9 plus deterministic Daily Puzzle, X marks, conflict feedback and three-stage hints.
-- Home shelf and offline service worker updated for the new game identities/modules.
+This release preserves all Phase W.1-W.3 work and adds:
+- Canonical fixed Backgammon/Black Gammon point layout on every viewer.
+- Standard Backgammon exact 2/5/3/5 start aligned to physical points.
+- Black Gammon exact locked 4/4/4/3 start aligned to BLACK_GAMMON_STARTING_SETUP.png.
+- Black Gammon dice-first play: choose die/set, checker, then destination directly on the board.
+- Both players' normal Black Gammon dice remain visible by the board.
+- Matching-set actions retained only where allocation/direction decisions are required.
+- Phone-safe full Gammon board with old clipping rules removed.
+- Standard card hands over eight cards become swipeable full-touch trays so cards 9-13 remain reachable.
 
-Validation target for this exact release:
-- 434 automated tests passing.
-- Build validator 199 pass / 0 fail / 2 environment warnings.
-
-Run npm test and npm run build before deployment if the package is modified.
+Run npm test and npm run staging:validate before deployment if the package is modified.
+Real-device phone visual QA is still required after deployment.

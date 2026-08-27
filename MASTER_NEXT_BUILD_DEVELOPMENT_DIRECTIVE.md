@@ -1192,3 +1192,35 @@ Phase W.3 implements the approved Vanessa and Logan specifications as a cumulati
 - Logan: replace Minefield rules with Trail Logic: exactly one dirt bike per row, column and connected terrain region; no touching including diagonals; 6x6 through 9x9 Journey progression; Daily Puzzle; outdoor dirt-bike/fishing presentation; conflict feedback; X marks; hints.
 - Preserve the legacy Logan URL `/logans-minefield.html` for saved links/platform compatibility while presenting the game as Logan's Trail Logic.
 - These changes are cumulative with W.1 and W.2 and must not regress prior join flow, Dorothy Garden, Gammon visual repair, Trail Trouble, or Prairie Pots fixes.
+
+---
+
+# PHASE W.4 LOCKED ADDENDUM — GAMMON INTERACTION + MOBILE CARD HAND REPAIR
+
+Phase W.4 is a focused playability and mobile-layout correction and is cumulative with W.1-W.3.
+
+## Backgammon
+- The physical point numbering is canonical for every viewer and must never mirror/rotate into a different starting arrangement: top 13-24 left-to-right, bottom 12-1 left-to-right.
+- Standard start remains exactly 15 checkers per player in the authoritative 2/5/3/5 mirrored setup.
+- The complete board, center Bar and bear-off trays must be visible on a phone. Generic extra-game max-height/overflow rules may not crop Gammon.
+- Checker selection and legal destination selection occur directly on the board.
+
+## Black Gammon
+- The visual start must match BLACK_GAMMON_STARTING_SETUP.png exactly: Player 1 points 24/13/8/6 = 4/4/4/3; Player 2 points 1/12/17/19 = 4/4/4/3.
+- Both players' two-die rolls stay visibly attached to opposite sides/corners of the physical board through allocation and movement.
+- Normal movement interaction is dice-first: choose a playable die or matching set, then a legal checker, then a legal destination on the board.
+- Do not present ordinary legal moves as a bottom action list.
+- Generic allocation actions are reserved for matching-set decisions such as doubles/triples/quadruples, including recipient and forward/backward direction where the rules require that choice.
+- Four distinct singles use direct dice selection by the controller: tap the two dice to keep; the other two go to the opponent.
+- A no-legal-move state advances automatically in the client rather than forcing a stray action button.
+- Preserve blue Forward, red Backward and gold Rescue feedback.
+
+## Standard card games
+- Any standard hand over eight cards must remain fully reachable on phones.
+- Do not compress 9-13 cards into unreadable slivers or clip cards beyond the viewport.
+- Use a horizontally swipeable hand tray with readable full touch targets and a clear swipe cue for large hands.
+- Selected/pending cards remain visible and tappable.
+
+## Release gate
+- Automated tests must verify canonical point order, both authoritative starting setups, Black Gammon distinct-single allocation, dice-first renderer hooks, non-clipping Gammon CSS, and >8-card mobile hand access.
+- Real-device visual QA remains required after deployment; automated/source validation is not a substitute for phone approval.

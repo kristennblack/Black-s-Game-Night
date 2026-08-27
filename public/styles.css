@@ -1015,3 +1015,70 @@ html{background:#e8dfcc}body{min-height:100svh;padding-bottom:env(safe-area-inse
  .gammon-focus-surface .bg-checker-stack.dense i+i{margin-top:-62%!important}
  .gammon-focus-surface .bg-checker-stack.very-dense i+i{margin-top:-76%!important}
 }
+
+/* ========================================================================== */
+/* Phase W.4: mobile gammon interaction + large card-hand accessibility       */
+/* ========================================================================== */
+
+/* A gammon board must never be clipped by the generic extra-game scroll box. */
+.gammon-focus-page{overflow-x:hidden!important}
+.gammon-focus-surface,.gammon-board-viewport,.gammon-board-canvas,.gammon-board-canvas>.extra-center{max-width:100%!important;min-width:0!important;box-sizing:border-box!important}
+.gammon-board-viewport{overflow:visible!important;max-height:none!important}
+.gammon-board-canvas>.extra-center{max-height:none!important;overflow:visible!important}
+.gammon-focus-surface .backgammon-table,.gammon-focus-surface .bg-board-shell{box-sizing:border-box!important;min-width:0!important}
+
+/* Rolled Black Gammon dice remain visible beside the physical board for both
+   players throughout allocation and movement. */
+.black-board-shell{position:relative!important}
+.black-board-rolls{position:absolute;inset:0;z-index:32;pointer-events:none}
+.black-side-roll{position:absolute;top:50%;transform:translateY(-50%);display:grid;justify-items:center;gap:3px;max-width:78px;padding:6px 5px;border:1px solid color-mix(in srgb,var(--pc) 62%,#fff);border-radius:12px;background:rgba(22,17,13,.90);color:#f7e8cf;box-shadow:0 5px 12px #0008}
+.black-side-roll.side-0{left:5px}.black-side-roll.side-1{right:5px}
+.black-side-roll>span{display:grid;justify-items:center;gap:1px;min-width:0}.black-side-roll .mini-avatar{width:25px!important;height:25px!important}.black-side-roll>span b{max-width:68px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.48rem}
+.black-side-roll>i{display:flex;gap:3px;font-style:normal}.board-mini-die{width:27px!important;height:27px!important;min-width:27px!important;border-radius:6px!important}.board-mini-die b{font-size:.84rem!important}.black-side-roll>small{font-size:.46rem;white-space:nowrap}
+.board-roll-wait{padding:5px 7px;border-radius:6px;background:#ead8b9;color:#3a291c;font-size:.48rem;font-weight:1000}
+
+/* Dice-first play. Only the selected die/set exposes checker sources and board
+   destinations; legal moves no longer live in a list below the board. */
+.black-playable-dice{grid-column:1/-1!important;display:grid;grid-template-columns:minmax(130px,.42fr) minmax(0,1fr);gap:8px;align-items:center;padding:7px 9px;border-radius:12px;background:#241c16;color:#f3dfbd;border:1px solid #78614d}
+.black-playable-dice>div:first-child{display:grid}.black-playable-dice>div:first-child strong{font-size:.74rem;letter-spacing:.04em}.black-playable-dice>div:first-child small{font-size:.55rem;color:#d9c2a0}.black-playable-dice>div:last-child{display:flex;gap:6px;flex-wrap:wrap}
+.black-play-die{position:relative;display:grid;grid-template-columns:auto auto;grid-template-rows:auto auto;align-items:center;gap:1px 5px;min-width:72px;min-height:52px;padding:5px 7px;border:2px solid #517d9b;border-radius:11px;background:#e9e0d1;color:#30271f;font-weight:1000;box-shadow:0 3px 0 #271a12}.black-play-die.backward{border-color:#a34a43}.black-play-die.rescue{border-color:#c9952e}.black-play-die.selected{outline:4px solid #f3cc64;transform:translateY(-2px);box-shadow:0 6px 0 #271a12}.black-play-die:disabled{opacity:.35;filter:grayscale(.7)}
+.black-play-die .mini-die{grid-row:1/3;width:33px!important;height:33px!important;min-width:33px!important}.black-play-die em{font-style:normal;font-size:.72rem}.black-play-die small{font-size:.45rem;line-height:1}
+.black-pool-picker{grid-column:1/-1!important;display:grid;grid-template-columns:minmax(120px,.55fr) 1fr;gap:8px;align-items:center;padding:8px;border-radius:12px;background:#251c16;color:#f2ddbb;border:1px solid #7d654f}.black-pool-picker.waiting{grid-template-columns:1fr}.black-pool-picker>div:first-child{display:grid}.black-pool-picker small{font-size:.53rem;color:#d6bea0}.black-shared-pool{display:flex;gap:7px;flex-wrap:wrap}.black-pool-die{padding:4px;border:2px solid transparent;border-radius:9px;background:#e8dcc8}.black-pool-die.selected{border-color:#f1c95b;box-shadow:0 0 0 3px #f1c95b55}.black-pool-die .die{width:38px!important;height:38px!important}
+.bg-point.legal-destination{filter:brightness(1.1)}
+.bg-destination-hit,.black-dest-actions.destination-point{position:absolute!important;inset:18% 8%!important;z-index:40!important;display:grid!important;place-items:center!important;gap:3px!important;pointer-events:auto!important}
+.bg-destination-hit button,.black-dest-actions.destination-point button,.bg-off-destination button{min-width:38px;min-height:34px;padding:3px 5px;border:2px solid #f6d16a;border-radius:8px;background:#173927eF;color:white;font-size:.48rem;font-weight:1000;box-shadow:0 0 0 3px #f2cc5a45,0 4px 8px #0008}.black-dest-actions.destination-point button.backward{background:#7a2927}.black-dest-actions.destination-point button.rescue{background:#8b6418}.bg-destination-hit small,.black-dest-actions.destination-point small{display:block;font-size:.38rem}
+.bg-off-destination{position:absolute;inset:0;z-index:42;display:grid;place-items:center;background:#0002}
+
+/* Large standard-card hands use a horizontal mobile tray. Cards keep a usable
+   touch target instead of shrinking into unreadable slivers after card eight. */
+.hand.large-hand{left:0!important;transform:none!important;width:100%!important;max-width:100%!important;justify-content:flex-start!important;align-items:flex-end!important;gap:0!important;padding:0 8px 8px!important;overflow-x:auto!important;overflow-y:visible!important;scroll-snap-type:x proximity;overscroll-behavior-x:contain;touch-action:pan-x;pointer-events:auto;box-sizing:border-box;scrollbar-width:thin}
+.hand.large-hand .hand-card{flex:0 0 64px!important;max-width:64px!important;min-width:64px!important;margin-left:-20px!important;scroll-snap-align:center}
+.hand.large-hand .hand-card:first-of-type{margin-left:0!important}
+.hand.large-hand .hand-card .card{width:64px!important;height:94px!important;aspect-ratio:auto!important;font-size:.95rem!important}.hand.large-hand .hand-card .card .big{font-size:1.4rem!important}
+.hand.large-hand .hand-label{position:sticky!important;left:8px!important;z-index:80!important;pointer-events:none}
+
+@media(max-width:620px){
+ .gammon-focus-page{padding-left:4px!important;padding-right:4px!important}
+ .gammon-focus-surface{padding:3px!important}
+ .gammon-command-row{gap:4px!important;margin-bottom:3px!important}
+ .gammon-board-toolbar{min-width:0!important}
+ .gammon-focus-surface .bg-board-shell{width:100%!important;max-width:100%!important;padding:3px!important;border-width:4px!important;border-radius:11px!important;grid-template-columns:minmax(0,1fr) 35px!important}
+ .gammon-focus-surface .bg-board{grid-template-columns:minmax(0,1fr) 24px minmax(0,1fr)!important;aspect-ratio:1.82/1!important}
+ .gammon-focus-surface .bg-point>span{font-size:.34rem!important}
+ .gammon-focus-surface .bg-checker-stack{width:82%!important;min-width:10px!important}
+ .black-side-roll{padding:3px 2px;gap:1px;max-width:48px;border-radius:7px;background:rgba(18,14,11,.93)}
+ .black-side-roll.side-0{left:2px}.black-side-roll.side-1{right:2px}.black-side-roll .mini-avatar,.black-side-roll>span b{display:none!important}.board-mini-die{width:20px!important;height:20px!important;min-width:20px!important;border-radius:4px!important}.board-mini-die b{font-size:.64rem!important}.black-side-roll>small{font-size:.34rem}.board-roll-wait{padding:3px;font-size:.35rem}
+ .black-playable-dice,.black-pool-picker{grid-template-columns:1fr!important;padding:6px!important}.black-playable-dice>div:last-child,.black-shared-pool{gap:4px}.black-play-die{min-width:64px;min-height:46px;padding:4px}.black-play-die .mini-die{width:29px!important;height:29px!important;min-width:29px!important}
+ .bg-destination-hit,.black-dest-actions.destination-point{inset:10% 2%!important}.bg-destination-hit button,.black-dest-actions.destination-point button{min-width:27px;min-height:28px;padding:2px;font-size:.39rem}.bg-destination-hit small,.black-dest-actions.destination-point small{font-size:.31rem}
+ .hand.large-hand{height:140px!important;padding-inline:6px!important}.hand.large-hand .hand-card{flex-basis:58px!important;max-width:58px!important;min-width:58px!important;margin-left:-18px!important}.hand.large-hand .hand-card .card{width:58px!important;height:86px!important;font-size:.82rem!important}.hand.large-hand .hand-card .card .big{font-size:1.25rem!important}
+}
+@media(max-width:390px){
+ .gammon-focus-surface .bg-board-shell{grid-template-columns:minmax(0,1fr) 30px!important}
+ .gammon-focus-surface .bg-board{grid-template-columns:minmax(0,1fr) 21px minmax(0,1fr)!important}
+ .hand.large-hand .hand-card{flex-basis:54px!important;max-width:54px!important;min-width:54px!important;margin-left:-16px!important}.hand.large-hand .hand-card .card{width:54px!important;height:80px!important}
+}
+@media(max-width:620px){
+ .black-side-roll{top:auto!important;transform:none!important}
+ .black-side-roll.side-0{top:3px!important;left:3px!important;right:auto!important;bottom:auto!important}
+ .black-side-roll.side-1{right:3px!important;bottom:3px!important;left:auto!important}
+}

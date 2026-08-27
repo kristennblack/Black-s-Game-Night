@@ -38,7 +38,7 @@ test('Bear-off trays are integrated into the board case and render physical roun
 
 test('Black Gammon shares standard viewer orientation and preserves blue red gold move language',async()=>{
   const app=await read('public/app.js');
-  assert.match(app,/function blackPointOrder\(viewerIsFirst\)\{return bgPointOrder\(viewerIsFirst\)\}/);
+  assert.match(app,/function blackPointOrder\(\)\{return bgPointOrder\(\)\}/);
   for(const phrase of ['BLUE · FORWARD','RED · BACKWARD','GOLD · RESCUE']) assert.ok(app.includes(phrase),phrase);
 });
 
