@@ -1144,3 +1144,34 @@ Do not attempt to hide unfinished steps by marking them complete based only on t
 - Kelsi, Molly, and Gunner birthday dates remain TBD until supplied.
 - Automated tests do not equal visual approval.
 
+
+---
+
+# 47. LOCKED PHASE W.1 JOIN RESPONSE + DOROTHY GARDEN ADDENDUM
+
+These requirements are now part of the current living-app contract and must not regress in later builds.
+
+## 47.1 Home-screen Ask to Join response loop
+
+- A join request must carry the actual live room ID, game ID/name, requester profile, and target player profile/name.
+- The requester must never be left without an answer after the target responds.
+- A decline must be shown clearly on the requester home screen as a join-request result.
+- An acceptance must be claimable by the requester automatically, without requiring them to hunt for an invite link.
+- If the accepted room is still in lobby, the requester enters as a normal player and can choose a seat / Ready as usual.
+- If the accepted room is already in an active match, do not mutate the established hand/turn/player-order state. Enter the requester immediately as a safe spectator and clearly explain that they will become a normal participant when the group starts the next game.
+- Presence must not advertise a room as joinable when all normal player seats are already occupied.
+- Accepted/declined result handling must be idempotent so refreshes do not repeatedly re-open an already-claimed room or replay old result notices.
+
+## 47.2 Dorothy's Garden Merge visual/gameplay contract
+
+- Preserve the readable 4x4 square gameplay footprint, but do not present merge pieces as generic colored boxes.
+- Every merge stage must visually resemble what its displayed name says it is.
+- Locked progression chain: Seed Packet -> Tiny Sprout -> Daisy Pot -> Lavender Pot -> Rose Planter -> Peony Bed -> Cottage Flower Bed -> Blooming Trellis -> Greenhouse Corner -> Cottage Garden -> Dorothy's Family Garden.
+- Overall art direction: warm, pretty, lively cozy-cottage garden with dimensional / faux-3D materials and depth.
+- Empty cells must remain visibly placeable prepared-soil beds.
+- Merge-ready matches must be unmistakable through glow/pulse/wiggle/sparkle feedback without hiding the plant artwork.
+- Successful merges may use petals/bloom feedback.
+- Garden zones visually upgrade as progression advances: Potting Corner, Cottage Beds, Blooming Walk, Greenhouse Corner, Dorothy's Family Garden.
+- Themed garden obstacles may appear with progression and must remain understandable gameplay elements: weeds, tangled roots, garden stones, broken pots. Strong merges can clear them.
+- Dorothy-specific set dressing is part of the identity, including her watering can and birdbath; future additions may include gloves, garden stool, seed packets, baskets, teacup planters, or family touches as long as they do not obscure the grid.
+- Gameplay clarity outranks decorative density. The garden should feel alive, not cluttered or hard to read.

@@ -50,7 +50,7 @@ function currentRound(room){return room.game.roundIndex>=0?room.game.schedule[ro
 function publicState(room,viewerToken=null){
   const viewer=player(room,viewerToken);const g=room.game;const round=currentRound(room);
   const visiblePlayers=[...room.players.values()].sort((a,b)=>(a.seat??9999)-(b.seat??9999)||a.name.localeCompare(b.name));
-  const players=visiblePlayers.map(p=>({id:p.id,name:p.name,avatar:p.avatar,variant:p.variant,outfitVariant:p.outfitVariant??0,color:p.color,seat:p.seat,team:p.seat==null?null:teamForSeat(p.seat),ready:p.ready,connected:p.connected,bid:p.bid,tricks:p.tricks,score:p.score,continued:p.continued,handCount:p.hand.length,eliminated:!!p.eliminated,isHost:p.id===room.hostPlayerId,isBot:!!p.isBot,botDifficulty:p.isBot?normalizeDifficulty(p.botDifficulty):null}));
+  const players=visiblePlayers.map(p=>({id:p.id,name:p.name,avatar:p.avatar,variant:p.variant,outfitVariant:p.outfitVariant??0,color:p.color,seat:p.seat,team:p.seat==null?null:teamForSeat(p.seat),ready:p.ready,connected:p.connected,bid:p.bid,tricks:p.tricks,score:p.score,continued:p.continued,handCount:p.hand.length,eliminated:!!p.eliminated,spectating:!!p.spectating,isHost:p.id===room.hostPlayerId,isBot:!!p.isBot,botDifficulty:p.isBot?normalizeDifficulty(p.botDifficulty):null}));
   const legal=!isExtraGame(room.gameType)&&viewer&&g.phase==='playing'&&g.turnPlayerId===viewer.id?[...legalCardIds(viewer.hand,g.currentTrick,room.gameType)]:[];
   const forbidden=!isExtraGame(room.gameType)&&room.gameType!==GAME_TYPES.SMEAR&&viewer&&g.phase==='bidding'&&g.bidTurnId===viewer.id&&viewer.id===g.dealerId
     ?forbiddenDealerBid(g.handSize,g.biddingOrder.filter(id=>id!==g.dealerId).map(id=>room.players.get(id).bid??0)):null;
@@ -78,7 +78,7 @@ function sendVoiceSignal(room,targetId,payload){for(const sub of [...room.subscr
 function newRoom(hostName='Host',gameType=GAME_TYPES.SCREW,profile={}){
   if(!Object.values(GAME_TYPES).includes(gameType))gameType=GAME_TYPES.SCREW;
   const id=safeId(),hostToken=token(),pToken=token(),pId=crypto.randomUUID(),pf=playerProfile({...profile,name:hostName},hostName);
-  const room={id,revision:0,gameType,settings:{roundCount:10,...extraDefaults(gameType)},hostToken,hostPlayerId:pId,createdAt:now(),maxSeats:maxSeatsFor(gameType),subscribers:new Set(),chat:[],reaction:null,players:new Map([[pId,{id:pId,token:pToken,...pf,seat:null,ready:false,connected:true,bid:null,tricks:0,score:0,continued:false,hand:[],eliminated:false,isBot:false,botDifficulty:null}]]),game:freshGameState()};
+  const room={id,revision:0,gameType,settings:{roundCount:10,...extraDefaults(gameType)},hostToken,hostPlayerId:pId,createdAt:now(),maxSeats:maxSeatsFor(gameType),subscribers:new Set(),chat:[],reaction:null,players:new Map([[pId,{id:pId,token:pToken,...pf,seat:null,ready:false,connected:true,bid:null,tricks:0,score:0,continued:false,hand:[],eliminated:false,spectating:false,isBot:false,botDifficulty:null}]]),game:freshGameState()};
   rooms.set(id,room);persistRoom(room);return {room,hostToken,playerToken:pToken};
 }
 
@@ -86,7 +86,7 @@ function switchRoomGame(room,gameType){
   if(!Object.values(GAME_TYPES).includes(gameType))throw new Error('Unknown game');
   const max=maxSeatsFor(gameType);if(room.players.size>max)throw new Error(`${gameName(gameType)} supports a maximum of ${max} players`);
   room.gameType=gameType;room.settings={roundCount:10,...extraDefaults(gameType)};room.maxSeats=max;
-  for(const p of room.players.values()){p.seat=null;p.ready=false;p.bid=null;p.tricks=0;p.score=0;p.continued=false;p.hand=[];p.eliminated=false}
+  for(const p of room.players.values()){p.seat=null;p.ready=false;p.bid=null;p.tricks=0;p.score=0;p.continued=false;p.hand=[];p.eliminated=false;p.spectating=false}
   room.game=freshGameState();
   room.chat.push({id:crypto.randomUUID(),playerId:'system',name:'Game Lodge',text:`Host moved the group to ${gameName(gameType)}.`,at:now()});
 }
@@ -208,7 +208,7 @@ function finishRound(room){
 function beginNextRound(room){const order=playerOrder(room);room.game.dealerId=nextClockwise(order,room.game.dealerId);if(room.gameType===GAME_TYPES.SMEAR)room.game.schedule.push({handSize:6,trump:null,powerRank:null,source:null});startRound(room,room.game.roundIndex+1)}
 function startRoomMatch(room,{rematch=false}={}){
   const joined=[...room.players.values()];
-  if(rematch){for(const p of joined){p.ready=true;p.bid=null;p.tricks=0;p.score=0;p.continued=false;p.hand=[];p.eliminated=false}room.game=freshGameState()}
+  if(rematch){for(const p of joined){p.ready=true;p.bid=null;p.tricks=0;p.score=0;p.continued=false;p.hand=[];p.eliminated=false;p.spectating=false}room.game=freshGameState()}
   else if(joined.some(x=>!x.ready))throw new Error('Everyone must be Ready');
   assignOpenSeats(room);room.game.matchId=crypto.randomUUID();room.game.resultRecorded=false;
   if(isExtraGame(room.gameType)){startExtraGame(room);broadcast(room);return}
@@ -246,7 +246,7 @@ async function handleApi(request){
   }
   if(u.pathname==='/api/join'&&request.method==='POST'){
     const b=await parseBody(request),room=await activeHub.getRoom(b.roomId);if(!room)return jsonResponse({error:'Room not found'},404);if(room.game.phase!=='lobby')return jsonResponse({error:'Game already started'},409);if(room.players.size>=room.maxSeats)return jsonResponse({error:'Room is full'},409);
-    const id=crypto.randomUUID(),t=token(),pf=playerProfile(b,'Player');room.players.set(id,{id,token:t,...pf,seat:null,ready:false,connected:true,bid:null,tricks:0,score:0,continued:false,hand:[],eliminated:false,isBot:false,botDifficulty:null});broadcast(room);return jsonResponse({playerToken:t,playerId:id,gameType:room.gameType});
+    const id=crypto.randomUUID(),t=token(),pf=playerProfile(b,'Player');room.players.set(id,{id,token:t,...pf,seat:null,ready:false,connected:true,bid:null,tricks:0,score:0,continued:false,hand:[],eliminated:false,spectating:false,isBot:false,botDifficulty:null});broadcast(room);return jsonResponse({playerToken:t,playerId:id,gameType:room.gameType});
   }
   if(!u.pathname.startsWith('/api/'))return jsonResponse({error:'Unknown route'},404);
   const b=await parseBody(request),room=await activeHub.getRoom(b.roomId);if(!room)return jsonResponse({error:'Room not found'},404);const p=player(room,b.playerToken);const fail=(msg,code=400)=>jsonResponse({error:msg},code);
@@ -285,7 +285,33 @@ export class GameHub {
   async recordArcade(b){const id=profileIdFrom(b);if(!id)throw new Error('Missing profile id');const gameId=String(b.gameId||'arcade').slice(0,80),type=String(b.type||'play').slice(0,30);let p=await this.getArcadeProfile(id);p={...p,name:String(b.name||p.name||'Family Player').slice(0,24),achievements:{...(p.achievements||{})},plays:{...(p.plays||{})},records:{...(p.records||{})},cosmetics:{...(p.cosmetics||{})}};if(type==='play'){p.plays[gameId]=Number(p.plays[gameId]||0)+1;const d=new Date(),day=(d.getUTCDay()+6)%7,monday=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate()-day)),wk=`family-week:${monday.toISOString().slice(0,10)}`;const total=Number(await this.ctx.storage.get(wk)||0)+1;await this.ctx.storage.put(wk,total)}if(Number.isFinite(Number(b.score))){const r=p.records[gameId]||{};r.highScore=Math.max(Number(r.highScore||0),Number(b.score));r.lastAt=now();p.records[gameId]=r}if(b.achievement){const aid=String(b.achievement).slice(0,120);if(!p.achievements[aid])p.achievements[aid]={label:String(b.label||aid).slice(0,120),at:now()}}const delta=Math.max(-500,Math.min(500,Number(b.tokenDelta||0)));p.tokens=Math.max(0,Number(p.tokens||0)+delta);p.updatedAt=now();await this.ctx.storage.put(`arcade-profile:${id}`,p);return p}
   async getPresence(){const data=await this.ctx.storage.get('presence:v1')||{};const cutoff=now()-60000,out={};for(const [id,v] of Object.entries(data)){if(v&&v.at>=cutoff)out[id]=v}if(Object.keys(out).length!==Object.keys(data).length)await this.ctx.storage.put('presence:v1',out);return Object.values(out).sort((a,b)=>b.at-a.at)}
   async updatePresence(b){const id=profileIdFrom(b);if(!id)throw new Error('Missing profile id');const data=await this.ctx.storage.get('presence:v1')||{};if(b.action==='leave'){delete data[id]}else{data[id]={profileId:id,name:String(b.name||'Family Player').slice(0,24),avatar:String(b.avatar||'john').slice(0,40),gameId:String(b.gameId||'').slice(0,80),gameName:String(b.gameName||'Game').slice(0,100),path:String(b.path||'/').slice(0,220),mode:String(b.mode||'solo').slice(0,20),joinable:b.joinable!==false,roomId:String(b.roomId||'').slice(0,80),at:now()}}await this.ctx.storage.put('presence:v1',data);return data[id]||null}
-  async handleJoinRequest(b){const action=String(b.action||'list'),requests=await this.ctx.storage.get('join-requests:v1')||[];if(action==='submit'){const from=profileIdFrom(b),to=String(b.toProfileId||'').trim().slice(0,80);if(!from||!to||from===to)throw new Error('Invalid join request');const recent=requests.find(r=>r.fromProfileId===from&&r.toProfileId===to&&r.status==='pending'&&now()-r.at<30000);if(recent)return{ok:true,request:recent};const entry={id:crypto.randomUUID(),fromProfileId:from,fromName:String(b.fromName||'Family Player').slice(0,24),toProfileId:to,gameId:String(b.gameId||'').slice(0,80),gameName:String(b.gameName||'Game').slice(0,100),path:String(b.path||'/').slice(0,220),roomId:String(b.roomId||'').slice(0,80),status:'pending',at:now()};requests.unshift(entry);await this.ctx.storage.put('join-requests:v1',requests.slice(0,150));return{ok:true,request:entry}}if(action==='respond'){const id=String(b.id||''),who=profileIdFrom(b),r=requests.find(x=>x.id===id&&x.toProfileId===who);if(!r)throw new Error('Join request not found');r.status=b.accept?'accepted':'declined';r.respondedAt=now();r.joinMode=String(b.joinMode||'smart').slice(0,20);await this.ctx.storage.put('join-requests:v1',requests);return{ok:true,request:r}}const who=profileIdFrom(b);const list=requests.filter(r=>!who||r.toProfileId===who||r.fromProfileId===who).slice(0,50);return{ok:true,requests:list}}
+  async handleJoinRequest(b){
+    const action=String(b.action||'list'),requests=await this.ctx.storage.get('join-requests:v1')||[];
+    if(action==='submit'){
+      const from=profileIdFrom(b),to=String(b.toProfileId||'').trim().slice(0,80);if(!from||!to||from===to)throw new Error('Invalid join request');
+      const recent=requests.find(r=>r.fromProfileId===from&&r.toProfileId===to&&r.status==='pending'&&now()-r.at<30000);if(recent)return{ok:true,request:recent};
+      const entry={id:crypto.randomUUID(),fromProfileId:from,fromName:String(b.fromName||'Family Player').slice(0,24),toProfileId:to,toName:String(b.toName||'Family Player').slice(0,24),gameId:String(b.gameId||'').slice(0,80),gameName:String(b.gameName||'Game').slice(0,100),path:String(b.path||'/').slice(0,220),roomId:String(b.roomId||'').slice(0,80),status:'pending',at:now()};
+      requests.unshift(entry);await this.ctx.storage.put('join-requests:v1',requests.slice(0,150));return{ok:true,request:entry};
+    }
+    if(action==='respond'){
+      const id=String(b.id||''),who=profileIdFrom(b),r=requests.find(x=>x.id===id&&x.toProfileId===who);if(!r)throw new Error('Join request not found');if(r.status!=='pending')return{ok:true,request:r};
+      r.status=b.accept?'accepted':'declined';r.respondedAt=now();r.joinMode=String(b.joinMode||'smart').slice(0,20);await this.ctx.storage.put('join-requests:v1',requests);return{ok:true,request:r};
+    }
+    if(action==='claim'){
+      const id=String(b.id||''),who=profileIdFrom(b),r=requests.find(x=>x.id===id&&x.fromProfileId===who);if(!r)throw new Error('Join request not found');if(r.status!=='accepted')throw new Error(r.status==='declined'?'That join request was declined':'That join request is still waiting for an answer');
+      let roomId=String(r.roomId||'');
+      if(!roomId){const live=(await this.getPresence()).find(x=>x.profileId===r.toProfileId&&(!r.gameId||x.gameId===r.gameId));roomId=String(live?.roomId||'')}
+      if(!roomId)throw new Error('The accepted game room is no longer available');const room=await this.getRoom(roomId);if(!room)throw new Error('The accepted game room has closed');
+      let existing=[...room.players.values()].find(p=>!p.isBot&&p.profileId===who);
+      if(!existing){
+        const activePlayers=[...room.players.values()].filter(p=>!p.spectating);if(activePlayers.length>=room.maxSeats)throw new Error('The game filled up before you could enter');
+        const id=crypto.randomUUID(),t=token(),pf=playerProfile(b,'Player'),spectating=room.game.phase!=='lobby';existing={id,token:t,...pf,seat:null,ready:false,connected:true,bid:null,tricks:0,score:0,continued:false,hand:[],eliminated:false,spectating,isBot:false,botDifficulty:null};room.players.set(id,existing);broadcast(room);
+      }
+      r.roomId=room.id;r.claimedAt=now();r.claimMode=room.game.phase==='lobby'&&!existing.spectating?'player':'spectator';await this.ctx.storage.put('join-requests:v1',requests);
+      return{ok:true,request:r,roomId:room.id,playerToken:existing.token,playerId:existing.id,joinMode:r.claimMode,gameType:room.gameType};
+    }
+    const who=profileIdFrom(b);const list=requests.filter(r=>!who||r.toProfileId===who||r.fromProfileId===who).slice(0,50);return{ok:true,requests:list};
+  }
   async fetch(request){activeHub=this;await this.ready;try{return await handleApi(request)}catch(err){console.error(err);return jsonResponse({error:err?.message||'Server error'},500)}}
 }
 

@@ -1,38 +1,40 @@
 BLACK FAMILY GAME NIGHT
-PHASE T.1 PROP HUNT HUNTER RELEASE + COMBAT CONTROLS MANIFEST
+PHASE W.1 JOIN RESPONSE + DOROTHY GARDEN MANIFEST
 
-Build ID: GAME-NIGHT-STAGING-PHASE-T1-PROP-HUNT-HUNTER-RELEASE-COMBAT-19
-Package version: 3.5.1-staging-phase-t1-prop-hunt-hunter-release-combat-19
+Current release: GAME-NIGHT-STAGING-PHASE-W1-JOIN-GARDEN-26
+Package version: 3.9.1-staging-phase-w1-join-garden-26
 Worker main: worker.mjs
 Cloudflare static asset directory: ./public
 Assets binding: ASSETS
 SPA fallback: single-page-application
 Staging config: wrangler.staging.jsonc
-Staging Worker name: black-family-game-night-phase-t1-staging
-Service-worker cache: black-family-game-night-staging-phase-t1-prop-hunt-hunter-release-combat-19
+Staging Worker name: black-family-game-night-phase-t1-staging (legacy deployment name retained)
+Service-worker cache: black-family-game-night-staging-phase-w1-join-garden-26
+
+CURRENT W.1 UPGRADES
+- Ask to Join carries the target live room ID and target player name.
+- Requesters poll and receive explicit Accepted / Declined outcomes.
+- Accepted lobby requests automatically enter as normal players.
+- Accepted active-match requests automatically enter as safe spectators until the next game.
+- Full rooms no longer advertise themselves as joinable.
+- Dorothy's Garden Merge now uses named plant/flower art, prepared-soil cells, merge-ready glow, petal feedback, upgraded cottage-garden zones, Dorothy signature props and themed clearable garden obstacles.
 
 GOVERNING DIRECTIVES
-- MASTER_PHASE_T1_PROP_HUNT_HUNTER_RELEASE_COMBAT_DIRECTIVE.md: current Phase T.1 work order and master prompt.
-- MASTER_PHASE_T_PROP_HUNT_P3_GAMEPLAY_ANIMATION_DIRECTIVE.md: preserved P3 animation/gameplay direction except where T.1 supersedes Aim-button behavior.
-- MASTER_PHASE_S_GAMEPLAY_TABLETOP_REALISM_DIRECTIVE.md: preserved tabletop/gameplay repairs.
+- MASTER_NEXT_BUILD_DEVELOPMENT_DIRECTIVE.md, including Section 47 W.1 addendum.
+- MASTER_PHASE_W_LIVING_APP_DIRECTIVE.md: living app foundation.
+- MASTER_PHASE_T1_PROP_HUNT_HUNTER_RELEASE_COMBAT_DIRECTIVE.md: preserved Prop Hunt combat/hide contract.
 - MASTER_3D_DEVELOPMENT_DIRECTIVE.md: flagship 3D quality track.
 - MASTER_MOBILE_TABLETOP_UX_DIRECTIVE.md: screen-first mobile standard.
 - BLACK_GAMMON_MASTER_RULES.md: locked Black Gammon rules.
 
-PHASE T.1 UPGRADES
-- Opaque hunter-only hide screen with authoritative countdown.
-- Hunter movement/look/jump/sprint/shoot lock during hide.
-- Server-side masking of hider live position, disguise and hide-phase decoys from hunters, including reconnect.
-- Hide-phase hunter damage disabled at the server action gate.
-- Hider positional movement audio suppressed for blinded hunters.
-- Separate Aim button and button-driven aim zoom removed.
-- Centre crosshair is the permanent hunter aim reference.
-- Tap Shoot fires once; hold Shoot repeats at approximately 4.8 shots per second.
-- Rapid fire stops immediately on release/cancel/lost capture/blur.
-- Existing Phase T locomotion, mantle, disguise, flash, damage and spectator work is preserved.
-
 VALIDATION
-See PHASE_T1_PACKAGE_VERIFICATION.txt for final cold-package results.
+- npm test: 418 / 418 pass.
+- build validator: 196 pass, 0 fail, 2 environment warnings.
+- Join-flow backend integration check passed for lobby-player and active-spectator acceptance.
+- Dorothy inline game JavaScript syntax check passed.
+
+COMPATIBILITY NOTE
+VERSION.txt intentionally retains the historical T1 marker because legacy regression tests assert it exactly. CURRENT_RELEASE.txt, package.json, app build marker and service-worker cache identify the actual W.1 release.
 
 DECLARED LIMITATION
-Real-device visual/gameplay QA remains required. Technical validation is not phone visual approval.
+Real-device visual/gameplay QA remains required. The container Chromium executable is non-functional in this environment, so automated tests do not equal phone visual approval.

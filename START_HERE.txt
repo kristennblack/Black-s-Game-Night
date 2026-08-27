@@ -1,25 +1,11 @@
-BLACK FAMILY GAME NIGHT - PHASE W STAGING
-Build: GAME-NIGHT-STAGING-PHASE-W-LIVING-APP-25
-Package: 3.9.0-staging-phase-w-living-app-25
+BLACK FAMILY GAME NIGHT - STAGING PHASE W.1 JOIN + GARDEN 26
 
-PRIMARY CHANGE
-Phase W turns the project into a living family game platform:
-- reorganized home shelves: Card -> Board/Tabletop -> 3D -> Arcade
-- 17-game Arcade Corner rebuild and family progression
-- Who's Playing / Ask to Join social flow
-- seasonal events, birthdays, personalized greetings and Birthday Challenges
-- Phase V Prop Hunt world, Phase T/T1 gameplay, tabletop and multiplayer work preserved
+Use this package for the current family staging build.
 
-MASTER PROMPT
-MASTER_PHASE_W_LIVING_APP_DIRECTIVE.md
+This release adds:
+- Home-screen join requests now report accepted/declined outcomes to the requester.
+- Accepted requests automatically enter the approved room.
+- If a match is already underway, the accepted player enters safely as a spectator until the next game.
+- Dorothy's Garden Merge is rebuilt as a cozy dimensional cottage garden with real plant/flower art, named merge evolution, upgraded zones, merge-ready feedback, signature Dorothy garden props, and themed clearable garden obstacles.
 
-PHONE QA
-PHONE_QA_PHASE_W_LIVING_APP_25.md
-
-VALIDATE
-npm run check
-npm run build
-npm run assets:audit
-
-STATUS
-Staging only. Real-device gameplay/visual approval is still required.
+Run npm test and npm run build before deployment.
