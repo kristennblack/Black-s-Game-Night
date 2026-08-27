@@ -1,33 +1,11 @@
-BLACK FAMILY GAME NIGHT - STAGING PHASE W.7 PROP HUNT CHARACTER + COMBAT 32
+BLACK FAMILY GAME NIGHT — PHASE W.8
 
-CURRENT RELEASE
-GAME-NIGHT-STAGING-PHASE-W7-PROP-HUNT-CHARACTER-COMBAT-32
+Current release: GAME-NIGHT-STAGING-PHASE-W8-ARCADE-TUTORIAL-STORE-33
+Package version: 3.11.0-staging-phase-w8-arcade-tutorial-store-33
 
-NEW IN W.7
-- John is the first Prop Hunt production-quality character/combat vertical slice.
-- Approved-turnaround identity now wins at runtime; an unapproved legacy John GLB cannot silently replace the approved-style fallback.
-- Two-hand Prop Zapper rig: right trigger hand + left support hand; old backwards procedural hand meshes are hidden while aiming.
-- Larger/readable Prop Zapper with brighter energy coil.
-- Close right-shoulder hunter aim camera with aim FOV/distance tuned for phone play.
-- Crosshair is exactly centred on the same camera ray used by shooting.
-- Hitscan remains responsive but now has visible beam/tracer, muzzle flash/light and impact burst.
-- Physical muzzle obstruction is preserved so shots cannot cheat through a nearby wall.
-- Disguised-player hits get readable shake/hit feedback without revealing identity early.
-- Master directives now make John actual-phone approval the gate before copying this system to the rest of the family.
-- Clarified 31 Blind rules are recorded in the master directive without inventing extra scoring/end conditions.
+Start with README.md and MASTER_NEXT_BUILD_DEVELOPMENT_DIRECTIVE.md.
+W.8 governing directive: MASTER_PHASE_W8_ARCADE_TUTORIAL_COSMETICS_DIRECTIVE.md
 
-PRESERVED
-- Phase W.6 multigame UX/rules work.
-- Phase W.5 approved family-character identity lock and approved turnarounds.
-- W.4 Gammon/mobile card-hand repair and earlier cumulative releases.
+This release preserves W.7 Prop Hunt character/combat and adds detailed visual arcade tutorials plus the earned avatar Tokens Store.
 
-VALIDATE
-npm test
-npm run staging:validate
-
-EXPECTED WORKING-TREE GATE
-- 465 / 465 tests pass.
-- 208 staging checks pass, 0 fail, 2 known environment warnings.
-
-FINAL VISUAL GATE
-John must be reviewed on an actual phone before this character-combat template is propagated to the family cast.
+Technical validation is required before deployment; actual-device visual QA remains authoritative for game appearance.

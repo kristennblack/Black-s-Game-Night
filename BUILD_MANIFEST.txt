@@ -1,39 +1,32 @@
 BLACK FAMILY GAME NIGHT
-PHASE W.7 PROP HUNT CHARACTER + COMBAT VERTICAL SLICE MANIFEST
+PHASE W.8 ARCADE TUTORIAL + AVATAR TOKEN STORE MANIFEST
 
-Current release: GAME-NIGHT-STAGING-PHASE-W7-PROP-HUNT-CHARACTER-COMBAT-32
-Package version: 3.10.0-staging-phase-w7-prop-hunt-character-combat-32
+Current release: GAME-NIGHT-STAGING-PHASE-W8-ARCADE-TUTORIAL-STORE-33
+Package version: 3.11.0-staging-phase-w8-arcade-tutorial-store-33
 Worker main: worker.mjs
 Cloudflare static asset directory: ./public
 Assets binding: ASSETS
 Staging config: wrangler.staging.jsonc
-Service-worker cache: black-family-game-night-staging-phase-w7-prop-hunt-character-combat-32
+Service-worker cache: black-family-game-night-staging-phase-w8-arcade-tutorial-store-33
 
-CURRENT W.7 WORK
-- John first production character/combat gate.
-- Approved-turnaround precedence; unapproved legacy John GLB is withheld.
-- Shared right-trigger/left-support Prop Zapper grip system.
-- Backwards procedural hand meshes hidden during aim.
-- Larger visible Prop Zapper and energy coil.
-- Close right-shoulder hunter aim camera.
-- True centre-screen crosshair tied to camera ray.
-- Visible shot beam/tracer, muzzle flash/light and impact burst.
-- Muzzle-obstruction validation remains authoritative.
-- Prop/hider hit shake without early identity reveal.
-- 31 Blind family-rule definition recorded in master directive.
+CURRENT W.8 WORK
+- Detailed visual HOW TO tutorials for all 16 active arcade games.
+- Per-profile/per-game SHOW TUTORIAL / SKIP FOR ME choice.
+- Dedicated earned-only Tokens Store.
+- Hat, Glasses and Accessory equip slots with 14 launch cosmetics.
+- +5 first-play tokens and +10 daily three-game challenge.
+- Server-idempotent achievement token awards and validated cosmetic unlocks.
+- Cosmetics render on selected avatar surfaces without modifying approved identity.
+- Future 3D cosmetic sockets reserved: HeadTop, Face, ChestAccessory.
+- Legacy Breakout/Rocket/Snake remain self-contained.
 
 CUMULATIVE PRESERVATION
+- W.7 Prop Hunt John character/combat vertical slice remains included.
 - W.6 multigame gameplay/UX repairs remain included.
-- W.5 approved character identity registry/turnarounds remain locked.
-- W.4 Gammon/mobile hand repairs remain included.
-- W.3-W.1 gameplay and living-app repairs remain included.
+- W.5 approved family-character identity registry/turnarounds remain locked.
+- W.4 and earlier gameplay/mobile fixes remain included.
 
-WORKING-TREE VALIDATION COUNTS
-- npm test: 465 / 465 tests pass.
-- staging validator: 208 pass, 0 fail, 2 environment warnings.
-
-FINAL PACKAGE REQUIREMENT
-- Cold-extracted release ZIP must reproduce 465 / 465 tests.
-- Cold-extracted staging validator must reproduce 208 pass, 0 fail, 2 environment warnings.
-- ZIP integrity must report no compressed-data errors.
-- Actual-device John visual QA remains required.
+VALIDATION COUNTS
+- Working tree: 473 / 473 tests pass.
+- Working tree staging validator: 211 pass, 0 fail, 2 environment warnings.
+- Final release ZIP must reproduce 473 / 473 tests and 211 pass / 0 fail from a cold extraction.

@@ -269,3 +269,16 @@ For Prop Hunt, an approved turnaround is not merely an art reference. It is a ru
 - The Prop Zapper and its grip must remain clearly visible in the close right-shoulder camera.
 - Crosshair, camera ray, muzzle validation, tracer and impact feedback must describe the same shot.
 - Simplification is allowed only in topology/material complexity. Identity features from the approved turnaround remain locked.
+
+---
+
+## 11. PHASE W.8 COSMETIC ATTACHMENT RULE
+
+Unlocked store cosmetics are permitted only as removable attachments over the approved identity.
+
+Semantic slots:
+- Hat → `HeadTop`
+- Glasses → `Face`
+- Accessory → `ChestAccessory`
+
+No store item may change approved skin tone, hair colour/style, face, body proportions, base outfit or dog markings. A cosmetic is never baked into the base model solely to simplify implementation. The base approved character must remain valid with every cosmetic removed.

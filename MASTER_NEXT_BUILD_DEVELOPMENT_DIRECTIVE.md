@@ -1396,3 +1396,19 @@ Regression/source validation must confirm:
 - W.6 multigame fixes and W.5 character locks remain intact.
 
 Real-device visual QA is still required. Automated tests can prove contracts and regressions, but cannot certify that John actually looks correct on the user's phone.
+
+---
+
+# PHASE W.8 LOCKED ADDENDUM — ARCADE TUTORIALS + AVATAR TOKEN STORE
+
+Governing detail: `MASTER_PHASE_W8_ARCADE_TUTORIAL_COSMETICS_DIRECTIVE.md`.
+
+- Every one of the 16 active arcade games must have an always-accessible detailed visual HOW TO tutorial with at least four game-specific steps.
+- First use offers SHOW TUTORIAL / SKIP FOR ME per player profile and per game. Logan's existing tutorial flow remains authoritative and must not double-prompt.
+- Arcade Tokens are earned-only: +5 for the first play of each arcade game and +10 once daily for playing three different arcade games.
+- Token rewards tied to an achievement must be server-idempotent so duplicate requests do not duplicate currency.
+- Tokens Store unlocks and equips removable Hat, Glasses and Accessory items. No real-money checkout exists.
+- Cosmetics may never alter approved identity. Skin, face, hair, body, base outfit and dog markings remain governed by the approved turnaround.
+- 3D cosmetic attachment sockets are reserved as HeadTop, Face and ChestAccessory; use removable lightweight child meshes rather than editing the base character.
+- Preserve legacy single-file/self-contained contracts for Cabin Breakout, Campfire Rocket and Neon Snake by embedding their detailed W.8 tutorial locally.
+- W.7 Prop Hunt character/combat requirements and all prior cumulative fixes remain preserved.

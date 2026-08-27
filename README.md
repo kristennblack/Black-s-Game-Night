@@ -1,3 +1,16 @@
+# CURRENT CUMULATIVE RELEASE — PHASE W.8 ARCADE TUTORIAL + AVATAR TOKEN STORE 33
+
+**Current release:** `GAME-NIGHT-STAGING-PHASE-W8-ARCADE-TUTORIAL-STORE-33`  
+**Package version:** `3.11.0-staging-phase-w8-arcade-tutorial-store-33`
+
+Phase W.8 preserves W.7 and adds a consistent visual onboarding layer to every active Arcade Corner game plus an earned-only avatar cosmetics store. All 16 arcade games now provide detailed step-by-step HOW TO tutorials. Each profile can choose SHOW TUTORIAL or SKIP FOR ME on first use, while HOW TO always remains available later.
+
+Arcade Tokens unlock removable hats, glasses and accessories. The launch economy awards +5 tokens the first time a profile plays each arcade game and +10 tokens for the daily three-different-games challenge. There is no real-money checkout. Cosmetics are profile-persistent and may never alter the approved character identity underneath.
+
+Future 3D cosmetics use removable `HeadTop`, `Face` and `ChestAccessory` sockets rather than editing the approved base character mesh.
+
+Governing W.8 directive: `MASTER_PHASE_W8_ARCADE_TUTORIAL_COSMETICS_DIRECTIVE.md`.
+
 # CURRENT CUMULATIVE RELEASE - PHASE W.7 PROP HUNT CHARACTER + COMBAT 32
 
 **Current release:** `GAME-NIGHT-STAGING-PHASE-W7-PROP-HUNT-CHARACTER-COMBAT-32`  

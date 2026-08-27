@@ -31,6 +31,8 @@ const human=(spec)=>Object.freeze({
   lods:['LOD0','LOD1','LOD2'],
   texturePolicy:'mobile-first atlas; preserve approved colours and clothing read',
   sockets:['rightHand','leftHand','back','head'],
+  cosmeticSockets:Object.freeze({hat:'HeadTop',glasses:'Face',accessory:'ChestAccessory'}),
+  cosmeticPolicy:'Only unlocked catalog cosmetics may be attached as removable child meshes; never alter base identity geometry.',
   baseAnimations:['idle','walk','run','sprint','turnLeft','turnRight','jump','fall','land','crouch','wave','point','react','celebrate'],
   ...spec
 });
@@ -164,6 +166,7 @@ export function approvedCharacterQaContract(id){
   return Object.freeze({
     id:s.id,characterCode:s.characterCode,turnaround:s.turnaround,expectedModelFile:s.expectedModelFile,
     requiredViews:[...s.views],identityLocked:true,
-    rejectIf:['skin-tone-changed','hair-colour-changed','hair-style-changed','clothing-redesigned','face-redesigned','unapproved-accessory-added']
+    cosmeticSockets:{...s.cosmeticSockets},
+    rejectIf:['skin-tone-changed','hair-colour-changed','hair-style-changed','clothing-redesigned','face-redesigned','unapproved-nonstore-accessory-added']
   });
 }

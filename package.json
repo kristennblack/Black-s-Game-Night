@@ -1,12 +1,12 @@
 {
   "name": "black-family-game-night",
-  "version": "3.10.0-staging-phase-w7-prop-hunt-character-combat-32",
+  "version": "3.11.0-staging-phase-w8-arcade-tutorial-store-33",
   "private": true,
   "type": "module",
-  "description": "Black Family Game Night Phase W.7: Prop Hunt approved-character combat vertical slice, two-hand zapper grip, hunter shoulder camera and visible shot impacts, preserving W.6 multigame UX and W.5 character locks.",
+  "description": "Black Family Game Night Phase W.8: detailed visual tutorials for every arcade game plus earned Arcade Token avatar cosmetics, preserving W.7 Prop Hunt character/combat and all cumulative fixes.",
   "scripts": {
     "test": "node --test",
-    "check": "node --check worker.mjs && node --check propHuntRoom.mjs && node --check islandLifeRoom.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check threeNewGames.mjs && node --check blackGammon.mjs && node --check public/app.js && node --check public/prop-hunt-core.mjs && node --check public/shared-3d-art-kit.mjs && node --check public/shared-3d-gameplay.mjs && node --check public/approved-family-characters.mjs && node --check public/shared-3d-studio.mjs && node --check public/prop-hunt-3d.js && node --check public/island-life-core.mjs && node --check public/island-life.js && node --check public/birthday-climb.js && node --check public/phase-e-qa.mjs && node --check public/sw.js && node --test",
+    "check": "node --check worker.mjs && node --check propHuntRoom.mjs && node --check islandLifeRoom.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check threeNewGames.mjs && node --check blackGammon.mjs && node --check public/app.js && node --check public/prop-hunt-core.mjs && node --check public/shared-3d-art-kit.mjs && node --check public/shared-3d-gameplay.mjs && node --check public/approved-family-characters.mjs && node --check public/arcade-tutorials.mjs && node --check public/avatar-cosmetics.mjs && node --check public/shared-3d-studio.mjs && node --check public/prop-hunt-3d.js && node --check public/island-life-core.mjs && node --check public/island-life.js && node --check public/birthday-climb.js && node --check public/phase-e-qa.mjs && node --check public/sw.js && node --test",
     "deploy": "wrangler deploy",
     "assets:build": "python tools/build_production_assets.py",
     "assets:audit": "python tools/audit_production_assets.py",

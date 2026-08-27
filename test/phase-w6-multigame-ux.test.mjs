@@ -34,9 +34,9 @@ test('W6 Logan offers per-profile tutorial choice, starts at 5x5 with a starter 
   for(const detail of ['Knobby tires','Engine block','Front suspension','number plate','Handlebars'])assert.match(html,new RegExp(detail,'i'));
 });
 
-test('W6 shared arcade platform exposes visual How To Play',()=>{
-  const platform=read('public/phase-w-platform.mjs');
-  assert.match(platform,/VISUAL HOW TO PLAY/);assert.match(platform,/BFGNShowHowToPlay/);assert.match(platform,/HOW TO/);assert.match(platform,/ARCADE_HOW/);
+test('W6 visual How To Play remains available after the W8 detailed tutorial upgrade',()=>{
+  const platform=read('public/phase-w-platform.mjs'),tutorials=read('public/arcade-tutorials.mjs');
+  assert.match(platform,/mountArcadeTutorial/);assert.match(platform,/HOW TO/);assert.match(tutorials,/SHOW TUTORIAL/);assert.match(tutorials,/SKIP FOR ME/);
   const app=read('public/app.js');assert.match(app,/How to Play · Guided Demo/);
 });
 
@@ -80,7 +80,9 @@ test('W6 Kelsi Rock n Roll Rescue replaces Neon Star Patrol and old Kelsi game r
   assert.match(old,/space-shooter\.html/);
 });
 
-test('W6 deliberately leaves 31 blind mode pending the family definition rather than guessing',()=>{
+test('W6 pending 31 Blind note is superseded by the later clarified family rule',()=>{
   const master=read('MASTER_NEXT_BUILD_DEVELOPMENT_DIRECTIVE.md');
-  assert.match(master,/31.*blind.*pending|blind.*31.*pending/i);
+  assert.match(master,/Blind player starts with exactly 3 face-down cards/i);
+  assert.match(master,/replace one of their face-down cards without looking/i);
+  assert.match(master,/pass and wait for the next turn/i);
 });

@@ -7,13 +7,14 @@ const root=path.resolve(new URL('..',import.meta.url).pathname);
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const RELEASE='GAME-NIGHT-STAGING-PHASE-W7-PROP-HUNT-CHARACTER-COMBAT-32';
 
-test('W7 release identity is current without breaking the historical prop-hunt engine identity',()=>{
-  assert.equal(read('CURRENT_RELEASE.txt').trim(),RELEASE);
+test('W7 release identity remains preserved after cumulative later phases',()=>{
   const app=read('public/app.js'),sw=read('public/sw.js');
   assert.match(app,/PHASE_W7_RELEASE='GAME-NIGHT-STAGING-PHASE-W7-PROP-HUNT-CHARACTER-COMBAT-32'/);
-  assert.match(app,/CURRENT_BUILD=PHASE_W7_RELEASE/);
+  assert.match(app,/PHASE_W8_RELEASE='GAME-NIGHT-STAGING-PHASE-W8-ARCADE-TUTORIAL-STORE-33'/);
+  assert.match(app,/CURRENT_BUILD=PHASE_W8_RELEASE/);
   assert.match(sw,/PHASE_W7_CACHE='black-family-game-night-staging-phase-w7-prop-hunt-character-combat-32'/);
-  assert.match(sw,/const CACHE=PHASE_W7_CACHE/);
+  assert.match(sw,/PHASE_W8_CACHE='black-family-game-night-staging-phase-w8-arcade-tutorial-store-33'/);
+  assert.match(sw,/const CACHE=PHASE_W8_CACHE/);
 });
 
 test('approved John blocks the unapproved legacy GLB and keeps the approved procedural fallback',()=>{

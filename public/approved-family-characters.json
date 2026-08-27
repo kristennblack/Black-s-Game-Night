@@ -54,5 +54,11 @@
   "approvedModelDirectoryParts": [
     "/models/characters",
     "approved"
-  ]
+  ],
+  "cosmeticPolicy": "Unlockable store cosmetics are removable attachments only; base approved identity remains unchanged.",
+  "cosmeticSockets": {
+    "hat": "HeadTop",
+    "glasses": "Face",
+    "accessory": "ChestAccessory"
+  }
 }
