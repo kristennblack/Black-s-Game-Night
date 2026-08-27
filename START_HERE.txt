@@ -1,22 +1,20 @@
-BLACK FAMILY GAME NIGHT - PHASE T.1 STAGING
-Build: GAME-NIGHT-STAGING-PHASE-T1-PROP-HUNT-HUNTER-RELEASE-COMBAT-19
-Package: 3.5.1-staging-phase-t1-prop-hunt-hunter-release-combat-19
+BLACK FAMILY GAME NIGHT - PHASE W STAGING
+Build: GAME-NIGHT-STAGING-PHASE-W-LIVING-APP-25
+Package: 3.9.0-staging-phase-w-living-app-25
 
 PRIMARY CHANGE
-Prop Hunt now has a protected hunter-blind hiding phase and simplified crosshair-first combat:
-- hunters see a black countdown while hiders hide
-- hunters are frozen and cannot shoot during hide
-- hider live/disguise/decoy state is masked from hunters during hide
-- no separate Aim button
-- tap Shoot = one shot
-- hold Shoot = controlled rapid fire
-- shots follow the centre crosshair
+Phase W turns the project into a living family game platform:
+- reorganized home shelves: Card -> Board/Tabletop -> 3D -> Arcade
+- 17-game Arcade Corner rebuild and family progression
+- Who's Playing / Ask to Join social flow
+- seasonal events, birthdays, personalized greetings and Birthday Challenges
+- Phase V Prop Hunt world, Phase T/T1 gameplay, tabletop and multiplayer work preserved
 
 MASTER PROMPT
-MASTER_PHASE_T1_PROP_HUNT_HUNTER_RELEASE_COMBAT_DIRECTIVE.md
+MASTER_PHASE_W_LIVING_APP_DIRECTIVE.md
 
 PHONE QA
-PHONE_QA_PHASE_T1_PROP_HUNT_HUNTER_RELEASE_COMBAT_19.md
+PHONE_QA_PHASE_W_LIVING_APP_25.md
 
 VALIDATE
 npm run check
