@@ -176,3 +176,10 @@ Permanent design principles established in Phase V:
 - Easter eggs are for family discovery and memory, not competitive advantage.
 - Environment interactions can create noise, light, spectacle or safe shortcuts, but may never permanently lock a route or trap a player.
 - Actual phone play remains the visual/gameplay approval gate. Automated tests may verify contracts but cannot certify that a large 3D map feels good to play.
+
+## 16. Phase W.10 professional quality precedence
+For all next-build work, `MASTER_GAME_DESIGN_PRODUCTION_PROMPT_W10.md` is the canonical professional design/production prompt. The approved family turnaround directive still has higher authority for character identity, and game-specific locked rule files remain authoritative for finalized rules.
+
+The older phrase `stylized realism` must not be interpreted as permission to redesign an approved family avatar. For approved characters, the target is dimensional, polished cartoon 3D that preserves the exact approved identity.
+
+The flagship 3D production strategy is vertical-slice first: prove one excellent John/Papa's Shop full-round phone experience before copying the controller/character pipeline across the cast or other maps.

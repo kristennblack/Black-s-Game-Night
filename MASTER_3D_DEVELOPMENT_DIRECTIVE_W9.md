@@ -739,7 +739,3 @@ The objective is not simply to generate more code.
 The objective is to make the game visibly, measurably and experientially better.
 ## Phase W.7 Prop Hunt character/combat override
 For Prop Hunt hunter characters, approved turnaround identity has higher precedence than older realism language. A legacy GLB with `approvedModel !== true` must not replace the approved procedural fallback. Use a close shoulder camera, two-hand Prop Zapper grip, center-screen ray-matched crosshair, muzzle-origin obstruction validation, visible 3D tracer and visible impact burst. John is the first real-device vertical-slice gate before propagation to the rest of the family.
-
-# PHASE W.10 PROFESSIONAL PRECEDENCE NOTE
-
-For the next build, `MASTER_GAME_DESIGN_PRODUCTION_PROMPT_W10.md` and `MASTER_PHASE_W10_PROFESSIONAL_GAME_DESIGN_DIRECTIVE.md` supersede older generic 3D quality/control language. The approved turnaround still controls character identity.

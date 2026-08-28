@@ -1,3 +1,18 @@
+# CURRENT DESIGN RELEASE - PHASE W.10 PROFESSIONAL MASTER PROMPT 34
+
+**Current design release:** `GAME-NIGHT-STAGING-PHASE-W10-PRO-DESIGN-MASTER-34`  
+**Package version:** `3.12.0-staging-phase-w10-professional-master-prompt-34`
+
+Phase W.10 packages the latest known-good W.8 runtime with a professionally refactored next-build design bible. Runtime gameplay code is intentionally unchanged in this phase. The new canonical prompt is `MASTER_GAME_DESIGN_PRODUCTION_PROMPT_W10.md`, mirrored into `MASTER_NEXT_BUILD_DEVELOPMENT_DIRECTIVE.md` for compatibility.
+
+W.10 replaces the append-only planning structure with explicit precedence, player-experience pillars, vertical-slice gates, action-based controls, accessibility/comfort settings, Prop Hunt round/level/camera/movement/weapon/hider specifications, WebGL performance budgets, local QA telemetry, professional playtest methods and measurable Definitions of Done.
+
+The next runtime milestone is one approved John in one excellent Papa's Shop full round on an actual phone before the system is propagated across the family cast.
+
+Research basis: `W10_PROFESSIONAL_GAME_DESIGN_RESEARCH_NOTES.md`.
+
+---
+
 # CURRENT CUMULATIVE RELEASE — PHASE W.8 ARCADE TUTORIAL + AVATAR TOKEN STORE 33
 
 **Current release:** `GAME-NIGHT-STAGING-PHASE-W8-ARCADE-TUTORIAL-STORE-33`  
@@ -87,3 +102,7 @@ npm run assets:audit
 ```
 
 Use `PHONE_QA_PHASE_U_CABIN_BREAKOUT_20.md` for the real-device pass.
+
+### W.10 identity note
+
+This archive contains the unchanged W.8 gameplay runtime plus the W.10 professional design master. Runtime identifiers intentionally remain W.8/T1-compatible; the documentation release is identified separately in `DESIGN_RELEASE.txt`.

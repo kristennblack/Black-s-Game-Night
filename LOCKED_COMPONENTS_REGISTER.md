@@ -59,3 +59,17 @@ Automated tests may establish technical health. They do not constitute visual ap
 - Tokens Store supports Hat, Glasses and Accessory unlock/equip slots.
 - Cosmetics are removable overlays/attachments and may not modify approved family identity.
 - Future 3D cosmetic sockets are HeadTop, Face and ChestAccessory.
+
+## Phase W.10 professional design/production locks
+- Canonical next-build prompt: `MASTER_GAME_DESIGN_PRODUCTION_PROMPT_W10.md`.
+- Historical W.9 cumulative prompt is archived as `MASTER_NEXT_BUILD_DEVELOPMENT_DIRECTIVE_W9_ARCHIVE.md`.
+- W.10 source precedence resolves conflicting old generic quality language.
+- Prop Hunt remains flagship; one approved John/Papa's Shop full-round phone vertical slice is required before broad propagation.
+- Input is action/context based with role-specific hunter/hider maps, sensitivity/invert/comfort settings and mobile presets.
+- Touch actions target comfortable platform-sized hit areas and must support move + look + action simultaneously.
+- Character approval requires five-view proof and actual gameplay proof before `approvedModel: true`.
+- Prop Hunt shot feedback must keep camera ray, muzzle obstruction, tracer, impact and registered hit aligned.
+- Papa's Shop uses blockout/routing/camera proof before decorative final-art expansion.
+- Mobile performance is measured through frame-time profiling, significance/LOD/culling and WebGL budgets rather than desktop-only fps.
+- Local QA telemetry may diagnose camera/stuck/mantle/transform/shot/frame-time failures without third-party tracking.
+- Automated tests never substitute for actual phone visual/control approval.
