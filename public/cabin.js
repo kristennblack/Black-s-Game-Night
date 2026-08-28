@@ -4,7 +4,7 @@ const PKEY='gn_profile_v1',LKEY='bfgn_cabin_room_local_v1',AKEY='bfgn_arcade_pha
 const read=(k,f)=>{try{return JSON.parse(localStorage.getItem(k)||'')||f}catch{return f}},write=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const profile=read(PKEY,{});profile.profileId=profile.profileId||'local-'+Math.random().toString(36).slice(2);write(PKEY,profile);let arcade=read(AKEY,{tokens:0,cabinBlueprints:{}});arcade.cabinBlueprints=normalizeCabinBlueprints(arcade.cabinBlueprints);write(AKEY,arcade);
-const family=[['john','John',15,19],['kristen','Kristen',30,19],['holly','Holly',44,19],['vanessa','Vanessa',59,19],['elizabeth','Lizzie',73,19],['logan','Logan',14,54],['james','James',27,54],['dorothy','Dorothy',55,54],['papa','Papa',68,54],['nana','Nana',80,54]];
+const family=[['john','John',15,19],['kristen','Kristen',30,19],['holly','Holly',44,19],['vanessa','Vanessa',59,19],['elizabeth','Lizzy',73,19],['logan','Logan',14,54],['james','James',27,54],['dorothy','Dorothy',55,54],['papa','Papa',68,54],['nana','Nana',80,54]];
 const familyMap=Object.fromEntries(family.map(x=>[x[0],x]));
 const myRoomKey=familyMap[profile.avatar]?profile.avatar:`guest:${profile.profileId}`;
 const localRooms=read(LKEY,{});

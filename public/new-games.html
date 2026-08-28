@@ -48,6 +48,28 @@ button,input,select{font:inherit}.hidden{display:none!important}
 @media(max-width:900px){.legacy-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.mystery-layout,.prop-wrap{grid-template-columns:1fr}.turn-sidebar,.prop-side{order:-1}.prop-side .map-list{grid-template-columns:repeat(2,1fr)}.prop-stage{min-height:610px}.prop-canvas{height:610px}}
 @media(max-width:640px){.hero-card{grid-template-columns:1fr;padding:21px}.fireplace-art{height:100px}.game-grid{grid-template-columns:1fr}.setup-grid{grid-template-columns:1fr}.character-grid{grid-template-columns:repeat(3,1fr)}.legacy-grid{grid-template-columns:1fr 1fr}.screen{padding-left:10px;padding-right:10px}.board-shell{min-height:700px;border-width:4px}.room-zone{width:108px;height:78px}.room-name{font-size:8px}.scene-icon{font-size:29px}.scene-small{font-size:16px}.walk-tile{width:32px;height:32px}.board-figure{width:40px;height:58px}.figure-card{width:32px;height:44px}.figure-base{width:37px}.board-title-plaque{width:145px;padding:9px}.board-title-plaque strong{font-size:13px}.action-pad{grid-template-columns:repeat(3,58px)}.action{height:54px}.joystick{width:106px;height:106px}.stick{left:29px;top:29px}.prop-controls{gap:7px}.prop-side .map-list{grid-template-columns:1fr 1fr}}
 
+
+/* W18 Family Mystery realism pass */
+.board-shell{background:linear-gradient(#120e0a66,#120e0a88),url('/cabin-assets/cabin-aerial-scene.jpg') center/cover!important;border:1px solid #b88a4e66!important;box-shadow:inset 0 0 80px #000b,0 24px 70px #0008!important;perspective:1100px;overflow:hidden}
+.mystery-board{transform-style:preserve-3d;background:radial-gradient(circle at 50% 45%,transparent 0 40%,#0b080557 78%,#070503a8 100%)}
+.mystery-depth-vignette{position:absolute;inset:0;pointer-events:none;background:linear-gradient(145deg,#ffe1a20c,#0000 38%,#0008);z-index:0}
+.path-link{height:14px!important;border-radius:999px;background:linear-gradient(180deg,#8d6b48,#3e2b1d)!important;box-shadow:0 5px 9px #0009,inset 0 2px 1px #d9b48566!important;transform-origin:left center!important}
+.walk-tile{width:34px!important;height:34px!important;border:2px solid #8a6848!important;border-radius:9px!important;background:linear-gradient(145deg,#b69a75,#684b31)!important;box-shadow:0 8px 12px #0009,inset 0 2px 2px #ead4ad99!important;transform:translate(-50%,-50%) rotateX(7deg)!important;z-index:5!important}
+.walk-tile:after{content:'◆';font-size:10px;color:#2d2118;filter:drop-shadow(0 1px #fff7)}
+.walk-tile.reachable,.room-zone.reachable{border-color:#ffe884!important;box-shadow:0 0 0 5px #ffe36f3d,0 0 30px #ffd65c,0 10px 16px #000a!important;animation:mysteryReach .8s ease-in-out infinite alternate;z-index:18!important}
+@keyframes mysteryReach{to{filter:brightness(1.2);transform:translate(-50%,-50%) translateY(-3px) scale(1.045)}}
+.room-zone{width:142px!important;height:112px!important;border:2px solid #b9915e!important;border-radius:14px!important;overflow:visible!important;box-shadow:0 14px 28px #000b,inset 0 0 0 1px #ffe0a833!important;transform:translate(-50%,-50%) rotateX(4deg)!important;background:#19120d!important;z-index:8!important}
+.room-scene{position:absolute!important;inset:0!important;border-radius:11px!important;overflow:hidden;background:linear-gradient(#0004,#0007),url('/cabin-assets/starter-room-scene.jpg') center/cover!important;box-shadow:inset 0 -35px 40px #0009!important}
+.room-camper,.room-firepit,.room-backyard,.room-goatpen{background:linear-gradient(#0f1b1355,#090706aa),url('/cabin-assets/cabin-aerial-scene.jpg') center/cover!important}
+.room-shop,.room-papashop,.room-papashack{background:linear-gradient(#1d120755,#090603aa),url('/approved-ui/cabin-shop-runtime-target.png') center/cover!important}
+.room-name{position:absolute!important;left:6px!important;right:6px!important;bottom:6px!important;padding:4px 6px;border-radius:7px;background:#100b08d9;color:#fff5de!important;font-size:11px!important;font-weight:950!important;text-shadow:0 2px 4px #000!important}
+.scene-icon{font-size:26px!important;filter:drop-shadow(0 3px 3px #000)}.scene-small{filter:drop-shadow(0 2px 2px #000)}
+.secret-passage-badge{position:absolute;left:5px;right:5px;top:5px;padding:3px 4px;border-radius:6px;background:#7d2e26e8;border:1px solid #ffd77d;color:#fff7d8;font-size:7px;font-weight:1000;letter-spacing:.06em;line-height:1.15;box-shadow:0 3px 8px #000b}
+.shortcut-room:before{content:'↗';position:absolute;right:-8px;top:-8px;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#b74735;color:white;border:2px solid #ffd879;font-weight:1000;z-index:4;box-shadow:0 4px 10px #0008}
+.board-figure{z-index:30!important;transition:left .17s linear,top .17s linear,transform .2s ease!important}.board-figure.current{filter:drop-shadow(0 0 12px #ffd25c)}.figure-card{border:2px solid #e4bd71!important;box-shadow:0 9px 18px #000b!important;background:#2b1c12!important}.figure-card img{filter:saturate(.96) contrast(1.04)}
+.mystery-room-arrival{position:absolute;inset:8%;z-index:80;display:grid;grid-template-columns:minmax(190px,1.2fr) 1fr;gap:18px;align-items:center;padding:18px;border-radius:24px;background:linear-gradient(145deg,#2d2118f5,#120e0cf5);border:2px solid #dbb46f;box-shadow:0 30px 80px #000d;opacity:0;transform:scale(.82) translateY(35px);transition:.28s ease;pointer-events:none}.mystery-room-arrival.show{opacity:1;transform:scale(1) translateY(0)}.arrival-scene{position:relative;min-height:210px;border-radius:17px;overflow:hidden}.arrival-scene .room-scene{display:block!important}.mystery-room-arrival>div:last-child{display:grid;gap:5px}.mystery-room-arrival small{color:#d8af68;font-weight:950;letter-spacing:.16em}.mystery-room-arrival strong{font-size:clamp(26px,4vw,46px);line-height:1}.mystery-room-arrival span{color:#cfbeaa}
+@media(max-width:700px){.room-zone{width:104px!important;height:84px!important}.walk-tile{width:28px!important;height:28px!important}.secret-passage-badge{font-size:5.7px}.mystery-room-arrival{inset:12px;grid-template-columns:1fr}.arrival-scene{min-height:170px}}
+
 </style>
   <link rel="stylesheet" href="/prop-hunt-3d.css" />
 
@@ -125,7 +147,7 @@ window.FAMILY = {
     {id:'kristen',name:'Kristen',short:'KR',role:'Nice, dramatic, slightly chaotic',object:'Beer Cooler'},
     {id:'holly',name:'Holly',short:'HO',role:'Sweet, kind and peace-loving',object:'Squishy Toy'},
     {id:'vanessa',name:'Vanessa',short:'VA',role:'Sarcastic, bossy, world-class eye roll',object:'Gray GMC'},
-    {id:'elizabeth',name:'Elizabeth',alias:'Lizzie',short:'LI',role:'Big dramatic ballet energy',object:'Crocs'},
+    {id:'elizabeth',name:'Elizabeth',alias:'Lizzy',short:'LI',role:'Big dramatic ballet energy',object:'Crocs'},
     {id:'logan',name:'Logan',short:'LO',role:'Teenage arms-crossed reluctance',object:'Fishing Rod'},
     {id:'kelsi',name:'Kelsi',short:'KE',role:'Princess dog who loves rocks',object:'Rock',dog:true},
     {id:'molly',name:'Molly',short:'MO',role:'Silly dog, tongue out, chases lights',object:'Laser Pointer',dog:true},
@@ -136,7 +158,7 @@ window.FAMILY = {
     {id:'nana',name:'Nana',short:'NA',role:'Frequently declares “That’s a sin.”'}
   ],
   mysteryLocations:['Camper','Fire Pit','Shop','Backyard','Living Room','Kitchen',"Papa's Shop",'Bathroom',"Papa's Shack",'Goat Pen'],
-  mysteryWeapons:["John's Wrench","Holly's Suspicious Squishy","Lizzie's Croc","Logan's Fishing Rod","Vanessa's Gray GMC","James's Coffee Mug","Dorothy's Crochet Hooks","Kristen's Beer Cooler","Kelsi's Rock","Molly's Laser Pointer","Gunner's Giant Dog Bone"],
+  mysteryWeapons:["John's Wrench","Holly's Suspicious Squishy","Lizzy's Croc","Logan's Fishing Rod","Vanessa's Gray GMC","James's Coffee Mug","Dorothy's Crochet Hooks","Kristen's Beer Cooler","Kelsi's Rock","Molly's Laser Pointer","Gunner's Giant Dog Bone"],
   taunts:{james:'*coffee sip*',dorothy:"I'm going for a smoke.",john:'Seriously?',kristen:'Uhhh…',holly:'Please stop fighting.',vanessa:'*massive eye roll*',elizabeth:'*dramatic gasp*',logan:'Bruh.',kelsi:'*princess dog snort*',molly:'*excited bark*',gunner:'WOOF!',papa:'*beer can cracks open*',nana:"That's a sin!"}
 };
 window.avatarHTML=function(person,extra=''){
@@ -199,6 +221,8 @@ window.avatarHTML=function(person,extra=''){
     ['h5','h16'],['h16','papashack'],['papashack','h17'],['h17','h18'],['h18','goatpen'],['goatpen','h19'],
     ['h20','h17'],['h21','h17'],['h21','h13'],['h21','h25'],['h22','h18'],['h23','h18'],['h23','h14'],['h23','h25'],['h25','h26'],['h25','h18'],['h24','h17'],['firepit','h24'],['kitchen','h25']
   ];
+  const shortcutEdges=[['camper','living'],['shop','papashop']];
+  const shortcutPairs={camper:'living',living:'camper',shop:'papashop',papashop:'shop'};
   const roomScenes={
     camper:{cls:'camper',icon:'&#127957;',one:'&#127867;',two:'&#128293;',three:'&#129681;'},
     firepit:{cls:'firepit',icon:'&#128293;',one:'&#129681;',two:'&#129681;',three:'&#127866;'},
@@ -213,8 +237,8 @@ window.avatarHTML=function(person,extra=''){
   };
   const pawnColors=['#d8a64b','#6f9fc4','#b65e55','#6fa46c','#9a72b6','#d88750','#5f8b8e','#c584a2','#8b744d','#7aa7c5','#9b9b72'];
   function figureSrc(person){return person.id==='john'?'/avatars/styles/john-look-02.jpg':`/avatars/styles/${person.id}-cute.jpg`}
-  function roomSceneHTML(id,label){const r=roomScenes[id]||{cls:'shop',icon:'&#9670;',one:'',two:'',three:''};return `<div class="room-scene room-${r.cls}"><span class="scene-icon">${r.icon}</span><span class="scene-small one">${r.one}</span><span class="scene-small two ${id==='papashop'?'fire':''}">${r.two}</span><span class="scene-small three">${r.three}</span><span class="room-name">${label}</span></div>`}
-  const adj={}; Object.keys(nodes).forEach(k=>adj[k]=[]); edges.forEach(([a,b])=>{adj[a].push(b);adj[b].push(a)});
+  function roomSceneHTML(id,label){const r=roomScenes[id]||{cls:'shop',icon:'&#9670;',one:'',two:'',three:''},dest=shortcutPairs[id],shortcut=dest?`<span class="secret-passage-badge">SECRET PASSAGE ↗ ${L()[nodes[dest].room]}</span>`:'';return `<div class="room-scene room-${r.cls}"><span class="scene-icon">${r.icon}</span><span class="scene-small one">${r.one}</span><span class="scene-small two ${id==='papashop'?'fire':''}">${r.two}</span><span class="scene-small three">${r.three}</span><span class="room-name">${label}</span>${shortcut}</div>`}
+  const adj={}; Object.keys(nodes).forEach(k=>adj[k]=[]); [...edges,...shortcutEdges].forEach(([a,b])=>{adj[a].push(b);adj[b].push(a)});
   let root,state=null,botSetup=[];
   const chaos=[
     'Papa watches the argument, takes a slow sip of beer, and says absolutely nothing.',
@@ -224,7 +248,7 @@ window.avatarHTML=function(person,extra=''){
     'Gunner barks at something outside. Nobody knows what.',
     'Dorothy announces another smoke break and disappears for a moment.',
     'Vanessa rolls her eyes. Logan crosses his arms. John has had enough of both of them.',
-    'Lizzie reacts to a completely ordinary development like it is the final act of a ballet.',
+    'Lizzy reacts to a completely ordinary development like it is the final act of a ballet.',
     'Kristen looks around, unsure whether this is funny or a problem.',
     'James quietly drinks his coffee while everyone else becomes suspicious of everyone.'
   ];
@@ -243,7 +267,7 @@ window.avatarHTML=function(person,extra=''){
     root.innerHTML=`<div class="game-title-row"><div><span class="eyebrow">FAMILY DEDUCTION</span><h1>Family Mystery</h1><p class="subtext">Standard deduction underneath, extremely non-standard family behavior on top.</p></div><span class="pill">1–11 humans + computers</span></div>
     <div class="setup-grid">
       <section class="panel panel-pad"><h2>Who is playing on this device?</h2><p class="subtext">Choose one or more human family characters. All 11 family members remain possible suspects whether they are playing or not.</p><div id="mCharGrid" class="character-grid">${P().map(p=>`<button class="character-pick ${selected.has(p.id)?'selected':''}" data-id="${p.id}">${avatarHTML(p)}<strong>${p.name}</strong><small>${p.role}</small></button>`).join('')}</div></section>
-      <section class="panel panel-pad"><h2>Game setup</h2><label class="field-label">Total players</label><select id="mTotal" class="select">${[2,3,4,5,6,7,8,9,10,11].map(n=>`<option ${n===6?'selected':''}>${n}</option>`).join('')}</select><p class="subtext">Empty seats are filled by computer family characters so you can play alone.</p><label class="field-label">Default computer difficulty</label><select id="mDifficulty" class="select"><option value="easy" selected>Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></select><div class="mystery-bot-head"><strong>Computer detectives</strong><span>Pick each character and difficulty</span></div><div id="mBotRows" class="mystery-bot-rows">${mysteryBotRows([...selected])}</div><br><label class="field-label">Movement animation</label><select id="animChoice" class="select"><option value="on">Short animation (default)</option><option value="skip">Skip movement animation</option></select><br><br><div class="stat-card"><strong>Case file</strong><p class="subtext">One suspect + one ridiculous family object + one of 10 family locations are hidden. Everyone else gets the remaining cards.</p></div><div class="stat-card"><strong>Board movement</strong><p class="subtext">Roll, then tap any glowing floor block or highlighted room within the rolled range. Family standees walk the route.</p></div><button id="startMystery" class="btn success" style="width:100%;margin-top:12px">START MYSTERY</button></section>
+      <section class="panel panel-pad"><h2>Game setup</h2><label class="field-label">Total players</label><select id="mTotal" class="select">${[2,3,4,5,6,7,8,9,10,11].map(n=>`<option ${n===6?'selected':''}>${n}</option>`).join('')}</select><p class="subtext">Empty seats are filled by computer family characters so you can play alone.</p><label class="field-label">Default computer difficulty</label><select id="mDifficulty" class="select"><option value="easy" selected>Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></select><div class="mystery-bot-head"><strong>Computer detectives</strong><span>Pick each character and difficulty</span></div><div id="mBotRows" class="mystery-bot-rows">${mysteryBotRows([...selected])}</div><br><label class="field-label">Movement animation</label><select id="animChoice" class="select"><option value="on">Short animation (default)</option><option value="skip">Skip movement animation</option></select><br><br><div class="stat-card"><strong>Case file</strong><p class="subtext">One suspect + one ridiculous family object + one of 10 family locations are hidden. Everyone else gets the remaining cards.</p></div><div class="stat-card"><strong>Board movement</strong><p class="subtext">Roll, then tap any glowing raised clue block or highlighted room within the rolled range. Family standees walk the full route automatically. Corner rooms have obvious kitty-corner secret passages.</p></div><button id="startMystery" class="btn success" style="width:100%;margin-top:12px">START MYSTERY</button></section>
     </div>`;
     root.querySelectorAll('.character-pick').forEach(b=>b.addEventListener('click',()=>{b.classList.toggle('selected');renderMysteryBotRows()}));root.querySelector('#mTotal').onchange=renderMysteryBotRows;root.querySelector('#mDifficulty').onchange=()=>{botSetup.forEach(b=>b.difficulty=root.querySelector('#mDifficulty').value);renderMysteryBotRows()};bindMysteryBotRows();
     root.querySelector('#startMystery').addEventListener('click',()=>{
@@ -286,11 +310,12 @@ window.avatarHTML=function(person,extra=''){
   }
   function drawBoard(){
     const b=root.querySelector('#mBoard');
-    b.innerHTML='<div class="board-title-plaque"><strong>BLACK FAMILY</strong><span>MYSTERY NIGHT</span></div>';
+    b.innerHTML='<div class="board-title-plaque"><strong>BLACK FAMILY</strong><span>3D MYSTERY PROPERTY</span></div><div class="mystery-depth-vignette"></div>';
     edges.forEach(([a,c])=>{const A=nodes[a],C=nodes[c],dx=C.x-A.x,dy=C.y-A.y,len=Math.hypot(dx,dy),ang=Math.atan2(dy,dx)*180/Math.PI;const e=document.createElement('div');e.className='path-link';e.style.left=A.x+'%';e.style.top=`calc(${A.y}% - 8px)`;e.style.width=len+'%';e.style.transform=`rotate(${ang}deg)`;b.appendChild(e)});
-    Object.entries(nodes).forEach(([id,n])=>{const d=document.createElement('button');const room=n.room!=null;d.className=(room?'room-zone':'walk-tile')+(state.reachable.has(id)?' reachable':'');d.style.left=n.x+'%';d.style.top=n.y+'%';d.dataset.node=id;if(room)d.innerHTML=roomSceneHTML(id,L()[n.room]);else d.setAttribute('aria-label','Walkway space');if(state.reachable.has(id))d.onclick=()=>moveTo(id);b.appendChild(d)});
+    Object.entries(nodes).forEach(([id,n])=>{const d=document.createElement('button');const room=n.room!=null;d.className=(room?'room-zone':'walk-tile')+(shortcutPairs[id]?' shortcut-room':'')+(state.reachable.has(id)?' reachable':'');d.style.left=n.x+'%';d.style.top=n.y+'%';d.dataset.node=id;if(room)d.innerHTML=roomSceneHTML(id,L()[n.room]);else d.setAttribute('aria-label','Walkway space');if(state.reachable.has(id))d.onclick=()=>moveTo(id);b.appendChild(d)});
     state.players.forEach((pl,i)=>{const n=nodes[pl.pos],p=document.createElement('div');p.className='board-figure '+(i===state.turn?'current':'inactive');p.dataset.figure=pl.person.id;p.style.left=`calc(${n.x}% + ${(i%3)*10-10}px)`;p.style.top=`calc(${n.y}% + ${Math.floor(i/3)%2*9+4}px)`;p.style.setProperty('--pawn',pawnColors[i%pawnColors.length]);p.title=pl.person.name;p.innerHTML=`<div class="figure-card"><img src="${figureSrc(pl.person)}" alt="${pl.person.name}"><span class="figure-label">${pl.person.name}</span></div><i class="figure-base"></i>`;b.appendChild(p)});
   }
+  function showRoomArrival(dest){const n=nodes[dest];if(!n||n.room==null)return;const board=root.querySelector('.board-shell');if(!board)return;board.querySelector('.mystery-room-arrival')?.remove();const card=document.createElement('div');card.className='mystery-room-arrival';card.innerHTML=`<div class="arrival-scene">${roomSceneHTML(dest,L()[n.room])}</div><div><small>ENTERING</small><strong>${L()[n.room]}</strong><span>Searching the room…</span></div>`;board.appendChild(card);requestAnimationFrame(()=>card.classList.add('show'));setTimeout(()=>{card.classList.remove('show');setTimeout(()=>card.remove(),220)},1050)}
   function renderActions(){
     const a=root.querySelector('#actions'),pl=current(),inRoom=nodes[pl.pos].room!=null;
     if(pl.isBot){a.innerHTML='<strong>Computer turn</strong><p class="subtext">Thinking, rolling, moving and making deductions…</p>';return}
@@ -343,11 +368,11 @@ window.avatarHTML=function(person,extra=''){
   function shortest(a,b){const q=[a],prev={[a]:null};while(q.length){const v=q.shift();if(v===b)break;for(const n of adj[v])if(prev[n]===undefined){prev[n]=v;q.push(n)}}let path=[];if(prev[b]===undefined)return[a];for(let x=b;x!=null;x=prev[x])path.unshift(x);return path}
   function moveTo(dest){
     const pl=current(),path=shortest(pl.pos,dest);state.reachable.clear();state.moved=true;
-    if(state.skipAnim){pl.pos=dest;renderGame();return}
+    if(state.skipAnim){pl.pos=dest;renderGame();showRoomArrival(dest);return}
     root.querySelectorAll('.reachable').forEach(x=>x.classList.remove('reachable'));
     const fig=root.querySelector(`[data-figure="${pl.person.id}"]`);if(!fig){pl.pos=dest;renderGame();return}
     fig.classList.add('walking');let i=1;
-    const step=()=>{if(i>=path.length){fig.classList.remove('walking');pl.pos=dest;setTimeout(renderGame,80);return}const next=path[i++],n=nodes[next];pl.pos=next;fig.style.left=n.x+'%';fig.style.top=`calc(${n.y}% + 4px)`;setTimeout(step,190)};step();
+    const step=()=>{if(i>=path.length){fig.classList.remove('walking');pl.pos=dest;setTimeout(()=>{renderGame();showRoomArrival(dest)},80);return}const next=path[i++],n=nodes[next];pl.pos=next;fig.style.left=n.x+'%';fig.style.top=`calc(${n.y}% + 4px)`;setTimeout(step,190)};step();
   }
   function suggest(){state.suggested=true;const loc=L()[nodes[current().pos].room];chooseCase('Make a suggestion',false,({suspect,weapon})=>resolveSuggestion(suspect,weapon,loc));}
   function resolveSuggestion(suspect,weapon,location){

@@ -13,12 +13,12 @@ test('W7 release identity remains preserved after cumulative later phases',()=>{
   assert.match(app,/PHASE_W8_RELEASE='GAME-NIGHT-STAGING-PHASE-W8-ARCADE-TUTORIAL-STORE-33'/);
   assert.match(app,/PHASE_W11_RELEASE='GAME-NIGHT-STAGING-PHASE-W11-PROP-HUNT-SMOOTHNESS-STABILITY-35'/);
   assert.match(app,/PHASE_W11_RELEASE='GAME-NIGHT-STAGING-PHASE-W11-PROP-HUNT-SMOOTHNESS-STABILITY-35'/);
-  assert.match(app,/CURRENT_BUILD=PHASE_W17_RELEASE/);
+  assert.match(app,/CURRENT_BUILD=PHASE_W18_RELEASE/);
   assert.match(sw,/PHASE_W7_CACHE='black-family-game-night-staging-phase-w7-prop-hunt-character-combat-32'/);
   assert.match(sw,/PHASE_W8_CACHE='black-family-game-night-staging-phase-w8-arcade-tutorial-store-33'/);
   assert.match(sw,/PHASE_W11_CACHE='black-family-game-night-staging-phase-w11-prop-hunt-smoothness-stability-35'/);
   assert.match(sw,/PHASE_W11_CACHE='black-family-game-night-staging-phase-w11-prop-hunt-smoothness-stability-35'/);
-  assert.match(sw,/const CACHE=PHASE_W17_CACHE/);
+  assert.match(sw,/const CACHE=PHASE_W18_CACHE/);
 });
 
 test('approved John blocks the unapproved legacy GLB and keeps the approved procedural fallback',()=>{

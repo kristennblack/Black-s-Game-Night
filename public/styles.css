@@ -1121,3 +1121,19 @@ html{background:#e8dfcc}body{min-height:100svh;padding-bottom:env(safe-area-inse
 .score-avatar .avatar-cosmetic-top,.score-avatar .avatar-cosmetic-accessory,.score-avatar .avatar-cosmetic-badge,.score-avatar .avatar-cosmetic-jewelry{display:none!important}
 .score-avatar .avatar-cosmetic-hat,.score-avatar .avatar-cosmetic-glasses,.score-avatar .avatar-cosmetic-hair{filter:drop-shadow(0 1px 1px rgba(0,0,0,.42))!important}
 .avatar-cosmetic{height:var(--ch,auto)!important}
+
+/* W18 gameplay + Mexican Train tiles-only layout */
+.mexican-train-table.tiles-only-layout{
+  background:transparent!important;border:0!important;border-radius:0!important;
+  box-shadow:none!important;padding:8px!important;min-height:0!important;
+}
+.tiles-only-layout .mt-station{padding:4px 0 10px;border-bottom:1px solid #d3aa6250}
+.tiles-only-layout .mt-engine{box-shadow:0 12px 28px #0007,inset 0 0 18px #0007}
+.tiles-only-layout .mt-train{background:linear-gradient(180deg,#201810dd,#17110cdd)!important;color:#f7e7c2!important;border-radius:14px!important;border-width:1px!important;box-shadow:0 9px 22px #0006!important}
+.tiles-only-layout .mt-train.shared{border:2px solid #e2b44e!important;background:linear-gradient(180deg,#2e2518,#15110c)!important}
+.tiles-only-layout .mt-domino-chain{background:linear-gradient(90deg,#0d1711aa,#17352788,#0d1711aa)!important;border:1px dashed #d9b66b40;min-height:66px;overflow-x:auto;padding:13px 10px}
+.tiles-only-layout .mt-train:not(.shared) .mt-domino-chain{background:linear-gradient(90deg,#17120e,#252017,#17120e)!important}
+.tiles-only-layout .mt-private-trains{grid-template-columns:1fr;gap:8px;overflow:visible}
+.tiles-only-layout .mt-train header b{font-size:.78rem;letter-spacing:.05em}
+.tiles-only-layout .mt-train:first-child{border-color:#f0ca72!important;box-shadow:0 0 0 2px #f0ca7235,0 9px 22px #0006!important}
+.bg-fallback-moves{display:grid;gap:7px;padding:9px;border-radius:13px;background:#1a241ddd;border:1px solid #d2aa5a66}.bg-fallback-moves>small{font-size:.58rem;color:#cbbca5}.bg-fallback-moves>div{display:flex;gap:5px;flex-wrap:wrap}.bg-fallback-moves button,.black-pool-fallback button{border:1px solid #e9c367;border-radius:8px;background:#183c29;color:#fff7df;font-weight:900;padding:7px 9px;cursor:pointer}.black-pool-fallback{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}.trail-quick-actions{display:grid;gap:6px;margin-top:10px}.prairie-play-now{width:100%;margin:10px 0 4px}

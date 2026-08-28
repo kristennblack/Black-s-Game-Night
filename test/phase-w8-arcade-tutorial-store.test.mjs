@@ -11,7 +11,7 @@ const activeArcades=[
  'papas-paddle-battle','gunners-goat-run','johns-shop-bomber','jamess-lumber-stack',
  'dorothys-garden-merge','logans-minefield','nanas-goat-whack','hollys-memory-mayhem',
  'lizzies-dramatic-lights','vanessas-pipe-problem','mollys-light-chase','gunners-snack-attack',
- 'breakout','space-shooter','rocket-gap','neon-snake'
+ 'breakout','space-shooter','rocket-gap'
 ];
 
 test('W8 gives every active arcade game a detailed multi-step visual tutorial',()=>{
@@ -22,7 +22,7 @@ test('W8 gives every active arcade game a detailed multi-step visual tutorial',(
 
 test('W8 mounts HOW TO and STORE controls across shared and legacy arcade pages',()=>{
  const platform=read('public/phase-w-platform.mjs');assert.match(platform,/mountArcadeTutorial/);assert.match(platform,/data-how/);assert.match(platform,/data-store/);assert.match(platform,/tokens-store\.html/);
- for(const f of ['public/breakout.html','public/rocket-gap.html','public/neon-snake.html']){const h=read(f);assert.match(h,/data-w8-tutorial-inline/);assert.match(h,/SHOW TUTORIAL/);assert.match(h,/SKIP FOR ME/);assert.match(h,/tokens-store\.html/);assert.doesNotMatch(h,/data-w6-how-inline/);assert.doesNotMatch(h,/<link[^>]+stylesheet/)}
+ for(const f of ['public/breakout.html','public/rocket-gap.html']){const h=read(f);assert.match(h,/data-w8-tutorial-inline/);assert.match(h,/SHOW TUTORIAL/);assert.match(h,/SKIP FOR ME/);assert.match(h,/tokens-store\.html/);assert.doesNotMatch(h,/data-w6-how-inline/);assert.doesNotMatch(h,/<link[^>]+stylesheet/)}
 });
 
 test('W8 cosmetic foundation remains compatible while W16 expands it into fitted realistic slots',()=>{
@@ -50,14 +50,14 @@ test('W8 service worker caches tutorial store and cosmetics modules',()=>{
 });
 
 test('W8 release identity remains preserved while cumulative W16 is current',()=>{
- assert.equal(read('CURRENT_RELEASE.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W17-CABIN-COSMETICS-POLISH-39');
+ assert.equal(read('CURRENT_RELEASE.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W18-GAMEPLAY-REALISM-40');
  const pkg=JSON.parse(read('package.json')),app=read('public/app.js'),sw=read('public/sw.js');
- assert.equal(pkg.version,'3.15.0-staging-phase-w17-cabin-cosmetics-polish-39');
+ assert.equal(pkg.version,'3.16.0-staging-phase-w18-gameplay-realism-40');
  assert.match(app,/PHASE_W8_RELEASE='GAME-NIGHT-STAGING-PHASE-W8-ARCADE-TUTORIAL-STORE-33'/);
  assert.match(app,/PHASE_W11_RELEASE='GAME-NIGHT-STAGING-PHASE-W11-PROP-HUNT-SMOOTHNESS-STABILITY-35'/);
- assert.match(app,/CURRENT_BUILD=PHASE_W17_RELEASE/);
- assert.match(app,/sw\.js\?v=GAME-NIGHT-STAGING-PHASE-W17-CABIN-COSMETICS-POLISH-39/);
+ assert.match(app,/CURRENT_BUILD=PHASE_W18_RELEASE/);
+ assert.match(app,/sw\.js\?v=GAME-NIGHT-STAGING-PHASE-W18-GAMEPLAY-REALISM-40/);
  assert.match(sw,/PHASE_W8_CACHE='black-family-game-night-staging-phase-w8-arcade-tutorial-store-33'/);
  assert.match(sw,/PHASE_W11_CACHE='black-family-game-night-staging-phase-w11-prop-hunt-smoothness-stability-35'/);
- assert.match(sw,/const CACHE=PHASE_W17_CACHE/);
+ assert.match(sw,/const CACHE=PHASE_W18_CACHE/);
 });

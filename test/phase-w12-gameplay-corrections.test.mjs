@@ -42,8 +42,8 @@ test('W12 Mexican Train exposes flip controls, every player train, shared train,
  const {app}=await files();
  assert.match(app,/data-domino-flip/);
  assert.match(app,/FLIP OR REARRANGE ANY TILE/);
- assert.match(app,/FAMILY TRAIN/);
- assert.match(app,/s\.players\.map\(p=>\{const tr=e\.trains/);
+ assert.match(app,/MEXICAN TRAIN · COMMUNITY/);
+ assert.match(app,/orderedPlayers\.map\(p=>\{const tr=e\.trains/);
  const board=app.slice(app.indexOf('function mexicanTrainBoard'),app.indexOf('function mexicanRackPanel'));
  assert.doesNotMatch(board,/mtScoreSheet\(s,e\)/);
  assert.match(app,/function mexicanTrainGameplay[\s\S]*?<aside class="sidebar tabletop-secondary">\$\{mtScoreSheet\(s,e\)\}/);

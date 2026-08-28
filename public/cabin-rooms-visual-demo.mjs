@@ -1,6 +1,6 @@
 import { CABIN_ROOM_ITEM_CATALOG } from './cabin-room-catalog.mjs';
 
-const FAMILY=['John','Kristen','Holly','Vanessa','Lizzie','Logan','James','Dorothy','Papa','Nana'];
+const FAMILY=['John','Kristen','Holly','Vanessa','Lizzy','Logan','James','Dorothy','Papa','Nana'];
 const CATS=['All','Beds','Seating','Storage','Electronics','Lighting','Rugs','Wall Decor','Pet Items','Wallpaper','Flooring','Collectibles','Special Effects'];
 const iconMap={Beds:'🛏️',Seating:'🪑',Tables:'🪵',Storage:'🗄️',Electronics:'📺',Lighting:'💡',Rugs:'🧶','Wall Decor':'🖼️',Plants:'🪴','Toys & Hobbies':'🎣',Games:'🕹️','Pet Items':'🐾',Decorations:'✨',Wallpaper:'▧',Flooring:'▦','Windows & Doors':'🪟','Special Effects':'✦',Collectibles:'🏆',Architecture:'🏠','Ceiling & Trim':'▱'};
 const sourceShort=s=>s==='Buy with Game Night Tokens'?'TOKEN STORE':s==='Win in Arcade'?'ARCADE WIN':s==='Achievement Reward'?'ACHIEVEMENT':s==='Birthday / Seasonal Reward'?'EVENT':s==='Collection Completion Reward'?'SET BONUS':s==='Secret / Prestige'?'???':s;
@@ -57,7 +57,7 @@ function renderCatalog(){
 }
 
 const roomSpecs={
- John:[10,12,200,125],Kristen:[216,12,200,125],Holly:[422,12,195,125],Vanessa:[623,12,195,125],Lizzie:[824,12,192,125],
+ John:[10,12,200,125],Kristen:[216,12,200,125],Holly:[422,12,195,125],Vanessa:[623,12,195,125],Lizzy:[824,12,192,125],
  Logan:[10,139,195,107],James:[211,139,195,107],Dorothy:[412,139,195,107],Papa:[613,139,195,107],Nana:[814,139,202,107]
 };
 function tinyFurniture(name){return `<span class="mini-bed" style="left:16px;top:18px"></span><span class="mini-rug" style="left:95px;top:55px"></span><span class="mini-desk" style="right:13px;top:16px"></span><span class="mini-chair" style="right:28px;top:41px"></span>`}
@@ -65,7 +65,7 @@ function renderFloor(roomNames, cls=''){return roomNames.map(n=>{const [x,y,w,h]
 function renderCabin(){
   app.innerHTML=`<section class="panel cabin-stage"><div class="cabin-head"><div><div class="eyebrow">VISIT THE CABIN · DOLLHOUSE VIEW</div><h2>Black Family Cabin</h2><div class="small-note">Tap any named room to zoom in. Expansions will physically grow the floor plan.</div></div><div class="visitor-row"><span class="small-note">Viewing now</span><span class="visitor">KB</span><span class="visitor">JB</span><span class="visitor">L</span><span class="visitor">+2</span></div></div>
   <div class="dollhouse-wrap"><div class="dollhouse">
-    <div class="floor floor2">${renderFloor(['John','Kristen','Holly','Vanessa','Lizzie'])}<div class="room common-room" style="left:320px;top:122px;width:400px;height:125px"><span class="room-label great-room-label">UPSTAIRS LANDING · TROPHY GALLERY</span></div></div>
+    <div class="floor floor2">${renderFloor(['John','Kristen','Holly','Vanessa','Lizzy'])}<div class="room common-room" style="left:320px;top:122px;width:400px;height:125px"><span class="room-label great-room-label">UPSTAIRS LANDING · TROPHY GALLERY</span></div></div>
     <div class="floor floor1">${renderFloor(['Logan','James','Dorothy','Papa','Nana'])}<div class="room common-room" style="left:267px;top:120px;width:505px;height:126px"><span class="room-label great-room-label">GREAT ROOM · FIREPLACE · STAIRS</span></div></div>
   </div></div>
   <div class="cabin-legend"><b>Shared spaces grow too.</b><br><span class="small-note">Future unlocks can add a games room, movie room, trophy hall, kitchen, deck and other family spaces.</span></div>

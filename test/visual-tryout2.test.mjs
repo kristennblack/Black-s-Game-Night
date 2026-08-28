@@ -7,7 +7,7 @@ const html=await readFile(new URL('../public/new-games.html',import.meta.url),'u
 
 test('Family Mystery uses illustrated rooms, glowing movement blocks and avatar standees',()=>{
   for(const token of ['room-zone','walk-tile','board-figure','figureSrc','roomScenes','reachablePulse','figureWalk']) assert.ok(html.includes(token),token);
-  assert.match(html,/glowing floor block/);
+  assert.match(html,/glowing raised clue block/);
 });
 
 test('Lodge home uses a responsive cabin hero, approved John crop and restrained ambient motion',()=>{

@@ -12,14 +12,13 @@ const GAMES={
  'logans-minefield':{id:'logans-minefield',person:'logan',name:'Logan',reaction:'Fine. I am doing it.'},
  'nanas-goat-whack':{id:'nanas-goat-whack',person:'nana',name:'Nana',reaction:"That's a sin."},
  'hollys-memory-mayhem':{id:'hollys-memory-mayhem',person:'holly',name:'Holly',reaction:'That one was definitely cute.'},
- 'lizzies-dramatic-lights':{id:'lizzies-dramatic-lights',person:'elizabeth',name:'Lizzie',reaction:'That deserved a better spotlight.'},
+ 'lizzies-dramatic-lights':{id:'lizzies-dramatic-lights',person:'elizabeth',name:'Lizzy',reaction:'That deserved a better spotlight.'},
  'vanessas-pipe-problem':{id:'vanessas-pipe-problem',person:'vanessa',name:'Vanessa',reaction:'Obviously I had to fix it.'},
  'mollys-light-chase':{id:'mollys-light-chase',person:'molly',name:'Molly',reaction:'LIGHT!'},
  'gunners-snack-attack':{id:'gunners-snack-attack',person:'gunner',name:'Gunner',reaction:'Snack secured. Work avoided.'},
  'breakout':{id:'breakout',name:'Cabin Breakout',reaction:'Cabin clear!'},
  'space-shooter':{id:'space-shooter',person:'kelsi',name:"Kelsi's Rock 'n' Roll Rescue",reaction:'Important rock acquired.'},
  'rocket-gap':{id:'rocket-gap',name:'Campfire Rocket',reaction:'Threaded the gap.'},
- 'neon-snake':{id:'neon-snake',name:'Neon Snake',reaction:'Clean turn.'}
 };
 const pathKey=(location.pathname.split('/').pop()||'').replace(/\.html$/,'');
 const cfg=GAMES[pathKey]||{id:pathKey||'arcade',name:document.title.split(' - ')[0],reaction:'Nice run.'};
@@ -27,7 +26,7 @@ function readJSON(k,f={}){try{return JSON.parse(localStorage.getItem(k)||'')||f}
 function profile(){const p=readJSON(PROFILE_KEY,{});return{profileId:String(p.profileId||'local-profile'),name:String(p.name||localStorage.getItem('gn_name')||'Family Player'),avatar:String(p.avatar||'john'),equippedCosmetics:normalizeEquipped(p.equippedCosmetics||{})}}
 function assetFor(person){if(!person)return'';return `/avatars/styles/${person==='john'?'john-look-02':person+'-cute'}.jpg`}
 function activeEvent(date=new Date()){
- const y=date.getFullYear(),one=(m,d)=>new Date(y,m-1,d,12),birthdays=[['James',2,2,'james'],['Logan',3,17,'logan'],['Holly',3,28,'holly'],['Dorothy',4,6,'dorothy'],['Kristen',4,15,'kristen'],['Papa',7,19,'papa'],['Nana',8,18,'nana'],['Lizzie',8,27,'elizabeth'],['John',9,28,'john'],['Vanessa',10,6,'vanessa']];
+ const y=date.getFullYear(),one=(m,d)=>new Date(y,m-1,d,12),birthdays=[['James',2,2,'james'],['Logan',3,17,'logan'],['Holly',3,28,'holly'],['Dorothy',4,6,'dorothy'],['Kristen',4,15,'kristen'],['Papa',7,19,'papa'],['Nana',8,18,'nana'],['Lizzy',8,27,'elizabeth'],['John',9,28,'john'],['Vanessa',10,6,'vanessa']];
  const holidays=[['New Year',1,1],['Valentine’s Day',2,14],['Canada Day',7,1],['Halloween',10,31],['Christmas',12,25]];
  const within=t=>Math.abs(date-t)<=5*86400000;
  const b=birthdays.map(x=>({name:`${x[0]}'s Birthday`,date:one(x[1],x[2]),person:x[3],birthday:true})).find(x=>within(x.date));
@@ -35,7 +34,7 @@ function activeEvent(date=new Date()){
  if(b&&h)return{name:`${b.name} + ${h.name}`,birthday:b,holiday:h};return b||h||null;
 }
 function sceneLayer(){const themes={
- 'papas-paddle-battle':['SHOP','TRACTOR','FIREPLACE','CHAIR'], 'gunners-goat-run':['BARN','FENCE','GOATS','CREEK'], 'johns-shop-bomber':['TOOLS','WELDER','TIRES','CRATES'], 'jamess-lumber-stack':['TIMBER','SAW','BEAMS','CABIN'], 'dorothys-garden-merge':['GARDEN','GREENHOUSE','FLOWERS','PLANTERS'], 'logans-minefield':['FISHING','MUD','ROCKS','GOOSE'], 'nanas-goat-whack':['GOATS','PIGS','CHICKENS','FENCE'], 'hollys-memory-mayhem':['TOYS','DOGS','CUPCAKES','HOODIES'], 'lizzies-dramatic-lights':['STAGE','SPOTLIGHT','DANCE','CURTAIN'], 'vanessas-pipe-problem':['TRUCK','PIPES','TANK','SHOP'], 'kelsis-rock-hunt':['ROCKS','YARD','CROWN','TRAIL'], 'mollys-light-chase':['LIGHTS','YARD','TRAIL','GLOW'], 'gunners-snack-attack':['FARM','SNACKS','BARN','WORK?'], 'breakout':['CABIN','BRICKS','EMBER','RAFTERS'], 'space-shooter':['ROCKS','TRAIL','CREEK','KELSI'], 'rocket-gap':['PINES','FIRE','ROCKET','TIMBER'], 'neon-snake':['GRID','GLOW','TRAIL','ARCADE']};const words=themes[cfg.id]||['ARCADE','FAMILY','GAME','NIGHT'];const el=document.createElement('div');el.className='phase-w-scene';el.innerHTML=words.map((w,i)=>`<span style="--i:${i}">${w}</span>`).join('');document.body.prepend(el)}
+ 'papas-paddle-battle':['SHOP','TRACTOR','FIREPLACE','CHAIR'], 'gunners-goat-run':['BARN','FENCE','GOATS','CREEK'], 'johns-shop-bomber':['TOOLS','WELDER','TIRES','CRATES'], 'jamess-lumber-stack':['TIMBER','SAW','BEAMS','CABIN'], 'dorothys-garden-merge':['GARDEN','GREENHOUSE','FLOWERS','PLANTERS'], 'logans-minefield':['FISHING','MUD','ROCKS','GOOSE'], 'nanas-goat-whack':['GOATS','PIGS','CHICKENS','FENCE'], 'hollys-memory-mayhem':['TOYS','DOGS','CUPCAKES','HOODIES'], 'lizzies-dramatic-lights':['STAGE','SPOTLIGHT','DANCE','CURTAIN'], 'vanessas-pipe-problem':['TRUCK','PIPES','TANK','SHOP'], 'kelsis-rock-hunt':['ROCKS','YARD','CROWN','TRAIL'], 'mollys-light-chase':['LIGHTS','YARD','TRAIL','GLOW'], 'gunners-snack-attack':['FARM','SNACKS','BARN','WORK?'], 'breakout':['CABIN','BRICKS','EMBER','RAFTERS'], 'space-shooter':['ROCKS','TRAIL','CREEK','KELSI'], 'rocket-gap':['PINES','FIRE','ROCKET','TIMBER']};const words=themes[cfg.id]||['ARCADE','FAMILY','GAME','NIGHT'];const el=document.createElement('div');el.className='phase-w-scene';el.innerHTML=words.map((w,i)=>`<span style="--i:${i}">${w}</span>`).join('');document.body.prepend(el)}
 function watchReactions(){const p=profile(),targets=[...document.querySelectorAll('[id*=score],[id*=you],[id*=best],[id*=level],[id*=wave]')];for(const el of targets){let prev=el.textContent;new MutationObserver(()=>{const next=el.textContent;if(next===prev)return;prev=next;const n=Number(String(next).replace(/[^0-9.-]/g,''));if(Number.isFinite(n)&&/score|best/i.test(el.id)){const st=readJSON(LOCAL_KEY,{tokens:0,achievements:{},plays:{},records:{}});st.records=st.records||{};const r=st.records[cfg.id]||{};if(n>Number(r.highScore||0)){r.highScore=n;r.at=Date.now();st.records[cfg.id]=r;localStorage.setItem(LOCAL_KEY,JSON.stringify(st));fetch('/api/arcade/record',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({profileId:p.profileId,name:p.name,gameId:cfg.id,type:'score',score:n})}).catch(()=>{})}}if(!document.hidden&&Math.random()<.33)window.BFGNReaction?.()}).observe(el,{childList:true,subtree:true,characterData:true})}}
 function mountChrome(){
  document.body.classList.add('phase-w-arcade');

@@ -51,11 +51,11 @@ export const ARCADE_TUTORIALS={
   {visual:'🐶 ≠ 🧁 → ?',title:'Mismatches turn back over',body:'If the pictures do not match, remember both locations before they flip face down again.',tip:'A mismatch is still useful information.'},
   {visual:'EASY → HARD',title:'Choose your board difficulty',body:'Higher difficulty adds more pairs and a larger memory challenge. Clear every pair to finish the board.',tip:'Start small if a younger player is learning.'}
  ]},
- 'lizzies-dramatic-lights':{name:"Lizzie's Dramatic Lights",steps:[
+ 'lizzies-dramatic-lights':{name:"Lizzy's Dramatic Lights",steps:[
   {visual:'🟣 → 🔵 → 🟡',title:'Watch the light sequence',body:'The stage lights play a sequence one cue at a time. Do not tap until the playback is finished.',tip:'Watch the order, not just the colors.'},
   {visual:'1 · 2 · 3',title:'Repeat the exact order',body:'Tap the stage lights in the same order you just saw. Each correct input confirms before the next one.',tip:'A steady rhythm helps memory.'},
   {visual:'+ 1 LIGHT',title:'The sequence grows',body:'After a correct round, one more light is added to the end of the sequence.',tip:'Mentally break long sequences into small groups.'},
-  {visual:'🎭 BEST 12',title:'Build your longest performance',body:'A wrong cue ends the run. Your best sequence length is saved so you can try to beat it.',tip:'Lizzie expects drama, but the inputs still need to be exact.'}
+  {visual:'🎭 BEST 12',title:'Build your longest performance',body:'A wrong cue ends the run. Your best sequence length is saved so you can try to beat it.',tip:'Lizzy expects drama, but the inputs still need to be exact.'}
  ]},
  'vanessas-pipe-problem':{name:"Vanessa's Pipe Problem",steps:[
   {visual:'PUMP 💧 → ┐',title:'Rotate the pipe pieces',body:'Tap a pipe to rotate it inside its recessed socket. Open pipe ends must physically line up with neighboring pieces.',tip:'Trace forward from the pump rather than rotating randomly.'},
@@ -64,10 +64,10 @@ export const ARCADE_TUTORIALS={
   {visual:'GMC  ✓  NEXT',title:'Water at the GMC wins the level',body:'When the water reaches the grey GMC, the truck reacts, the level is marked complete and the next job loads automatically.',tip:'The GMC letters are pink; the truck itself stays grey.'}
  ]},
  'mollys-light-chase':{name:"Molly's Light Chase",steps:[
-  {visual:'🐶      ✨',title:'Find the moving light',body:'A glowing light darts around the play area. Watch its movement before you commit to a tap.',tip:'Aim for the center of the glow.'},
-  {visual:'👆 ✨ = +1',title:'Tap the light to catch it',body:'Touch/click the moving light while it is inside your hit area. A successful catch adds one and moves the light again.',tip:'Missed taps do not help, so follow rather than spam.'},
-  {visual:'30 SECOND RUN',title:'Score before time runs out',body:'You have a short timed run to catch as many lights as possible. The clock is always visible.',tip:'Do not stare at the score while the light is moving.'},
-  {visual:'BEST ↑',title:'Beat your saved best',body:'Your best catch count is saved on the device. Replay to improve it.',tip:'The light movement is intentionally less predictable as you settle in.'}
+  {visual:'🐶 → ✨',title:'Steer Molly toward the light',body:'Use arrows/WASD, swipe, or the phone direction buttons. Molly keeps moving once the chase begins.',tip:'Turn before the next square, especially after the speed increases.'},
+  {visual:'✨ = +1 + TRAIL',title:'Every light makes the trail longer',body:'Catching a light scores one and leaves another glowing paw-print segment behind Molly.',tip:'The growing trail is part of the challenge, not decoration.'},
+  {visual:'WALL ✕  TRAIL ✕',title:'Do not get tangled',body:'Running into the cabin edge or Molly’s own glowing trail ends the run.',tip:'Keep an escape lane open instead of circling too tightly.'},
+  {visual:'5 LIGHTS → SPEED ↑',title:'The chase gets faster',body:'Molly speeds up every few lights. Your best score is saved so you can keep improving.',tip:'At higher speeds, plan two turns ahead.'}
  ]},
  'gunners-snack-attack':{name:"Gunner's Snack Attack",steps:[
   {visual:'🐕 → 🦴',title:'Move Gunner to the snack',body:'Use arrows/WASD, swipe, or the four phone direction buttons to move one grid square at a time.',tip:'Plan the shortest safe route before moving.'},
@@ -93,12 +93,7 @@ export const ARCADE_TUTORIALS={
   {visual:'GAP ↓',title:'The route gets tighter',body:'As your score rises, openings become less forgiving and require steadier timing.',tip:'Look at the next gap while finishing the current one.'},
   {visual:'BEST ↑',title:'Keep going for a high score',body:'Passing a gap adds score. A collision ends the run and your best score remains saved.',tip:'Restart quickly, but do not rush the first few taps.'}
  ]},
- 'neon-snake':{name:'Neon Snake',steps:[
-  {visual:'■■■□ → ●',title:'Steer the snake to food',body:'Use arrows/WASD or swipe on phone. The snake keeps moving, so each input changes its next direction.',tip:'You cannot instantly reverse into your own body.'},
-  {visual:'● = +1 + BODY',title:'Eating makes you longer',body:'Every food adds a point and another body segment, leaving less empty space on the board.',tip:'Keep an escape lane around long body loops.'},
-  {visual:'WALL ✕  SELF ✕',title:'Do not crash',body:'Touching a wall or your own body ends the run.',tip:'Turn one cell earlier than feels necessary when moving fast.'},
-  {visual:'5 FOODS → SPEED ↑',title:'The snake speeds up',body:'Speed increases every five foods. Your saved best score stays visible between runs.',tip:'At high speed, plan two turns ahead.'}
- ]}
+
 };
 
 function readProfile(){try{return JSON.parse(localStorage.getItem(PROFILE_KEY)||'{}')||{}}catch{return {}}}

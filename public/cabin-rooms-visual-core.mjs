@@ -1,6 +1,6 @@
 import { CABIN_ROOM_ITEM_CATALOG } from './cabin-room-catalog.mjs';
 
-export const CABIN_FAMILY_ROOMS=['John','Kristen','Holly','Vanessa','Lizzie','Logan','James','Dorothy','Papa','Nana'];
+export const CABIN_FAMILY_ROOMS=['John','Kristen','Holly','Vanessa','Lizzy','Logan','James','Dorothy','Papa','Nana'];
 export const STARTER_ROOM={widthFt:14,depthFt:16,gridStepFt:.5,rotationStep:90,ownerEditable:true,visitorEditable:false};
 export const GUEST_HOUSE={permanent:true,expandable:true,upgradeable:true};
 

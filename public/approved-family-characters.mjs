@@ -76,7 +76,7 @@ export const APPROVED_FAMILY_CHARACTERS=Object.freeze({
     identity:{hairStyle:'long voluminous curly blonde hair',facialHair:'none',glasses:false,outfit:'dark red/maroon long-sleeve top, blue jeans, brown belt, brown boots'}
   }),
   elizabeth:human({
-    id:'elizabeth',aliases:['lizzie'],characterCode:'CHAR_LIZZIE',displayName:'Elizabeth (Lizzie)',referenceHeightM:1.46,
+    id:'elizabeth',aliases:['lizzie'],characterCode:'CHAR_LIZZIE',displayName:'Elizabeth (Lizzy)',referenceHeightM:1.46,
     turnaround:'/approved-character-turnarounds/elizabeth-approved-turnaround.png',
     expectedModelFile:'CHAR_LIZZIE.glb',
     triangleBudget:{lod0:5200,lod1:2500,lod2:1100},

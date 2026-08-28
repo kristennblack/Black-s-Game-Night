@@ -281,7 +281,7 @@ const GAMES={
  'logans-minefield':{id:'logans-minefield',person:'logan',name:'Logan',reaction:'Fine. I am doing it.'},
  'nanas-goat-whack':{id:'nanas-goat-whack',person:'nana',name:'Nana',reaction:"That's a sin."},
  'hollys-memory-mayhem':{id:'hollys-memory-mayhem',person:'holly',name:'Holly',reaction:'That one was definitely cute.'},
- 'lizzies-dramatic-lights':{id:'lizzies-dramatic-lights',person:'elizabeth',name:'Lizzie',reaction:'That deserved a better spotlight.'},
+ 'lizzies-dramatic-lights':{id:'lizzies-dramatic-lights',person:'elizabeth',name:'Lizzy',reaction:'That deserved a better spotlight.'},
  'vanessas-pipe-problem':{id:'vanessas-pipe-problem',person:'vanessa',name:'Vanessa',reaction:'Obviously I had to fix it.'},
  
  'mollys-light-chase':{id:'mollys-light-chase',person:'molly',name:'Molly',reaction:'LIGHT!'},
@@ -297,7 +297,7 @@ function readJSON(k,f={}){try{return JSON.parse(localStorage.getItem(k)||'')||f}
 function profile(){const p=readJSON(PROFILE_KEY,{});return{profileId:String(p.profileId||'local-profile'),name:String(p.name||localStorage.getItem('gn_name')||'Family Player'),avatar:String(p.avatar||'john')}}
 function assetFor(person){if(!person)return'';return `/avatars/styles/${person==='john'?'john-look-02':person+'-cute'}.jpg`}
 function activeEvent(date=new Date()){
- const y=date.getFullYear(),one=(m,d)=>new Date(y,m-1,d,12),birthdays=[['James',2,2,'james'],['Logan',3,17,'logan'],['Holly',3,28,'holly'],['Dorothy',4,6,'dorothy'],['Kristen',4,15,'kristen'],['Papa',7,19,'papa'],['Nana',8,18,'nana'],['Lizzie',8,27,'elizabeth'],['John',9,28,'john'],['Vanessa',10,6,'vanessa']];
+ const y=date.getFullYear(),one=(m,d)=>new Date(y,m-1,d,12),birthdays=[['James',2,2,'james'],['Logan',3,17,'logan'],['Holly',3,28,'holly'],['Dorothy',4,6,'dorothy'],['Kristen',4,15,'kristen'],['Papa',7,19,'papa'],['Nana',8,18,'nana'],['Lizzy',8,27,'elizabeth'],['John',9,28,'john'],['Vanessa',10,6,'vanessa']];
  const holidays=[['New Year',1,1],['Valentine’s Day',2,14],['Canada Day',7,1],['Halloween',10,31],['Christmas',12,25]];
  const within=t=>Math.abs(date-t)<=5*86400000;
  const b=birthdays.map(x=>({name:`${x[0]}'s Birthday`,date:one(x[1],x[2]),person:x[3],birthday:true})).find(x=>within(x.date));

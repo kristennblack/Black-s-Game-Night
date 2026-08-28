@@ -46,16 +46,14 @@ test('W6 Mexican Train has board-first surface, shows every domino and permits r
   assert.match(css,/mexican-all-dominoes/);assert.match(css,/flex-wrap\s*:\s*wrap/);
 });
 
-test('W6 Golf stock draw may be discarded without flipping or replacing a grid card',()=>{
+test('W18 Golf rejected draw must flip a face-down card until only the last card remains',()=>{
   const r=room(GAME_TYPES.GOLF,3);startExtraGame(r);const ex=r.game.extra,p=r.players.get(ex.turnPlayerId);
-  const before=ex.grids[p.id].map(x=>({face:x.face,id:x.card.id}));
   const draw=extraPublicState(r,p).actions.find(a=>a.action==='golfDraw'&&a.args?.source==='stock');assert.ok(draw);extraGameAction(r,p,draw);
-  const discard=extraPublicState(r,p).actions.find(a=>a.action==='golfDiscardDrawn');assert.ok(discard);extraGameAction(r,p,discard);
-  assert.deepEqual(ex.grids[p.id].map(x=>({face:x.face,id:x.card.id})),before);assert.equal(ex.drawn,null);
+  let pub=extraPublicState(r,p);assert.equal(pub.actions.some(a=>a.action==='golfDiscardDrawn'),false);const flip=pub.actions.find(a=>a.action==='golfDiscardFlip');assert.ok(flip);extraGameAction(r,p,flip);assert.equal(ex.drawn,null);
 });
 
 test('W6 Golf renders all eight own cards plus other players and final-turn status',()=>{
-  const app=read('public/app.js');assert.match(app,/YOUR 8 CARDS · 2 × 4/);assert.match(app,/OTHER PLAYERS/);assert.match(app,/golfMiniGrid/);assert.match(app,/golf-final-turn-banner/);assert.match(app,/DISCARD · KEEP ALL GRID CARDS AS-IS/);
+  const app=read('public/app.js');assert.match(app,/YOUR 8 CARDS · 2 × 4/);assert.match(app,/OTHER PLAYERS/);assert.match(app,/golfMiniGrid/);assert.match(app,/golf-final-turn-banner/);assert.match(app,/Discard \+ choose a face-down card/);assert.match(app,/last face-down card stays hidden/i);
 });
 
 test('W6 Mitts records captured cards and renders them in front of the team',()=>{

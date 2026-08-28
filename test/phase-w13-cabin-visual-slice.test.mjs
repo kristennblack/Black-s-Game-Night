@@ -16,7 +16,7 @@ test('W13 visual slice loads the exact 400-item catalog distribution',()=>{
 });
 
 test('W13 cabin has ten permanent named family rooms and permanent expandable guest house',()=>{
- assert.deepEqual(CABIN_FAMILY_ROOMS,['John','Kristen','Holly','Vanessa','Lizzie','Logan','James','Dorothy','Papa','Nana']);
+ assert.deepEqual(CABIN_FAMILY_ROOMS,['John','Kristen','Holly','Vanessa','Lizzy','Logan','James','Dorothy','Papa','Nana']);
  assert.equal(new Set(CABIN_FAMILY_ROOMS).size,10);
  assert.equal(GUEST_HOUSE.permanent,true);
  assert.equal(GUEST_HOUSE.expandable,true);

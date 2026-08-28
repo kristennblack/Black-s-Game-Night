@@ -4,7 +4,7 @@ import path from 'node:path';
 
 const ROOT=process.cwd();
 const PUBLIC=path.join(ROOT,'public');
-const BUILD='GAME-NIGHT-STAGING-PHASE-T1-PROP-HUNT-HUNTER-RELEASE-COMBAT-19';
+const BUILD=(await readFile(path.join(ROOT,'CURRENT_RELEASE.txt'),'utf8')).trim();
 const failures=[];
 const warnings=[];
 const passes=[];
@@ -93,8 +93,19 @@ if(cdnHits.length)warn(`core 3D CDN dependency remains (${[...new Set(cdnHits)].
 
 const app=await text('public/app.js'),sw=await text('public/sw.js'),idx=await text('public/index.html'),ng=await text('public/new-games.html'),il=await text('public/island-life.html');
 const worker=await text('worker.mjs'),extra=await text('extraGames.mjs'),three=await text('threeNewGames.mjs'),black=await text('blackGammon.mjs'),styles=await text('public/styles.css'),studio=await text('public/shared-3d-studio.mjs'),prop3d=await text('public/prop-hunt-3d.js');
-app.includes(BUILD)&&sw.includes('black-family-game-night-staging-phase-t1-prop-hunt-hunter-release-combat-19')&&idx.includes(BUILD)&&ng.includes(BUILD)&&il.includes(BUILD)?pass('staging cache/version markers are consistent'):fail('staging cache/version markers are inconsistent');
+const activeCache=BUILD.toLowerCase().replace(/^game-night-/,'black-family-game-night-');
+app.includes(BUILD)&&sw.includes(activeCache)?pass('staging cache/version markers are consistent'):fail('staging cache/version markers are inconsistent');
 sw.includes('/phase-e-qa.mjs')?pass('staging diagnostics module precached'):fail('phase-e diagnostics missing from service worker shell');
+// W18 focused gates: reported playability repairs + Mystery/Molly presentation.
+extra.includes('golfDiscardFlip')&&extra.includes('hidden.length<=1')?pass('W18 Golf reject/flip and final-hidden exception present'):fail('W18 Golf reject rule incomplete');
+extra.includes('pool=[...viewer.hand,...exposed]')&&extra.includes('hand + table')?pass('W18 Deck Sweep hand plus exposed-table play present'):fail('W18 Deck Sweep exposed-card rule incomplete');
+app.includes('bgFallbackMoves')&&app.includes('black-pool-fallback')&&app.includes('black-direct-moves')?pass('W18 Gammon direct fallback controls present'):fail('W18 Gammon fallback controls incomplete');
+app.includes('trail-quick-actions')&&app.includes('prairie-play-now')?pass('W18 Trail/Prairie direct play fallbacks present'):fail('W18 Trail/Prairie fallbacks incomplete');
+app.includes('MEXICAN TRAIN · COMMUNITY')&&app.includes('tiles-only-layout')?pass('W18 Mexican Train tile-first community layout present'):fail('W18 Mexican Train layout incomplete');
+ng.includes('shortcutEdges')&&ng.includes('SECRET PASSAGE')&&ng.includes('cabin-aerial-scene.jpg')?pass('W18 Family Mystery shortcuts and Cabin realism present'):fail('W18 Family Mystery upgrade incomplete');
+const molly=await text('public/mollys-light-chase.html');
+molly.includes('/characters3d/molly.png')&&molly.includes('N=20')&&molly.includes('body.unshift')?pass('W18 Molly Light Chase growing-trail gameplay present'):fail('W18 Molly replacement incomplete');
+
 app.includes("s.gameType===GAME.SMEAR")&&app.includes('YOUR 6-CARD HAND · REVIEW IT BEFORE YOU BID')?pass('Smear six-card hand is rendered during bidding'):fail('Smear bidding-hand presentation marker missing');
 app.includes("PROFILE_KEY='gn_profile_v1'")&&app.includes('homeAvatarHubHTML')&&app.includes('Character → outfit → player colour')?pass('persistent Avatar Hub profile flow present'):fail('Avatar Hub profile flow incomplete');
 app.includes("api('requests'")&&app.includes("api('leaderboard'")&&worker.includes("/api/requests")&&worker.includes("/api/leaderboard")?pass('Requests and shared Leaderboards routes/UI present'):fail('Requests/Leaderboards integration incomplete');

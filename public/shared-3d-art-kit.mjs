@@ -560,7 +560,7 @@ export function create3DArtKit(THREE){
       const pack=material('fabric',style.backpack||0x2e6fa8,{seed:hashString(id)+91});upperBody.add(box(.39,.42,.16,pack,[0,.31,.28]));for(const sx of [-.20,.20])upperBody.add(capsule(.025,.43,pack,[sx,.34,-.02],[0,0,sx>0?.08:-.08],[.7,1,.65]));
     }
     if(id==='elizabeth'){
-      // Approved Lizzie: bright blonde high ponytail, large pink bow and polka-dot-skirt silhouette.
+      // Approved Lizzy: bright blonde high ponytail, large pink bow and polka-dot-skirt silhouette.
       upperBody.add(sphere(.105,hairM,[0,1.18,.07],[1,.88,.9]));for(const sx of [-.065,.065])upperBody.add(capsule(.045,.34,hairM,[sx,1.02,.18],[.15,0,sx*.15],[.88,1,.82]));
       const bowM=material('fabric',style.top||0xf3a8b9,{seed:hashString(id)+95});upperBody.add(sphere(.075,bowM,[-.075,1.17,-.055],[1.25,.72,.45]));upperBody.add(sphere(.075,bowM,[.075,1.17,-.055],[1.25,.72,.45]));
       const skirtM=material('fabric',style.skirt||0xee7896,{seed:hashString(id)+97});const skirt=mesh(new THREE.CylinderGeometry(.27,.42,.34,18,1,true),skirtM,[0,.73,0]);g.add(skirt);

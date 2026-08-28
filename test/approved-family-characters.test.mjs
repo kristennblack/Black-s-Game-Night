@@ -31,7 +31,7 @@ test('unapproved family members are not falsely promoted into the approved regis
   for(const id of pending)assert.equal(registry.getApprovedFamilyCharacter(id),null,id);
 });
 
-test('Lizzie alias resolves to Elizabeth without creating a second identity',()=>{
+test('Lizzy alias resolves to Elizabeth without creating a second identity',()=>{
   assert.equal(registry.getApprovedFamilyCharacter('lizzie')?.id,'elizabeth');
 });
 
