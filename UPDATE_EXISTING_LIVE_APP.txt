@@ -1,0 +1,30 @@
+BLACK FAMILY GAME NIGHT v1.6.0-3d-systems
+FULL REPLACEMENT UPDATE
+
+This update is intended to replace the tracked source of the existing project while preserving the repository and existing Cloudflare deployment.
+
+WHAT IT CHANGES
+- Adds one shared 3D gameplay-feel module across Prop Hunt, Island Life and Birthday Seat.
+- Converts Birthday Seat gameplay to real Three.js/WebGL all-angle 3D.
+- Adds analog movement, acceleration/braking, jump buffering, coyote time and variable-height jumping.
+- Adds shared semantic human/dog animation states and transient actions.
+- Adds environmental ambience.
+- Adds camera-shoulder switching and shared persistent control preferences.
+- Adds left-handed mobile-layout support.
+- Keeps the detailed v1.5 art kit and world work.
+- Keeps all existing Lodge, multiplayer, Prop Hunt and Island Life server architecture.
+
+SAFE UPDATE PROCESS
+1. Back up the current live repository or create a Git tag/branch.
+2. Keep the existing `.git` directory.
+3. Replace tracked project files with this package.
+4. Run `npm run check` locally if available.
+5. Commit as one v1.6 update.
+6. Push to main and let the existing Cloudflare workflow deploy.
+7. Hard refresh phones/tablets once after the new Worker is live.
+
+ROLLBACK
+If real-device testing finds a serious issue, revert the v1.6 commit or redeploy the previous known-good commit. Do not mix random v1.5/v1.6 client files because shared modules, service-worker cache and game clients are version-coupled.
+
+CURRENT AUTOMATED RESULT
+172 / 172 passing.

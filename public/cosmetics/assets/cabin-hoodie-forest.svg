@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 430"><defs><linearGradient id="hood" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff" stop-opacity=".18"/><stop offset=".3" stop-color="#2f513b"/><stop offset="1" stop-color="#111" stop-opacity=".72"/></linearGradient><filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="8" flood-opacity=".55"/></filter></defs><g filter="url(#shadow)">
+ <path d="M146 93c28-62 68-80 110-80s82 18 110 80l95 91-62 50-30-35v191H143V199l-30 35-62-50z" fill="url(#hood)" stroke="#171512" stroke-width="9"/>
+ <path d="M177 91c12-45 43-65 79-65s67 20 79 65l-40 69h-78z" fill="#191817" fill-opacity=".7" stroke="#d0c2a1" stroke-opacity=".28" stroke-width="5"/><path d="M225 103v92M287 103v92" stroke="#dfd4bb" stroke-width="5"/><circle cx="225" cy="198" r="7" fill="#c4ad79"/><circle cx="287" cy="198" r="7" fill="#c4ad79"/>
+ <path d="M182 279h148c-8 58-28 82-74 82s-66-24-74-82z" fill="#0d0d0d" fill-opacity=".24" stroke="#ddd" stroke-opacity=".16" stroke-width="3"/><text x="256" y="260" text-anchor="middle" fill="#ead8a8" font-family="Georgia,serif" font-size="34" font-weight="700">CABIN LIFE</text>
+ </g></svg>
