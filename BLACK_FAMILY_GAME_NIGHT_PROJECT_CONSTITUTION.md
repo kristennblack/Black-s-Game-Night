@@ -203,3 +203,7 @@ For Family Prop Hunt, W.11 establishes a constitutional production gate: the pro
 - Public tabletop state should be visible; private cards remain hidden.
 - W.12 explicitly locks the corrected Mexican Train, Last Haven, Deck Sweep and Prairie Pots table-state requirements.
 - W.11 Prop Hunt stability remains mandatory while W.12 corrects speed, controller direction and forward weapon/hand presentation.
+
+## W.13 cabin rooms + persistent family history lock — 2026-08-28
+
+The Cabin Rooms system is now an approved long-term pillar of Black Family Game Night. The persistent meta-game follows `Play → earn → collect → decorate → expand → visit → remember`. Core family members receive permanent named rooms in the large shared two-storey family cabin; new players receive permanent rooms in a growing guest house. Dogs have no private rooms and instead wander through valid rooms/common spaces using shared pet objects. The universal long-term reward currency becomes **Game Night Tokens**. Room-item unlocks are permanent blueprints with unlimited placement; duplicates may be salvaged under controlled rules, regular items may be gifted, and performance/status trophies remain account-earned. Rooms are owner-editable and publicly visitable within the private family app. W.13's 400-item catalog and room-system directive are authoritative for future implementation.

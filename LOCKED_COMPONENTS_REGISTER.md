@@ -97,3 +97,18 @@ Automated tests may establish technical health. They do not constitute visual ap
 - Last Haven: viewer supply/resource + survival-card hand visible for planning.
 - Deck Sweep: rank-first sorting; 10 special highlight; each face-down slot unlocks when its own covering face-up card is played; opponent table state visible without hidden-card identities.
 - Prairie Pots: pot awards update chip totals and are explicitly reported/displayed; no silent sequence stall.
+
+## Phase W.13 — Cabin Rooms + Collections
+- LOCK: persistent main family cabin + dynamically growing permanent guest house.
+- LOCK: home destination concept `Visit the Cabin` with true 3D aerial/dollhouse navigation.
+- LOCK: owner-only room editing; all-family viewing; simultaneous visitor bubbles/reactions/guest book before avatar walking.
+- LOCK: approx. 14 × 16 ft neutral starting room and physical floor-plan growth through bought/won expansions.
+- LOCK: free placement with gentle grid/snap, collision prevention and 90° rotation.
+- LOCK: customizable wallpaper, flooring, ceiling/trim, lights, windows/doors, ambience and architecture.
+- LOCK: Kelsi/Molly/Gunner have no bedrooms; pet items live across rooms and dogs eventually wander among them.
+- LOCK: universal currency name `Game Night Tokens` and approved earning/purchase pace.
+- LOCK: permanent blueprint ownership, controlled duplicate salvage, gifting rules and non-giftable earned prestige trophies.
+- LOCK: rarity tiers Common / Uncommon / Rare / Epic / Family Legendary.
+- LOCK: single store with Avatar / Furniture / Walls & Floors / Decorations / Specials tabs.
+- LOCK: Collection Book, secret `???` entries, collection completion rewards, seasonal/birthday heirlooms and family-history inspect metadata.
+- LOCK: authoritative W.13 launch catalog contains exactly 400 entries in `CABIN_ROOMS_400_ITEM_MASTER_CATALOG_W13.xlsx`.
