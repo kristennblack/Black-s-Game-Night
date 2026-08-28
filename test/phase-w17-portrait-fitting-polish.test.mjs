@@ -6,10 +6,10 @@ import {COSMETIC_BY_ID,fitProfileForAvatar,cosmeticOverlayHTML,PORTRAIT_FIT_ANCH
 const root=path.resolve(new URL('..',import.meta.url).pathname);const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 
 test('W17 is current and keeps a real home Cabin route',()=>{
- assert.equal(read('CURRENT_RELEASE.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W18-GAMEPLAY-REALISM-40');
- assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W18-GAMEPLAY-REALISM-40');
+ assert.equal(read('CURRENT_RELEASE.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W19-CABIN-ART-AVATAR-41');
+ assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W19-CABIN-ART-AVATAR-41');
  const app=read('public/app.js');assert.match(app,/PHASE_W17_RELEASE/);assert.match(app,/href="\/cabin\.html">Visit the Cabin<\/a>/);
- const sw=read('public/sw.js');assert.match(sw,/PHASE_W17_CACHE/);assert.match(sw,/const CACHE=PHASE_W18_CACHE/);
+ const sw=read('public/sw.js');assert.match(sw,/PHASE_W17_CACHE/);assert.match(sw,/const CACHE=PHASE_W19_CACHE/);
 });
 
 test('W17 uses portrait semantic anchors instead of one generic sticker coordinate',()=>{

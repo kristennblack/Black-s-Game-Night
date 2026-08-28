@@ -94,6 +94,11 @@
     'Tool Chest':{kind:'box',w:1.05,d:.58,h:1.02,color:0x8a3f34,solid:true,climbable:true},
     'Air Compressor':{kind:'compressor',w:1.12,d:.72,h:.9,color:0x556d76,solid:true,climbable:true},
     'Barrel Stack':{kind:'barrels',w:1.45,d:1.0,h:1.72,color:0x50636a,solid:true,climbable:true},
+    'Cabin Bed':{kind:'cabinBed',w:2.05,d:1.35,h:1.1,color:0x8a603c,solid:true,climbable:true},
+    'Cabin TV':{kind:'cabinTV',w:1.5,d:.32,h:1.2,color:0x553624},
+    'Cabin Dresser':{kind:'cabinDresser',w:1.35,d:.55,h:1.15,color:0x6e4931,solid:true,climbable:true},
+    'Cabin Lamp':{kind:'cabinLamp',w:.52,d:.52,h:1.55,color:0xe8d8bd},
+    'Cabin Rug':{kind:'cabinRug',w:2.0,d:1.35,h:.04,color:0x7d3d38},
     'Tree':{kind:'tree',w:1.4,d:1.4,h:3.6,color:0x4f6b42,solid:true,climbable:true}
   };
 
@@ -293,6 +298,8 @@
 
     // Permanent Papa fireplace/chair landmark.
     w.heroFallbacks={};w.heroFallbacks.fireplace=buildFireplace(w,24.9,19.8,Math.PI);w.heroFallbacks.papaChair=buildPapaChair(w,22.9,19.2,.15);
+    // W19 shared cabin collection art: a recognizable lodge corner reuses the same rustic visual language as the Cabin.
+    w.addProp('Cabin Rug',22.85,18.15,.02,.015);w.addProp('Cabin Dresser',20.75,20.25,Math.PI,.02);w.addProp('Cabin TV',20.75,19.95,Math.PI,.72);w.addProp('Cabin Lamp',21.85,20.15,0,.02);
     const glow=new THREE.PointLight(0xff9d59,1.8,6.2,2);glow.position.set(24.9,1.1,19.4);w.group.add(glow);w.shopLights.push(glow);
     const p2BenchmarkLights=[];const p2FireplaceGlow=new THREE.PointLight(0xffa05c,1.85,5.2,2);p2FireplaceGlow.name='P2 fireplace glow';p2FireplaceGlow.position.set(24.8,1.15,19.4);w.group.add(p2FireplaceGlow);p2BenchmarkLights.push(p2FireplaceGlow);const p2ShopFill=new THREE.PointLight(0xffe0ba,.55,10,2);p2ShopFill.name='P2 shop work-bay fill';p2ShopFill.position.set(9.5,3.25,12.5);w.group.add(p2ShopFill);p2BenchmarkLights.push(p2ShopFill);const p2BarnFill=new THREE.PointLight(0xd7e0c5,.42,12,2);p2BarnFill.name='P2 barn soft fill';p2BarnFill.position.set(40.5,3.7,14.2);w.group.add(p2BarnFill);p2BenchmarkLights.push(p2BarnFill);w.p2BenchmarkLights=p2BenchmarkLights;
 

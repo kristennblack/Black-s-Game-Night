@@ -98,15 +98,7 @@ const avatarAnchors={
   papa:{head:{x:51,y:7,w:59},eyes:{x:52,y:34,w:41},ears:{x:51,y:39,w:57},neck:{x:51,y:78,w:44},chest:{x:50,y:98,w:95},badge:{x:77,y:78,w:14}},
   nana:{head:{x:52,y:8,w:55},eyes:{x:53,y:34,w:40},ears:{x:52,y:39,w:53},neck:{x:52,y:78,w:41},chest:{x:50,y:98,w:93},badge:{x:77,y:78,w:14}},
 };
-const portraitSlotConflicts={
- john:{1:['hat'],3:['hat'],6:['hat'],9:['hat'],12:['hat','accessory']},
- kristen:{1:['hat'],2:['glasses']},
- james:{0:['glasses'],1:['glasses','hat'],2:['glasses'],3:['glasses','hat']},
- dorothy:{0:['glasses'],1:['glasses','hat'],2:['glasses'],3:['glasses']},
- nana:{0:['glasses'],1:['glasses','accessory'],2:['glasses','accessory'],3:['glasses']},
- papa:{1:['hat','glasses'],2:['glasses','accessory'],3:['hat']},
- logan:{3:['hat']}, holly:{2:['accessory'],3:['hair']}, elizabeth:{1:['glasses']}
-};
+const portraitSlotConflicts={}; // W19: no avatar/variant may silently hide a cosmetic.
 const dogKeys=new Set(['kelsi','molly','gunner']);
 const anchorFor=(avatar,key)=>({...anchorDefaults[key],...(avatarAnchors[avatar]?.[key]||{})});
 const fitFromAnchor=(avatar,slot,item)=>{
@@ -139,21 +131,20 @@ export function fitProfileForAvatar(avatar='john',slot='hat',item=null,variant=0
  let base=fitFromAnchor(avatar,slot,item);
  // Explicit fit records are now treated as fine offsets/scales only when marked relative.
  if(item?.fit?.relative){base={...base,x:base.x+(item.fit.x||0),y:base.y+(item.fit.y||0),w:base.w*(item.fit.scale||1),r:item.fit.r||base.r}}
- if((portraitSlotConflicts[avatar]?.[v]||[]).includes(slot))return {...base,hidden:true,conflict:true};
- if(avatar==='elizabeth'&&v===3&&slot==='jewelry'&&String(item?.id||'').startsWith('drop-earrings'))return {...base,hidden:true,conflict:true};
  if(dogKeys.has(avatar)){
-   if(slot==='hat')return{x:50,y:10,w:68,r:0};
-   if(slot==='glasses')return{x:50,y:34,w:50,r:0};
-   if(slot==='accessory')return{x:50,y:66,w:68,r:0};
-   return {...base,hidden:true};
+   // Dogs use the same complete cosmetic vocabulary. Body slots are interpreted as fitted harness/shirt/charm placements.
+   const dogFits={
+     hat:{x:50,y:10,w:68,r:0}, hair:{x:37,y:15,w:24,r:-8}, glasses:{x:50,y:34,w:50,r:0},
+     headset:{x:50,y:29,w:72,h:32,r:0}, accessory:{x:50,y:66,w:68,h:22,r:0},
+     jewelry:{x:50,y:62,w:55,h:21,r:0}, top:{x:50,y:79,w:88,h:34,r:0}, badge:{x:68,y:62,w:18,r:0}
+   };
+   return dogFits[slot]||base;
  }
  return base;
 }
 export const PORTRAIT_FIT_ANCHORS=Object.freeze(avatarAnchors);
 function dropEarringPairHTML(item,avatar,variant){
  const v=Math.max(0,Number(variant)||0),a=anchorFor(avatar,'ears');
- if((portraitSlotConflicts[avatar]?.[v]||[]).includes('jewelry'))return'';
- if(avatar==='elizabeth'&&v===3)return'';
  const stem=item.asset.replace(/\.png$/,'');
  const halfW=Math.max(8,Math.min(13,a.w*.22)),h=19,y=a.y+14,dx=a.w*.48;
  const one=(side,x)=>`<img class="avatar-cosmetic avatar-cosmetic-jewelry avatar-cosmetic-earring avatar-cosmetic-earring-${side}" data-cosmetic-id="${item.id}" src="${stem}-${side}.png" alt="" aria-hidden="true" style="--cx:${x}%;--cy:${y}%;--cw:${halfW}%;--ch:${h}%;--cr:0deg">`;
@@ -168,7 +159,7 @@ export function normalizeEquipped(raw={}){
 }
 export function cosmeticOverlayHTML(equipped={},avatar='john',variant=0){
  const eq=normalizeEquipped(equipped);
- return COSMETIC_SLOTS.map(slot=>{const item=COSMETIC_BY_ID[eq[slot]];if(!item)return'';if(slot==='jewelry'&&String(item.id).startsWith('drop-earrings'))return dropEarringPairHTML(item,avatar,variant);const f=fitProfileForAvatar(avatar,slot,item,variant);if(f.hidden)return'';return `<img class="avatar-cosmetic avatar-cosmetic-${slot}" data-cosmetic-id="${item.id}" src="${item.asset}" alt="" aria-hidden="true" style="--cx:${f.x}%;--cy:${f.y}%;--cw:${f.w}%;--ch:${Number.isFinite(f.h)?`${f.h}%`:'auto'};--cr:${f.r||0}deg">`}).join('');
+ return COSMETIC_SLOTS.map(slot=>{const item=COSMETIC_BY_ID[eq[slot]];if(!item)return'';if(slot==='jewelry'&&String(item.id).startsWith('drop-earrings'))return dropEarringPairHTML(item,avatar,variant);const f=fitProfileForAvatar(avatar,slot,item,variant);return `<img class="avatar-cosmetic avatar-cosmetic-${slot}" data-cosmetic-id="${item.id}" src="${item.asset}" alt="" aria-hidden="true" style="--cx:${f.x}%;--cy:${f.y}%;--cw:${f.w}%;--ch:${Number.isFinite(f.h)?`${f.h}%`:'auto'};--cr:${f.r||0}deg">`}).join('');
 }
 export function cosmeticLabelList(equipped={}){const eq=normalizeEquipped(equipped);return COSMETIC_SLOTS.map(slot=>COSMETIC_BY_ID[eq[slot]]?.name).filter(Boolean)}
 export function cosmeticCategories(){return ['All',...new Set(COSMETIC_CATALOG.map(x=>x.category))]}

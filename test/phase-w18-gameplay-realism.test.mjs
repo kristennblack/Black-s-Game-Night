@@ -12,16 +12,19 @@ const player=i=>({id:`p${i}`,token:`t${i}`,name:`Player ${i}`,avatar:'cowboy',va
 function room(type,n=3,settings={}){const ps=new Map(Array.from({length:n},(_,i)=>{const p=player(i+1);return[p.id,p]}));return{id:crypto.randomUUID(),gameType:type,settings:{...extraDefaults(type),...settings},players:ps,game:{phase:'lobby',history:[],schedule:[],winnerIds:[],extra:null}}}
 
 const W18='GAME-NIGHT-STAGING-PHASE-W18-GAMEPLAY-REALISM-40';
+const W19='GAME-NIGHT-STAGING-PHASE-W19-CABIN-ART-AVATAR-41';
 
-test('W18 release identity is current without deleting historical release constants',()=>{
-  assert.equal(read('CURRENT_RELEASE.txt').trim(),W18);
-  assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W18-GAMEPLAY-REALISM-40');
+test('W19 is current without deleting the W18 historical release constants',()=>{
+  assert.equal(read('CURRENT_RELEASE.txt').trim(),W19);
+  assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W19-CABIN-ART-AVATAR-41');
   const app=read('public/app.js'),sw=read('public/sw.js');
   assert.match(app,/PHASE_W17_RELEASE='GAME-NIGHT-STAGING-PHASE-W17-CABIN-COSMETICS-POLISH-39'/);
   assert.match(app,/PHASE_W18_RELEASE='GAME-NIGHT-STAGING-PHASE-W18-GAMEPLAY-REALISM-40'/);
-  assert.match(app,/CURRENT_BUILD=PHASE_W18_RELEASE/);
+  assert.match(app,/PHASE_W19_RELEASE='GAME-NIGHT-STAGING-PHASE-W19-CABIN-ART-AVATAR-41'/);
+  assert.match(app,/CURRENT_BUILD=PHASE_W19_RELEASE/);
   assert.match(sw,/PHASE_W18_CACHE='black-family-game-night-staging-phase-w18-gameplay-realism-40'/);
-  assert.match(sw,/const CACHE=PHASE_W18_CACHE/);
+  assert.match(sw,/PHASE_W19_CACHE='black-family-game-night-staging-phase-w19-cabin-art-avatar-41'/);
+  assert.match(sw,/const CACHE=PHASE_W19_CACHE/);
 });
 
 test('W18 Golf rejection forces a flip for stock and discard draws until the last hidden card',()=>{
@@ -91,7 +94,7 @@ test('W18 Family Mystery uses cabin realism, raised reachable clue blocks, auto 
   const mystery=read('public/new-games.html');
   assert.match(mystery,/shortcutEdges/);assert.match(mystery,/camper.*living/);assert.match(mystery,/shop.*papashop/);
   assert.match(mystery,/SECRET PASSAGE/);assert.match(mystery,/glowing raised clue block/i);assert.match(mystery,/showRoomArrival/);
-  assert.match(mystery,/cabin-aerial-scene\.jpg/);assert.match(mystery,/starter-room-scene\.jpg/);
+  assert.match(mystery,/cabin-aerial-scene\.jpg/);assert.match(mystery,/cabin-assets\/generated\/empty-room-shell\.svg/);
   assert.match(mystery,/function shortest\(/);assert.match(mystery,/reachable/);
 });
 

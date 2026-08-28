@@ -78,17 +78,17 @@ test('W11 QA exposes frame-time tail latency and stability diagnostics',()=>{
 });
 
 test('W11 release identity is current while W7/W8 historical identities remain preserved',()=>{
-  assert.equal(read('CURRENT_RELEASE.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W18-GAMEPLAY-REALISM-40');
-  assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W18-GAMEPLAY-REALISM-40');
+  assert.equal(read('CURRENT_RELEASE.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W19-CABIN-ART-AVATAR-41');
+  assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W19-CABIN-ART-AVATAR-41');
   const pkg=JSON.parse(read('package.json')),app=read('public/app.js'),sw=read('public/sw.js');
-  assert.equal(pkg.version,'3.16.0-staging-phase-w18-gameplay-realism-40');
+  assert.equal(pkg.version,'3.17.0-staging-phase-w19-cabin-art-avatar-41');
   assert.match(app,/PHASE_W7_RELEASE='GAME-NIGHT-STAGING-PHASE-W7-PROP-HUNT-CHARACTER-COMBAT-32'/);
   assert.match(app,/PHASE_W8_RELEASE='GAME-NIGHT-STAGING-PHASE-W8-ARCADE-TUTORIAL-STORE-33'/);
   assert.match(app,/PHASE_W11_RELEASE='GAME-NIGHT-STAGING-PHASE-W11-PROP-HUNT-SMOOTHNESS-STABILITY-35'/);
-  assert.match(app,/CURRENT_BUILD=PHASE_W18_RELEASE/);
-  assert.match(app,/sw\.js\?v=GAME-NIGHT-STAGING-PHASE-W18-GAMEPLAY-REALISM-40/);
+  assert.match(app,/CURRENT_BUILD=PHASE_W19_RELEASE/);
+  assert.match(app,/sw\.js\?v=GAME-NIGHT-STAGING-PHASE-W19-CABIN-ART-AVATAR-41/);
   assert.match(sw,/PHASE_W11_CACHE='black-family-game-night-staging-phase-w11-prop-hunt-smoothness-stability-35'/);
-  assert.match(sw,/const CACHE=PHASE_W18_CACHE/);
+  assert.match(sw,/const CACHE=PHASE_W19_CACHE/);
 });
 
 test('W11 canonical prompt locks smoothness before content and separates implemented runtime from future asset/network work',()=>{

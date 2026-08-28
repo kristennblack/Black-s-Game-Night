@@ -27,17 +27,12 @@ test('W16 fitted renderer outputs images with anatomical position variables and 
 
 
 
-test('W16 portrait-variant fitting suppresses built-in accessories without hiding compatible cosmetics',()=>{
+test('W19 universal fitting supersedes portrait conflicts so every cosmetic remains visible on every avatar',()=>{
  const glasses=COSMETIC_BY_ID['round-glasses'],hat=COSMETIC_BY_ID['winter-toque'],earrings=COSMETIC_BY_ID['drop-earrings'],necklace=COSMETIC_BY_ID['gold-chain'];
- assert.equal(fitProfileForAvatar('james','glasses',glasses,0).hidden,true,'James portrait already contains glasses');
- assert.equal(fitProfileForAvatar('kristen','glasses',glasses,2).hidden,true,'Kristen rugged portrait already contains glasses');
- assert.notEqual(fitProfileForAvatar('kristen','glasses',glasses,3).hidden,true,'Kristen glam portrait should accept added eyewear');
- assert.equal(fitProfileForAvatar('logan','hat',hat,3).hidden,true,'Logan glam portrait already contains a cap');
- assert.equal(fitProfileForAvatar('elizabeth','jewelry',earrings,3).hidden,true,'Elizabeth glam portrait already contains earrings');
- assert.notEqual(fitProfileForAvatar('elizabeth','jewelry',necklace,3).hidden,true,'Elizabeth glam portrait should still accept a necklace');
- const app=read('public/app.js'),store=read('public/tokens-store.html');
- assert.match(app,/cosmeticOverlayHTML\(equipped,a\[0\],p\?\.variant\)/);
- assert.match(store,/cosmeticOverlayHTML\(previewEq\(\),String\(profile\.avatar\|\|'john'\),Number\(profile\.variant\)\|\|0\)/);
+ for(const [avatar,slot,item,variant] of [['james','glasses',glasses,0],['kristen','glasses',glasses,2],['logan','hat',hat,3],['elizabeth','jewelry',earrings,3],['elizabeth','jewelry',necklace,3],['molly','top',COSMETIC_BY_ID['flannel-shirt'],0]]){
+   const fit=fitProfileForAvatar(avatar,slot,item,variant);assert.notEqual(fit.hidden,true,`${avatar} ${slot}`);assert.ok(Number.isFinite(fit.x)&&Number.isFinite(fit.y)&&Number.isFinite(fit.w));
+ }
+ const app=read('public/app.js'),store=read('public/tokens-store.html');assert.match(app,/cosmeticOverlayHTML\(equipped,a\[0\],p\?\.variant\)/);assert.match(store,/cosmeticOverlayHTML\(previewEq\(\),String\(profile\.avatar\|\|'john'\),Number\(profile\.variant\)\|\|0\)/);
 });
 
 test('W16 preserves legacy cosmetic ids while normalizing expanded slots',()=>{
@@ -54,7 +49,7 @@ test('W16 Cabin runtime connects the 400-item catalog, owner-only save API and s
 });
 
 test('W16 current identity and service worker cache Cabin runtime',()=>{
- assert.equal(read('CURRENT_RELEASE.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W18-GAMEPLAY-REALISM-40');assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W18-GAMEPLAY-REALISM-40');const pkg=JSON.parse(read('package.json'));assert.equal(pkg.version,'3.16.0-staging-phase-w18-gameplay-realism-40');const sw=read('public/sw.js');assert.match(sw,/PHASE_W17_CACHE/);assert.match(sw,/const CACHE=PHASE_W18_CACHE/);for(const f of ['cabin.html','cabin.css','cabin.js','cabin-room-catalog.mjs','cabin-progression.mjs'])assert.match(sw,new RegExp(f.replace('.','\\.')));
+ assert.equal(read('CURRENT_RELEASE.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W19-CABIN-ART-AVATAR-41');assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W19-CABIN-ART-AVATAR-41');const pkg=JSON.parse(read('package.json'));assert.equal(pkg.version,'3.17.0-staging-phase-w19-cabin-art-avatar-41');const sw=read('public/sw.js');assert.match(sw,/PHASE_W17_CACHE/);assert.match(sw,/const CACHE=PHASE_W19_CACHE/);for(const f of ['cabin.html','cabin.css','cabin.js','cabin-room-catalog.mjs','cabin-progression.mjs'])assert.match(sw,new RegExp(f.replace('.','\\.')));
 });
 
 test('W16 master prompt is truthful about implemented runtime vs remaining unique 3D asset work',()=>{
@@ -106,8 +101,7 @@ test('W16 Cabin Shop purchases real room blueprints with the same Game Night Tok
  await assert.rejects(()=>hub.updateCabinBlueprint({profileId:'room-shop-user',action:'buy',itemId:earned['Item ID']}),/earned through play/);
 });
 
-test('W16 room placement renders realistic transparent placeable art instead of square item-card tokens',()=>{
- const js=read('public/cabin.js'),css=read('public/cabin.css');
- for(const f of ['rustic-bed.png','log-dresser.png','plaid-armchair.png','cabin-lamp.png','wood-shelf.png','dog-bed-kelsi.png'])assert.ok(fs.existsSync(path.join(root,'public/cabin-assets/placeables',f)),f);
- assert.match(js,/placeAssetFor/);assert.match(js,/cabin-assets\/placeables/);assert.match(css,/background:transparent/);assert.match(css,/filter:drop-shadow/);
+test('W19 room placement uses per-item transparent art instead of category-reused square tokens',()=>{
+ const js=read('public/cabin.js'),css=read('public/cabin.css'),art=read('public/cabin-item-art.mjs');
+ assert.match(js,/cabinItemPlaceable/);assert.match(js,/cabinItemThumb/);assert.match(art,/generated\/placeables/);assert.match(art,/generated\/thumbs/);assert.match(css,/filter:drop-shadow/);
 });

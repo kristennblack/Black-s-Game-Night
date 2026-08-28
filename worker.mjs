@@ -315,7 +315,8 @@ export class GameHub {
   async getCabinRoom(roomKey){
     const key=String(roomKey||'').trim().toLowerCase().replace(/[^a-z0-9:_-]/g,'').slice(0,100);if(!key)return null;
     const stored=await this.ctx.storage.get(`cabin-room:${key}`);
-    return stored||{roomKey:key,ownerProfileId:null,ownerName:'',ownerAvatar:key.startsWith('guest:')?'cowboy':key,wallpaper:'pine-needle-wallpaper',flooring:'dark-oak-flooring',placements:[],guestbook:[],reactions:[],updatedAt:0};
+    if(stored&&Number(stored.decorVersion||0)<19){const migrated={...stored,wallpaper:'bare-pine-wall',flooring:'bare-pine-floor',placements:[],decorVersion:19,updatedAt:now()};await this.ctx.storage.put(`cabin-room:${key}`,migrated);return migrated}
+    return stored||{roomKey:key,ownerProfileId:null,ownerName:'',ownerAvatar:key.startsWith('guest:')?'cowboy':key,wallpaper:'bare-pine-wall',flooring:'bare-pine-floor',placements:[],guestbook:[],reactions:[],decorVersion:19,updatedAt:0};
   }
   async getCabinOverview(){const rows=await this.ctx.storage.list({prefix:'cabin-room:'});return [...rows.values()].map(r=>({roomKey:r.roomKey,ownerName:r.ownerName||'',ownerAvatar:r.ownerAvatar||'',updatedAt:r.updatedAt||0,placementCount:Array.isArray(r.placements)?r.placements.length:0})).sort((a,b)=>String(a.roomKey).localeCompare(String(b.roomKey)))}
   async updateCabinRoom(b){
@@ -329,8 +330,8 @@ export class GameHub {
     if(action==='save'){
       if(room.ownerProfileId!==profileId)throw new Error('Only the room owner can decorate this room');
       const raw=Array.isArray(b.placements)?b.placements.slice(0,100):[];const placements=[],progress=await this.getArcadeProfile(profileId),owned=normalizeCabinBlueprints(progress?.cabinBlueprints),grandfathered=new Set((room.placements||[]).map(q=>String(q.itemId||'')));
-      for(const q of raw){const itemId=String(q?.itemId||'');if(!CABIN_ROOM_ITEM_BY_ID[itemId])continue;if(!owned[itemId]&&!grandfathered.has(itemId))throw new Error('Unlock this cabin blueprint before placing it');const x=Math.max(0,Math.min(14,Number(q.x)||0)),z=Math.max(0,Math.min(16,Number(q.z)||0)),rotation=((Math.round((Number(q.rotation)||0)/90)*90)%360+360)%360;placements.push({id:String(q.id||crypto.randomUUID()).slice(0,80),itemId,x,z,rotation})}
-      room.placements=placements;room.wallpaper=String(b.wallpaper||room.wallpaper||'pine-needle-wallpaper').slice(0,100);room.flooring=String(b.flooring||room.flooring||'dark-oak-flooring').slice(0,100);room.updatedAt=now();
+      for(const q of raw){const itemId=String(q?.itemId||'');if(!CABIN_ROOM_ITEM_BY_ID[itemId])continue;if(!owned[itemId]&&!grandfathered.has(itemId))throw new Error('Unlock this cabin blueprint before placing it');const x=Math.max(0,Math.min(14,Number(q.x)||0)),z=Math.max(0,Math.min(16,Number(q.z)||0)),rotation=((Math.round((Number(q.rotation)||0)/90)*90)%360+360)%360;placements.push({id:String(q.id||crypto.randomUUID()).slice(0,80),itemId,x,z,rotation,surface:String(q?.surface||'floor')==='wall'?'wall':'floor'})}
+      room.placements=placements;room.wallpaper=String(b.wallpaper||room.wallpaper||'bare-pine-wall').slice(0,100);room.flooring=String(b.flooring||room.flooring||'bare-pine-floor').slice(0,100);room.decorVersion=19;room.updatedAt=now();
     }else if(action==='guestbook'){
       const text=String(b.text||'').trim().slice(0,220);if(!text)throw new Error('Guest-book message is empty');room.guestbook=[...(room.guestbook||[]),{id:crypto.randomUUID(),profileId,name:String(b.name||'Visitor').slice(0,24),text,at:now()}].slice(-40);room.updatedAt=now();
     }else if(action==='react'){
