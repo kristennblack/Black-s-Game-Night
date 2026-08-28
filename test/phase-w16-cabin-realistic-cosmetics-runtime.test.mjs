@@ -49,7 +49,7 @@ test('W16 Cabin runtime connects the 400-item catalog, owner-only save API and s
 });
 
 test('W16 current identity and service worker cache Cabin runtime',()=>{
- assert.equal(read('CURRENT_RELEASE.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W20-MASTER-CATALOG-42');assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W20-MASTER-CATALOG-42');const pkg=JSON.parse(read('package.json'));assert.equal(pkg.version,'3.18.0-staging-phase-w20-master-catalog-42');const sw=read('public/sw.js');assert.match(sw,/PHASE_W17_CACHE/);assert.match(sw,/const CACHE=PHASE_W20_CACHE/);for(const f of ['cabin.html','cabin.css','cabin.js','cabin-room-catalog.mjs','cabin-progression.mjs'])assert.match(sw,new RegExp(f.replace('.','\\.')));
+ assert.equal(read('CURRENT_RELEASE.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W21-TRUE3D-WORLD-PROPS-GAMEPLAY-43');assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W21-TRUE3D-WORLD-PROPS-GAMEPLAY-43');const pkg=JSON.parse(read('package.json'));assert.equal(pkg.version,'3.19.0-staging-phase-w21-true3d-world-props-gameplay-43');const sw=read('public/sw.js');assert.match(sw,/PHASE_W17_CACHE/);assert.match(sw,/const CACHE=PHASE_W21_CACHE/);for(const f of ['cabin.html','cabin.css','cabin.js','cabin-room-catalog.mjs','cabin-progression.mjs'])assert.match(sw,new RegExp(f.replace('.','\\.')));
 });
 
 test('W16 master prompt is truthful about implemented runtime vs remaining unique 3D asset work',()=>{

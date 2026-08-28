@@ -1144,3 +1144,19 @@ html{background:#e8dfcc}body{min-height:100svh;padding-bottom:env(safe-area-inse
 /* W20 universal 17-slot wearable layering */
 .avatar-cosmetic-back,.avatar-cosmetic-attachment{z-index:2!important}.avatar-cosmetic-top{z-index:3!important}.avatar-cosmetic-outerwear,.avatar-cosmetic-onepiece,.avatar-cosmetic-costume{z-index:4!important}.avatar-cosmetic-bottom,.avatar-cosmetic-shoes{z-index:5!important}.avatar-cosmetic-neck,.avatar-cosmetic-wrists,.avatar-cosmetic-badge{z-index:7!important}.avatar-cosmetic-headset,.avatar-cosmetic-face,.avatar-cosmetic-earrings,.avatar-cosmetic-filter{z-index:9!important}.avatar-cosmetic-hair,.avatar-cosmetic-hat{z-index:10!important}.avatar-cosmetic.animated-cosmetic{animation:w20CosmeticFloat 2.8s ease-in-out infinite alternate}@keyframes w20CosmeticFloat{to{filter:drop-shadow(0 3px 7px rgba(245,206,108,.5))!important}}
 .score-avatar .avatar-cosmetic-back,.score-avatar .avatar-cosmetic-attachment,.score-avatar .avatar-cosmetic-onepiece,.score-avatar .avatar-cosmetic-costume,.score-avatar .avatar-cosmetic-bottom,.score-avatar .avatar-cosmetic-shoes,.score-avatar .avatar-cosmetic-outerwear{display:none!important}
+
+/* W21 Mexican Train full-board recovery: no more narrow 1050px table or hidden train tails. */
+.mexican-focus-layout{grid-template-columns:minmax(0,1fr)!important;max-width:1540px;margin-inline:auto}
+.mexican-focus-layout>.sidebar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.mexican-focus-layout>.sidebar>.panel{margin:0}
+.mexican-focus-surface{min-height:1240px!important;padding-bottom:265px!important}
+.mexican-board-viewport{overflow:auto!important;overscroll-behavior:contain!important;touch-action:pan-x pan-y!important}
+.mexican-focus-surface .three-new-canvas{min-width:100%;min-height:100%;height:auto!important;align-items:start!important}
+.mexican-focus-surface .three-new-canvas>.extra-center{place-items:start center!important;height:auto!important;min-height:100%!important;padding:8px 14px 24px!important}
+.mexican-focus-surface .mexican-train-table{width:100%!important;max-width:none!important;min-width:760px!important;height:auto!important;min-height:900px!important;grid-template-rows:auto auto auto auto!important}
+.mexican-focus-surface .mt-domino-chain{display:flex!important;flex-wrap:wrap!important;align-content:flex-start!important;align-items:center!important;overflow:visible!important;min-height:64px!important;max-height:none!important;gap:5px!important;padding:9px!important}
+.mexican-focus-surface .mt-private-trains{overflow:visible!important;min-height:auto!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;align-items:start}
+.mexican-focus-surface .mt-train{grid-template-rows:auto auto auto!important;min-height:150px}
+.mexican-focus-surface .domino-tile.small-domino{width:66px;height:36px}
+@media(max-width:900px){.mexican-focus-layout>.sidebar{grid-template-columns:repeat(2,minmax(0,1fr))}.mexican-focus-surface{min-height:1120px!important}.mexican-focus-surface .mexican-train-table{min-width:680px!important}.mexican-focus-surface .mt-private-trains{grid-template-columns:1fr 1fr!important}}
+@media(max-width:650px){.mexican-focus-layout>.sidebar{display:block}.mexican-focus-surface{min-height:1040px!important;padding-bottom:272px!important}.mexican-board-viewport{bottom:270px!important}.mexican-focus-surface .mexican-train-table{min-width:620px!important}.mexican-focus-surface .mt-private-trains{grid-template-columns:1fr!important}.mexican-focus-surface .domino-tile.small-domino{width:58px;height:32px}}

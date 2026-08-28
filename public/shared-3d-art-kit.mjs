@@ -728,6 +728,32 @@ export function create3DArtKit(THREE){
     g.userData.catalogItemId=item['Item ID']||'';g.userData.catalogItemName=item['Item Name']||'';g.userData.catalogCollection=item.Collection||'';g.userData.catalogVersion=20;g.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});return g;
   }
 
+  // W21 world-prop bridge. All 2,000 prop records keep unique identities while sharing a
+  // consistent rustic material language. This procedural bridge lets every 3D game render
+  // the catalog immediately; hero props can later replace these meshes with bespoke GLBs
+  // without changing Prop IDs, tags, gameplay metadata, or save references.
+  function createWorldPropMesh(item={}){
+    const cat=String(item.Category||''),sub=String(item.Subcategory||''),seed=Number(item['Art Seed']||hashString(item['Prop ID']||item['Prop Name']||cat))>>>0;
+    const hue=((seed%360)+14)%360/360,col=new THREE.Color().setHSL(hue,.27,.43).getHex();
+    const pick=(arr)=>arr[seed%arr.length];let type='Parts Crate';
+    if(cat==='Indoor Cabin Props')type=pick(['Coffee Mug','Cabin Lamp','Cabin Dresser','Cabin Rug','Cabin TV','Card Box','Firewood','Stool']);
+    else if(cat.includes('Workshop'))type=pick(['Toolbox','Tool Chest','Air Compressor','Parts Crate','Pallet','Tire','Barrel Stack','Extension Cord','Welding Helmet','Sawhorse','Shop Vac']);
+    else if(cat.includes('Farm / Barn'))type=pick(['Hay Bale','Feed Barrel','Feed Bucket','Feed Sack','Trough','Wheelbarrow','Watering Can','Tractor','Bucket']);
+    else if(cat.includes('Outdoor / Campsite'))type=pick(['Camp Chair','Cooler','Camp Bin','Lantern','Firewood','Water Jug','Rock','Flower Pot']);
+    else if(cat.includes('Kitchen'))type=pick(['Coffee Mug','Card Box','Water Jug','Bucket','Parts Crate']);
+    else if(cat.includes('Family Signature'))type=pick(['Papa Chair','Toolbox','Cabin Lamp','Dog Toy','Card Box','Cooler','Welding Helmet']);
+    else if(cat.includes('Pet Props'))type=pick(['Dog Toy','Feed Bucket','Cabin Rug','Water Jug']);
+    else if(cat.includes('Wall / Shelf'))type=pick(['Card Box','Lantern','Coffee Mug','Flower Pot','Parts Crate']);
+    else if(cat.includes('Interactive'))type=pick(['Cabin TV','Cabin Lamp','Air Compressor','Shop Vac','Lantern','Tool Chest']);
+    else if(cat.includes('Specialty'))type=pick(['Papa Chair','Motorcycle','Tractor','Barrel Stack','Cabin TV','Tool Chest']);
+    else if(cat.includes('Seasonal'))type=pick(['Card Box','Lantern','Dog Toy','Flower Pot','Firewood']);
+    const scaleClass=String(item['Scale Class']||'Medium'),dims=scaleClass==='Small'?{w:.48,d:.42,h:.48}:scaleClass==='Large'?{w:1.4,d:1.08,h:1.2}:{w:.86,d:.7,h:.8};
+    const g=createPropMesh(type,{...dims,color:col});g.userData.worldPropId=item['Prop ID']||'';g.userData.worldPropName=item['Prop Name']||'';g.userData.worldPropCollection=item.Collection||'';g.userData.worldPropCategory=cat;g.userData.hideable=item.Hideable==='Yes';g.userData.climbable=item.Climbable==='Yes';g.userData.interactive=item.Interactive==='Yes';g.userData.hero=item.Hero==='Yes';g.userData.catalogVersion=21;
+    // A tiny deterministic badge/trim makes procedural siblings visually distinguishable in-world.
+    const badge=box(.13,.13,.025,material('paintedMetal',shadeHex(col,.22),{seed:seed+99}),[dims.w*.34,Math.max(.12,dims.h*.78),-dims.d*.51]);g.add(badge);
+    g.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});return g;
+  }
+
   function animateFire(root,time){root?.traverse?.(o=>{if(o.userData?.flamePhase!=null){const s=1+Math.sin(time*8+o.userData.flamePhase)*.09;o.scale.y=s;o.rotation.z=Math.sin(time*5+o.userData.flamePhase)*.06}});if(root?.userData?.fireLight)root.userData.fireLight.intensity=2.7+Math.sin(time*9)*.35;}
 
   // Tiny ambient motion sells depth without physics overhead. Only visual child groups move,
@@ -749,6 +775,6 @@ export function create3DArtKit(THREE){
 
   return {
     material,makeTexture,addRaycast,addCollider,addAsset,tubeBetween,box,sphere,cylinder,capsule,torus,
-    slatWall,buildFloorDrain,buildOilStain,buildHoseReel,buildTireStack,buildShopSideTable,buildWallConduit,buildWorkbench,buildToolChest,buildShelving,buildLumberStack,buildCrate,buildTractor,buildMotorcycle,buildFireplace,buildPapaChair,buildDrillPress,buildAirCompressor,buildWeldingCart,buildLadder,buildOverheadLight,buildBarnStall,buildPicnicTable,buildBBQ,buildTruck,buildTent,buildCampfire,buildTrailer,buildBoat,buildTrampoline,buildPool,buildHotTub,buildSeaCan,buildFence,buildGrassPatch,buildBush,buildRockCluster,buildBench,buildPlanter,buildLampPost,buildCeilingFan,buildToolRack,buildCabinet,buildStringLights,buildAmbientParticles,buildFountain,buildBeachUmbrella,buildMarketStall,buildNoticeBoard,buildMailbox,buildPartyArch,buildAmbientBirds,buildDetailedTree,buildSwingDoor,buildOverheadDoor,buildWallPoster,buildCloudLayer,buildButterflies,buildRuralBackdrop,buildExteriorTrim,buildPropZapper,buildHumanRig,buildDogRig,createPropMesh,createCatalogHomeMesh,createMotionFxSystem,animateFire,animateAmbience,shadeHex
+    slatWall,buildFloorDrain,buildOilStain,buildHoseReel,buildTireStack,buildShopSideTable,buildWallConduit,buildWorkbench,buildToolChest,buildShelving,buildLumberStack,buildCrate,buildTractor,buildMotorcycle,buildFireplace,buildPapaChair,buildDrillPress,buildAirCompressor,buildWeldingCart,buildLadder,buildOverheadLight,buildBarnStall,buildPicnicTable,buildBBQ,buildTruck,buildTent,buildCampfire,buildTrailer,buildBoat,buildTrampoline,buildPool,buildHotTub,buildSeaCan,buildFence,buildGrassPatch,buildBush,buildRockCluster,buildBench,buildPlanter,buildLampPost,buildCeilingFan,buildToolRack,buildCabinet,buildStringLights,buildAmbientParticles,buildFountain,buildBeachUmbrella,buildMarketStall,buildNoticeBoard,buildMailbox,buildPartyArch,buildAmbientBirds,buildDetailedTree,buildSwingDoor,buildOverheadDoor,buildWallPoster,buildCloudLayer,buildButterflies,buildRuralBackdrop,buildExteriorTrim,buildPropZapper,buildHumanRig,buildDogRig,createPropMesh,createCatalogHomeMesh,createWorldPropMesh,createMotionFxSystem,animateFire,animateAmbience,shadeHex
   };
 }

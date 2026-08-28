@@ -12,24 +12,25 @@ const root=path.resolve(new URL('..',import.meta.url).pathname);
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const W19='GAME-NIGHT-STAGING-PHASE-W19-CABIN-ART-AVATAR-41';
 const W20='GAME-NIGHT-STAGING-PHASE-W20-MASTER-CATALOG-42';
+const W21='GAME-NIGHT-STAGING-PHASE-W21-TRUE3D-WORLD-PROPS-GAMEPLAY-43';
 
-test('W19 release identity remains historical while W20 is current',()=>{
-  assert.equal(read('CURRENT_RELEASE.txt').trim(),W20);
-  assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W20-MASTER-CATALOG-42');
-  assert.equal(JSON.parse(read('package.json')).version,'3.18.0-staging-phase-w20-master-catalog-42');
+test('W19 release identity remains historical while W21 is current',()=>{
+  assert.equal(read('CURRENT_RELEASE.txt').trim(),W21);
+  assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W21-TRUE3D-WORLD-PROPS-GAMEPLAY-43');
+  assert.equal(JSON.parse(read('package.json')).version,'3.19.0-staging-phase-w21-true3d-world-props-gameplay-43');
   const app=read('public/app.js'),sw=read('public/sw.js');
   assert.match(app,/PHASE_W18_RELEASE='GAME-NIGHT-STAGING-PHASE-W18-GAMEPLAY-REALISM-40'/);
   assert.match(app,/PHASE_W19_RELEASE='GAME-NIGHT-STAGING-PHASE-W19-CABIN-ART-AVATAR-41'/);
   assert.match(app,/PHASE_W20_RELEASE='GAME-NIGHT-STAGING-PHASE-W20-MASTER-CATALOG-42'/);
-  assert.match(app,/CURRENT_BUILD=PHASE_W20_RELEASE/);assert.match(sw,/const CACHE=PHASE_W20_CACHE/);
+  assert.match(app,/CURRENT_BUILD=PHASE_W21_RELEASE/);assert.match(sw,/const CACHE=PHASE_W21_CACHE/);
 });
 
 test('W19 cabin starts as a bare pine architectural shell with a tiny low-end starter crate',()=>{
   assert.deepEqual(STARTER_CABIN_ITEM_NAMES,['Pine Single Bed','Simple Nightstand','Basic Desk Chair','Plain Floor Lamp','Neutral Woven Rug']);
   assert.equal(STARTER_CABIN_BLUEPRINT_IDS.length,5);
   const js=read('public/cabin.js'),css=read('public/cabin.css');
-  assert.match(js,/CABIN_DECOR_VERSION=20/);assert.match(js,/wallpaper:'bare-pine-wall'/);assert.match(js,/flooring:'bare-pine-floor'/);assert.match(js,/placements:\[\]/);
-  assert.match(js,/decorVersion\|\|0\)<19/);assert.match(js,/decorVersion\|\|0\)<20/);assert.match(js,/placements:\[\]/);assert.match(css,/generated\/empty-room-shell\.svg/);
+  assert.match(js,/CABIN_DECOR_VERSION=21/);assert.match(js,/wallpaper:'bare-pine-wall'/);assert.match(js,/flooring:'bare-pine-floor'/);assert.match(js,/placements:\[\]/);
+  assert.match(js,/decorVersion\|\|0\)<19/);assert.match(js,/decorVersion\|\|0\)<21/);assert.match(js,/mountCabinRoom3D/);assert.match(css,/cabin3d-canvas/);
 });
 
 test('W19 unique-art promise scales to all 2,000 active W20 home records',()=>{
@@ -44,7 +45,8 @@ test('W19 unique-art promise scales to all 2,000 active W20 home records',()=>{
 
 test('W19 room editing supports direct selection, tap-to-move, rotate, store, wall-floor snapping and blueprint duplication',()=>{
   const js=read('public/cabin.js');
-  for(const token of ['data-select','pointerPlacement','data-rotate','data-duplicate','data-delete','data-surface','snapPlacement','isPlacementInsideRoom'])assert.ok(js.includes(token),token);
+  for(const token of ['mountCabinRoom3D','onSelect','onMove','data-rotate','data-duplicate','data-delete','data-surface','snapPlacement','isPlacementInsideRoom'])assert.ok(js.includes(token),token);
+  const room3d=read('public/cabin-3d-room.mjs');assert.match(room3d,/THREE\.Raycaster/);assert.match(room3d,/WebGLRenderer/);
   assert.match(js,/surface.*wall/);assert.match(js,/surface.*floor/);assert.match(js,/90/);
 });
 
@@ -60,11 +62,11 @@ const hub=()=>new GameHub({storage:new MemoryStorage(),waitUntil(){}},{});
 
 test('W19 automatically migrates any persisted legacy room to the empty shell without touching ownership',async()=>{
   const storage=new MemoryStorage();await storage.put('cabin-room:kristen',{roomKey:'kristen',ownerProfileId:'k',ownerName:'Kristen',ownerAvatar:'kristen',wallpaper:'old',flooring:'old',placements:[{id:'old',itemId:STARTER_CABIN_BLUEPRINT_IDS[0],x:1,z:1,rotation:0}],guestbook:[{text:'keep'}],reactions:[],updatedAt:1});
-  const h=new GameHub({storage,waitUntil(){}},{}),r=await h.getCabinRoom('kristen');assert.equal(r.ownerProfileId,'k');assert.deepEqual(r.placements,[]);assert.equal(r.wallpaper,'bare-pine-wall');assert.equal(r.flooring,'bare-pine-floor');assert.equal(r.decorVersion,20);assert.equal(r.guestbook.length,1);
+  const h=new GameHub({storage,waitUntil(){}},{}),r=await h.getCabinRoom('kristen');assert.equal(r.ownerProfileId,'k');assert.deepEqual(r.placements,[]);assert.equal(r.wallpaper,'bare-pine-wall');assert.equal(r.flooring,'bare-pine-floor');assert.equal(r.decorVersion,21);assert.equal(r.guestbook.length,1);
 });
 test('W19 server persists bare room defaults and placement surfaces while preserving owner-only blueprint rules',async()=>{
-  const h=hub(),d=await h.getCabinRoom('kristen');assert.equal(d.wallpaper,'bare-pine-wall');assert.equal(d.flooring,'bare-pine-floor');assert.equal(d.decorVersion,20);assert.deepEqual(d.placements,[]);
-  const itemId=STARTER_CABIN_BLUEPRINT_IDS[0];const saved=await h.updateCabinRoom({profileId:'k',name:'Kristen',avatar:'kristen',roomKey:'kristen',action:'save',wallpaper:'bare-pine-wall',flooring:'bare-pine-floor',placements:[{id:'a',itemId,x:3,z:4,rotation:90,surface:'wall'}]});assert.equal(saved.placements[0].surface,'wall');assert.equal(saved.decorVersion,20);
+  const h=hub(),d=await h.getCabinRoom('kristen');assert.equal(d.wallpaper,'bare-pine-wall');assert.equal(d.flooring,'bare-pine-floor');assert.equal(d.decorVersion,21);assert.deepEqual(d.placements,[]);
+  const itemId=STARTER_CABIN_BLUEPRINT_IDS[0];const saved=await h.updateCabinRoom({profileId:'k',name:'Kristen',avatar:'kristen',roomKey:'kristen',action:'save',wallpaper:'bare-pine-wall',flooring:'bare-pine-floor',placements:[{id:'a',itemId,x:3,z:4,rotation:90,surface:'wall'}]});assert.equal(saved.placements[0].surface,'wall');assert.equal(saved.decorVersion,21);
 });
 
 test('W19 Family Mystery, Prop Hunt, Island Life and Molly share the cabin art language in priority order',()=>{

@@ -12,6 +12,7 @@
   const CORE_URL='/prop-hunt-core.mjs';
   const ART_URL='/shared-3d-art-kit.mjs';
   const CATALOG_URL='/cabin-room-catalog.mjs';
+  const WORLD_CATALOG_URL='/world-prop-catalog.mjs';
   const GAMEPLAY_URL='/shared-3d-gameplay.mjs';
   const STUDIO_URL='/shared-3d-studio.mjs';
   const PHASE_E_URL='/phase-e-qa.mjs';
@@ -25,7 +26,7 @@
   const QA_MODE=new URLSearchParams(location.search).get('qa3d')==='1';
   const CDN_NOTICE='Three.js 0.185.1';
 
-  let root=null,THREE=null,core=null,art=null,gameplay=null,studio=null,phaseE=null,approvedCharacters=null,catalogData=null,assets=null,audio=null,loadPromise=null,game=null,raf=0,lastFrame=0;
+  let root=null,THREE=null,core=null,art=null,gameplay=null,studio=null,phaseE=null,approvedCharacters=null,catalogData=null,worldCatalogData=null,assets=null,audio=null,loadPromise=null,game=null,raf=0,lastFrame=0;
   let network=null,roomState=null,ws=null,reconnectTimer=0,pollTimer=0;
   const keys=Object.create(null);
   const joy={x:0,z:0,id:null};
@@ -111,7 +112,7 @@
 
   async function ensureEngine(){
     if(loadPromise)return loadPromise;
-    loadPromise=Promise.all([import(THREE_URL),import(CORE_URL),import(ART_URL),import(GAMEPLAY_URL),import(STUDIO_URL),import(PHASE_E_URL),import(APPROVED_CHAR_URL),import(CATALOG_URL)]).then(([t,c,a,g,s,q,ch,cat])=>{THREE=t;core=c;art=a.create3DArtKit(THREE);gameplay=g;studio=s;phaseE=q;approvedCharacters=ch;catalogData=cat;for(const id of ch.APPROVED_FAMILY_CHARACTER_IDS||[]){if(OUTFITS[id])Object.assign(OUTFITS[id],ch.approvedFallbackStyle(id,OUTFITS[id]));}assets=studio.createAuthoredAssetPipeline(THREE,{assetVersion:phaseE.STAGING_BUILD_ID});audio=studio.createAudioSystem();return true}).catch(err=>{console.error('3D engine failed to load',err);throw new Error('The 3D engine could not load. Check the internet connection and reload the game.')});
+    loadPromise=Promise.all([import(THREE_URL),import(CORE_URL),import(ART_URL),import(GAMEPLAY_URL),import(STUDIO_URL),import(PHASE_E_URL),import(APPROVED_CHAR_URL),import(CATALOG_URL),import(WORLD_CATALOG_URL)]).then(([t,c,a,g,s,q,ch,cat,wcat])=>{THREE=t;core=c;art=a.create3DArtKit(THREE);gameplay=g;studio=s;phaseE=q;approvedCharacters=ch;catalogData=cat;worldCatalogData=wcat;for(const id of ch.APPROVED_FAMILY_CHARACTER_IDS||[]){if(OUTFITS[id])Object.assign(OUTFITS[id],ch.approvedFallbackStyle(id,OUTFITS[id]));}assets=studio.createAuthoredAssetPipeline(THREE,{assetVersion:phaseE.STAGING_BUILD_ID});audio=studio.createAudioSystem();return true}).catch(err=>{console.error('3D engine failed to load',err);throw new Error('The 3D engine could not load. Check the internet connection and reload the game.')});
     return loadPromise;
   }
 
@@ -245,6 +246,7 @@
     }
     roofPanel(x,z,w,d,y,rotZ,color=0x4b4036){const mesh=this.box({x,z,y,w,d,h:.16,material:art.material('paintedMetal',color,{seed:14}),name:'roof',solid:false});mesh.rotation.z=rotZ;return mesh;}
     addProp(type,x,z,rot=0,y=0){const d=propDef(type),mesh=art.createPropMesh(type,d);mesh.position.set(x,y,z);mesh.rotation.y=rot;this.group.add(mesh);const rec={id:`prop-${this.props.length}`,type,x,z,y,w:d.w,d:d.d,h:d.h,mesh,def:d};this.props.push(rec);mesh.userData.worldProp=rec;if(d.solid){const c={x,z,y,w:d.w,d:d.d,h:d.h,solid:true,layer:'propSolid',blocksPlayer:true,blocksCamera:true,blocksVision:true,climbable:!!d.climbable,walkableTop:!!d.climbable,name:type,mesh};this.colliders.push(c);rec.collider=c;mesh.traverse(o=>{if(o.isMesh){o.userData.worldCollider=c;this.raycastMeshes.push(o)}})}else mesh.traverse(o=>{if(o.isMesh)this.raycastMeshes.push(o)});return rec;}
+    addCatalogProp(item,x,z,rot=0,y=0){if(!item)return null;const mesh=art.createWorldPropMesh(item);mesh.position.set(x,y,z);mesh.rotation.y=rot;mesh.updateMatrixWorld(true);this.group.add(mesh);const size=new THREE.Vector3();new THREE.Box3().setFromObject(mesh).getSize(size);const type=mesh.userData.propType||'Parts Crate',d={w:Math.max(.22,size.x),d:Math.max(.22,size.z),h:Math.max(.18,size.y),solid:item.Climbable==='Yes'||item['Large Cover']==='Yes',climbable:item.Climbable==='Yes'};const rec={id:`catalog-prop-${item['Prop ID']}`,catalogId:item['Prop ID'],catalogName:item['Prop Name'],type,x,z,y,w:d.w,d:d.d,h:d.h,mesh,def:d};if(item.Hideable==='Yes')this.props.push(rec);mesh.userData.worldProp=rec;if(d.solid){const c={x,z,y,w:d.w,d:d.d,h:d.h,solid:true,layer:'catalogPropSolid',blocksPlayer:true,blocksCamera:true,blocksVision:true,climbable:d.climbable,walkableTop:d.climbable,name:item['Prop Name'],mesh};this.colliders.push(c);rec.collider=c;mesh.traverse(o=>{if(o.isMesh){o.userData.worldCollider=c;this.raycastMeshes.push(o)}})}else mesh.traverse(o=>{if(o.isMesh)this.raycastMeshes.push(o)});return rec;}
     addInteraction(label,x,z,kind='fun',opts={}){const rec={id:opts.id||`interaction-${this.interactives.length}`,label,x,z,kind,radius:opts.radius||1.45,rare:!!opts.rare,legendary:!!opts.legendary,state:false,cooldownUntil:0,data:opts.data||{}};this.interactives.push(rec);return rec;}
   }
 
@@ -254,6 +256,10 @@
 
   function buildWorld(key){
     baseLighting(game.scene,key==='acreage');let w;if(key==='camp')w=buildCamp();else if(key==='acreage')w=buildAcreage();else if(key==='farm')w=buildFarm();else w=buildPapa();game.scene.add(w.group);if(key==='papa')queueMicrotask(()=>upgradePapaProductionSlice(w));return w;
+  }
+
+  function sprinkleWorldCatalog(w,mapName,count=30,zone=null){
+    const all=worldCatalogData?.WORLD_PROP_CATALOG||[],matches=all.filter(r=>r['Primary Map']===mapName||String(r['Secondary Uses']||'').includes(mapName.replace(' Prop Hunt','')));if(!matches.length)return;const b=zone||{x0:w.bounds.minX+1,x1:w.bounds.maxX-1,z0:w.bounds.minZ+1,z1:w.bounds.maxZ-1},step=Math.max(1,Math.floor(matches.length/count));for(let i=0;i<count;i++){const item=matches[(i*step+i*7)%matches.length],edge=i%4,margin=.55+((i*17)%8)*.11;let x,z;if(edge===0){x=b.x0+margin;z=b.z0+((i*37)%100)/100*(b.z1-b.z0)}else if(edge===1){x=b.x1-margin;z=b.z0+((i*53)%100)/100*(b.z1-b.z0)}else if(edge===2){x=b.x0+((i*71)%100)/100*(b.x1-b.x0);z=b.z0+margin}else{x=b.x0+((i*29)%100)/100*(b.x1-b.x0);z=b.z1-margin}w.addCatalogProp(item,x,z,(i*.83)%6.28)}w.worldCatalogCount=(w.worldCatalogCount||0)+count;
   }
 
   function buildPapa(){
@@ -370,6 +376,7 @@
     if(w.weatherPreset==='light-rain')art.buildAmbientParticles(w,{x:26,z:21,y:1,width:50,depth:40,height:14,count:90,color:0xa8c2cf,kind:'rain'});
     if(w.weatherPreset==='light-snow')art.buildAmbientParticles(w,{x:26,z:21,y:1,width:50,depth:40,height:14,count:75,color:0xf3f2eb,kind:'snow'});
     w.metrics={oldPlayableArea:258.4,playableArea:(w.bounds.maxX-w.bounds.minX)*(w.bounds.maxZ-w.bounds.minZ),scaleMultiple:((w.bounds.maxX-w.bounds.minX)*(w.bounds.maxZ-w.bounds.minZ))/258.4,visibleProps:w.props.length,interactives:w.interactives.length,gameplayMeaningful:w.props.length+w.interactives.length+w.colliders.filter(c=>c.climbable).length};
+    sprinkleWorldCatalog(w,"Papa's Shop Prop Hunt",56,{x0:2.2,x1:50.2,z0:4.8,z1:39.4});
     return w;
   }
 
@@ -437,7 +444,7 @@
     const water=new THREE.Mesh(new THREE.PlaneGeometry(8.6,2.5,12,4),new THREE.MeshPhysicalMaterial({color:0x4e8996,transparent:true,opacity:.72,roughness:.18,metalness:0,transmission:.08}));water.rotation.x=-Math.PI/2;water.position.set(15.8,.015,13.05);water.receiveShadow=true;water.userData.waterSurface={baseY:.015,phase:1.25};w.group.add(water);
     art.buildStringLights(w,[[2.7,6.45],[6.8,6.25],[10.2,7.1],[12.5,8.2]],2.38);art.buildAmbientParticles(w,{x:12.6,z:8.2,y:.25,width:3.6,depth:3.6,height:2.0,count:20,color:0xffd59a,kind:'pollen'});art.buildBench(w,11.0,10.0,.25);for(const [x,z,s] of [[2.0,8.2,.8],[8.2,11.4,.7],[19.0,8.7,.8],[10.3,12.5,.65]])art.buildBush(w,x,z,s,0x405f3f);for(const [x,z] of [[1.3,7.4],[6.0,10.9],[9.5,13.1],[18.8,12.1],[14.2,9.8]])art.buildGrassPatch(w,x,z,.9,{count:12});
     for(let x=10.8;x<20;x+=1.75)addTree(w,x,1.0+((x*7)%2),.72+((x*5)%3)*.07);for(const [x,z,s] of [[1.1,10.7,.8],[2.1,12.8,.72],[18.8,10.8,.74]])addTree(w,x,z,s);art.buildBeachUmbrella(w,17.2,12.0,-.25,.72);art.buildButterflies(w,{x:7,z:11,y:.55,width:5,depth:3,count:5,color:0xe8b55d});art.buildCloudLayer(w,{x:10,z:7,y:14,radius:12,count:5});art.buildAmbientBirds(w,{x:15,z:11,y:6.5,radius:4.5,count:3,color:0x33383c});
-    [['Camp Chair',3.0,9],['Camp Chair',3.7,9.2],['Cooler',5.2,8.9],['Lantern',6.7,8.8],['Dog Toy',7.6,8.4],['Card Box',9.3,8.8],['Water Jug',10.2,8.2],['Firewood',11.6,6],['Camp Bin',14,5.5],['Rock',17,9],['Camp Chair',18,9.6],['Rock',13.5,12.2]].forEach(([t,x,z],i)=>w.addProp(t,x,z,i*.2));return w;
+    [['Camp Chair',3.0,9],['Camp Chair',3.7,9.2],['Cooler',5.2,8.9],['Lantern',6.7,8.8],['Dog Toy',7.6,8.4],['Card Box',9.3,8.8],['Water Jug',10.2,8.2],['Firewood',11.6,6],['Camp Bin',14,5.5],['Rock',17,9],['Camp Chair',18,9.6],['Rock',13.5,12.2]].forEach(([t,x,z],i)=>w.addProp(t,x,z,i*.2));sprinkleWorldCatalog(w,'Camper / Campsite Prop Hunt',34);return w;
   }
 
   function buildAcreage(){
@@ -447,7 +454,7 @@
     art.buildBench(w,16.7,5.25,-.2);art.buildStringLights(w,[[15.8,3.1],[18.0,2.6],[20.2,3.3],[19.5,5.6],[16.4,5.7]],2.25);art.buildLampPost(w,8.0,4.7,2.25,{activeLight:true,intensity:.48});art.buildPlanter(w,4.5,4.75,0,{width:1.05});for(const [x,z,s] of [[7.5,13.2,.8],[12.0,14.6,.75],[23.2,6.8,.8],[1.0,6.2,.7]])art.buildBush(w,x,z,s,0x4a7047);for(const [x,z] of [[7.7,6.0],[11.5,6.2],[15.1,7.1],[23.3,11.8],[5.0,14.2]])art.buildGrassPatch(w,x,z,1,{count:14});
     for(let i=0;i<7;i++){const soil=new THREE.Mesh(new THREE.BoxGeometry(.52,.08,3.3),art.material('dirt',0x6b4f38,{seed:i+20}));soil.position.set(17.7+i*.68,.04,7.5);soil.receiveShadow=true;w.group.add(soil);for(let j=0;j<4;j++){const plant=new THREE.Mesh(new THREE.SphereGeometry(.12,10,8),art.material('paintedWood',0x4f7d4b));plant.position.set(17.7+i*.68,.18,6.45+j*.68);w.group.add(plant)}}
     addFence(w,17.7,12.4,7,'x');addFence(w,14.3,14.2,3.5,'z');addFence(w,21.1,14.2,3.5,'z');for(let x=16;x<24;x+=1.55)addTree(w,x,10.25+((x*3)%2),.72);for(let i=0;i<8;i++)addTree(w,.8+i*.8,15.0-(i%2)*.7,.65);art.buildNoticeBoard(w,7.0,5.2,.1,{titleColor:0x6e5c50});art.buildAmbientBirds(w,{x:17,z:12,y:7,radius:5,count:4});
-    [['Flower Pot',4.2,4.4],['Watering Can',5.0,4.3],['Tire',8.4,5.1],['Toolbox',7.5,7.1],['Gas Can',6.6,9.7],['Garbage Can',4.2,12.4],['Camp Chair',16.5,4.8],['Camp Chair',17.3,4.7],['Cooler',19.2,4.8],['Rock',21.8,8.6],['Pallet',13.8,12.3],['Feed Bucket',17.4,13.5]].forEach(([t,x,z],i)=>w.addProp(t,x,z,i*.23));return w;
+    [['Flower Pot',4.2,4.4],['Watering Can',5.0,4.3],['Tire',8.4,5.1],['Toolbox',7.5,7.1],['Gas Can',6.6,9.7],['Garbage Can',4.2,12.4],['Camp Chair',16.5,4.8],['Camp Chair',17.3,4.7],['Cooler',19.2,4.8],['Rock',21.8,8.6],['Pallet',13.8,12.3],['Feed Bucket',17.4,13.5]].forEach(([t,x,z],i)=>w.addProp(t,x,z,i*.23));sprinkleWorldCatalog(w,'Backyard / Fire Pit Prop Hunt',34);return w;
   }
 
   function buildFarm(){
@@ -457,7 +464,7 @@
     const mud=new THREE.Mesh(new THREE.CylinderGeometry(1.55,1.55,.07,36),art.material('dirt',0x594333,{seed:33}));mud.position.set(15.8,.035,12.0);mud.receiveShadow=true;w.group.add(mud);
     art.buildLampPost(w,11.6,5.7,2.3,{activeLight:true,intensity:.48});art.buildToolRack(w,9.0,4.62,0);art.buildCabinet(w,3.0,4.82,0,{width:.9,height:1.45,color:0x6a604d});art.buildAmbientParticles(w,{x:9,z:10.5,y:.25,width:12,depth:7,height:2.2,count:30,color:0xe6d5a5,kind:'dust'});for(const [x,z,s] of [[1.0,7.8,.8],[12.4,7.3,.7],[21.1,11.2,.8],[13.2,14.4,.75]])art.buildBush(w,x,z,s,0x506a42);for(const [x,z] of [[2.0,8.7],[9.4,8.8],[14.2,8.4],[20.5,6.8],[13.0,13.8]])art.buildGrassPatch(w,x,z,1,{count:16,color:0x596e42});art.buildRockCluster(w,21.0,2.1,.8);
     for(let i=0;i<5;i++)addNpcAnimal(w,i<2?'goat':i<4?'pig':'peacock',4+i*2,11+(i%2));for(const [x,z,s] of [[.7,2.0,.7],[21.0,8.2,.75],[21.1,14.5,.7]])addTree(w,x,z,s);art.buildMarketStall(w,10.8,14.3,Math.PI,{color:0x8a7250,width:1.9});art.buildNoticeBoard(w,1.4,5.8,.04,{titleColor:0x5f6f4b});art.buildAmbientBirds(w,{x:10,z:10,y:6.8,radius:5.3,count:5});
-    [['Feed Barrel',2.4,6.8],['Trough',4,7.0],['Hay Bale',6.2,7.5],['Pallet',8.0,7.8],['Feed Sack',10.1,6.8],['Egg Crate',3.0,4.9],['Feed Bucket',11.5,9],['Mud Bucket',15,10.5],['Garbage Can',20,4.8],['Toolbox',13.3,5.0],['Tire',17.2,5.2],['Lumber',7.0,13.2]].forEach(([t,x,z],i)=>w.addProp(t,x,z,i*.19));return w;
+    [['Feed Barrel',2.4,6.8],['Trough',4,7.0],['Hay Bale',6.2,7.5],['Pallet',8.0,7.8],['Feed Sack',10.1,6.8],['Egg Crate',3.0,4.9],['Feed Bucket',11.5,9],['Mud Bucket',15,10.5],['Garbage Can',20,4.8],['Toolbox',13.3,5.0],['Tire',17.2,5.2],['Lumber',7.0,13.2]].forEach(([t,x,z],i)=>w.addProp(t,x,z,i*.19));sprinkleWorldCatalog(w,'Goat / Farm Prop Hunt',34);return w;
   }
 
   function buildTractor(w,x,z,rot=0){return art.buildTractor(w,x,z,rot)}

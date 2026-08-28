@@ -8,6 +8,7 @@ import * as phaseE from '/phase-e-qa.mjs';
 import {approvedFallbackStyle,tagWithApprovedIdentity} from '/approved-family-characters.mjs';
 import {RUSTIC_CABIN_3D_PALETTE as CABIN3D} from '/cabin-item-art.mjs';
 import {CABIN_ROOM_ITEM_BY_ID} from '/cabin-room-catalog.mjs';
+import {WORLD_PROP_CATALOG} from '/world-prop-catalog.mjs';
 
 const art=create3DArtKit(THREE);
 const assets=studio.createAuthoredAssetPipeline(THREE,{assetVersion:phaseE.STAGING_BUILD_ID});
@@ -202,6 +203,8 @@ function buildIsland(w){const water=studio.createWaterSurface(THREE,{radius:72,y
   art.buildLampPost(w,29,-32,2.3,{activeLight:true,intensity:.5});art.buildLampPost(w,34.5,-32,2.3);art.buildBench(w,38,-37,.2);for(const [x,z] of [[35,-39],[42,-31],[47,-20],[-42,31],[-34,40]])art.buildGrassPatch(w,x,z,.8,{count:10,color:0x78945c});
   // Persistent residential coast
   const byOwner=new Map((state?.residents||[]).filter(r=>r.home).map(r=>[r.home.lotId,r]));for(const lot of life.LOTS){const resident=byOwner.get(lot.id);const ring=new THREE.Mesh(new THREE.RingGeometry(4,4.12,40),new THREE.MeshBasicMaterial({color:resident?0xf1cc70:0xffffff,transparent:true,opacity:.42,side:THREE.DoubleSide}));ring.rotation.x=-Math.PI/2;ring.position.set(lot.x,.06,lot.z);w.group.add(ring);const radial=Math.atan2(lot.x,lot.z),mx=lot.x-Math.sin(radial)*3.45,mz=lot.z-Math.cos(radial)*3.45;art.buildMailbox(w,mx,mz,radial,{color:resident?0x557a77:0x817a6b});if(resident)buildHouseExterior(w,resident,lot);else{addSign(w,lot.x,lot.z,'VACANT HOME LOT',.6);w.interact({kind:'lot',lotId:lot.id,x:lot.x,z:lot.z,label:`Claim ${lot.label}`})}}
+  // W21 shared world-prop catalog: the island now uses the same prop identities as Prop Hunt and Family Mystery.
+  const islandProps=WORLD_PROP_CATALOG.filter(x=>x['Primary Map']==='Island Life').slice(0,28);islandProps.forEach((item,i)=>{const a=i/islandProps.length*Math.PI*2,r=10+(i%5)*3.5,x=Math.sin(a)*r,z=Math.cos(a)*r,g=art.createWorldPropMesh(item);g.position.set(x,Math.max(0,w.groundHeight?.(x,z)||0),z);g.rotation.y=a+.4;g.scale.multiplyScalar(item['Scale Class']==='Large'?.8:item['Scale Class']==='Small'?.72:.76);g.userData.w21WorldProp=true;w.group.add(g)});
   for(const node of life.FORAGE_NODES)buildResourceNode(w,node);buildLoosePhysicsProps(w);applyCooldownVisibility(w)}
 function buildLoosePhysicsProps(w){if(!game?.physics)return;const defs=[[-43,-34,.18,0x7b5534,'coconut'],[-39,-38,.18,0x7b5534,'coconut'],[29,36,.22,0xe5b64f,'beach ball'],[36,-42,.21,0xd86b55,'beach ball'],[-18,31,.2,0x9a714a,'garden ball']];for(const [x,z,r,c,name] of defs){const m=new THREE.Mesh(new THREE.SphereGeometry(r,12,9),new THREE.MeshStandardMaterial({color:c,roughness:.72,metalness:0}));m.position.set(x,(w.groundHeight?.(x,z)||0)+r+.02,z);m.castShadow=true;m.receiveShadow=true;m.name=name;w.group.add(m);const b=game.physics.register(m,{radius:r,mass:name==='coconut'?.75:.45,bounce:name==='coconut'?.16:.38,friction:.9});b.spin.set(.4,.2,.25)}}
 function applyCooldownVisibility(w){const t=Date.now();for(const [id,g] of w.resourceMeshes){g.visible=Number(state?.nodeCooldowns?.[id]||0)<=t}}

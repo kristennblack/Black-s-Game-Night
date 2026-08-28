@@ -13,7 +13,7 @@ const [prop,island,birthday,sw,app,manifestText]=await Promise.all([
 const manifest=JSON.parse(manifestText);
 
 test('Phase E staging identifier is explicit and cache-versioned',()=>{
-  assert.equal(STAGING_BUILD_ID,'GAME-NIGHT-STAGING-PHASE-W20-MASTER-CATALOG-42');
+  assert.equal(STAGING_BUILD_ID,'GAME-NIGHT-STAGING-PHASE-W21-TRUE3D-WORLD-PROPS-GAMEPLAY-43');
   assert.ok(app.includes(STAGING_BUILD_ID));
   assert.ok(sw.includes('black-family-game-night-staging-phase-t1-prop-hunt-hunter-release-combat-19'));
   assert.ok(sw.includes('/phase-e-qa.mjs'));

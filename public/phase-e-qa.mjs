@@ -1,6 +1,6 @@
 export const LEGACY_STAGING_BUILD_ID='GAME-NIGHT-STAGING-PHASE-T1-PROP-HUNT-HUNTER-RELEASE-COMBAT-19';
-export const STAGING_BUILD_ID='GAME-NIGHT-STAGING-PHASE-W20-MASTER-CATALOG-42';
-export const STAGING_APP_VERSION='3.18.0-staging-phase-w20-master-catalog-42';
+export const STAGING_BUILD_ID='GAME-NIGHT-STAGING-PHASE-W21-TRUE3D-WORLD-PROPS-GAMEPLAY-43';
+export const STAGING_APP_VERSION='3.19.0-staging-phase-w21-true3d-world-props-gameplay-43';
 // Historical QA lineage: 3.4.0-staging-phase-s-gameplay-tabletop-realism-17
 
 const fmt=n=>Number.isFinite(Number(n))?Number(n).toFixed(2):'n/a';

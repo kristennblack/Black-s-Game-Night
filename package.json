@@ -1,12 +1,12 @@
 {
   "name": "black-family-game-night",
-  "version": "3.18.0-staging-phase-w20-master-catalog-42",
+  "version": "3.19.0-staging-phase-w21-true3d-world-props-gameplay-43",
   "private": true,
   "type": "module",
-  "description": "Black Family Game Night W.20: full 2,000 home + 2,000 wearable catalog foundation, scalable collection browsing, universal avatar fitting, architectural finishes, approved catalog visual identity, and shared 3D catalog integration.",
+  "description": "Black Family Game Night W.21: true-3D cabin room renderer, 2,000-item shared world-prop foundation, Blackgammon checker-first movement recovery, Deck Sweep mystery-card play, Trail Trouble and Prairie Pots one-click bot starts, and expanded Mexican Train viewport.",
   "scripts": {
     "test": "node --test",
-    "check": "node --check worker.mjs && node --check propHuntRoom.mjs && node --check islandLifeRoom.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check threeNewGames.mjs && node --check blackGammon.mjs && node --check public/app.js && node --check public/prop-hunt-core.mjs && node --check public/shared-3d-art-kit.mjs && node --check public/shared-3d-gameplay.mjs && node --check public/approved-family-characters.mjs && node --check public/arcade-tutorials.mjs && node --check public/avatar-cosmetics.mjs && node --check public/cabin.js && node --check public/cabin-room-catalog.mjs && node --check public/shared-3d-studio.mjs && node --check public/prop-hunt-3d.js && node --check public/island-life-core.mjs && node --check public/island-life.js && node --check public/birthday-climb.js && node --check public/phase-e-qa.mjs && node --check public/sw.js && node --test",
+    "check": "node --check worker.mjs && node --check propHuntRoom.mjs && node --check islandLifeRoom.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check threeNewGames.mjs && node --check blackGammon.mjs && node --check public/app.js && node --check public/prop-hunt-core.mjs && node --check public/shared-3d-art-kit.mjs && node --check public/shared-3d-gameplay.mjs && node --check public/approved-family-characters.mjs && node --check public/arcade-tutorials.mjs && node --check public/avatar-cosmetics.mjs && node --check public/cabin.js && node --check public/cabin-room-catalog.mjs && node --check public/shared-3d-studio.mjs && node --check public/prop-hunt-3d.js && node --check public/island-life-core.mjs && node --check public/island-life.js && node --check public/birthday-climb.js && node --check public/phase-e-qa.mjs && node --check public/sw.js && node --check public/cabin-3d-room.mjs && node --check public/world-prop-catalog.mjs && node --test",
     "deploy": "wrangler deploy",
     "assets:build": "python tools/build_production_assets.py",
     "assets:audit": "python tools/audit_production_assets.py",
