@@ -11,6 +11,7 @@
   const THREE_URL='https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.min.js';
   const CORE_URL='/prop-hunt-core.mjs';
   const ART_URL='/shared-3d-art-kit.mjs';
+  const CATALOG_URL='/cabin-room-catalog.mjs';
   const GAMEPLAY_URL='/shared-3d-gameplay.mjs';
   const STUDIO_URL='/shared-3d-studio.mjs';
   const PHASE_E_URL='/phase-e-qa.mjs';
@@ -24,7 +25,7 @@
   const QA_MODE=new URLSearchParams(location.search).get('qa3d')==='1';
   const CDN_NOTICE='Three.js 0.185.1';
 
-  let root=null,THREE=null,core=null,art=null,gameplay=null,studio=null,phaseE=null,approvedCharacters=null,assets=null,audio=null,loadPromise=null,game=null,raf=0,lastFrame=0;
+  let root=null,THREE=null,core=null,art=null,gameplay=null,studio=null,phaseE=null,approvedCharacters=null,catalogData=null,assets=null,audio=null,loadPromise=null,game=null,raf=0,lastFrame=0;
   let network=null,roomState=null,ws=null,reconnectTimer=0,pollTimer=0;
   const keys=Object.create(null);
   const joy={x:0,z:0,id:null};
@@ -110,7 +111,7 @@
 
   async function ensureEngine(){
     if(loadPromise)return loadPromise;
-    loadPromise=Promise.all([import(THREE_URL),import(CORE_URL),import(ART_URL),import(GAMEPLAY_URL),import(STUDIO_URL),import(PHASE_E_URL),import(APPROVED_CHAR_URL)]).then(([t,c,a,g,s,q,ch])=>{THREE=t;core=c;art=a.create3DArtKit(THREE);gameplay=g;studio=s;phaseE=q;approvedCharacters=ch;for(const id of ch.APPROVED_FAMILY_CHARACTER_IDS||[]){if(OUTFITS[id])Object.assign(OUTFITS[id],ch.approvedFallbackStyle(id,OUTFITS[id]));}assets=studio.createAuthoredAssetPipeline(THREE,{assetVersion:phaseE.STAGING_BUILD_ID});audio=studio.createAudioSystem();return true}).catch(err=>{console.error('3D engine failed to load',err);throw new Error('The 3D engine could not load. Check the internet connection and reload the game.')});
+    loadPromise=Promise.all([import(THREE_URL),import(CORE_URL),import(ART_URL),import(GAMEPLAY_URL),import(STUDIO_URL),import(PHASE_E_URL),import(APPROVED_CHAR_URL),import(CATALOG_URL)]).then(([t,c,a,g,s,q,ch,cat])=>{THREE=t;core=c;art=a.create3DArtKit(THREE);gameplay=g;studio=s;phaseE=q;approvedCharacters=ch;catalogData=cat;for(const id of ch.APPROVED_FAMILY_CHARACTER_IDS||[]){if(OUTFITS[id])Object.assign(OUTFITS[id],ch.approvedFallbackStyle(id,OUTFITS[id]));}assets=studio.createAuthoredAssetPipeline(THREE,{assetVersion:phaseE.STAGING_BUILD_ID});audio=studio.createAudioSystem();return true}).catch(err=>{console.error('3D engine failed to load',err);throw new Error('The 3D engine could not load. Check the internet connection and reload the game.')});
     return loadPromise;
   }
 
@@ -298,8 +299,15 @@
 
     // Permanent Papa fireplace/chair landmark.
     w.heroFallbacks={};w.heroFallbacks.fireplace=buildFireplace(w,24.9,19.8,Math.PI);w.heroFallbacks.papaChair=buildPapaChair(w,22.9,19.2,.15);
-    // W19 shared cabin collection art: a recognizable lodge corner reuses the same rustic visual language as the Cabin.
+    // W20 catalog integration: Papa's Shop now exhibits named flagship objects from the same cabin collection players browse and own.
     w.addProp('Cabin Rug',22.85,18.15,.02,.015);w.addProp('Cabin Dresser',20.75,20.25,Math.PI,.02);w.addProp('Cabin TV',20.75,19.95,Math.PI,.72);w.addProp('Cabin Lamp',21.85,20.15,0,.02);
+    const w20ShopCatalog=[
+      ['home-flagship-h008-papa-s-worn-yellow-chair',22.15,18.85,.56,.10],
+      ['home-flagship-h095-john-s-wrench-display',20.35,20.05,.62,Math.PI],
+      ['home-flagship-h026-workshop-cage-sconce',25.75,18.65,.52,Math.PI/2],
+      ['home-flagship-h082-game-vault-cabinet',18.85,20.15,.48,Math.PI]
+    ];
+    for(const [itemId,x,z,scale,rot] of w20ShopCatalog){const item=catalogData?.CABIN_ROOM_ITEM_BY_ID?.[itemId];if(!item)continue;const mesh=art.createCatalogHomeMesh(item);mesh.position.set(x,.03,z);mesh.rotation.y=rot;mesh.scale.setScalar(scale);mesh.userData.w20CatalogShowcase=true;w.group.add(mesh)}
     const glow=new THREE.PointLight(0xff9d59,1.8,6.2,2);glow.position.set(24.9,1.1,19.4);w.group.add(glow);w.shopLights.push(glow);
     const p2BenchmarkLights=[];const p2FireplaceGlow=new THREE.PointLight(0xffa05c,1.85,5.2,2);p2FireplaceGlow.name='P2 fireplace glow';p2FireplaceGlow.position.set(24.8,1.15,19.4);w.group.add(p2FireplaceGlow);p2BenchmarkLights.push(p2FireplaceGlow);const p2ShopFill=new THREE.PointLight(0xffe0ba,.55,10,2);p2ShopFill.name='P2 shop work-bay fill';p2ShopFill.position.set(9.5,3.25,12.5);w.group.add(p2ShopFill);p2BenchmarkLights.push(p2ShopFill);const p2BarnFill=new THREE.PointLight(0xd7e0c5,.42,12,2);p2BarnFill.name='P2 barn soft fill';p2BarnFill.position.set(40.5,3.7,14.2);w.group.add(p2BarnFill);p2BenchmarkLights.push(p2BarnFill);w.p2BenchmarkLights=p2BenchmarkLights;
 

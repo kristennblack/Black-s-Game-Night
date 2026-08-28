@@ -705,6 +705,29 @@ export function create3DArtKit(THREE){
     const dispose=()=>{for(const p of pool){scene.remove(p.mesh);p.mesh.material.dispose()}geo.dispose()};return{emit,update,dispose};
   }
 
+  // W20 catalog bridge: turn the same catalog identity used by Browse/Preview/Cabin into
+  // lightweight procedural 3D geometry. This is intentionally a reusable production
+  // bridge, not a claim that all 2,000 home records are hand-sculpted GLBs.
+  function createCatalogHomeMesh(item={}){
+    const cat=String(item.Category||''),sub=String(item.Subcategory||''),seed=Number(item['Art Seed']||hashString(item['Item ID']||item['Item Name']||cat))>>>0;
+    const hue=((seed%360)+18)%360/360,col=new THREE.Color().setHSL(hue,.28,.43).getHex(),warm=new THREE.Color().setHSL(hue,.24,.58).getHex();
+    let g;
+    if(cat==='Beds & Bedroom Furniture')g=createPropMesh('Cabin Bed',{w:2.05,d:1.35,h:1.1,color:col});
+    else if(cat==='Seating')g=createPropMesh('Papa Chair',{w:.95,d:.95,h:1.2,color:col});
+    else if(cat==='Storage')g=createPropMesh('Cabin Dresser',{w:1.4,d:.58,h:1.15,color:col});
+    else if(cat==='Lighting')g=createPropMesh('Cabin Lamp',{w:.55,d:.55,h:1.5,color:warm});
+    else if(cat==='Electronics & Entertainment')g=createPropMesh('Cabin TV',{w:1.5,d:.34,h:1.15,color:col});
+    else if(cat==='Rugs & Soft Decor')g=createPropMesh('Cabin Rug',{w:2.0,d:1.35,h:.04,color:col});
+    else if(cat==='Clutter & Detail Props'){const t=/mug/i.test(sub)?'Coffee Mug':/tool|wrench/i.test(sub)?'Toolbox':/lantern/i.test(sub)?'Lantern':/dog/i.test(sub)?'Dog Toy':'Parts Crate';g=createPropMesh(t,{w:.55,d:.45,h:.5,color:col})}
+    else if(cat==='Outdoor / Porch / Deck')g=createPropMesh(/chair/i.test(sub)?'Camp Chair':'Camp Bin',{w:1,d:.75,h:.85,color:col});
+    else if(cat==='Windows & Doors'){g=new THREE.Group();const frame=material('wood',col,{seed});g.add(box(1.25,1.75,.1,frame,[0,.875,0]));g.add(box(.88,1.38,.04,material('glass',0x92bac3,{opacity:.34}),[0,.9,-.075]));g.add(box(.07,1.4,.07,material('paintedWood',warm,{seed:seed+1}),[0,.9,-.1]));g.add(box(.9,.07,.07,material('paintedWood',warm,{seed:seed+2}),[0,.9,-.1]))}
+    else if(cat==='Wall Decor & Pictures'){g=new THREE.Group();g.add(box(1.15,.9,.07,material('wood',col,{seed}),[0,.45,0]));g.add(box(.92,.68,.035,material('paintedWood',warm,{seed:seed+1}),[0,.45,-.055]))}
+    else if(cat==='Tables & Desks'){g=new THREE.Group();const top=material('wood',col,{seed}),leg=material('wood',shadeHex(col,-.2),{seed:seed+1});g.add(box(1.75,.12,1.0,top,[0,.82,0]));for(const sx of [-.7,.7])for(const sz of [-.35,.35])g.add(box(.1,.78,.1,leg,[sx,.39,sz]))}
+    else if(cat==='Architectural Finishes'){g=new THREE.Group();g.add(box(1.65,1.2,.06,material('paintedWood',col,{seed}),[0,.6,0]))}
+    else {g=new THREE.Group();g.add(box(1.1,.8,.7,material('paintedWood',col,{seed}),[0,.4,0]))}
+    g.userData.catalogItemId=item['Item ID']||'';g.userData.catalogItemName=item['Item Name']||'';g.userData.catalogCollection=item.Collection||'';g.userData.catalogVersion=20;g.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});return g;
+  }
+
   function animateFire(root,time){root?.traverse?.(o=>{if(o.userData?.flamePhase!=null){const s=1+Math.sin(time*8+o.userData.flamePhase)*.09;o.scale.y=s;o.rotation.z=Math.sin(time*5+o.userData.flamePhase)*.06}});if(root?.userData?.fireLight)root.userData.fireLight.intensity=2.7+Math.sin(time*9)*.35;}
 
   // Tiny ambient motion sells depth without physics overhead. Only visual child groups move,
@@ -726,6 +749,6 @@ export function create3DArtKit(THREE){
 
   return {
     material,makeTexture,addRaycast,addCollider,addAsset,tubeBetween,box,sphere,cylinder,capsule,torus,
-    slatWall,buildFloorDrain,buildOilStain,buildHoseReel,buildTireStack,buildShopSideTable,buildWallConduit,buildWorkbench,buildToolChest,buildShelving,buildLumberStack,buildCrate,buildTractor,buildMotorcycle,buildFireplace,buildPapaChair,buildDrillPress,buildAirCompressor,buildWeldingCart,buildLadder,buildOverheadLight,buildBarnStall,buildPicnicTable,buildBBQ,buildTruck,buildTent,buildCampfire,buildTrailer,buildBoat,buildTrampoline,buildPool,buildHotTub,buildSeaCan,buildFence,buildGrassPatch,buildBush,buildRockCluster,buildBench,buildPlanter,buildLampPost,buildCeilingFan,buildToolRack,buildCabinet,buildStringLights,buildAmbientParticles,buildFountain,buildBeachUmbrella,buildMarketStall,buildNoticeBoard,buildMailbox,buildPartyArch,buildAmbientBirds,buildDetailedTree,buildSwingDoor,buildOverheadDoor,buildWallPoster,buildCloudLayer,buildButterflies,buildRuralBackdrop,buildExteriorTrim,buildPropZapper,buildHumanRig,buildDogRig,createPropMesh,createMotionFxSystem,animateFire,animateAmbience,shadeHex
+    slatWall,buildFloorDrain,buildOilStain,buildHoseReel,buildTireStack,buildShopSideTable,buildWallConduit,buildWorkbench,buildToolChest,buildShelving,buildLumberStack,buildCrate,buildTractor,buildMotorcycle,buildFireplace,buildPapaChair,buildDrillPress,buildAirCompressor,buildWeldingCart,buildLadder,buildOverheadLight,buildBarnStall,buildPicnicTable,buildBBQ,buildTruck,buildTent,buildCampfire,buildTrailer,buildBoat,buildTrampoline,buildPool,buildHotTub,buildSeaCan,buildFence,buildGrassPatch,buildBush,buildRockCluster,buildBench,buildPlanter,buildLampPost,buildCeilingFan,buildToolRack,buildCabinet,buildStringLights,buildAmbientParticles,buildFountain,buildBeachUmbrella,buildMarketStall,buildNoticeBoard,buildMailbox,buildPartyArch,buildAmbientBirds,buildDetailedTree,buildSwingDoor,buildOverheadDoor,buildWallPoster,buildCloudLayer,buildButterflies,buildRuralBackdrop,buildExteriorTrim,buildPropZapper,buildHumanRig,buildDogRig,createPropMesh,createCatalogHomeMesh,createMotionFxSystem,animateFire,animateAmbience,shadeHex
   };
 }

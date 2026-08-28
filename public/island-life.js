@@ -7,6 +7,7 @@ import * as studio from '/shared-3d-studio.mjs';
 import * as phaseE from '/phase-e-qa.mjs';
 import {approvedFallbackStyle,tagWithApprovedIdentity} from '/approved-family-characters.mjs';
 import {RUSTIC_CABIN_3D_PALETTE as CABIN3D} from '/cabin-item-art.mjs';
+import {CABIN_ROOM_ITEM_BY_ID} from '/cabin-room-catalog.mjs';
 
 const art=create3DArtKit(THREE);
 const assets=studio.createAuthoredAssetPipeline(THREE,{assetVersion:phaseE.STAGING_BUILD_ID});
@@ -65,7 +66,15 @@ function buildStore(w,id,b,{color=0xe8d6b2,roof=0x79594a,label,store=false,work=
   art.buildShelving(w,x-2.25,z-1.55,Math.PI/2,{width:2.5,height:2.05,depth:.52});art.buildShelving(w,x+2.25,z-1.55,Math.PI/2,{width:2.5,height:2.05,depth:.52});art.buildOverheadLight(w,x,z,2.55);
   if(id==='coffee'||id==='cafe'){const machine=art.buildAirCompressor(w,x-1.7,z-.68,0);machine.scale.set(.48,.42,.48);for(let i=-1;i<=1;i++){const mug=art.createPropMesh('Coffee Mug',{w:.22,d:.22,h:.24,color:0xf2e7d2});mug.position.set(x+i*.34,1.02,z-.82);w.group.add(mug)}for(const xx of [-1.55,1.55]){const table=art.buildPicnicTable(w,x+xx,z+1.15,0);table.scale.set(.46,.48,.46)}}
   else if(id==='workshop'){art.buildWorkbench(w,x,z+1.18,0);art.buildToolChest(w,x-2,z+.85,0);art.buildDrillPress(w,x+2,z+.92,0)}
-  else if(id==='furniture'){const bed=art.createPropMesh('Cabin Bed',{w:1.65,d:1.05,h:.9,color:CABIN3D.pine});bed.position.set(x-1.55,.02,z+1.12);bed.scale.set(.62,.62,.62);w.group.add(bed);const dresser=art.createPropMesh('Cabin Dresser',{w:1.15,d:.48,h:1.0,color:CABIN3D.agedWood});dresser.position.set(x+1.55,.02,z+1.2);dresser.scale.set(.7,.7,.7);w.group.add(dresser);const lamp=art.createPropMesh('Cabin Lamp',{w:.48,d:.48,h:1.35,color:CABIN3D.cream});lamp.position.set(x+.55,.02,z+.8);lamp.scale.set(.65,.65,.65);w.group.add(lamp)}
+  else if(id==='furniture'){
+    // W20 shared catalog bridge: the Island furniture shop displays the same named objects players browse in the cabin catalog.
+    const samples=[
+      ['home-flagship-h096-kristen-layered-linen-bed',x-1.55,z+1.15,.50,0],
+      ['home-flagship-h008-papa-s-worn-yellow-chair',x+.10,z+1.10,.62,-.18],
+      ['home-flagship-h082-game-vault-cabinet',x+1.55,z+1.18,.55,0]
+    ];
+    for(const [itemId,px,pz,scale,rot] of samples){const item=CABIN_ROOM_ITEM_BY_ID[itemId];if(!item)continue;const mesh=art.createCatalogHomeMesh(item);mesh.position.set(px,.02,pz);mesh.rotation.y=rot;mesh.scale.setScalar(scale);w.group.add(mesh)}
+  }
   else if(id==='boutique'){for(const zz of [.55,1.4]){w.box({x:x-1.2,z:z+zz,y:.1,w:.06,d:2.1,h:1.55,material:art.material('metal',0x8c918f),solid:false});w.box({x:x+1.2,z:z+zz,y:.1,w:.06,d:2.1,h:1.55,material:art.material('metal',0x8c918f),solid:false})}}
   else if(id==='market'){for(const zz of [.45,1.45])art.buildShelving(w,x,z+zz,0,{width:3.2,height:1.35,depth:.5})}
   else if(id==='marina'){const crate=art.buildCrate(w,x-1.8,z+1.25,.2,{width:.8,height:.65,depth:.8,name:'Marina crate'});crate.rotation.y=.2;const cooler=art.createPropMesh('Cooler',{w:.55,d:.42,h:.48,color:0x6f9eac});cooler.position.set(x+1.8,.02,z+1.25);w.group.add(cooler)}

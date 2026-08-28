@@ -1140,3 +1140,7 @@ html{background:#e8dfcc}body{min-height:100svh;padding-bottom:env(safe-area-inse
 
 /* W19 avatar-fit override: important previews are full bust/body stages, not cropped portrait circles. */
 .home-profile-avatar.avatar-frame{overflow:visible!important}.home-profile-avatar.avatar-frame>img{border-radius:18px!important}
+
+/* W20 universal 17-slot wearable layering */
+.avatar-cosmetic-back,.avatar-cosmetic-attachment{z-index:2!important}.avatar-cosmetic-top{z-index:3!important}.avatar-cosmetic-outerwear,.avatar-cosmetic-onepiece,.avatar-cosmetic-costume{z-index:4!important}.avatar-cosmetic-bottom,.avatar-cosmetic-shoes{z-index:5!important}.avatar-cosmetic-neck,.avatar-cosmetic-wrists,.avatar-cosmetic-badge{z-index:7!important}.avatar-cosmetic-headset,.avatar-cosmetic-face,.avatar-cosmetic-earrings,.avatar-cosmetic-filter{z-index:9!important}.avatar-cosmetic-hair,.avatar-cosmetic-hat{z-index:10!important}.avatar-cosmetic.animated-cosmetic{animation:w20CosmeticFloat 2.8s ease-in-out infinite alternate}@keyframes w20CosmeticFloat{to{filter:drop-shadow(0 3px 7px rgba(245,206,108,.5))!important}}
+.score-avatar .avatar-cosmetic-back,.score-avatar .avatar-cosmetic-attachment,.score-avatar .avatar-cosmetic-onepiece,.score-avatar .avatar-cosmetic-costume,.score-avatar .avatar-cosmetic-bottom,.score-avatar .avatar-cosmetic-shoes,.score-avatar .avatar-cosmetic-outerwear{display:none!important}

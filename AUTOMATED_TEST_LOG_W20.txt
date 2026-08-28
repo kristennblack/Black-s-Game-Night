@@ -1,0 +1,3308 @@
+
+> black-family-game-night@3.18.0-staging-phase-w20-master-catalog-42 check
+> node --check worker.mjs && node --check propHuntRoom.mjs && node --check islandLifeRoom.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check threeNewGames.mjs && node --check blackGammon.mjs && node --check public/app.js && node --check public/prop-hunt-core.mjs && node --check public/shared-3d-art-kit.mjs && node --check public/shared-3d-gameplay.mjs && node --check public/approved-family-characters.mjs && node --check public/arcade-tutorials.mjs && node --check public/avatar-cosmetics.mjs && node --check public/cabin.js && node --check public/cabin-room-catalog.mjs && node --check public/shared-3d-studio.mjs && node --check public/prop-hunt-3d.js && node --check public/island-life-core.mjs && node --check public/island-life.js && node --check public/birthday-climb.js && node --check public/phase-e-qa.mjs && node --check public/sw.js && node --test
+
+TAP version 13
+# Subtest: Phase W.5 registry locks exactly the explicitly approved turnarounds
+ok 1 - Phase W.5 registry locks exactly the explicitly approved turnarounds
+  ---
+  duration_ms: 3.502531
+  type: 'test'
+  ...
+# Subtest: unapproved family members are not falsely promoted into the approved registry
+ok 2 - unapproved family members are not falsely promoted into the approved registry
+  ---
+  duration_ms: 0.280133
+  type: 'test'
+  ...
+# Subtest: Lizzy alias resolves to Elizabeth without creating a second identity
+ok 3 - Lizzy alias resolves to Elizabeth without creating a second identity
+  ---
+  duration_ms: 0.143596
+  type: 'test'
+  ...
+# Subtest: all free-moving 3D games consume the approved character registry
+ok 4 - all free-moving 3D games consume the approved character registry
+  ---
+  duration_ms: 2.246447
+  type: 'test'
+  ...
+# Subtest: master directives give approved turnarounds higher precedence than old realism language
+ok 5 - master directives give approved turnarounds higher precedence than old realism language
+  ---
+  duration_ms: 1.658701
+  type: 'test'
+  ...
+# Subtest: model manifest points approved characters at their locked reference files
+ok 6 - model manifest points approved characters at their locked reference files
+  ---
+  duration_ms: 0.419983
+  type: 'test'
+  ...
+# Subtest: Black Gammon is a separate two-player game with the confirmed 4/4/4/3 starting setup
+ok 7 - Black Gammon is a separate two-player game with the confirmed 4/4/4/3 starting setup
+  ---
+  duration_ms: 4.042826
+  type: 'test'
+  ...
+# Subtest: Black Gammon large die has the locked seven tiebreak values only
+ok 8 - Black Gammon large die has the locked seven tiebreak values only
+  ---
+  duration_ms: 0.16631
+  type: 'test'
+  ...
+# Subtest: Triple allocation lets the controller choose the triple recipient and direction while both players receive the unmatched single
+ok 9 - Triple allocation lets the controller choose the triple recipient and direction while both players receive the unmatched single
+  ---
+  duration_ms: 1.153029
+  type: 'test'
+  ...
+# Subtest: Two different doubles split as double sets and controller chooses direction for both
+ok 10 - Two different doubles split as double sets and controller chooses direction for both
+  ---
+  duration_ms: 0.481827
+  type: 'test'
+  ...
+# Subtest: A single 4 is backward before all checkers are home and cannot enter from the bar
+ok 11 - A single 4 is backward before all checkers are home and cannot enter from the bar
+  ---
+  duration_ms: 0.957714
+  type: 'test'
+  ...
+# Subtest: Double 4 can enter from the bar and uses normal entry before a backward set continues backward
+ok 12 - Double 4 can enter from the bar and uses normal entry before a backward set continues backward
+  ---
+  duration_ms: 3.557194
+  type: 'test'
+  ...
+# Subtest: A single opposing checker dies immediately, while a two-checker stack can be covered by a legal group and gets rescue time
+ok 13 - A single opposing checker dies immediately, while a two-checker stack can be covered by a legal group and gets rescue time
+  ---
+  duration_ms: 0.827007
+  type: 'test'
+  ...
+# Subtest: Four is the normal own-point cap but temporary overstack is permitted while covering opponents
+ok 14 - Four is the normal own-point cap but temporary overstack is permitted while covering opponents
+  ---
+  duration_ms: 0.33814
+  type: 'test'
+  ...
+# Subtest: Black Gammon UI is on the shelf, uses direction/rescue colors, and bot controls default Easy with readable selects
+ok 15 - Black Gammon UI is on the shelf, uses direction/rescue colors, and bot controls default Easy with readable selects
+  ---
+  duration_ms: 18.633335
+  type: 'test'
+  ...
+# Subtest: unused ordinary singles transfer once without upgrading matching sets
+ok 16 - unused ordinary singles transfer once without upgrading matching sets
+  ---
+  duration_ms: 0.979617
+  type: 'test'
+  ...
+# Subtest: a single 4 flips positive immediately after the last outside checker reaches home
+ok 17 - a single 4 flips positive immediately after the last outside checker reaches home
+  ---
+  duration_ms: 1.487142
+  type: 'test'
+  ...
+# Subtest: risk and overstack deadlines resolve even when a player receives no movement in that roll
+ok 18 - risk and overstack deadlines resolve even when a player receives no movement in that roll
+  ---
+  duration_ms: 0.409688
+  type: 'test'
+  ...
+# Subtest: Cloudflare adapter creates, seats, readies and starts all 21 games
+ok 19 - Cloudflare adapter creates, seats, readies and starts all 21 games
+  ---
+  duration_ms: 155.946953
+  type: 'test'
+  ...
+# Subtest: All 21 table games can launch solo with computer players at Easy, Medium or Hard difficulty
+ok 20 - All 21 table games can launch solo with computer players at Easy, Medium or Hard difficulty
+  ---
+  duration_ms: 333.872385
+  type: 'test'
+  ...
+# Subtest: Cloudflare adapter persists room snapshots to Durable Object storage
+ok 21 - Cloudflare adapter persists room snapshots to Durable Object storage
+  ---
+  duration_ms: 0.867668
+  type: 'test'
+  ...
+# Subtest: Cloudflare live room stream returns the initial state without hanging
+ok 22 - Cloudflare live room stream returns the initial state without hanging
+  ---
+  duration_ms: 2.001789
+  type: 'test'
+  ...
+# Subtest: Launch UI removes the nonfunctional install button and provides room retry controls
+ok 23 - Launch UI removes the nonfunctional install button and provides room retry controls
+  ---
+  duration_ms: 14.944763
+  type: 'test'
+  ...
+# Subtest: Launch assets advertise the Phase E staging build and use a fresh service-worker cache
+ok 24 - Launch assets advertise the Phase E staging build and use a fresh service-worker cache
+  ---
+  duration_ms: 19.378919
+  type: 'test'
+  ...
+# Subtest: Ready auto-assigns an open seat when a player did not choose one
+ok 25 - Ready auto-assigns an open seat when a player did not choose one
+  ---
+  duration_ms: 4.088304
+  type: 'test'
+  ...
+# Subtest: Fuck Your Buddy exposes the viewer hand during bidding
+ok 26 - Fuck Your Buddy exposes the viewer hand during bidding
+  ---
+  duration_ms: 2.756617
+  type: 'test'
+  ...
+# Subtest: Chat is stored once and visible to the other player
+ok 27 - Chat is stored once and visible to the other player
+  ---
+  duration_ms: 10.04778
+  type: 'test'
+  ...
+# Subtest: Family-play UI includes Game Shelf home, bid-hand visibility, middle-finger reaction, and no voice controls
+ok 28 - Family-play UI includes Game Shelf home, bid-hand visibility, middle-finger reaction, and no voice controls
+  ---
+  duration_ms: 4.391171
+  type: 'test'
+  ...
+# Subtest: All 18 games can auto-seat players who simply press Ready
+ok 29 - All 18 games can auto-seat players who simply press Ready
+  ---
+  duration_ms: 46.573532
+  type: 'test'
+  ...
+# Subtest: Middle-finger quick reaction is accepted and broadcast in room state
+ok 30 - Middle-finger quick reaction is accepted and broadcast in room state
+  ---
+  duration_ms: 0.865905
+  type: 'test'
+  ...
+# Subtest: Named Black family and pet players receive their matching avatar automatically
+ok 31 - Named Black family and pet players receive their matching avatar automatically
+  ---
+  duration_ms: 5.638511
+  type: 'test'
+  ...
+# Subtest: All named family avatars have four style image files and remain alongside the original library
+ok 32 - All named family avatars have four style image files and remain alongside the original library
+  ---
+  duration_ms: 25.89949
+  type: 'test'
+  ...
+# Subtest: John Black defaults to Birthday Guy and supports all 16 exclusive birthday looks
+ok 33 - John Black defaults to Birthday Guy and supports all 16 exclusive birthday looks
+  ---
+  duration_ms: 1.486281
+  type: 'test'
+  ...
+# Subtest: All 16 John look image files are packaged and the UI exposes the full Birthday Boy lookbook
+ok 34 - All 16 John look image files are packaged and the UI exposes the full Birthday Boy lookbook
+  ---
+  duration_ms: 6.504918
+  type: 'test'
+  ...
+# Subtest: Avatar picker is character-first and reveals only the selected character looks beneath it
+ok 35 - Avatar picker is character-first and reveals only the selected character looks beneath it
+  ---
+  duration_ms: 5.159739
+  type: 'test'
+  ...
+# Subtest: Refreshed original avatars and centered Elizabeth and Holly portraits are packaged at higher quality
+ok 36 - Refreshed original avatars and centered Elizabeth and Holly portraits are packaged at higher quality
+  ---
+  duration_ms: 4.538453
+  type: 'test'
+  ...
+# Subtest: Host can switch the existing room to a new game while all players and tokens stay together
+ok 37 - Host can switch the existing room to a new game while all players and tokens stay together
+  ---
+  duration_ms: 5.743179
+  type: 'test'
+  ...
+# Subtest: Host can add Easy, Medium or Hard computer players and start solo
+ok 38 - Host can add Easy, Medium or Hard computer players and start solo
+  ---
+  duration_ms: 6.927766
+  type: 'test'
+  ...
+# Subtest: Host can choose and later change each computer family character and difficulty
+ok 39 - Host can choose and later change each computer family character and difficulty
+  ---
+  duration_ms: 2.641262
+  type: 'test'
+  ...
+# Subtest: botTick advances a computer turn without exposing hidden hands
+ok 40 - botTick advances a computer turn without exposing hidden hands
+  ---
+  duration_ms: 6.679492
+  type: 'test'
+  ...
+# Subtest: Campfire Chaos starts and returns private public state
+ok 41 - Campfire Chaos starts and returns private public state
+  ---
+  duration_ms: 3.055868
+  type: 'test'
+  ...
+# Subtest: Trail Trouble starts and returns private public state
+ok 42 - Trail Trouble starts and returns private public state
+  ---
+  duration_ms: 1.327582
+  type: 'test'
+  ...
+# Subtest: Prairie Pots starts and returns private public state
+ok 43 - Prairie Pots starts and returns private public state
+  ---
+  duration_ms: 5.927272
+  type: 'test'
+  ...
+# Subtest: Burn Logs starts and returns private public state
+ok 44 - Burn Logs starts and returns private public state
+  ---
+  duration_ms: 1.055932
+  type: 'test'
+  ...
+# Subtest: Deck Sweep starts and returns private public state
+ok 45 - Deck Sweep starts and returns private public state
+  ---
+  duration_ms: 1.099698
+  type: 'test'
+  ...
+# Subtest: Cribbage starts and returns private public state
+ok 46 - Cribbage starts and returns private public state
+  ---
+  duration_ms: 0.501636
+  type: 'test'
+  ...
+# Subtest: Marbles & Jokers starts and returns private public state
+ok 47 - Marbles & Jokers starts and returns private public state
+  ---
+  duration_ms: 0.886426
+  type: 'test'
+  ...
+# Subtest: Euchre starts and returns private public state
+ok 48 - Euchre starts and returns private public state
+  ---
+  duration_ms: 0.675889
+  type: 'test'
+  ...
+# Subtest: 31 starts and returns private public state
+ok 49 - 31 starts and returns private public state
+  ---
+  duration_ms: 0.66315
+  type: 'test'
+  ...
+# Subtest: Golf starts and returns private public state
+ok 50 - Golf starts and returns private public state
+  ---
+  duration_ms: 0.878194
+  type: 'test'
+  ...
+# Subtest: Crazy Eights Countdown starts and returns private public state
+ok 51 - Crazy Eights Countdown starts and returns private public state
+  ---
+  duration_ms: 0.422837
+  type: 'test'
+  ...
+# Subtest: Mitts / Gloves / Socks starts and returns private public state
+ok 52 - Mitts / Gloves / Socks starts and returns private public state
+  ---
+  duration_ms: 0.539274
+  type: 'test'
+  ...
+# Subtest: Poker starts and returns private public state
+ok 53 - Poker starts and returns private public state
+  ---
+  duration_ms: 0.435477
+  type: 'test'
+  ...
+# Subtest: President starts and returns private public state
+ok 54 - President starts and returns private public state
+  ---
+  duration_ms: 1.221222
+  type: 'test'
+  ...
+# Subtest: Last Haven starts and returns private public state
+ok 55 - Last Haven starts and returns private public state
+  ---
+  duration_ms: 1.833585
+  type: 'test'
+  ...
+# Subtest: Mexican Train starts and returns private public state
+ok 56 - Mexican Train starts and returns private public state
+  ---
+  duration_ms: 0.818194
+  type: 'test'
+  ...
+# Subtest: Skip-Bo starts and returns private public state
+ok 57 - Skip-Bo starts and returns private public state
+  ---
+  duration_ms: 4.572604
+  type: 'test'
+  ...
+# Subtest: Backgammon starts and returns private public state
+ok 58 - Backgammon starts and returns private public state
+  ---
+  duration_ms: 0.416738
+  type: 'test'
+  ...
+# Subtest: Blackgammon starts and returns private public state
+ok 59 - Blackgammon starts and returns private public state
+  ---
+  duration_ms: 0.539824
+  type: 'test'
+  ...
+# Subtest: Campfire Chaos first legal action works
+ok 60 - Campfire Chaos first legal action works
+  ---
+  duration_ms: 2.123893
+  type: 'test'
+  ...
+# Subtest: 31 can draw and discard
+ok 61 - 31 can draw and discard
+  ---
+  duration_ms: 0.360534
+  type: 'test'
+  ...
+# Subtest: Golf can draw and replace
+ok 62 - Golf can draw and replace
+  ---
+  duration_ms: 0.91557
+  type: 'test'
+  ...
+# Subtest: Euchre calling action works
+ok 63 - Euchre calling action works
+  ---
+  duration_ms: 0.611331
+  type: 'test'
+  ...
+# Subtest: Cribbage discards to crib
+ok 64 - Cribbage discards to crib
+  ---
+  duration_ms: 0.29179
+  type: 'test'
+  ...
+# Subtest: Trail Trouble deals a persistent private five-card hand
+ok 65 - Trail Trouble deals a persistent private five-card hand
+  ---
+  duration_ms: 0.677522
+  type: 'test'
+  ...
+# Subtest: Marbles & Jokers draws a card
+ok 66 - Marbles & Jokers draws a card
+  ---
+  duration_ms: 0.32486
+  type: 'test'
+  ...
+# Subtest: Burn Logs draws then offers discard or mission actions
+ok 67 - Burn Logs draws then offers discard or mission actions
+  ---
+  duration_ms: 0.723531
+  type: 'test'
+  ...
+# Subtest: Deck Sweep can play a legal starting group
+ok 68 - Deck Sweep can play a legal starting group
+  ---
+  duration_ms: 0.641818
+  type: 'test'
+  ...
+# Subtest: Poker first betting action works
+ok 69 - Poker first betting action works
+  ---
+  duration_ms: 0.38446
+  type: 'test'
+  ...
+# Subtest: Last Haven setup can place a camp and route
+ok 70 - Last Haven setup can place a camp and route
+  ---
+  duration_ms: 0.868469
+  type: 'test'
+  ...
+# Subtest: Campfire LAST LOG catch window expires after the next player completes a turn
+ok 71 - Campfire LAST LOG catch window expires after the next player completes a turn
+  ---
+  duration_ms: 0.257859
+  type: 'test'
+  ...
+# Subtest: 31 recycles the discard pile when stock is exhausted
+ok 72 - 31 recycles the discard pile when stock is exhausted
+  ---
+  duration_ms: 0.327213
+  type: 'test'
+  ...
+# Subtest: Golf recycles discards and is capped at six players for a 56-card deck
+ok 73 - Golf recycles discards and is capped at six players for a 56-card deck
+  ---
+  duration_ms: 0.638423
+  type: 'test'
+  ...
+# Subtest: Trail Trouble only wins when all team markers reach the final Home space
+ok 74 - Trail Trouble only wins when all team markers reach the final Home space
+  ---
+  duration_ms: 0.631822
+  type: 'test'
+  ...
+# Subtest: President can finish a full round without assigning the turn to a player already out
+ok 75 - President can finish a full round without assigning the turn to a player already out
+  ---
+  duration_ms: 1.936309
+  type: 'test'
+  ...
+# Subtest: Poker all-ins automatically run out the board instead of hanging between streets
+ok 76 - Poker all-ins automatically run out the board instead of hanging between streets
+  ---
+  duration_ms: 1.135582
+  type: 'test'
+  ...
+# Subtest: Euchre exposes Ace-No-Face redeal to an eligible player
+ok 77 - Euchre exposes Ace-No-Face redeal to an eligible player
+  ---
+  duration_ms: 0.195334
+  type: 'test'
+  ...
+# Subtest: Last Haven randomizes tiles, includes trading posts, and repeats the seven-warning Raider cycle
+ok 78 - Last Haven randomizes tiles, includes trading posts, and repeats the seven-warning Raider cycle
+  ---
+  duration_ms: 2.34122
+  type: 'test'
+  ...
+# Subtest: Last Haven trade target receives accept and decline actions
+ok 79 - Last Haven trade target receives accept and decline actions
+  ---
+  duration_ms: 0.414956
+  type: 'test'
+  ...
+# Subtest: Campfire Chaos only allows drawing when no card is playable
+ok 80 - Campfire Chaos only allows drawing when no card is playable
+  ---
+  duration_ms: 0.53705
+  type: 'test'
+  ...
+# Subtest: Campfire Chaos playable stock draw can be played or kept, but no other card can be substituted
+ok 81 - Campfire Chaos playable stock draw can be played or kept, but no other card can be substituted
+  ---
+  duration_ms: 3.68789
+  type: 'test'
+  ...
+# Subtest: Cribbage treats Ace as low in pegging runs
+ok 82 - Cribbage treats Ace as low in pegging runs
+  ---
+  duration_ms: 0.563359
+  type: 'test'
+  ...
+# Subtest: Cribbage ends immediately when a player reaches 121 during pegging
+ok 83 - Cribbage ends immediately when a player reaches 121 during pegging
+  ---
+  duration_ms: 0.269507
+  type: 'test'
+  ...
+# Subtest: Burn Logs can finish when the target-log player goes out
+ok 84 - Burn Logs can finish when the target-log player goes out
+  ---
+  duration_ms: 2.324956
+  type: 'test'
+  ...
+# Subtest: Deck Sweep can finish a configured final round
+ok 85 - Deck Sweep can finish a configured final round
+  ---
+  duration_ms: 0.447304
+  type: 'test'
+  ...
+# Subtest: Last Haven can end as soon as a survivor reaches 15 Survival Points
+ok 86 - Last Haven can end as soon as a survivor reaches 15 Survival Points
+  ---
+  duration_ms: 0.494315
+  type: 'test'
+  ...
+# Subtest: Marbles & Jokers uses all five Home holes and team help only after your own five are Home
+ok 87 - Marbles & Jokers uses all five Home holes and team help only after your own five are Home
+  ---
+  duration_ms: 1.524218
+  type: 'test'
+  ...
+# Subtest: Marbles & Jokers cannot pass over a marble of the same colour
+ok 88 - Marbles & Jokers cannot pass over a marble of the same colour
+  ---
+  duration_ms: 4.210829
+  type: 'test'
+  ...
+# Subtest: Marbles & Jokers landing on a partner sends that partner to their in-spot
+ok 89 - Marbles & Jokers landing on a partner sends that partner to their in-spot
+  ---
+  duration_ms: 0.756581
+  type: 'test'
+  ...
+# Subtest: 31 skips eliminated players when a player knocks
+ok 90 - 31 skips eliminated players when a player knocks
+  ---
+  duration_ms: 0.218049
+  type: 'test'
+  ...
+# Subtest: Trail Trouble exposes board metadata and card 4 moves backward four
+ok 91 - Trail Trouble exposes board metadata and card 4 moves backward four
+  ---
+  duration_ms: 0.858314
+  type: 'test'
+  ...
+# Subtest: Screw max hands scale by player count
+ok 92 - Screw max hands scale by player count
+  ---
+  duration_ms: 0.904905
+  type: 'test'
+  ...
+# Subtest: Fuck deck is 56 cards with 2 high and 2 low Jokers
+ok 93 - Fuck deck is 56 cards with 2 high and 2 low Jokers
+  ---
+  duration_ms: 0.625493
+  type: 'test'
+  ...
+# Subtest: Fuck max hand stays capped at 13 but uses 56-card capacity
+ok 94 - Fuck max hand stays capped at 13 but uses 56-card capacity
+  ---
+  duration_ms: 0.973838
+  type: 'test'
+  ...
+# Subtest: Screw rounds climb then descend without repeating peak
+ok 95 - Screw rounds climb then descend without repeating peak
+  ---
+  duration_ms: 0.631392
+  type: 'test'
+  ...
+# Subtest: Screw trump cycles continuously
+ok 96 - Screw trump cycles continuously
+  ---
+  duration_ms: 0.208124
+  type: 'test'
+  ...
+# Subtest: dealer forbidden bid enforces total not equal to hand size
+ok 97 - dealer forbidden bid enforces total not equal to hand size
+  ---
+  duration_ms: 0.115404
+  type: 'test'
+  ...
+# Subtest: Screw must follow suit if able
+ok 98 - Screw must follow suit if able
+  ---
+  duration_ms: 0.311219
+  type: 'test'
+  ...
+# Subtest: Fuck Joker is always legal even when player can follow suit
+ok 99 - Fuck Joker is always legal even when player can follow suit
+  ---
+  duration_ms: 0.311099
+  type: 'test'
+  ...
+# Subtest: Fuck leading Joker allows any play until first normal card establishes suit
+ok 100 - Fuck leading Joker allows any play until first normal card establishes suit
+  ---
+  duration_ms: 0.307294
+  type: 'test'
+  ...
+# Subtest: Screw trump beats led suit
+ok 101 - Screw trump beats led suit
+  ---
+  duration_ms: 0.454936
+  type: 'test'
+  ...
+# Subtest: Screw no trump uses highest led suit only
+ok 102 - Screw no trump uses highest led suit only
+  ---
+  duration_ms: 0.176506
+  type: 'test'
+  ...
+# Subtest: Fuck trump power-rank card is absolute highest
+ok 103 - Fuck trump power-rank card is absolute highest
+  ---
+  duration_ms: 0.163347
+  type: 'test'
+  ...
+# Subtest: Fuck first high Joker wins a high-Joker tie
+ok 104 - Fuck first high Joker wins a high-Joker tie
+  ---
+  duration_ms: 0.073121
+  type: 'test'
+  ...
+# Subtest: Fuck first non-trump power-rank card wins ties
+ok 105 - Fuck first non-trump power-rank card wins ties
+  ---
+  duration_ms: 0.060381
+  type: 'test'
+  ...
+# Subtest: Fuck later low Joker beats earlier low Joker but every normal card beats both
+ok 106 - Fuck later low Joker beats earlier low Joker but every normal card beats both
+  ---
+  duration_ms: 0.07302
+  type: 'test'
+  ...
+# Subtest: Fuck no-trump high Joker is above power rank
+ok 107 - Fuck no-trump high Joker is above power rank
+  ---
+  duration_ms: 0.064217
+  type: 'test'
+  ...
+# Subtest: Fuck normal trick-taking resumes below special cards
+ok 108 - Fuck normal trick-taking resumes below special cards
+  ---
+  duration_ms: 0.103095
+  type: 'test'
+  ...
+# Subtest: Fuck random schedule respects requested count and playable max
+ok 109 - Fuck random schedule respects requested count and playable max
+  ---
+  duration_ms: 0.607746
+  type: 'test'
+  ...
+# Subtest: exact bid scoring
+ok 110 - exact bid scoring
+  ---
+  duration_ms: 0.073241
+  type: 'test'
+  ...
+# Subtest: Smear deck is 32 cards using only 7 through Ace
+ok 111 - Smear deck is 32 cards using only 7 through Ace
+  ---
+  duration_ms: 0.164087
+  type: 'test'
+  ...
+# Subtest: Smear teams are opposite seats
+ok 112 - Smear teams are opposite seats
+  ---
+  duration_ms: 0.138879
+  type: 'test'
+  ...
+# Subtest: Smear bid order treats 4 and out above regular 4
+ok 113 - Smear bid order treats 4 and out above regular 4
+  ---
+  duration_ms: 0.11239
+  type: 'test'
+  ...
+# Subtest: Smear follows suit when able
+ok 114 - Smear follows suit when able
+  ---
+  duration_ms: 0.110236
+  type: 'test'
+  ...
+# Subtest: Smear scores High and Low to teams that played them and Jack to capturer
+ok 115 - Smear scores High and Low to teams that played them and Jack to capturer
+  ---
+  duration_ms: 0.270728
+  type: 'test'
+  ...
+# Subtest: Smear missing Jack simply leaves three available scoring points
+ok 116 - Smear missing Jack simply leaves three available scoring points
+  ---
+  duration_ms: 0.149245
+  type: 'test'
+  ...
+# Subtest: Smear equal game values are no game out
+ok 117 - Smear equal game values are no game out
+  ---
+  duration_ms: 0.093911
+  type: 'test'
+  ...
+# Subtest: Smear bidder set loses bid while defenders still score
+ok 118 - Smear bidder set loses bid while defenders still score
+  ---
+  duration_ms: 0.181153
+  type: 'test'
+  ...
+# Subtest: Smear bidder may score more than bid when contract is made
+ok 119 - Smear bidder may score more than bid when contract is made
+  ---
+  duration_ms: 0.773757
+  type: 'test'
+  ...
+# Subtest: Smear failed 4 and out is minus 11 and defenders keep earned points
+ok 120 - Smear failed 4 and out is minus 11 and defenders keep earned points
+  ---
+  duration_ms: 0.173431
+  type: 'test'
+  ...
+# Subtest: Smear successful 4 and out wins immediately
+ok 121 - Smear successful 4 and out wins immediately
+  ---
+  duration_ms: 0.107882
+  type: 'test'
+  ...
+# Subtest: Smear if both teams reach 11 on same hand bidding team wins
+ok 122 - Smear if both teams reach 11 on same hand bidding team wins
+  ---
+  duration_ms: 0.103396
+  type: 'test'
+  ...
+# Subtest: Family Island Life has a full family-sized world economy rather than a single-house demo
+ok 123 - Family Island Life has a full family-sized world economy rather than a single-house demo
+  ---
+  duration_ms: 1.21365
+  type: 'test'
+  ...
+# Subtest: needs decay gently and jobs pay more as a resident gains skill
+ok 124 - needs decay gently and jobs pay more as a resident gains skill
+  ---
+  duration_ms: 0.190898
+  type: 'test'
+  ...
+# Subtest: house upgrades require money and gathered materials
+ok 125 - house upgrades require money and gathered materials
+  ---
+  duration_ms: 0.227994
+  type: 'test'
+  ...
+# Subtest: furniture placement is clamped inside the upgraded house footprint
+ok 126 - furniture placement is clamped inside the upgraded house footprint
+  ---
+  duration_ms: 0.213562
+  type: 'test'
+  ...
+# Subtest: network movement clamps teleport attempts and invalid animation state
+ok 127 - network movement clamps teleport attempts and invalid animation state
+  ---
+  duration_ms: 0.626294
+  type: 'test'
+  ...
+# Subtest: Island Life uses true WebGL third-person all-angle humans and quadruped dogs
+ok 128 - Island Life uses true WebGL third-person all-angle humans and quadruped dogs
+  ---
+  duration_ms: 0.641628
+  type: 'test'
+  ...
+# Subtest: client builds island districts, stores, home exteriors, enterable interiors and decoration controls
+ok 129 - client builds island districts, stores, home exteriors, enterable interiors and decoration controls
+  ---
+  duration_ms: 2.510915
+  type: 'test'
+  ...
+# Subtest: Lodge creates a dedicated persistent Island Life room
+ok 130 - Lodge creates a dedicated persistent Island Life room
+  ---
+  duration_ms: 0.2787
+  type: 'test'
+  ...
+# Subtest: persistent room creates and joins separate residents with private money and inventory
+ok 131 - persistent room creates and joins separate residents with private money and inventory
+  ---
+  duration_ms: 29.366638
+  type: 'test'
+  ...
+# Subtest: lots cannot be claimed remotely and two residents cannot own the same lot
+ok 132 - lots cannot be claimed remotely and two residents cannot own the same lot
+  ---
+  duration_ms: 4.489349
+  type: 'test'
+  ...
+# Subtest: jobs, shopping and gathering are server-authorized by world position and tools
+ok 133 - jobs, shopping and gathering are server-authorized by world position and tools
+  ---
+  duration_ms: 3.918768
+  type: 'test'
+  ...
+# Subtest: home upgrades and furniture persist while decorating is restricted to the owner
+ok 134 - home upgrades and furniture persist while decorating is restricted to the owner
+  ---
+  duration_ms: 2.507671
+  type: 'test'
+  ...
+# Subtest: Island Life Durable Object uses SQLite and hibernatable WebSockets
+ok 135 - Island Life Durable Object uses SQLite and hibernatable WebSockets
+  ---
+  duration_ms: 0.188815
+  type: 'test'
+  ...
+# Subtest: responsive cabin home uses the approved cabin direction and explicit John reference crop
+ok 136 - responsive cabin home uses the approved cabin direction and explicit John reference crop
+  ---
+  duration_ms: 0.883582
+  type: 'test'
+  ...
+# Subtest: every game exposes a share or join link path
+ok 137 - every game exposes a share or join link path
+  ---
+  duration_ms: 0.302186
+  type: 'test'
+  ...
+# Subtest: character selection now moves from character to outfit and requires Back to switch
+ok 138 - character selection now moves from character to outfit and requires Back to switch
+  ---
+  duration_ms: 0.228194
+  type: 'test'
+  ...
+# Subtest: computer player controls exist globally with three difficulties
+ok 139 - computer player controls exist globally with three difficulties
+  ---
+  duration_ms: 0.559804
+  type: 'test'
+  ...
+# Subtest: all three new games support solo play with computer opponents
+ok 140 - all three new games support solo play with computer opponents
+  ---
+  duration_ms: 1.807085
+  type: 'test'
+  ...
+# Subtest: John's Birthday Seat is included as a playable 3D platform game
+ok 141 - John's Birthday Seat is included as a playable 3D platform game
+  ---
+  duration_ms: 1.72432
+  type: 'test'
+  ...
+# Subtest: home image buttons navigate to real destinations instead of dead hotspots
+ok 142 - home image buttons navigate to real destinations instead of dead hotspots
+  ---
+  duration_ms: 0.793837
+  type: 'test'
+  ...
+# Subtest: multiplayer lobby exposes per-bot family character and difficulty editing
+ok 143 - multiplayer lobby exposes per-bot family character and difficulty editing
+  ---
+  duration_ms: 4.473705
+  type: 'test'
+  ...
+# Subtest: Birthday Seat is a full-body vertical obby with readable route and visible throne goal
+ok 144 - Birthday Seat is a full-body vertical obby with readable route and visible throne goal
+  ---
+  duration_ms: 0.382427
+  type: 'test'
+  ...
+# Subtest: 3D games let the host select computer family characters
+ok 145 - 3D games let the host select computer family characters
+  ---
+  duration_ms: 0.196516
+  type: 'test'
+  ...
+# Subtest: Phase E staging identifier is explicit and cache-versioned
+ok 146 - Phase E staging identifier is explicit and cache-versioned
+  ---
+  duration_ms: 0.823973
+  type: 'test'
+  ...
+# Subtest: all three realtime games expose Phase E diagnostics, mobile guards and zoom controls
+ok 147 - all three realtime games expose Phase E diagnostics, mobile guards and zoom controls
+  ---
+  duration_ms: 0.297098
+  type: 'test'
+  ...
+# Subtest: missing authored family avatars are explicitly reported instead of silently claimed as authored
+ok 148 - missing authored family avatars are explicitly reported instead of silently claimed as authored
+  ---
+  duration_ms: 0.959117
+  type: 'test'
+  ...
+# Subtest: John and Gunner authored GLBs are shared across all three realtime games
+ok 149 - John and Gunner authored GLBs are shared across all three realtime games
+  ---
+  duration_ms: 5.998134
+  type: 'test'
+  ...
+# Subtest: family body dimensions are centralized for humans and dogs
+ok 150 - family body dimensions are centralized for humans and dogs
+  ---
+  duration_ms: 0.242396
+  type: 'test'
+  ...
+# Subtest: camera obstruction treats the camera as a volume, catching a side-edge blocker missed by the center ray
+ok 151 - camera obstruction treats the camera as a volume, catching a side-edge blocker missed by the center ray
+  ---
+  duration_ms: 0.763962
+  type: 'test'
+  ...
+# Subtest: long-frame movement is substepped so thin walls cannot be tunneled through
+ok 152 - long-frame movement is substepped so thin walls cannot be tunneled through
+  ---
+  duration_ms: 0.777762
+  type: 'test'
+  ...
+# Subtest: Island Life and Birthday Seat preserve user zoom during ordinary camera updates
+ok 153 - Island Life and Birthday Seat preserve user zoom during ordinary camera updates
+  ---
+  duration_ms: 20.498677
+  type: 'test'
+  ...
+# Subtest: Prop Hunt disguise selection cannot reach a prop on another vertical level
+ok 154 - Prop Hunt disguise selection cannot reach a prop on another vertical level
+  ---
+  duration_ms: 0.957593
+  type: 'test'
+  ...
+# Subtest: shared recovery repairs invalid transforms and horizontal bounds, not only wall overlap
+ok 155 - shared recovery repairs invalid transforms and horizontal bounds, not only wall overlap
+  ---
+  duration_ms: 0.866796
+  type: 'test'
+  ...
+# Subtest: Prop Hunt camera aim is revalidated from the actual weapon muzzle before a hit is accepted
+ok 156 - Prop Hunt camera aim is revalidated from the actual weapon muzzle before a hit is accepted
+  ---
+  duration_ms: 0.295235
+  type: 'test'
+  ...
+# Subtest: Prop Hunt decoys preserve elevated support height locally and across network playback
+ok 157 - Prop Hunt decoys preserve elevated support height locally and across network playback
+  ---
+  duration_ms: 0.29203
+  type: 'test'
+  ...
+# Subtest: Island interactions require clear world line of sight instead of proximity alone
+ok 158 - Island interactions require clear world line of sight instead of proximity alone
+  ---
+  duration_ms: 7.854653
+  type: 'test'
+  ...
+# Subtest: Island visitors use swept collision and replan instead of directly integrating through walls
+ok 159 - Island visitors use swept collision and replan instead of directly integrating through walls
+  ---
+  duration_ms: 0.217888
+  type: 'test'
+  ...
+# Subtest: Island scene lifecycle removes controls, resize handling, timers, RAF and WebSocket reconnect work
+ok 160 - Island scene lifecycle removes controls, resize handling, timers, RAF and WebSocket reconnect work
+  ---
+  duration_ms: 0.32533
+  type: 'test'
+  ...
+# Subtest: normal Screw/Fuck/Smear table cards use immediate legal tap-to-play with a pending-action lock
+ok 161 - normal Screw/Fuck/Smear table cards use immediate legal tap-to-play with a pending-action lock
+  ---
+  duration_ms: 1.283986
+  type: 'test'
+  ...
+# Subtest: genuine multi-step card actions remain available instead of being flattened into immediate play
+ok 162 - genuine multi-step card actions remain available instead of being flattened into immediate play
+  ---
+  duration_ms: 0.330789
+  type: 'test'
+  ...
+# Subtest: Screw score sheet is driven by the engine schedule and includes the complete up/down round progression
+ok 163 - Screw score sheet is driven by the engine schedule and includes the complete up/down round progression
+  ---
+  duration_ms: 0.538692
+  type: 'test'
+  ...
+# Subtest: Fuck score sheet uses the generated game schedule rather than inventing a fixed Screw sequence
+ok 164 - Fuck score sheet uses the generated game schedule rather than inventing a fixed Screw sequence
+  ---
+  duration_ms: 0.954749
+  type: 'test'
+  ...
+# Subtest: complete game sheets preserve completed scores, highlight focus round and show future rows
+ok 165 - complete game sheets preserve completed scores, highlight focus round and show future rows
+  ---
+  duration_ms: 0.466153
+  type: 'test'
+  ...
+# Subtest: home redesign uses a stable cabin hero, approved John reference crop and restrained reduced-motion aware animation
+ok 166 - home redesign uses a stable cabin hero, approved John reference crop and restrained reduced-motion aware animation
+  ---
+  duration_ms: 0.50447
+  type: 'test'
+  ...
+# Subtest: standard 3D play hides developer warnings and QA controls unless qa3d mode is explicitly enabled
+ok 167 - standard 3D play hides developer warnings and QA controls unless qa3d mode is explicitly enabled
+  ---
+  duration_ms: 0.148844
+  type: 'test'
+  ...
+# Subtest: 3D phone cleanup keeps core recovery while using more readable per-game camera framing
+ok 168 - 3D phone cleanup keeps core recovery while using more readable per-game camera framing
+  ---
+  duration_ms: 0.289686
+  type: 'test'
+  ...
+# Subtest: Smear deals and privately exposes all six owner cards before bidding
+ok 169 - Smear deals and privately exposes all six owner cards before bidding
+  ---
+  duration_ms: 52.22979
+  type: 'test'
+  ...
+# Subtest: Smear client visibly renders the six-card bid hand instead of hiding it
+ok 170 - Smear client visibly renders the six-card bid hand instead of hiding it
+  ---
+  duration_ms: 9.043215
+  type: 'test'
+  ...
+# Subtest: Trail Trouble starts every player with a persistent private five-card hand
+ok 171 - Trail Trouble starts every player with a persistent private five-card hand
+  ---
+  duration_ms: 3.770034
+  type: 'test'
+  ...
+# Subtest: Trail Trouble plays one chosen held card, discards it and draws exactly back to five
+ok 172 - Trail Trouble plays one chosen held card, discards it and draws exactly back to five
+  ---
+  duration_ms: 4.098279
+  type: 'test'
+  ...
+# Subtest: Trail Trouble records intermediate board-space waypoints for multi-space animation
+ok 173 - Trail Trouble records intermediate board-space waypoints for multi-space animation
+  ---
+  duration_ms: 1.90987
+  type: 'test'
+  ...
+# Subtest: Trail Trouble only permits a discard-turn when the whole five-card hand has no legal move
+ok 174 - Trail Trouble only permits a discard-turn when the whole five-card hand has no legal move
+  ---
+  duration_ms: 1.377607
+  type: 'test'
+  ...
+# Subtest: Trail Trouble bots use the same five-card hand model and replenish after acting
+ok 175 - Trail Trouble bots use the same five-card hand model and replenish after acting
+  ---
+  duration_ms: 9.023856
+  type: 'test'
+  ...
+# Subtest: Trail Trouble client implements five-card selection, waypoint motion, pinch zoom, pan and Reset View
+ok 176 - Trail Trouble client implements five-card selection, waypoint motion, pinch zoom, pan and Reset View
+  ---
+  duration_ms: 12.447819
+  type: 'test'
+  ...
+# Subtest: room rematch preserves player identity/look while resetting match-specific state
+ok 177 - room rematch preserves player identity/look while resetting match-specific state
+  ---
+  duration_ms: 9.536419
+  type: 'test'
+  ...
+# Subtest: completed result recording is duplicate-safe and keyed to stable player profile identity
+ok 178 - completed result recording is duplicate-safe and keyed to stable player profile identity
+  ---
+  duration_ms: 1.498049
+  type: 'test'
+  ...
+# Subtest: Requests are stored persistently with category, player identity and status
+ok 179 - Requests are stored persistently with category, player identity and status
+  ---
+  duration_ms: 1.614284
+  type: 'test'
+  ...
+# Subtest: Avatar Hub persists Character -> Outfit -> Color profile defaults and player color drives 2D clothing tint
+ok 180 - Avatar Hub persists Character -> Outfit -> Color profile defaults and player color drives 2D clothing tint
+  ---
+  duration_ms: 9.902842
+  type: 'test'
+  ...
+# Subtest: authored avatar clothing tint contract recolors shirt materials without touching skin
+ok 181 - authored avatar clothing tint contract recolors shirt materials without touching skin
+  ---
+  duration_ms: 1.143965
+  type: 'test'
+  ...
+# Subtest: home platform exposes Requests, shared Leaderboards, Avatar Hub and interactive game-school tutorials
+ok 182 - home platform exposes Requests, shared Leaderboards, Avatar Hub and interactive game-school tutorials
+  ---
+  duration_ms: 3.078021
+  type: 'test'
+  ...
+# Subtest: all applicable game-end presentations expose Keep Playing and Return to Game Shelf
+ok 183 - all applicable game-end presentations expose Keep Playing and Return to Game Shelf
+  ---
+  duration_ms: 7.568471
+  type: 'test'
+  ...
+# Subtest: Phase F platform build ID and cache namespace are explicit and fresh
+ok 184 - Phase F platform build ID and cache namespace are explicit and fresh
+  ---
+  duration_ms: 9.115855
+  type: 'test'
+  ...
+# Subtest: Phase G John is a genuinely skinned GLB with an embedded semantic animation library
+ok 185 - Phase G John is a genuinely skinned GLB with an embedded semantic animation library
+  ---
+  duration_ms: 8.322278
+  type: 'test'
+  ...
+# Subtest: Phase G production manifest points John and Papa Shop at dedicated production-slice GLBs
+ok 186 - Phase G production manifest points John and Papa Shop at dedicated production-slice GLBs
+  ---
+  duration_ms: 1.079017
+  type: 'test'
+  ...
+# Subtest: Papa production slice swaps visible blockout for authored environment/set while preserving gameplay colliders
+ok 187 - Papa production slice swaps visible blockout for authored environment/set while preserving gameplay colliders
+  ---
+  duration_ms: 0.366613
+  type: 'test'
+  ...
+# Subtest: production asset pipeline supports environment/set loading and authored clothing recolor hooks
+ok 188 - production asset pipeline supports environment/set loading and authored clothing recolor hooks
+  ---
+  duration_ms: 0.170276
+  type: 'test'
+  ...
+# Subtest: mobile third-person input adds real two-finger camera pinch while preserving right-half touch look
+ok 189 - mobile third-person input adds real two-finger camera pinch while preserving right-half touch look
+  ---
+  duration_ms: 0.351951
+  type: 'test'
+  ...
+# Subtest: normal Prop Hunt no longer leaves a permanent camera-instruction paragraph over play
+ok 190 - normal Prop Hunt no longer leaves a permanent camera-instruction paragraph over play
+  ---
+  duration_ms: 0.261785
+  type: 'test'
+  ...
+# Subtest: Marbles & Jokers renders drilled sockets, routed Home channels and glossy seated marbles
+ok 191 - Marbles & Jokers renders drilled sockets, routed Home channels and glossy seated marbles
+  ---
+  duration_ms: 3.744846
+  type: 'test'
+  ...
+# Subtest: Marbles board supports pinch zoom, empty-board pan, wheel zoom and movement waypoints
+ok 192 - Marbles board supports pinch zoom, empty-board pan, wheel zoom and movement waypoints
+  ---
+  duration_ms: 0.606174
+  type: 'test'
+  ...
+# Subtest: draw-required states are visibly highlighted in shared tabletop UI
+ok 193 - draw-required states are visibly highlighted in shared tabletop UI
+  ---
+  duration_ms: 0.481737
+  type: 'test'
+  ...
+# Subtest: Cribbage is rank-sorted, auto-sends crib selection and surfaces contextual GO
+ok 194 - Cribbage is rank-sorted, auto-sends crib selection and surfaces contextual GO
+  ---
+  duration_ms: 0.310919
+  type: 'test'
+  ...
+# Subtest: Crazy Eights countdown shows current stage and struck previous stage
+ok 195 - Crazy Eights countdown shows current stage and struck previous stage
+  ---
+  duration_ms: 0.269497
+  type: 'test'
+  ...
+# Subtest: Game School contains actual guided interaction scenes for requested tabletop games
+ok 196 - Game School contains actual guided interaction scenes for requested tabletop games
+  ---
+  duration_ms: 0.768479
+  type: 'test'
+  ...
+# Subtest: Quick reactions include party and sly while retaining the shared reaction architecture
+ok 197 - Quick reactions include party and sly while retaining the shared reaction architecture
+  ---
+  duration_ms: 0.234623
+  type: 'test'
+  ...
+# Subtest: Prop Hunt uses right-side touch look and two-finger camera pinch while retaining recovered camera solver
+ok 198 - Prop Hunt uses right-side touch look and two-finger camera pinch while retaining recovered camera solver
+  ---
+  duration_ms: 0.253842
+  type: 'test'
+  ...
+# Subtest: three new games are exposed with the requested player ranges
+ok 199 - three new games are exposed with the requested player ranges
+  ---
+  duration_ms: 2.336363
+  type: 'test'
+  ...
+# Subtest: Mexican Train uses a complete unique Double-12 set
+ok 200 - Mexican Train uses a complete unique Double-12 set
+  ---
+  duration_ms: 1.020088
+  type: 'test'
+  ...
+# Subtest: Mexican Train deals the supplied rack sizes and keeps opponent racks private
+ok 201 - Mexican Train deals the supplied rack sizes and keeps opponent racks private
+  ---
+  duration_ms: 10.767525
+  type: 'test'
+  ...
+# Subtest: Mexican Train requires the current player to use their highest double as the engine
+ok 202 - Mexican Train requires the current player to use their highest double as the engine
+  ---
+  duration_ms: 8.759157
+  type: 'test'
+  ...
+# Subtest: Mexican Train opens a private train after a failed opening draw/pass
+ok 203 - Mexican Train opens a private train after a failed opening draw/pass
+  ---
+  duration_ms: 2.088965
+  type: 'test'
+  ...
+# Subtest: Mexican Train doubles create a forced closure obligation on that train
+ok 204 - Mexican Train doubles create a forced closure obligation on that train
+  ---
+  duration_ms: 2.116281
+  type: 'test'
+  ...
+# Subtest: Mexican Train completes three rounds by lowest cumulative pip score
+ok 205 - Mexican Train completes three rounds by lowest cumulative pip score
+  ---
+  duration_ms: 1.499561
+  type: 'test'
+  ...
+# Subtest: Skip-Bo deck contains 162 cards with 12 of each number and 18 Wilds
+ok 206 - Skip-Bo deck contains 162 cards with 12 of each number and 18 Wilds
+  ---
+  duration_ms: 1.110674
+  type: 'test'
+  ...
+# Subtest: Skip-Bo creates private Stock piles, four Discard piles and four Building piles
+ok 207 - Skip-Bo creates private Stock piles, four Discard piles and four Building piles
+  ---
+  duration_ms: 1.179188
+  type: 'test'
+  ...
+# Subtest: Skip-Bo draws to five and immediately refills after emptying a hand mid-turn
+ok 208 - Skip-Bo draws to five and immediately refills after emptying a hand mid-turn
+  ---
+  duration_ms: 1.090013
+  type: 'test'
+  ...
+# Subtest: Skip-Bo plays from Stock, exposes the next top, and wins when Stock is cleared
+ok 209 - Skip-Bo plays from Stock, exposes the next top, and wins when Stock is cleared
+  ---
+  duration_ms: 0.468406
+  type: 'test'
+  ...
+# Subtest: Skip-Bo Wilds represent the required number and completed 1-12 piles recycle
+ok 210 - Skip-Bo Wilds represent the required number and completed 1-12 piles recycle
+  ---
+  duration_ms: 0.507245
+  type: 'test'
+  ...
+# Subtest: Skip-Bo discarding to one of four piles ends the turn and keeps public top visible
+ok 211 - Skip-Bo discarding to one of four piles ends the turn and keeps public top visible
+  ---
+  duration_ms: 1.754666
+  type: 'test'
+  ...
+# Subtest: Backgammon starts with the standard mirrored 15-checker setup
+ok 212 - Backgammon starts with the standard mirrored 15-checker setup
+  ---
+  duration_ms: 0.552583
+  type: 'test'
+  ...
+# Subtest: Backgammon legal-sequence engine enforces the larger die when only one can be used
+ok 213 - Backgammon legal-sequence engine enforces the larger die when only one can be used
+  ---
+  duration_ms: 1.097815
+  type: 'test'
+  ...
+# Subtest: Backgammon forces bar entry before any other checker movement
+ok 214 - Backgammon forces bar entry before any other checker movement
+  ---
+  duration_ms: 0.344119
+  type: 'test'
+  ...
+# Subtest: Backgammon hitting moves a blot to the bar
+ok 215 - Backgammon hitting moves a blot to the bar
+  ---
+  duration_ms: 1.018846
+  type: 'test'
+  ...
+# Subtest: Backgammon allows exact and oversized bearing off only after all checkers are home
+ok 216 - Backgammon allows exact and oversized bearing off only after all checkers are home
+  ---
+  duration_ms: 1.699121
+  type: 'test'
+  ...
+# Subtest: Backgammon doubling cube can be offered, accepted, owned, and declined
+ok 217 - Backgammon doubling cube can be offered, accepted, owned, and declined
+  ---
+  duration_ms: 0.245159
+  type: 'test'
+  ...
+# Subtest: Backgammon identifies a backgammon and applies cube multiplier
+ok 218 - Backgammon identifies a backgammon and applies cube multiplier
+  ---
+  duration_ms: 0.372572
+  type: 'test'
+  ...
+# Subtest: new-game UI includes the three shelves, physical table components, settings and guided demos
+ok 219 - new-game UI includes the three shelves, physical table components, settings and guided demos
+  ---
+  duration_ms: 2.781344
+  type: 'test'
+  ...
+# Subtest: Phase K build and cache markers are isolated from Phase I
+ok 220 - Phase K build and cache markers are isolated from Phase I
+  ---
+  duration_ms: 3.888193
+  type: 'test'
+  ...
+# Subtest: John Phase P1 flagship character occupies the production runtime slot
+ok 221 - John Phase P1 flagship character occupies the production runtime slot
+  ---
+  duration_ms: 11.066065
+  type: 'test'
+  ...
+# Subtest: John Phase P1 expands the shared authored animation contract
+ok 222 - John Phase P1 expands the shared authored animation contract
+  ---
+  duration_ms: 9.985025
+  type: 'test'
+  ...
+# Subtest: all three new game modules remain present in the release source
+ok 223 - all three new game modules remain present in the release source
+  ---
+  duration_ms: 1.115703
+  type: 'test'
+  ...
+# Subtest: Phase L uses a fresh build and service-worker cache
+ok 224 - Phase L uses a fresh build and service-worker cache
+  ---
+  duration_ms: 1.982018
+  type: 'test'
+  ...
+# Subtest: Mexican Train, Skip-Bo, Backgammon and Black Gammon are visible on the actual home Game Shelf
+ok 225 - Mexican Train, Skip-Bo, Backgammon and Black Gammon are visible on the actual home Game Shelf
+  ---
+  duration_ms: 2.197734
+  type: 'test'
+  ...
+# Subtest: the table-game shelf entries are wired into playable extra-game routing
+ok 226 - the table-game shelf entries are wired into playable extra-game routing
+  ---
+  duration_ms: 4.880669
+  type: 'test'
+  ...
+# Subtest: Phase O has an isolated build/cache identity
+ok 227 - Phase O has an isolated build/cache identity
+  ---
+  duration_ms: 3.065782
+  type: 'test'
+  ...
+# Subtest: Phase O keeps standard Backgammon and adds separate Black Gammon
+ok 228 - Phase O keeps standard Backgammon and adds separate Black Gammon
+  ---
+  duration_ms: 5.663009
+  type: 'test'
+  ...
+# Subtest: Phase O bot controls are Easy-first and readable
+ok 229 - Phase O bot controls are Easy-first and readable
+  ---
+  duration_ms: 4.252742
+  type: 'test'
+  ...
+# Subtest: Phase O exposes shared player-colour dice and Black Gammon directional guidance
+ok 230 - Phase O exposes shared player-colour dice and Black Gammon directional guidance
+  ---
+  duration_ms: 2.759851
+  type: 'test'
+  ...
+# Subtest: Phase O packages the locked Black Gammon rules and confirmed setup reference
+ok 231 - Phase O packages the locked Black Gammon rules and confirmed setup reference
+  ---
+  duration_ms: 0.538041
+  type: 'test'
+  ...
+# Subtest: Phase P0 installs flagship directive and locked-component register
+ok 232 - Phase P0 installs flagship directive and locked-component register
+  ---
+  duration_ms: 3.224201
+  type: 'test'
+  ...
+# Subtest: Easy is the default computer difficulty across exposed setup paths
+ok 233 - Easy is the default computer difficulty across exposed setup paths
+  ---
+  duration_ms: 5.882319
+  type: 'test'
+  ...
+# Subtest: locked Prop Hunt technical seams remain present
+ok 234 - locked Prop Hunt technical seams remain present
+  ---
+  duration_ms: 4.05254
+  type: 'test'
+  ...
+# Subtest: approved cabin composition assets are still packaged
+ok 235 - approved cabin composition assets are still packaged
+  ---
+  duration_ms: 0.262616
+  type: 'test'
+  ...
+# Subtest: Phase P1 has a fresh build/cache identity without removing Phase O games
+ok 236 - Phase P1 has a fresh build/cache identity without removing Phase O games
+  ---
+  duration_ms: 4.405082
+  type: 'test'
+  ...
+# Subtest: John PH-CHAR-01 is a skinned flagship asset with the expanded motion set
+ok 237 - John PH-CHAR-01 is a skinned flagship asset with the expanded motion set
+  ---
+  duration_ms: 2.703927
+  type: 'test'
+  ...
+# Subtest: authored Prop Hunt keeps locomotion running under aim/fire overlays
+ok 238 - authored Prop Hunt keeps locomotion running under aim/fire overlays
+  ---
+  duration_ms: 0.90238
+  type: 'test'
+  ...
+# Subtest: Prop Hunt adds restrained touch/gamepad aim assistance with muzzle validation
+ok 239 - Prop Hunt adds restrained touch/gamepad aim assistance with muzzle validation
+  ---
+  duration_ms: 1.801876
+  type: 'test'
+  ...
+# Subtest: Papa Shop production set keeps gameplay colliders and uses static visual optimization
+ok 240 - Papa Shop production set keeps gameplay colliders and uses static visual optimization
+  ---
+  duration_ms: 0.827678
+  type: 'test'
+  ...
+# Subtest: approved cabin stays in place while the home game controls become dimensional vector plaques
+ok 241 - approved cabin stays in place while the home game controls become dimensional vector plaques
+  ---
+  duration_ms: 2.380529
+  type: 'test'
+  ...
+# Subtest: P1 preserves Easy-first bot defaults and readable bot selectors
+ok 242 - P1 preserves Easy-first bot defaults and readable bot selectors
+  ---
+  duration_ms: 6.22093
+  type: 'test'
+  ...
+# Subtest: Phase Q has a fresh build, cache, and QA identity
+ok 243 - Phase Q has a fresh build, cache, and QA identity
+  ---
+  duration_ms: 5.153435
+  type: 'test'
+  ...
+# Subtest: Skip-Bo uses a portrait-first direct play surface rather than the zoom viewport
+ok 244 - Skip-Bo uses a portrait-first direct play surface rather than the zoom viewport
+  ---
+  duration_ms: 5.315705
+  type: 'test'
+  ...
+# Subtest: Skip-Bo presentation preserves private opponent hands and four visible discard destinations
+ok 245 - Skip-Bo presentation preserves private opponent hands and four visible discard destinations
+  ---
+  duration_ms: 1.220791
+  type: 'test'
+  ...
+# Subtest: Cribbage UI exposes the real-board, two-peg, pegging-owner, and score-recap systems
+ok 246 - Cribbage UI exposes the real-board, two-peg, pegging-owner, and score-recap systems
+  ---
+  duration_ms: 3.012332
+  type: 'test'
+  ...
+# Subtest: Cribbage public state can preserve a completed hand and crib scoring recap
+ok 247 - Cribbage public state can preserve a completed hand and crib scoring recap
+  ---
+  duration_ms: 2.198575
+  type: 'test'
+  ...
+# Subtest: Phase Q packages the governing mobile tabletop directive
+ok 248 - Phase Q packages the governing mobile tabletop directive
+  ---
+  duration_ms: 0.47114
+  type: 'test'
+  ...
+# Subtest: Phase R build identity and directive are packaged
+ok 249 - Phase R build identity and directive are packaged
+  ---
+  duration_ms: 3.689733
+  type: 'test'
+  ...
+# Subtest: Backgammon family uses dedicated screen-first Gammon gameplay
+ok 250 - Backgammon family uses dedicated screen-first Gammon gameplay
+  ---
+  duration_ms: 3.834702
+  type: 'test'
+  ...
+# Subtest: Gammon blue-line artifact is disabled at its original roster pseudo-element
+ok 251 - Gammon blue-line artifact is disabled at its original roster pseudo-element
+  ---
+  duration_ms: 1.644079
+  type: 'test'
+  ...
+# Subtest: Gammon roll actions are primary and immediately refresh visible state
+ok 252 - Gammon roll actions are primary and immediately refresh visible state
+  ---
+  duration_ms: 1.599101
+  type: 'test'
+  ...
+# Subtest: Black Gammon roll controls are not duplicated in the generic action panel
+ok 253 - Black Gammon roll controls are not duplicated in the generic action panel
+  ---
+  duration_ms: 2.049239
+  type: 'test'
+  ...
+# Subtest: John P2 authored benchmark metadata and GLB are present
+ok 254 - John P2 authored benchmark metadata and GLB are present
+  ---
+  duration_ms: 0.40501
+  type: 'test'
+  ...
+# Subtest: John P2 builder includes refined face/body/boot and locomotion work
+ok 255 - John P2 builder includes refined face/body/boot and locomotion work
+  ---
+  duration_ms: 0.243528
+  type: 'test'
+  ...
+# Subtest: Papa Shop P2 benchmark lighting adds restrained local depth
+ok 256 - Papa Shop P2 benchmark lighting adds restrained local depth
+  ---
+  duration_ms: 0.602349
+  type: 'test'
+  ...
+# Subtest: Phase Q Skip-Bo and Cribbage screen-first routes remain preserved
+ok 257 - Phase Q Skip-Bo and Cribbage screen-first routes remain preserved
+  ---
+  duration_ms: 1.167531
+  type: 'test'
+  ...
+# Subtest: Phase S has an isolated build/cache identity and packages its directive
+ok 258 - Phase S has an isolated build/cache identity and packages its directive
+  ---
+  duration_ms: 3.015877
+  type: 'test'
+  ...
+# Subtest: Skip-Bo Stock top is a first-class source, exposes the next card, and can chain to victory
+ok 259 - Skip-Bo Stock top is a first-class source, exposes the next card, and can chain to victory
+  ---
+  duration_ms: 4.068694
+  type: 'test'
+  ...
+# Subtest: Skip-Bo UI visibly treats Stock as playable and uses direct glowing Building targets
+ok 260 - Skip-Bo UI visibly treats Stock as playable and uses direct glowing Building targets
+  ---
+  duration_ms: 3.219434
+  type: 'test'
+  ...
+# Subtest: Trail Trouble starts with five cards and completes a real first turn
+ok 261 - Trail Trouble starts with five cards and completes a real first turn
+  ---
+  duration_ms: 2.204104
+  type: 'test'
+  ...
+# Subtest: Last Haven progresses from Camp to Route through the complete setup and into first gameplay turn
+ok 262 - Last Haven progresses from Camp to Route through the complete setup and into first gameplay turn
+  ---
+  duration_ms: 6.643296
+  type: 'test'
+  ...
+# Subtest: Last Haven UI provides large direct Route targets and a route fallback action panel
+ok 263 - Last Haven UI provides large direct Route targets and a route fallback action panel
+  ---
+  duration_ms: 1.948968
+  type: 'test'
+  ...
+# Subtest: Cribbage Phase S uses one shared physical wood board with colored lanes, drilled holes, seated pegs, and peg animation
+ok 264 - Cribbage Phase S uses one shared physical wood board with colored lanes, drilled holes, seated pegs, and peg animation
+  ---
+  duration_ms: 2.780783
+  type: 'test'
+  ...
+# Subtest: Cribbage public state keeps previous score and peg-event data required for physical peg movement
+ok 265 - Cribbage public state keeps previous score and peg-event data required for physical peg movement
+  ---
+  duration_ms: 0.951645
+  type: 'test'
+  ...
+# Subtest: Backgammon and Black Gammon retain screen-first Gammon renderer with Phase S dimensional wood treatment
+ok 266 - Backgammon and Black Gammon retain screen-first Gammon renderer with Phase S dimensional wood treatment
+  ---
+  duration_ms: 2.620231
+  type: 'test'
+  ...
+# Subtest: Gammon roll actions still force a fresh room-state read without duplicating action UI
+ok 267 - Gammon roll actions still force a fresh room-state read without duplicating action UI
+  ---
+  duration_ms: 1.06777
+  type: 'test'
+  ...
+# Subtest: Marbles & Jokers has a dedicated screen-first renderer rather than the generic felt-table shell
+ok 268 - Marbles & Jokers has a dedicated screen-first renderer rather than the generic felt-table shell
+  ---
+  duration_ms: 2.006585
+  type: 'test'
+  ...
+# Subtest: Screw Your Buddy and Fuck Your Buddy bidding show hand size plus trump/special context in the bid box
+ok 269 - Screw Your Buddy and Fuck Your Buddy bidding show hand size plus trump/special context in the bid box
+  ---
+  duration_ms: 1.6718
+  type: 'test'
+  ...
+# Subtest: Phase S critical tabletop actions request immediate visible state refresh rather than waiting only on SSE
+ok 270 - Phase S critical tabletop actions request immediate visible state refresh rather than waiting only on SSE
+  ---
+  duration_ms: 1.71807
+  type: 'test'
+  ...
+# Subtest: Phase T has a fresh isolated build/cache identity
+ok 271 - Phase T has a fresh isolated build/cache identity
+  ---
+  duration_ms: 6.143283
+  type: 'test'
+  ...
+# Subtest: directional aiming classifies forward, backpedal and strafes in facing space
+ok 272 - directional aiming classifies forward, backpedal and strafes in facing space
+  ---
+  duration_ms: 0.495027
+  type: 'test'
+  ...
+# Subtest: player faces travel direction as hider and camera/crosshair direction as hunter
+ok 273 - player faces travel direction as hider and camera/crosshair direction as hunter
+  ---
+  duration_ms: 0.637231
+  type: 'test'
+  ...
+# Subtest: authored locomotion keeps aim/fire layered and supports reverse backpedal playback
+ok 274 - authored locomotion keeps aim/fire layered and supports reverse backpedal playback
+  ---
+  duration_ms: 1.782227
+  type: 'test'
+  ...
+# Subtest: jump landing and mantle have a stronger gameplay-feel pass
+ok 275 - jump landing and mantle have a stronger gameplay-feel pass
+  ---
+  duration_ms: 1.848177
+  type: 'test'
+  ...
+# Subtest: hider disguise, decoy and flash actions have deliberate readable feedback
+ok 276 - hider disguise, decoy and flash actions have deliberate readable feedback
+  ---
+  duration_ms: 0.994389
+  type: 'test'
+  ...
+# Subtest: damage and Classic elimination move into a spectator camera instead of a dead view
+ok 277 - damage and Classic elimination move into a spectator camera instead of a dead view
+  ---
+  duration_ms: 1.444448
+  type: 'test'
+  ...
+# Subtest: mobile hider HUD surfaces remaining tactical resources directly on buttons
+ok 278 - mobile hider HUD surfaces remaining tactical resources directly on buttons
+  ---
+  duration_ms: 0.502278
+  type: 'test'
+  ...
+# Subtest: Phase S tabletop repairs remain present while Prop Hunt advances
+ok 279 - Phase S tabletop repairs remain present while Prop Hunt advances
+  ---
+  duration_ms: 1.005355
+  type: 'test'
+  ...
+# Subtest: Phase T1 has a fresh isolated build/cache identity
+ok 280 - Phase T1 has a fresh isolated build/cache identity
+  ---
+  duration_ms: 1.806083
+  type: 'test'
+  ...
+# Subtest: hunter gets an opaque hide countdown and no separate aim button
+ok 281 - hunter gets an opaque hide countdown and no separate aim button
+  ---
+  duration_ms: 0.973087
+  type: 'test'
+  ...
+# Subtest: protected hide phase freezes hunter movement, look and weapon
+ok 282 - protected hide phase freezes hunter movement, look and weapon
+  ---
+  duration_ms: 1.493812
+  type: 'test'
+  ...
+# Subtest: crosshair is always the hunter aim and hold SHOOT continuously fires at a controlled rate
+ok 283 - crosshair is always the hunter aim and hold SHOOT continuously fires at a controlled rate
+  ---
+  duration_ms: 0.638283
+  type: 'test'
+  ...
+# Subtest: server masks hider position/disguise/decoys from a hunter during hide
+ok 284 - server masks hider position/disguise/decoys from a hunter during hide
+  ---
+  duration_ms: 1.128492
+  type: 'test'
+  ...
+# Subtest: server only accepts hunter damage during the hunt phase
+ok 285 - server only accepts hunter damage during the hunt phase
+  ---
+  duration_ms: 0.215715
+  type: 'test'
+  ...
+# Subtest: hider positional footsteps are suppressed for a blinded hunter
+ok 286 - hider positional footsteps are suppressed for a blinded hunter
+  ---
+  duration_ms: 0.498962
+  type: 'test'
+  ...
+# Subtest: Cabin Breakout is one self-contained canvas file with valid inline JS
+ok 287 - Cabin Breakout is one self-contained canvas file with valid inline JS
+  ---
+  duration_ms: 2.655725
+  type: 'test'
+  ...
+# Subtest: Breakout uses the selected 6x10 layout, 3 lives, both controls and MULTI extra
+ok 288 - Breakout uses the selected 6x10 layout, 3 lives, both controls and MULTI extra
+  ---
+  duration_ms: 0.379832
+  type: 'test'
+  ...
+# Subtest: Breakout uses swept expanded-AABB collision and aimable paddle reflection
+ok 289 - Breakout uses swept expanded-AABB collision and aimable paddle reflection
+  ---
+  duration_ms: 0.137177
+  type: 'test'
+  ...
+# Subtest: Breakout includes score lives win game-over and restart flows
+ok 290 - Breakout includes score lives win game-over and restart flows
+  ---
+  duration_ms: 0.218589
+  type: 'test'
+  ...
+# Subtest: Cabin Breakout appears in the lodge Arcade Corner and routes to its page
+ok 291 - Cabin Breakout appears in the lodge Arcade Corner and routes to its page
+  ---
+  duration_ms: 0.21206
+  type: 'test'
+  ...
+# Subtest: legacy U1 rocket remains and Neon Snake redirects into Molly Light Chase
+ok 292 - legacy U1 rocket remains and Neon Snake redirects into Molly Light Chase
+  ---
+  duration_ms: 4.236938
+  type: 'test'
+  ...
+# Subtest: Kelsi rock rescue has rocks, bonuses, mud hazards, touch control and rAF
+ok 293 - Kelsi rock rescue has rocks, bonuses, mud hazards, touch control and rAF
+  ---
+  duration_ms: 0.448596
+  type: 'test'
+  ...
+# Subtest: rocket uses fixed step, shrinking safe gap and local high score
+ok 294 - rocket uses fixed step, shrinking safe gap and local high score
+  ---
+  duration_ms: 0.31808
+  type: 'test'
+  ...
+# Subtest: Molly replacement uses 20x20 chase grid, reversal guard and speed ramp
+ok 295 - Molly replacement uses 20x20 chase grid, reversal guard and speed ramp
+  ---
+  duration_ms: 0.2388
+  type: 'test'
+  ...
+# Subtest: Phase V Papa map is an actual roughly eight-times-larger traversable world
+ok 296 - Phase V Papa map is an actual roughly eight-times-larger traversable world
+  ---
+  duration_ms: 2.365908
+  type: 'test'
+  ...
+# Subtest: Papa map contains hundreds of props and a 150-plus gameplay-meaningful target
+ok 297 - Papa map contains hundreds of props and a 150-plus gameplay-meaningful target
+  ---
+  duration_ms: 1.08805
+  type: 'test'
+  ...
+# Subtest: Papa disguise pool is exactly 30 curated options and each player gets four deterministic no-reroll choices
+ok 298 - Papa disguise pool is exactly 30 curated options and each player gets four deterministic no-reroll choices
+  ---
+  duration_ms: 1.749688
+  type: 'test'
+  ...
+# Subtest: large and giant disguises earn larger survival multipliers than small props
+ok 299 - large and giant disguises earn larger survival multipliers than small props
+  ---
+  duration_ms: 0.147402
+  type: 'test'
+  ...
+# Subtest: weather and secondary layout variation are deterministic per round and include seven fair presets
+ok 300 - weather and secondary layout variation are deterministic per round and include seven fair presets
+  ---
+  duration_ms: 1.967165
+  type: 'test'
+  ...
+# Subtest: Prop Hunt supports 12 players and five-minute default hunts
+ok 301 - Prop Hunt supports 12 players and five-minute default hunts
+  ---
+  duration_ms: 0.626585
+  type: 'test'
+  ...
+# Subtest: Classic eliminations break the prop, play the sin cue, and offer free ghost or follow cameras
+ok 302 - Classic eliminations break the prop, play the sin cue, and offer free ghost or follow cameras
+  ---
+  duration_ms: 0.871885
+  type: 'test'
+  ...
+# Subtest: round end has skippable MVP presentation and persistent local lifetime stats
+ok 303 - round end has skippable MVP presentation and persistent local lifetime stats
+  ---
+  duration_ms: 1.425559
+  type: 'test'
+  ...
+# Subtest: assigned disguise choices stay private to the owning player
+ok 304 - assigned disguise choices stay private to the owning player
+  ---
+  duration_ms: 1.210005
+  type: 'test'
+  ...
+# Subtest: Phase W home categories are rendered in the locked order
+ok 305 - Phase W home categories are rendered in the locked order
+  ---
+  duration_ms: 1.110894
+  type: 'test'
+  ...
+# Subtest: all 15 active arcade games are integrated and Kelsi replaces Neon Star Patrol
+ok 306 - all 15 active arcade games are integrated and Kelsi replaces Neon Star Patrol
+  ---
+  duration_ms: 0.759955
+  type: 'test'
+  ...
+# Subtest: every arcade page receives the Phase W dimensional platform
+ok 307 - every arcade page receives the Phase W dimensional platform
+  ---
+  duration_ms: 1.907576
+  type: 'test'
+  ...
+# Subtest: Dorothy Garden can be entered by tapping from ready state
+ok 308 - Dorothy Garden can be entered by tapping from ready state
+  ---
+  duration_ms: 0.228415
+  type: 'test'
+  ...
+# Subtest: locked birthdays and five-day windows resolve correctly
+ok 309 - locked birthdays and five-day windows resolve correctly
+  ---
+  duration_ms: 1.043203
+  type: 'test'
+  ...
+# Subtest: birthday page has permanent challenge, memory gallery and first-view greeting controls
+ok 310 - birthday page has permanent challenge, memory gallery and first-view greeting controls
+  ---
+  duration_ms: 0.222256
+  type: 'test'
+  ...
+# Subtest: Arcade progression is earned-only and server-backed
+ok 311 - Arcade progression is earned-only and server-backed
+  ---
+  duration_ms: 0.33204
+  type: 'test'
+  ...
+# Subtest: Who is Playing and Ask to Join are backed by presence and join-request endpoints
+ok 312 - Who is Playing and Ask to Join are backed by presence and join-request endpoints
+  ---
+  duration_ms: 0.314434
+  type: 'test'
+  ...
+# Subtest: arcade pages do not advertise joinable real-time multiplayer before synchronized arcade sessions exist
+ok 313 - arcade pages do not advertise joinable real-time multiplayer before synchronized arcade sessions exist
+  ---
+  duration_ms: 0.399122
+  type: 'test'
+  ...
+# Subtest: Phase W uses a fresh service worker cache while retaining legacy compatibility markers
+ok 314 - Phase W uses a fresh service worker cache while retaining legacy compatibility markers
+  ---
+  duration_ms: 0.481175
+  type: 'test'
+  ...
+# Subtest: home join request carries the live room and the other player name
+ok 315 - home join request carries the live room and the other player name
+  ---
+  duration_ms: 0.840647
+  type: 'test'
+  ...
+# Subtest: requester polls accepted and declined outcomes instead of going silent
+ok 316 - requester polls accepted and declined outcomes instead of going silent
+  ---
+  duration_ms: 0.284989
+  type: 'test'
+  ...
+# Subtest: accepted request can be claimed into the room safely
+ok 317 - accepted request can be claimed into the room safely
+  ---
+  duration_ms: 0.221544
+  type: 'test'
+  ...
+# Subtest: active-match accepted players get a clear spectator state until the next game
+ok 318 - active-match accepted players get a clear spectator state until the next game
+  ---
+  duration_ms: 0.300332
+  type: 'test'
+  ...
+# Subtest: Dorothy Garden uses named living plant stages rather than generic boxes
+ok 319 - Dorothy Garden uses named living plant stages rather than generic boxes
+  ---
+  duration_ms: 0.223577
+  type: 'test'
+  ...
+# Subtest: Dorothy Garden includes cottage progression, signature props and themed obstacles
+ok 320 - Dorothy Garden includes cottage progression, signature props and themed obstacles
+  ---
+  duration_ms: 0.787067
+  type: 'test'
+  ...
+# Subtest: W.1 cache/version marker is fresh
+ok 321 - W.1 cache/version marker is fresh
+  ---
+  duration_ms: 0.120372
+  type: 'test'
+  ...
+# Subtest: W11 fixed-step runner advances gameplay at 60 Hz and bounds catch-up after a long phone frame
+ok 322 - W11 fixed-step runner advances gameplay at 60 Hz and bounds catch-up after a long phone frame
+  ---
+  duration_ms: 1.374262
+  type: 'test'
+  ...
+# Subtest: W11 last-known-safe recovery prefers a recorded open grounded point
+ok 323 - W11 last-known-safe recovery prefers a recorded open grounded point
+  ---
+  duration_ms: 0.499633
+  type: 'test'
+  ...
+# Subtest: W11 collision responsibilities independently control player camera and vision blocking
+ok 324 - W11 collision responsibilities independently control player camera and vision blocking
+  ---
+  duration_ms: 0.501917
+  type: 'test'
+  ...
+# Subtest: W11 Prop Hunt splits fixed simulation from presentation and interpolates render roots
+ok 325 - W11 Prop Hunt splits fixed simulation from presentation and interpolates render roots
+  ---
+  duration_ms: 1.044295
+  type: 'test'
+  ...
+# Subtest: W11 camera uses obstruction hysteresis and avoids a fresh right-vector allocation every update
+ok 326 - W11 camera uses obstruction hysteresis and avoids a fresh right-vector allocation every update
+  ---
+  duration_ms: 1.267852
+  type: 'test'
+  ...
+# Subtest: W11 validates disguise/decoy placement and constrains network decoy placement near the sender
+ok 327 - W11 validates disguise/decoy placement and constrains network decoy placement near the sender
+  ---
+  duration_ms: 0.927628
+  type: 'test'
+  ...
+# Subtest: W11 pools and caps repeated effects and adapts phone rendering quality
+ok 328 - W11 pools and caps repeated effects and adapts phone rendering quality
+  ---
+  duration_ms: 1.297195
+  type: 'test'
+  ...
+# Subtest: W11 handles phone browser resume and WebGL context loss without simulating a giant stale frame
+ok 329 - W11 handles phone browser resume and WebGL context loss without simulating a giant stale frame
+  ---
+  duration_ms: 0.831223
+  type: 'test'
+  ...
+# Subtest: W11 QA exposes frame-time tail latency and stability diagnostics
+ok 330 - W11 QA exposes frame-time tail latency and stability diagnostics
+  ---
+  duration_ms: 1.401994
+  type: 'test'
+  ...
+# Subtest: W11 release identity is current while W7/W8 historical identities remain preserved
+ok 331 - W11 release identity is current while W7/W8 historical identities remain preserved
+  ---
+  duration_ms: 1.125748
+  type: 'test'
+  ...
+# Subtest: W11 canonical prompt locks smoothness before content and separates implemented runtime from future asset/network work
+ok 332 - W11 canonical prompt locks smoothness before content and separates implemented runtime from future asset/network work
+  ---
+  duration_ms: 0.909151
+  type: 'test'
+  ...
+# Subtest: W12 renames the current house game to the one-word Blackgammon and provides direct legal-move controls
+ok 333 - W12 renames the current house game to the one-word Blackgammon and provides direct legal-move controls
+  ---
+  duration_ms: 13.211089
+  type: 'test'
+  ...
+# Subtest: W12 Prop Hunt increases speed, corrects mobile direction, and places the weapon rig in front
+ok 334 - W12 Prop Hunt increases speed, corrects mobile direction, and places the weapon rig in front
+  ---
+  duration_ms: 6.496184
+  type: 'test'
+  ...
+# Subtest: W12 Mexican Train exposes flip controls, every player train, shared train, and keeps score outside the board
+ok 335 - W12 Mexican Train exposes flip controls, every player train, shared train, and keeps score outside the board
+  ---
+  duration_ms: 4.041223
+  type: 'test'
+  ...
+# Subtest: W12 Last Haven shows a planning hand with resources and survival cards
+ok 336 - W12 Last Haven shows a planning hand with resources and survival cards
+  ---
+  duration_ms: 4.698344
+  type: 'test'
+  ...
+# Subtest: W12 Deck Sweep unlocks each face-down slot independently after its own upright card is played
+ok 337 - W12 Deck Sweep unlocks each face-down slot independently after its own upright card is played
+  ---
+  duration_ms: 1.303015
+  type: 'test'
+  ...
+# Subtest: W12 Deck Sweep is rank-first, highlights tens, and renders all player table stations
+ok 338 - W12 Deck Sweep is rank-first, highlights tens, and renders all player table stations
+  ---
+  duration_ms: 3.046023
+  type: 'test'
+  ...
+# Subtest: W12 Prairie Pots visibly awards special pots into chip totals and reports progression
+ok 339 - W12 Prairie Pots visibly awards special pots into chip totals and reports progression
+  ---
+  duration_ms: 3.89302
+  type: 'test'
+  ...
+# Subtest: W12 Prairie Pots UI exposes current chip totals and win messages
+ok 340 - W12 Prairie Pots UI exposes current chip totals and win messages
+  ---
+  duration_ms: 4.385337
+  type: 'test'
+  ...
+# Subtest: W13 cabin catalog remains authoritative under the promoted W16 runtime
+ok 341 - W13 cabin catalog remains authoritative under the promoted W16 runtime
+  ---
+  duration_ms: 1.820515
+  type: 'test'
+  ...
+# Subtest: W13 cabin catalog contains exactly 400 original room entries in the locked distribution
+ok 342 - W13 cabin catalog contains exactly 400 original room entries in the locked distribution
+  ---
+  duration_ms: 4.294416
+  type: 'test'
+  ...
+# Subtest: each active arcade receives nine room rewards and every secret hides its player-facing condition
+ok 343 - each active arcade receives nine room rewards and every secret hides its player-facing condition
+  ---
+  duration_ms: 2.967965
+  type: 'test'
+  ...
+# Subtest: W13 locks owner-only rooms, blueprint ownership, Game Night Tokens, gifts, salvage, pets and dollhouse navigation
+ok 344 - W13 locks owner-only rooms, blueprint ownership, Game Night Tokens, gifts, salvage, pets and dollhouse navigation
+  ---
+  duration_ms: 0.375836
+  type: 'test'
+  ...
+# Subtest: W13 visual slice remains compatible while W20 expands the active catalog to 2,000 items
+ok 345 - W13 visual slice remains compatible while W20 expands the active catalog to 2,000 items
+  ---
+  duration_ms: 1.073358
+  type: 'test'
+  ...
+# Subtest: W13 cabin has ten permanent named family rooms and permanent expandable guest house
+ok 346 - W13 cabin has ten permanent named family rooms and permanent expandable guest house
+  ---
+  duration_ms: 0.590761
+  type: 'test'
+  ...
+# Subtest: W13 starter room is 14x16 with half-foot snapping and 90-degree rotation
+ok 347 - W13 starter room is 14x16 with half-foot snapping and 90-degree rotation
+  ---
+  duration_ms: 0.215856
+  type: 'test'
+  ...
+# Subtest: W13 furniture footprints rotate and placement rejects pieces outside room
+ok 348 - W13 furniture footprints rotate and placement rejects pieces outside room
+  ---
+  duration_ms: 0.268875
+  type: 'test'
+  ...
+# Subtest: W13 collection book search/filter works and secrets remain secret-designated
+ok 349 - W13 collection book search/filter works and secrets remain secret-designated
+  ---
+  duration_ms: 1.708566
+  type: 'test'
+  ...
+# Subtest: W13 visitor editing is owner-only
+ok 350 - W13 visitor editing is owner-only
+  ---
+  duration_ms: 0.157637
+  type: 'test'
+  ...
+# Subtest: W16 home has a direct working Cabin destination in both hero and destination navigation
+ok 351 - W16 home has a direct working Cabin destination in both hero and destination navigation
+  ---
+  duration_ms: 1.768136
+  type: 'test'
+  ...
+# Subtest: W16 cosmetic catalog is substantially expanded and asset-backed rather than emoji-backed
+ok 352 - W16 cosmetic catalog is substantially expanded and asset-backed rather than emoji-backed
+  ---
+  duration_ms: 12.034325
+  type: 'test'
+  ...
+# Subtest: W16 fitted renderer outputs images with anatomical position variables and passes avatar identity into shared portraits
+ok 353 - W16 fitted renderer outputs images with anatomical position variables and passes avatar identity into shared portraits
+  ---
+  duration_ms: 1.983811
+  type: 'test'
+  ...
+# Subtest: W19 universal fitting supersedes portrait conflicts so every cosmetic remains visible on every avatar
+ok 354 - W19 universal fitting supersedes portrait conflicts so every cosmetic remains visible on every avatar
+  ---
+  duration_ms: 0.960548
+  type: 'test'
+  ...
+# Subtest: W16 preserves legacy cosmetic ids while normalizing expanded slots
+ok 355 - W16 preserves legacy cosmetic ids while normalizing expanded slots
+  ---
+  duration_ms: 0.185029
+  type: 'test'
+  ...
+# Subtest: W16 merged Cabin Shop uses realistic room catalog plus live fitted wearable preview
+ok 356 - W16 merged Cabin Shop uses realistic room catalog plus live fitted wearable preview
+  ---
+  duration_ms: 0.297519
+  type: 'test'
+  ...
+# Subtest: W16 Cabin runtime connects the 400-item catalog, owner-only save API and social visit surfaces
+ok 357 - W16 Cabin runtime connects the 400-item catalog, owner-only save API and social visit surfaces
+  ---
+  duration_ms: 0.403068
+  type: 'test'
+  ...
+# Subtest: W16 current identity and service worker cache Cabin runtime
+ok 358 - W16 current identity and service worker cache Cabin runtime
+  ---
+  duration_ms: 0.302606
+  type: 'test'
+  ...
+# Subtest: W16 master prompt is truthful about implemented runtime vs remaining unique 3D asset work
+ok 359 - W16 master prompt is truthful about implemented runtime vs remaining unique 3D asset work
+  ---
+  duration_ms: 0.628307
+  type: 'test'
+  ...
+# Subtest: W16 Cabin ownership, visitor guestbook and 90-degree placement snapping work as persisted runtime data
+ok 360 - W16 Cabin ownership, visitor guestbook and 90-degree placement snapping work as persisted runtime data
+  ---
+  duration_ms: 2.059225
+  type: 'test'
+  ...
+# Subtest: W16 Game Night Token cosmetics buy, equip and expanded slots persist server-side
+ok 361 - W16 Game Night Token cosmetics buy, equip and expanded slots persist server-side
+  ---
+  duration_ms: 0.670471
+  type: 'test'
+  ...
+# Subtest: W16 Cabin Shop purchases real room blueprints with the same Game Night Token wallet
+ok 362 - W16 Cabin Shop purchases real room blueprints with the same Game Night Token wallet
+  ---
+  duration_ms: 0.431641
+  type: 'test'
+  ...
+# Subtest: W19 room placement uses per-item transparent art instead of category-reused square tokens
+ok 363 - W19 room placement uses per-item transparent art instead of category-reused square tokens
+  ---
+  duration_ms: 0.186051
+  type: 'test'
+  ...
+# Subtest: W17 historical release remains preserved while W20 is current and Cabin route remains live
+ok 364 - W17 historical release remains preserved while W20 is current and Cabin route remains live
+  ---
+  duration_ms: 2.097293
+  type: 'test'
+  ...
+# Subtest: W17 semantic portrait fitting remains represented in W20 universal anchors
+ok 365 - W17 semantic portrait fitting remains represented in W20 universal anchors
+  ---
+  duration_ms: 0.599394
+  type: 'test'
+  ...
+# Subtest: W20 keeps independent cosmetic width and height for face-safe fitting
+ok 366 - W20 keeps independent cosmetic width and height for face-safe fitting
+  ---
+  duration_ms: 0.434996
+  type: 'test'
+  ...
+# Subtest: W17 portrait clipping and W20 layered-avatar simplification remain explicit CSS rules
+ok 367 - W17 portrait clipping and W20 layered-avatar simplification remain explicit CSS rules
+  ---
+  duration_ms: 1.51931
+  type: 'test'
+  ...
+# Subtest: W17 master prompt remains historical and W20 separates preview identity from bespoke 3D asset completion
+ok 368 - W17 master prompt remains historical and W20 separates preview identity from bespoke 3D asset completion
+  ---
+  duration_ms: 1.307641
+  type: 'test'
+  ...
+# Subtest: W20 is current without deleting the W18/W19 historical release constants
+ok 369 - W20 is current without deleting the W18/W19 historical release constants
+  ---
+  duration_ms: 2.669054
+  type: 'test'
+  ...
+# Subtest: W18 Golf rejection forces a flip for stock and discard draws until the last hidden card
+ok 370 - W18 Golf rejection forces a flip for stock and discard draws until the last hidden card
+  ---
+  duration_ms: 4.154114
+  type: 'test'
+  ...
+# Subtest: W18 Deck Sweep permits exposed table cards while hand exists and matching hand plus table combos
+ok 371 - W18 Deck Sweep permits exposed table cards while hand exists and matching hand plus table combos
+  ---
+  duration_ms: 1.044806
+  type: 'test'
+  ...
+# Subtest: W18 Campfire Chaos Take 4 resolves the draw and advances instead of deadlocking
+ok 372 - W18 Campfire Chaos Take 4 resolves the draw and advances instead of deadlocking
+  ---
+  duration_ms: 1.426892
+  type: 'test'
+  ...
+# Subtest: W18 Campfire draw penalty adds exactly four cards in a controlled state
+ok 373 - W18 Campfire draw penalty adds exactly four cards in a controlled state
+  ---
+  duration_ms: 0.427164
+  type: 'test'
+  ...
+# Subtest: W18 Backgammon and Blackgammon expose reliable direct fallbacks in addition to board taps
+ok 374 - W18 Backgammon and Blackgammon expose reliable direct fallbacks in addition to board taps
+  ---
+  duration_ms: 1.447913
+  type: 'test'
+  ...
+# Subtest: W18 Trail Trouble and Prairie Pots provide direct playable action fallbacks and immediate refresh
+ok 375 - W18 Trail Trouble and Prairie Pots provide direct playable action fallbacks and immediate refresh
+  ---
+  duration_ms: 1.792563
+  type: 'test'
+  ...
+# Subtest: W18 Mexican Train is a tile-first layout with private rails, community rail and double continuation
+ok 376 - W18 Mexican Train is a tile-first layout with private rails, community rail and double continuation
+  ---
+  duration_ms: 2.725028
+  type: 'test'
+  ...
+# Subtest: W18 Family Mystery uses cabin realism, raised reachable clue blocks, auto routes and obvious kitty-corner passages
+ok 377 - W18 Family Mystery uses cabin realism, raised reachable clue blocks, auto routes and obvious kitty-corner passages
+  ---
+  duration_ms: 0.640255
+  type: 'test'
+  ...
+# Subtest: W18 Molly replaces active Neon Snake with a puppy light chase that grows a trail and speeds up
+ok 378 - W18 Molly replaces active Neon Snake with a puppy light chase that grows a trail and speeds up
+  ---
+  duration_ms: 1.468504
+  type: 'test'
+  ...
+# Subtest: W18 visible family spelling uses Lizzy or Elizabeth, never Lizzie
+ok 379 - W18 visible family spelling uses Lizzy or Elizabeth, never Lizzie
+  ---
+  duration_ms: 2.07234
+  type: 'test'
+  ...
+# Subtest: W19 release identity remains historical while W20 is current
+ok 380 - W19 release identity remains historical while W20 is current
+  ---
+  duration_ms: 1.709758
+  type: 'test'
+  ...
+# Subtest: W19 cabin starts as a bare pine architectural shell with a tiny low-end starter crate
+ok 381 - W19 cabin starts as a bare pine architectural shell with a tiny low-end starter crate
+  ---
+  duration_ms: 0.785244
+  type: 'test'
+  ...
+# Subtest: W19 unique-art promise scales to all 2,000 active W20 home records
+ok 382 - W19 unique-art promise scales to all 2,000 active W20 home records
+  ---
+  duration_ms: 68.278439
+  type: 'test'
+  ...
+# Subtest: W19 room editing supports direct selection, tap-to-move, rotate, store, wall-floor snapping and blueprint duplication
+ok 383 - W19 room editing supports direct selection, tap-to-move, rotate, store, wall-floor snapping and blueprint duplication
+  ---
+  duration_ms: 0.319522
+  type: 'test'
+  ...
+# Subtest: W19 universal avatar fit never hides a cosmetic, including on Kelsi, Molly and Gunner
+ok 384 - W19 universal avatar fit never hides a cosmetic, including on Kelsi, Molly and Gunner
+  ---
+  duration_ms: 22.098209
+  type: 'test'
+  ...
+# Subtest: W19 automatically migrates any persisted legacy room to the empty shell without touching ownership
+ok 385 - W19 automatically migrates any persisted legacy room to the empty shell without touching ownership
+  ---
+  duration_ms: 0.783461
+  type: 'test'
+  ...
+# Subtest: W19 server persists bare room defaults and placement surfaces while preserving owner-only blueprint rules
+ok 386 - W19 server persists bare room defaults and placement surfaces while preserving owner-only blueprint rules
+  ---
+  duration_ms: 0.764673
+  type: 'test'
+  ...
+# Subtest: W19 Family Mystery, Prop Hunt, Island Life and Molly share the cabin art language in priority order
+ok 387 - W19 Family Mystery, Prop Hunt, Island Life and Molly share the cabin art language in priority order
+  ---
+  duration_ms: 1.053097
+  type: 'test'
+  ...
+# Subtest: W19 visible family spelling remains Lizzy or Elizabeth, never Lizzie
+ok 388 - W19 visible family spelling remains Lizzy or Elizabeth, never Lizzie
+  ---
+  duration_ms: 1.340921
+  type: 'test'
+  ...
+# Subtest: Phase W.2 Gammon renderer draws one physical disc for every checker in a stack
+ok 389 - Phase W.2 Gammon renderer draws one physical disc for every checker in a stack
+  ---
+  duration_ms: 7.232635
+  type: 'test'
+  ...
+# Subtest: Phase W.2 uses a real vertical center bar and four six-point board quadrants
+ok 390 - Phase W.2 uses a real vertical center bar and four six-point board quadrants
+  ---
+  duration_ms: 5.746885
+  type: 'test'
+  ...
+# Subtest: Phase W.2 checker faces are circular and board-first layout no longer reserves a permanent side rail
+ok 391 - Phase W.2 checker faces are circular and board-first layout no longer reserves a permanent side rail
+  ---
+  duration_ms: 2.215751
+  type: 'test'
+  ...
+# Subtest: Bear-off trays are integrated into the board case and render physical round pieces
+ok 392 - Bear-off trays are integrated into the board case and render physical round pieces
+  ---
+  duration_ms: 3.765437
+  type: 'test'
+  ...
+# Subtest: Black Gammon shares standard viewer orientation and preserves blue red gold move language
+ok 393 - Black Gammon shares standard viewer orientation and preserves blue red gold move language
+  ---
+  duration_ms: 1.923851
+  type: 'test'
+  ...
+# Subtest: Phase W.2 visual QA fixtures show complete starting boards
+ok 394 - Phase W.2 visual QA fixtures show complete starting boards
+  ---
+  duration_ms: 1.914607
+  type: 'test'
+  ...
+# Subtest: W20 release is current while W18 and W19 remain explicit historical milestones
+ok 395 - W20 release is current while W18 and W19 remain explicit historical milestones
+  ---
+  duration_ms: 1.823709
+  type: 'test'
+  ...
+# Subtest: W20 has exactly 2,000 home records and the approved category allocation
+ok 396 - W20 has exactly 2,000 home records and the approved category allocation
+  ---
+  duration_ms: 10.725252
+  type: 'test'
+  ...
+# Subtest: W20 has exactly 2,000 wearable records and the approved category allocation
+ok 397 - W20 has exactly 2,000 wearable records and the approved category allocation
+  ---
+  duration_ms: 1.77752
+  type: 'test'
+  ...
+# Subtest: all W20 home browse and placement assets are individually identifiable and all wearable vectors are unique
+ok 398 - all W20 home browse and placement assets are individually identifiable and all wearable vectors are unique
+  ---
+  duration_ms: 100.21367
+  type: 'test'
+  ...
+# Subtest: W20 universal fitting keeps every wearable visible on every family avatar and migrates legacy slot saves
+ok 399 - W20 universal fitting keeps every wearable visible on every family avatar and migrates legacy slot saves
+  ---
+  duration_ms: 27.977915
+  type: 'test'
+  ...
+# Subtest: W20 catalog store is scalable, searchable, collection-driven and keeps the approved visual target visible
+ok 400 - W20 catalog store is scalable, searchable, collection-driven and keeps the approved visual target visible
+  ---
+  duration_ms: 0.458131
+  type: 'test'
+  ...
+# Subtest: W20 cabin preserves W19 rooms, retains bare-shell migration for older rooms and supports owned architectural finishes
+ok 401 - W20 cabin preserves W19 rooms, retains bare-shell migration for older rooms and supports owned architectural finishes
+  ---
+  duration_ms: 1.53869
+  type: 'test'
+  ...
+# Subtest: W20 shared catalog art is visibly integrated into the four priority 3D experiences
+ok 402 - W20 shared catalog art is visibly integrated into the four priority 3D experiences
+  ---
+  duration_ms: 1.433351
+  type: 'test'
+  ...
+# Subtest: W20 player-facing family spelling stays Lizzy or Elizabeth, never Lizzie
+ok 403 - W20 player-facing family spelling stays Lizzy or Elizabeth, never Lizzie
+  ---
+  duration_ms: 2.073837
+  type: 'test'
+  ...
+# Subtest: Logan journey now starts at 5x5 and grows through expert 9x9
+ok 404 - Logan journey now starts at 5x5 and grows through expert 9x9
+  ---
+  duration_ms: 1.331208
+  type: 'test'
+  ...
+# Subtest: Logan generated terrain puzzles are connected and uniquely solvable at every supported size
+ok 405 - Logan generated terrain puzzles are connected and uniquely solvable at every supported size
+  ---
+  duration_ms: 135.821383
+  type: 'test'
+  ...
+# Subtest: Logan conflicts detect row/column/region/touch violations instead of blocking experimentation
+ok 406 - Logan conflicts detect row/column/region/touch violations instead of blocking experimentation
+  ---
+  duration_ms: 0.974139
+  type: 'test'
+  ...
+# Subtest: Logan page is fully re-themed from Minefield to dirt-bike and fishing trail logic
+ok 407 - Logan page is fully re-themed from Minefield to dirt-bike and fishing trail logic
+  ---
+  duration_ms: 6.60595
+  type: 'test'
+  ...
+# Subtest: home shelf identifies Logan as Trail Logic and Vanessa as detailed worksite service game
+ok 408 - home shelf identifies Logan as Trail Logic and Vanessa as detailed worksite service game
+  ---
+  duration_ms: 1.73117
+  type: 'test'
+  ...
+# Subtest: Vanessa pipe rotation and flow core support full connected service networks
+ok 409 - Vanessa pipe rotation and flow core support full connected service networks
+  ---
+  duration_ms: 1.215623
+  type: 'test'
+  ...
+# Subtest: Vanessa presentation contains dimensional pipes, grey GMC with pink letters and repair hazards
+ok 410 - Vanessa presentation contains dimensional pipes, grey GMC with pink letters and repair hazards
+  ---
+  duration_ms: 3.369971
+  type: 'test'
+  ...
+# Subtest: W4 canonical board order exactly matches the locked physical point numbering for every viewer
+ok 411 - W4 canonical board order exactly matches the locked physical point numbering for every viewer
+  ---
+  duration_ms: 5.435736
+  type: 'test'
+  ...
+# Subtest: W4 preserves exact standard and Black Gammon starting checker points
+ok 412 - W4 preserves exact standard and Black Gammon starting checker points
+  ---
+  duration_ms: 2.939632
+  type: 'test'
+  ...
+# Subtest: W4 distinct Black Gammon dice are allocated by tapping two dice, not a generic move list
+ok 413 - W4 distinct Black Gammon dice are allocated by tapping two dice, not a generic move list
+  ---
+  duration_ms: 3.659288
+  type: 'test'
+  ...
+# Subtest: W4 Black Gammon UI is dice first and keeps both players rolled dice visible beside the board
+ok 414 - W4 Black Gammon UI is dice first and keeps both players rolled dice visible beside the board
+  ---
+  duration_ms: 8.836758
+  type: 'test'
+  ...
+# Subtest: W4 mobile gammon viewport explicitly removes clipping and allows fit below old 72 percent floor
+ok 415 - W4 mobile gammon viewport explicitly removes clipping and allows fit below old 72 percent floor
+  ---
+  duration_ms: 6.942934
+  type: 'test'
+  ...
+# Subtest: W4 standard hands over eight cards become a swipeable full-touch mobile tray
+ok 416 - W4 standard hands over eight cards become a swipeable full-touch mobile tray
+  ---
+  duration_ms: 3.790005
+  type: 'test'
+  ...
+# Subtest: W6 Vanessa wins when pump reaches destination even with unrelated disconnected pipe cells
+ok 417 - W6 Vanessa wins when pump reaches destination even with unrelated disconnected pipe cells
+  ---
+  duration_ms: 2.126617
+  type: 'test'
+  ...
+# Subtest: W6 Vanessa UI uses grey GMC, pink GMC lettering, destination win and automatic next level
+ok 418 - W6 Vanessa UI uses grey GMC, pink GMC lettering, destination win and automatic next level
+  ---
+  duration_ms: 0.741307
+  type: 'test'
+  ...
+# Subtest: W6 Logan offers per-profile tutorial choice, starts at 5x5 with a starter bike and draws a dirt bike
+ok 419 - W6 Logan offers per-profile tutorial choice, starts at 5x5 with a starter bike and draws a dirt bike
+  ---
+  duration_ms: 0.507114
+  type: 'test'
+  ...
+# Subtest: W6 visual How To Play remains available after the W8 detailed tutorial upgrade
+ok 420 - W6 visual How To Play remains available after the W8 detailed tutorial upgrade
+  ---
+  duration_ms: 1.151646
+  type: 'test'
+  ...
+# Subtest: W6 Mexican Train has board-first surface, shows every domino and permits rack rearranging
+ok 421 - W6 Mexican Train has board-first surface, shows every domino and permits rack rearranging
+  ---
+  duration_ms: 2.597136
+  type: 'test'
+  ...
+# Subtest: W18 Golf rejected draw must flip a face-down card until only the last card remains
+ok 422 - W18 Golf rejected draw must flip a face-down card until only the last card remains
+  ---
+  duration_ms: 3.975955
+  type: 'test'
+  ...
+# Subtest: W6 Golf renders all eight own cards plus other players and final-turn status
+ok 423 - W6 Golf renders all eight own cards plus other players and final-turn status
+  ---
+  duration_ms: 1.418318
+  type: 'test'
+  ...
+# Subtest: W6 Mitts records captured cards and renders them in front of the team
+ok 424 - W6 Mitts records captured cards and renders them in front of the team
+  ---
+  duration_ms: 2.648363
+  type: 'test'
+  ...
+# Subtest: W6 Nana has a visible point guide, do-not-hit target and more dimensional animal drawing
+ok 425 - W6 Nana has a visible point guide, do-not-hit target and more dimensional animal drawing
+  ---
+  duration_ms: 0.549879
+  type: 'test'
+  ...
+# Subtest: W6 Kelsi Rock n Roll Rescue replaces Neon Star Patrol and old Kelsi game redirects
+ok 426 - W6 Kelsi Rock n Roll Rescue replaces Neon Star Patrol and old Kelsi game redirects
+  ---
+  duration_ms: 1.792132
+  type: 'test'
+  ...
+# Subtest: W6 pending 31 Blind note is superseded by the later clarified family rule
+ok 427 - W6 pending 31 Blind note is superseded by the later clarified family rule
+  ---
+  duration_ms: 0.867939
+  type: 'test'
+  ...
+# Subtest: W7 release identity remains preserved after cumulative later phases
+ok 428 - W7 release identity remains preserved after cumulative later phases
+  ---
+  duration_ms: 2.48702
+  type: 'test'
+  ...
+# Subtest: approved John blocks the unapproved legacy GLB and keeps the approved procedural fallback
+ok 429 - approved John blocks the unapproved legacy GLB and keeps the approved procedural fallback
+  ---
+  duration_ms: 3.145683
+  type: 'test'
+  ...
+# Subtest: procedural hunter rig uses explicit right and left weapon grip sockets with forward-facing grip hands
+ok 430 - procedural hunter rig uses explicit right and left weapon grip sockets with forward-facing grip hands
+  ---
+  duration_ms: 3.444614
+  type: 'test'
+  ...
+# Subtest: John procedural silhouette keeps approved short brown hair, beard and plaid identity cues
+ok 431 - John procedural silhouette keeps approved short brown hair, beard and plaid identity cues
+  ---
+  duration_ms: 0.334624
+  type: 'test'
+  ...
+# Subtest: hunter camera enters close shoulder aim mode during the hunt
+ok 432 - hunter camera enters close shoulder aim mode during the hunt
+  ---
+  duration_ms: 4.022645
+  type: 'test'
+  ...
+# Subtest: visible crosshair is centered on the actual camera ray on phones and desktop
+ok 433 - visible crosshair is centered on the actual camera ray on phones and desktop
+  ---
+  duration_ms: 0.73622
+  type: 'test'
+  ...
+# Subtest: shots remain muzzle-validated and now render readable tracer plus impact feedback
+ok 434 - shots remain muzzle-validated and now render readable tracer plus impact feedback
+  ---
+  duration_ms: 0.955651
+  type: 'test'
+  ...
+# Subtest: W7 master directive locks the production gate and resolved 31 Blind definition
+ok 435 - W7 master directive locks the production gate and resolved 31 Blind definition
+  ---
+  duration_ms: 1.300661
+  type: 'test'
+  ...
+# Subtest: W8 gives every active arcade game a detailed multi-step visual tutorial
+ok 436 - W8 gives every active arcade game a detailed multi-step visual tutorial
+  ---
+  duration_ms: 2.256162
+  type: 'test'
+  ...
+# Subtest: W8 mounts HOW TO and STORE controls across shared and legacy arcade pages
+ok 437 - W8 mounts HOW TO and STORE controls across shared and legacy arcade pages
+  ---
+  duration_ms: 0.890333
+  type: 'test'
+  ...
+# Subtest: W8 cosmetic foundation remains compatible while W20 expands it into universal layered slots
+ok 438 - W8 cosmetic foundation remains compatible while W20 expands it into universal layered slots
+  ---
+  duration_ms: 0.873217
+  type: 'test'
+  ...
+# Subtest: W8 server validates token purchases and persists equip or unequip operations
+ok 439 - W8 server validates token purchases and persists equip or unequip operations
+  ---
+  duration_ms: 0.763552
+  type: 'test'
+  ...
+# Subtest: W8 selected avatar renders equipped cosmetics without altering base character identity
+ok 440 - W8 selected avatar renders equipped cosmetics without altering base character identity
+  ---
+  duration_ms: 2.336083
+  type: 'test'
+  ...
+# Subtest: W8 arcade economy gives a repeatable daily 3-game token reward
+ok 441 - W8 arcade economy gives a repeatable daily 3-game token reward
+  ---
+  duration_ms: 0.261365
+  type: 'test'
+  ...
+# Subtest: W8 service worker caches tutorial store and cosmetics modules
+ok 442 - W8 service worker caches tutorial store and cosmetics modules
+  ---
+  duration_ms: 0.316407
+  type: 'test'
+  ...
+# Subtest: W8 release identity remains preserved while cumulative W16 is current
+ok 443 - W8 release identity remains preserved while cumulative W16 is current
+  ---
+  duration_ms: 1.197586
+  type: 'test'
+  ...
+# Subtest: Papa production slice ships real GLB binaries for benchmark characters and hero props
+ok 444 - Papa production slice ships real GLB binaries for benchmark characters and hero props
+  ---
+  duration_ms: 9.758785
+  type: 'test'
+  ...
+# Subtest: production manifest calibrates John and Gunner to gameplay-scale authored models
+ok 445 - production manifest calibrates John and Gunner to gameplay-scale authored models
+  ---
+  duration_ms: 0.200021
+  type: 'test'
+  ...
+# Subtest: authored named rigs can use procedural animation until bespoke clips arrive
+ok 446 - authored named rigs can use procedural animation until bespoke clips arrive
+  ---
+  duration_ms: 0.307825
+  type: 'test'
+  ...
+# Subtest: Papa high-attention hero kit is asynchronously replaced by authored visuals while colliders remain
+ok 447 - Papa high-attention hero kit is asynchronously replaced by authored visuals while colliders remain
+  ---
+  duration_ms: 0.413103
+  type: 'test'
+  ...
+# Subtest: John and Gunner production GLBs carry curved approved-reference face texture nodes
+ok 448 - John and Gunner production GLBs carry curved approved-reference face texture nodes
+  ---
+  duration_ms: 4.117968
+  type: 'test'
+  ...
+# Subtest: wall AABB genuinely blocks a ray before a player behind it
+ok 449 - wall AABB genuinely blocks a ray before a player behind it
+  ---
+  duration_ms: 1.485029
+  type: 'test'
+  ...
+# Subtest: third-person camera is shortened by walls instead of clipping outside the building
+ok 450 - third-person camera is shortened by walls instead of clipping outside the building
+  ---
+  duration_ms: 0.524251
+  type: 'test'
+  ...
+# Subtest: movement blocks solid walls and jump input can auto-mantle a reasonable ledge
+ok 451 - movement blocks solid walls and jump input can auto-mantle a reasonable ledge
+  ---
+  duration_ms: 0.705324
+  type: 'test'
+  ...
+# Subtest: ceilings stop upward player motion and keep the head inside a room
+ok 452 - ceilings stop upward player motion and keep the head inside a room
+  ---
+  duration_ms: 0.239431
+  type: 'test'
+  ...
+# Subtest: role assignment rotates hunters and scales to two hunters for larger family rooms
+ok 453 - role assignment rotates hunters and scales to two hunters for larger family rooms
+  ---
+  duration_ms: 1.066669
+  type: 'test'
+  ...
+# Subtest: network snapshots are clamped and server hit registration requires hunter-to-live-hider range
+ok 454 - network snapshots are clamped and server hit registration requires hunter-to-live-hider range
+  ---
+  duration_ms: 0.348075
+  type: 'test'
+  ...
+# Subtest: Prop Hunt is a real WebGL scene instead of the old Canvas 2D projection
+ok 455 - Prop Hunt is a real WebGL scene instead of the old Canvas 2D projection
+  ---
+  duration_ms: 0.651241
+  type: 'test'
+  ...
+# Subtest: all-angle humans, quadruped dogs and skeleton-attached weapons are built as detailed 3D mesh hierarchies
+ok 456 - all-angle humans, quadruped dogs and skeleton-attached weapons are built as detailed 3D mesh hierarchies
+  ---
+  duration_ms: 0.59034
+  type: 'test'
+  ...
+# Subtest: shared art kit supplies textured materials and detailed objects instead of grey-box landmarks
+ok 457 - shared art kit supplies textured materials and detailed objects instead of grey-box landmarks
+  ---
+  duration_ms: 0.65642
+  type: 'test'
+  ...
+# Subtest: buildings have actual segmented walls, windows, ceilings and detailed landmark assets
+ok 458 - buildings have actual segmented walls, windows, ceilings and detailed landmark assets
+  ---
+  duration_ms: 3.305664
+  type: 'test'
+  ...
+# Subtest: raycast shooting and bot sight use world geometry so walls block both shots and detection
+ok 459 - raycast shooting and bot sight use world geometry so walls block both shots and detection
+  ---
+  duration_ms: 0.337699
+  type: 'test'
+  ...
+# Subtest: mobile/desktop controls expose crosshair-first shooting, sprint, jump-auto-mantle, prop, flash, decoy and lock without a separate aim button
+ok 460 - mobile/desktop controls expose crosshair-first shooting, sprint, jump-auto-mantle, prop, flash, decoy and lock without a separate aim button
+  ---
+  duration_ms: 0.349106
+  type: 'test'
+  ...
+# Subtest: Lodge creates a dedicated real-time Prop Hunt room instead of sending players to a local-only prototype
+ok 461 - Lodge creates a dedicated real-time Prop Hunt room instead of sending players to a local-only prototype
+  ---
+  duration_ms: 0.38425
+  type: 'test'
+  ...
+# Subtest: dedicated Prop Hunt room creates, joins, readies and starts a six-round synchronized match
+ok 462 - dedicated Prop Hunt room creates, joins, readies and starts a six-round synchronized match
+  ---
+  duration_ms: 23.386321
+  type: 'test'
+  ...
+# Subtest: Prop Hunt room uses Durable Object hibernatable WebSocket patterns and persistent SQL state
+ok 463 - Prop Hunt room uses Durable Object hibernatable WebSocket patterns and persistent SQL state
+  ---
+  duration_ms: 16.657621
+  type: 'test'
+  ...
+# Subtest: Prop Hunt visible rig scale is calibrated to human-scale colliders instead of 2m prototype bodies
+ok 464 - Prop Hunt visible rig scale is calibrated to human-scale colliders instead of 2m prototype bodies
+  ---
+  duration_ms: 0.94828
+  type: 'test'
+  ...
+# Subtest: dog profiles distinguish Gunner from the golden dogs instead of recolouring one generic quadruped
+ok 465 - dog profiles distinguish Gunner from the golden dogs instead of recolouring one generic quadruped
+  ---
+  duration_ms: 0.432262
+  type: 'test'
+  ...
+# Subtest: family identity includes real 3D silhouette/clothing cues rather than color-only clones
+ok 466 - family identity includes real 3D silhouette/clothing cues rather than color-only clones
+  ---
+  duration_ms: 0.246892
+  type: 'test'
+  ...
+# Subtest: Papa's Shop has a real rural exterior, garage-scale overhead door and purposeful shop wear
+ok 467 - Papa's Shop has a real rural exterior, garage-scale overhead door and purposeful shop wear
+  ---
+  duration_ms: 0.220983
+  type: 'test'
+  ...
+# Subtest: small Papa shop props can be deliberately placed on surfaces instead of every object sitting on the floor
+ok 468 - small Papa shop props can be deliberately placed on surfaces instead of every object sitting on the floor
+  ---
+  duration_ms: 0.214954
+  type: 'test'
+  ...
+# Subtest: quality slice keeps deliberate third-person framing, navigation and an opt-in phone QA HUD
+ok 469 - quality slice keeps deliberate third-person framing, navigation and an opt-in phone QA HUD
+  ---
+  duration_ms: 0.211799
+  type: 'test'
+  ...
+# Subtest: all free-moving 3D games share the v2 studio-realism gameplay/control framework
+ok 470 - all free-moving 3D games share the v2 studio-realism gameplay/control framework
+  ---
+  duration_ms: 1.029453
+  type: 'test'
+  ...
+# Subtest: movement input preserves analog joystick strength and is camera-relative
+ok 471 - movement input preserves analog joystick strength and is camera-relative
+  ---
+  duration_ms: 0.248695
+  type: 'test'
+  ...
+# Subtest: velocity has acceleration and braking instead of instant start-stop motion
+ok 472 - velocity has acceleration and braking instead of instant start-stop motion
+  ---
+  duration_ms: 0.267914
+  type: 'test'
+  ...
+# Subtest: jump buffering and coyote time both accept human-scale late/early jump input
+ok 473 - jump buffering and coyote time both accept human-scale late/early jump input
+  ---
+  duration_ms: 0.172931
+  type: 'test'
+  ...
+# Subtest: interaction targeting prefers something in front instead of a slightly closer object behind
+ok 474 - interaction targeting prefers something in front instead of a slightly closer object behind
+  ---
+  duration_ms: 0.195725
+  type: 'test'
+  ...
+# Subtest: animation system contains semantic poses, blinking, quadruped gait and future-authored-rig language
+ok 475 - animation system contains semantic poses, blinking, quadruped gait and future-authored-rig language
+  ---
+  duration_ms: 0.337879
+  type: 'test'
+  ...
+# Subtest: variable jump height trims upward velocity when jump is released early
+ok 476 - variable jump height trims upward velocity when jump is released early
+  ---
+  duration_ms: 0.185209
+  type: 'test'
+  ...
+# Subtest: sprint and locomotion semantics are shared instead of reimplemented per game
+ok 477 - sprint and locomotion semantics are shared instead of reimplemented per game
+  ---
+  duration_ms: 0.231129
+  type: 'test'
+  ...
+# Subtest: transient semantic animations survive the locomotion loop long enough to be visible
+ok 478 - transient semantic animations survive the locomotion loop long enough to be visible
+  ---
+  duration_ms: 0.39178
+  type: 'test'
+  ...
+# Subtest: shared 3D art kit provides low-cost environmental ambience in every free-moving 3D game
+ok 479 - shared 3D art kit provides low-cost environmental ambience in every free-moving 3D game
+  ---
+  duration_ms: 0.676841
+  type: 'test'
+  ...
+# Subtest: 3D control preferences are shared, persistent-capable and exposed in every free-moving game
+ok 480 - 3D control preferences are shared, persistent-capable and exposed in every free-moving game
+  ---
+  duration_ms: 0.329166
+  type: 'test'
+  ...
+# Subtest: camera framework supports shoulder swapping and all three games expose it
+ok 481 - camera framework supports shoulder swapping and all three games expose it
+  ---
+  duration_ms: 0.222736
+  type: 'test'
+  ...
+# Subtest: John birthday race is a genuine WebGL 3D game using the shared rigs and controls
+ok 482 - John birthday race is a genuine WebGL 3D game using the shared rigs and controls
+  ---
+  duration_ms: 0.412933
+  type: 'test'
+  ...
+# Subtest: Island Life interaction targeting follows the camera view and Prop Hunt no longer keeps a second one-off rig animator
+ok 483 - Island Life interaction targeting follows the camera view and Prop Hunt no longer keeps a second one-off rig animator
+  ---
+  duration_ms: 0.164238
+  type: 'test'
+  ...
+# Subtest: each 3D game has a deliberately different movement/camera tuning profile
+ok 484 - each 3D game has a deliberately different movement/camera tuning profile
+  ---
+  duration_ms: 0.063716
+  type: 'test'
+  ...
+# Subtest: motion telemetry drives gait by travel speed and records acceleration, turns and landings
+ok 485 - motion telemetry drives gait by travel speed and records acceleration, turns and landings
+  ---
+  duration_ms: 0.304249
+  type: 'test'
+  ...
+# Subtest: living-world art kit exposes reusable landmarks, environmental motion and place-detail builders
+ok 486 - living-world art kit exposes reusable landmarks, environmental motion and place-detail builders
+  ---
+  duration_ms: 0.410969
+  type: 'test'
+  ...
+# Subtest: v1.7 animation pass includes acceleration lean, turn lean, airborne arm poses and dog idle sniffing
+ok 487 - v1.7 animation pass includes acceleration lean, turn lean, airborne arm poses and dog idle sniffing
+  ---
+  duration_ms: 0.47147
+  type: 'test'
+  ...
+# Subtest: attention system gives characters a clamped local head target instead of billboard-style staring
+ok 488 - attention system gives characters a clamped local head target instead of billboard-style staring
+  ---
+  duration_ms: 0.20552
+  type: 'test'
+  ...
+# Subtest: distance-driven gait exposes discrete footstep and landing contact events
+ok 489 - distance-driven gait exposes discrete footstep and landing contact events
+  ---
+  duration_ms: 0.172179
+  type: 'test'
+  ...
+# Subtest: world interactions map to readable semantic body actions
+ok 490 - world interactions map to readable semantic body actions
+  ---
+  duration_ms: 0.248695
+  type: 'test'
+  ...
+# Subtest: context actions turn an idle body toward the object being used and add eat/drink semantics
+ok 491 - context actions turn an idle body toward the object being used and add eat/drink semantics
+  ---
+  duration_ms: 0.342677
+  type: 'test'
+  ...
+# Subtest: v1.8 realism layer is shared: renderer, shadows, contact FX, attention, doors and practical lights
+ok 492 - v1.8 realism layer is shared: renderer, shadows, contact FX, attention, doors and practical lights
+  ---
+  duration_ms: 3.239154
+  type: 'test'
+  ...
+# Subtest: third-person camera snaps to a playable solved view on its first frame instead of easing from WebGL origin
+ok 493 - third-person camera snaps to a playable solved view on its first frame instead of easing from WebGL origin
+  ---
+  duration_ms: 4.541087
+  type: 'test'
+  ...
+# Subtest: normal third-person framing stays below a low interior ceiling instead of collapsing onto the avatar
+ok 494 - normal third-person framing stays below a low interior ceiling instead of collapsing onto the avatar
+  ---
+  duration_ms: 0.942331
+  type: 'test'
+  ...
+# Subtest: camera obstruction ignores non-solid decorative/floor geometry
+ok 495 - camera obstruction ignores non-solid decorative/floor geometry
+  ---
+  duration_ms: 0.513084
+  type: 'test'
+  ...
+# Subtest: safe spawn search moves an embedded player into open geometry and recovery zeros bad velocity
+ok 496 - safe spawn search moves an embedded player into open geometry and recovery zeros bad velocity
+  ---
+  duration_ms: 0.866507
+  type: 'test'
+  ...
+# Subtest: all three 3D games expose a visible emergency RESET VIEW and keyboard recovery path
+ok 497 - all three 3D games expose a visible emergency RESET VIEW and keyboard recovery path
+  ---
+  duration_ms: 10.815597
+  type: 'test'
+  ...
+# Subtest: v2.1 Studio Realism module exposes the cross-game realism foundation
+ok 498 - v2.1 Studio Realism module exposes the cross-game realism foundation
+  ---
+  duration_ms: 1.460182
+  type: 'test'
+  ...
+# Subtest: authored-model manifest is fallback-safe and may opt high-attention assets into production GLBs
+ok 499 - authored-model manifest is fallback-safe and may opt high-attention assets into production GLBs
+  ---
+  duration_ms: 0.254554
+  type: 'test'
+  ...
+# Subtest: semantic authored animation lookup maps gameplay words to likely clip names
+ok 500 - semantic authored animation lookup maps gameplay words to likely clip names
+  ---
+  duration_ms: 0.45098
+  type: 'test'
+  ...
+# Subtest: network snapshot buffering uses local receive time and interpolates/extrapolates safely
+ok 501 - network snapshot buffering uses local receive time and interpolates/extrapolates safely
+  ---
+  duration_ms: 0.423128
+  type: 'test'
+  ...
+# Subtest: island nav grid routes around blockers rather than walking bots through buildings
+ok 502 - island nav grid routes around blockers rather than walking bots through buildings
+  ---
+  duration_ms: 2.06271
+  type: 'test'
+  ...
+# Subtest: weather and NPC routines are deterministic enough for a persistent private island
+ok 503 - weather and NPC routines are deterministic enough for a persistent private island
+  ---
+  duration_ms: 0.983133
+  type: 'test'
+  ...
+# Subtest: tropical terrain keeps village/home pads restrained instead of poking through buildings
+ok 504 - tropical terrain keeps village/home pads restrained instead of poking through buildings
+  ---
+  duration_ms: 0.341505
+  type: 'test'
+  ...
+# Subtest: Island Life furniture actions are server-authorized and include stateful lamps
+ok 505 - Island Life furniture actions are server-authorized and include stateful lamps
+  ---
+  duration_ms: 0.193491
+  type: 'test'
+  ...
+# Subtest: v2 worlds include surface-aware sound, shoreline foam, selective physics and cinematic recovery
+ok 506 - v2 worlds include surface-aware sound, shoreline foam, selective physics and cinematic recovery
+  ---
+  duration_ms: 0.614126
+  type: 'test'
+  ...
+# Subtest: semantic procedural actions are visibly distinct rather than generic arm movement
+ok 507 - semantic procedural actions are visibly distinct rather than generic arm movement
+  ---
+  duration_ms: 0.655048
+  type: 'test'
+  ...
+# Subtest: v1.0.10 has a detailed Cribbage board and clearly marks the crib owner
+ok 508 - v1.0.10 has a detailed Cribbage board and clearly marks the crib owner
+  ---
+  duration_ms: 1.50528
+  type: 'test'
+  ...
+# Subtest: Golf uses a clickable stock, face-up discard, held draw card and clickable 2x4 grid
+ok 509 - Golf uses a clickable stock, face-up discard, held draw card and clickable 2x4 grid
+  ---
+  duration_ms: 0.607335
+  type: 'test'
+  ...
+# Subtest: Marbles & Jokers has a detailed zoomable board with colored pieces and direct draw deck
+ok 510 - Marbles & Jokers has a detailed zoomable board with colored pieces and direct draw deck
+  ---
+  duration_ms: 0.622298
+  type: 'test'
+  ...
+# Subtest: Lodge home and connection screen are birthday cabin themed
+ok 511 - Lodge home and connection screen are birthday cabin themed
+  ---
+  duration_ms: 0.363128
+  type: 'test'
+  ...
+# Subtest: Turn-draw games expose a physical clickable deck instead of only text actions
+ok 512 - Turn-draw games expose a physical clickable deck instead of only text actions
+  ---
+  duration_ms: 0.336337
+  type: 'test'
+  ...
+# Subtest: Mexican Train creates one complete unique Double-12 set
+ok 513 - Mexican Train creates one complete unique Double-12 set
+  ---
+  duration_ms: 3.160545
+  type: 'test'
+  ...
+# Subtest: Mexican Train deals 15 private tiles to 2 players
+ok 514 - Mexican Train deals 15 private tiles to 2 players
+  ---
+  duration_ms: 1.756418
+  type: 'test'
+  ...
+# Subtest: Mexican Train deals 12 private tiles to 5 players
+ok 515 - Mexican Train deals 12 private tiles to 5 players
+  ---
+  duration_ms: 0.752775
+  type: 'test'
+  ...
+# Subtest: Mexican Train deals 11 private tiles to 8 players
+ok 516 - Mexican Train deals 11 private tiles to 8 players
+  ---
+  duration_ms: 1.301993
+  type: 'test'
+  ...
+# Subtest: Mexican Train engine search draws once, passes, then accepts the highest double
+ok 517 - Mexican Train engine search draws once, passes, then accepts the highest double
+  ---
+  duration_ms: 2.993533
+  type: 'test'
+  ...
+# Subtest: Mexican Train uses family open-train state and forces a double to be closed
+ok 518 - Mexican Train uses family open-train state and forces a double to be closed
+  ---
+  duration_ms: 1.872734
+  type: 'test'
+  ...
+# Subtest: Mexican Train ends the third round with the lowest cumulative score
+ok 519 - Mexican Train ends the third round with the lowest cumulative score
+  ---
+  duration_ms: 0.976682
+  type: 'test'
+  ...
+# Subtest: Skip-Bo deck contains 162 cards with 12 of each number and 18 Wilds
+ok 520 - Skip-Bo deck contains 162 cards with 12 of each number and 18 Wilds
+  ---
+  duration_ms: 0.681337
+  type: 'test'
+  ...
+# Subtest: Skip-Bo keeps hands and future Stock cards private while exposing public pile tops
+ok 521 - Skip-Bo keeps hands and future Stock cards private while exposing public pile tops
+  ---
+  duration_ms: 1.599922
+  type: 'test'
+  ...
+# Subtest: Skip-Bo builds 1 through 12, uses Wild as the needed value and clears completed piles
+ok 522 - Skip-Bo builds 1 through 12, uses Wild as the needed value and clears completed piles
+  ---
+  duration_ms: 1.542776
+  type: 'test'
+  ...
+# Subtest: Skip-Bo immediately refills an emptied hand and wins when the final Stock card is played
+ok 523 - Skip-Bo immediately refills an emptied hand and wins when the final Stock card is played
+  ---
+  duration_ms: 0.86877
+  type: 'test'
+  ...
+# Subtest: Skip-Bo has four public Discard Piles and discarding ends the turn
+ok 524 - Skip-Bo has four public Discard Piles and discarding ends the turn
+  ---
+  duration_ms: 1.20698
+  type: 'test'
+  ...
+# Subtest: Skip-Bo rejects the impossible 30-card Stock setting for 5-6 players
+ok 525 - Skip-Bo rejects the impossible 30-card Stock setting for 5-6 players
+  ---
+  duration_ms: 0.743832
+  type: 'test'
+  ...
+# Subtest: Backgammon starts with exactly 15 mirrored checkers per player
+ok 526 - Backgammon starts with exactly 15 mirrored checkers per player
+  ---
+  duration_ms: 0.370218
+  type: 'test'
+  ...
+# Subtest: Backgammon opening roll chooses the higher player and uses both opening values
+ok 527 - Backgammon opening roll chooses the higher player and uses both opening values
+  ---
+  duration_ms: 0.629309
+  type: 'test'
+  ...
+# Subtest: Backgammon legal sequence generation enforces Bar priority and blocked entry
+ok 528 - Backgammon legal sequence generation enforces Bar priority and blocked entry
+  ---
+  duration_ms: 0.673055
+  type: 'test'
+  ...
+# Subtest: Backgammon hits a blot and sends it to the Bar
+ok 529 - Backgammon hits a blot and sends it to the Bar
+  ---
+  duration_ms: 0.673426
+  type: 'test'
+  ...
+# Subtest: Backgammon bears off only from a legal all-home position
+ok 530 - Backgammon bears off only from a legal all-home position
+  ---
+  duration_ms: 0.440675
+  type: 'test'
+  ...
+# Subtest: Backgammon doubling cube supports accept, beaver and decline outcomes
+ok 531 - Backgammon doubling cube supports accept, beaver and decline outcomes
+  ---
+  duration_ms: 0.333783
+  type: 'test'
+  ...
+# Subtest: Three new games expose their visual table, tutorial and responsive gesture contracts
+ok 532 - Three new games expose their visual table, tutorial and responsive gesture contracts
+  ---
+  duration_ms: 23.508005
+  type: 'test'
+  ...
+# Subtest: trail quick-start sequence works with one host plus one computer
+ok 533 - trail quick-start sequence works with one host plus one computer
+  ---
+  duration_ms: 28.088932
+  type: 'test'
+  ...
+# Subtest: prairie quick-start sequence works with one host plus one computer
+ok 534 - prairie quick-start sequence works with one host plus one computer
+  ---
+  duration_ms: 5.238619
+  type: 'test'
+  ...
+# Subtest: lobby exposes actionable Trail Trouble / Prairie Pots start controls instead of a silent disabled start
+ok 535 - lobby exposes actionable Trail Trouble / Prairie Pots start controls instead of a silent disabled start
+  ---
+  duration_ms: 4.617702
+  type: 'test'
+  ...
+# Subtest: Trail Trouble has a square race board with Camp zones, Safe Trails, Home, zoom, cards and tappable markers
+ok 536 - Trail Trouble has a square race board with Camp zones, Safe Trails, Home, zoom, cards and tappable markers
+  ---
+  duration_ms: 1.738001
+  type: 'test'
+  ...
+# Subtest: Trail Trouble remains available in the v2.0.0 Studio Realism package
+ok 537 - Trail Trouble remains available in the v2.0.0 Studio Realism package
+  ---
+  duration_ms: 0.218239
+  type: 'test'
+  ...
+# Subtest: tryout keeps the existing Worker backend untouched while adding two Lodge games
+ok 538 - tryout keeps the existing Worker backend untouched while adding two Lodge games
+  ---
+  duration_ms: 0.9153
+  type: 'test'
+  ...
+# Subtest: Family Mystery tryout contains the complete family case file
+ok 539 - Family Mystery tryout contains the complete family case file
+  ---
+  duration_ms: 0.358861
+  type: 'test'
+  ...
+# Subtest: Family Prop Hunt tryout contains the locked six-round loadout and four maps
+ok 540 - Family Prop Hunt tryout contains the locked six-round loadout and four maps
+  ---
+  duration_ms: 0.50425
+  type: 'test'
+  ...
+# Subtest: chat messages can surface as a temporary named banner
+ok 541 - chat messages can surface as a temporary named banner
+  ---
+  duration_ms: 0.704572
+  type: 'test'
+  ...
+# Subtest: Last Haven uses a responsive felt board with routes, camps and direct board actions
+ok 542 - Last Haven uses a responsive felt board with routes, camps and direct board actions
+  ---
+  duration_ms: 0.440514
+  type: 'test'
+  ...
+# Subtest: hand-based extra games support tap-to-play cards and contextual card choices
+ok 543 - hand-based extra games support tap-to-play cards and contextual card choices
+  ---
+  duration_ms: 0.31857
+  type: 'test'
+  ...
+# Subtest: all displayed card hands auto-sort and use no-swipe fit layouts
+ok 544 - all displayed card hands auto-sort and use no-swipe fit layouts
+  ---
+  duration_ms: 0.847658
+  type: 'test'
+  ...
+# Subtest: turn ownership makes YOUR HAND glow
+ok 545 - turn ownership makes YOUR HAND glow
+  ---
+  duration_ms: 0.282386
+  type: 'test'
+  ...
+# Subtest: Prairie Pots uses tappable hand actions and visible live chip pots
+ok 546 - Prairie Pots uses tappable hand actions and visible live chip pots
+  ---
+  duration_ms: 0.353833
+  type: 'test'
+  ...
+# Subtest: room-preserving host game switch is wired through Worker and client UI
+ok 547 - room-preserving host game switch is wired through Worker and client UI
+  ---
+  duration_ms: 0.135354
+  type: 'test'
+  ...
+# Subtest: Family Mystery uses illustrated rooms, glowing movement blocks and avatar standees
+ok 548 - Family Mystery uses illustrated rooms, glowing movement blocks and avatar standees
+  ---
+  duration_ms: 1.190084
+  type: 'test'
+  ...
+# Subtest: Lodge home uses a responsive cabin hero, approved John crop and restrained ambient motion
+ok 549 - Lodge home uses a responsive cabin hero, approved John crop and restrained ambient motion
+  ---
+  duration_ms: 1.214581
+  type: 'test'
+  ...
+1..549
+# tests 549
+# suites 0
+# pass 549
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3206.814316

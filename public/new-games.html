@@ -238,17 +238,18 @@ window.avatarHTML=function(person,extra=''){
   };
   const pawnColors=['#d8a64b','#6f9fc4','#b65e55','#6fa46c','#9a72b6','#d88750','#5f8b8e','#c584a2','#8b744d','#7aa7c5','#9b9b72'];
   function figureSrc(person){return person.id==='john'?'/avatars/styles/john-look-02.jpg':`/avatars/styles/${person.id}-cute.jpg`}
+  // W20 catalog integration: Family Mystery rooms showcase approved flagship identities from the shared cabin catalog.
   const mysteryCabinProps={
-    camper:['buy-with-game-night-tokens-everyday-basics-pine-single-bed','buy-with-game-night-tokens-everyday-basics-plain-floor-lamp'],
-    firepit:['buy-with-game-night-tokens-everyday-basics-neutral-woven-rug'],
-    shop:['buy-with-game-night-tokens-everyday-basics-four-drawer-dresser'],
-    backyard:['buy-with-game-night-tokens-everyday-basics-neutral-woven-rug'],
-    living:['buy-with-game-night-tokens-everyday-basics-wall-mounted-tv','buy-with-game-night-tokens-everyday-basics-plain-floor-lamp'],
-    kitchen:['buy-with-game-night-tokens-everyday-basics-four-drawer-dresser'],
-    papashop:['buy-with-game-night-tokens-everyday-basics-four-drawer-dresser','buy-with-game-night-tokens-everyday-basics-wall-mounted-tv'],
-    bathroom:['buy-with-game-night-tokens-everyday-basics-plain-floor-lamp'],
-    papashack:['buy-with-game-night-tokens-everyday-basics-pine-single-bed'],
-    goatpen:['buy-with-game-night-tokens-everyday-basics-neutral-woven-rug']
+    camper:['home-flagship-h007-deep-hearth-sofa','home-flagship-h100-fishing-rod-ceiling-rack'],
+    firepit:['home-flagship-h009-quilted-reading-chair'],
+    shop:['home-flagship-h095-john-s-wrench-display','home-flagship-h026-workshop-cage-sconce'],
+    backyard:['home-flagship-h085-dog-treat-station'],
+    living:['home-flagship-h082-game-vault-cabinet','home-flagship-h007-deep-hearth-sofa'],
+    kitchen:['home-flagship-h094-holly-collectible-shelf-set'],
+    papashop:['home-flagship-h008-papa-s-worn-yellow-chair','home-flagship-h095-john-s-wrench-display'],
+    bathroom:['home-flagship-h087-stained-glass-pine-window'],
+    papashack:['home-flagship-h010-black-leather-sling-chair'],
+    goatpen:['home-flagship-h085-dog-treat-station']
   };
   const mysteryPropHTML=id=>(mysteryCabinProps[id]||[]).map((asset,i)=>`<img class="mystery-cabin-prop prop-${i+1}" src="/cabin-assets/generated/placeables/${asset}.svg" alt="">`).join('');
   function roomSceneHTML(id,label){const r=roomScenes[id]||{cls:'shop',icon:'&#9670;',one:'',two:'',three:''},dest=shortcutPairs[id],shortcut=dest?`<span class="secret-passage-badge">SECRET PASSAGE ↗ ${L()[nodes[dest].room]}</span>`:'';return `<div class="room-scene room-${r.cls}">${mysteryPropHTML(id)}<span class="scene-icon">${r.icon}</span><span class="scene-small one">${r.one}</span><span class="scene-small two ${id==='papashop'?'fire':''}">${r.two}</span><span class="scene-small three">${r.three}</span><span class="room-name">${label}</span>${shortcut}</div>`}
