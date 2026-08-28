@@ -131,7 +131,7 @@ export function consumeMotionEvents(actor){
 
 export const CONTROL_PRESETS=Object.freeze({
   propHunt:{
-    walkSpeed:2.75,runSpeed:4.6,groundAccel:16.5,groundBrake:21,airControl:.31,
+    walkSpeed:3.15,runSpeed:5.35,groundAccel:19.5,groundBrake:24,airControl:.34,
     jumpSpeed:6.15,gravity:18.5,cameraDistance:4.35,aimDistance:3.25,
     cameraHeight:1.20,cameraLift:.18,minCameraDistance:1.40,recoveryPitch:.035,shoulder:.54,fov:59,aimFov:52,sprintFov:63,
     lookSensitivity:.00425,touchLookSensitivity:.00465,minPitch:-.16,maxPitch:.25
@@ -258,6 +258,42 @@ export function smoothVelocity(actor,intent,speed,dt,{accel=18,brake=24,airContr
   return actor;
 }
 
+// W.11 stability layer: gameplay simulation runs at a fixed cadence while rendering
+// is free to run at the device's actual frame rate. This prevents phone frame spikes
+// from changing movement distance, jump timing, collision response or bot behavior.
+export const FIXED_SIMULATION_HZ=60;
+export function createFixedStepRunner({hz=FIXED_SIMULATION_HZ,maxFrame=0.12,maxSteps=6}={}){
+  const step=1/Math.max(1,hz);let accumulator=0,droppedTime=0;
+  function advance(frameDt,simulate){
+    const raw=Math.max(0,Number(frameDt)||0),accepted=Math.min(maxFrame,raw);droppedTime+=Math.max(0,raw-accepted);accumulator=Math.min(maxFrame,accumulator+accepted);
+    let steps=0;while(accumulator>=step&&steps<maxSteps){simulate?.(step,steps);accumulator-=step;steps++}
+    if(steps>=maxSteps&&accumulator>=step){droppedTime+=accumulator-step*.999;accumulator=step*.999}
+    return{steps,alpha:clamp(accumulator/step,0,1),step,accumulator,droppedTime};
+  }
+  return{advance,reset(){accumulator=0;droppedTime=0},get step(){return step},get accumulator(){return accumulator},get droppedTime(){return droppedTime}};
+}
+
+/** Record a grounded, collision-free location that can be used for deterministic recovery. */
+export function rememberSafeActorPosition(core,actor,colliders,bounds={},dt=0,{interval=.45}={}){
+  if(!actor)return null;actor._safePositionTimer=(actor._safePositionTimer||0)+Math.max(0,dt||0);
+  const finite=[actor.x,actor.y,actor.z].every(Number.isFinite),radius=actor.radius??.32,height=actor.height??1.72;
+  const inside=finite&&actor.x>=(bounds.minX??-Infinity)+radius&&actor.x<=(bounds.maxX??Infinity)-radius&&actor.z>=(bounds.minZ??-Infinity)+radius&&actor.z<=(bounds.maxZ??Infinity)-radius;
+  const open=inside&&actor.grounded!==false&&(!core?.blockingCollider||!core.blockingCollider(actor.x,actor.z,radius,actor.y??0,height,colliders||[]));
+  if(open&&actor._safePositionTimer>=interval){actor._lastSafePosition={x:actor.x,y:actor.y,z:actor.z,yaw:actor.yaw||0,at:Date.now()};actor._safePositionTimer=0}
+  return actor._lastSafePosition||null;
+}
+
+/** Prefer the last known safe point before doing a broader radial recovery search. */
+export function recoverActorToLastSafe(core,actor,colliders,bounds={},opts={}){
+  if(!actor)return false;const radius=opts.radius??actor.radius??.32,height=opts.height??actor.height??1.72,last=actor._lastSafePosition;
+  if(last&&[last.x,last.y,last.z].every(Number.isFinite)){
+    const within=last.x>=(bounds.minX??-Infinity)+radius&&last.x<=(bounds.maxX??Infinity)-radius&&last.z>=(bounds.minZ??-Infinity)+radius&&last.z<=(bounds.maxZ??Infinity)-radius;
+    const open=within&&(!core?.blockingCollider||!core.blockingCollider(last.x,last.z,radius,last.y,height,colliders||[]));
+    if(open){actor.x=last.x;actor.y=last.y;actor.z=last.z;actor.yaw=last.yaw??actor.yaw;actor.vx=0;actor.vy=0;actor.vz=0;actor.grounded=true;actor.mantle=null;actor.rig?.position?.set?.(actor.x,actor.y,actor.z);actor._lastRecoveryReason='last-known-safe recovery';actor._recoveredFromGeometry=(actor._recoveredFromGeometry||0)+1;return true}
+  }
+  return recoverActorFromGeometry(core,actor,colliders,bounds,opts);
+}
+
 /**
  * Adds jump buffering and coyote time without changing game-specific collision.
  * Call updateJumpMemory each frame, then consumeBufferedJump before applying gravity.
@@ -348,10 +384,10 @@ export function createThirdPersonCamera(THREE,camera,core,presetName='island',op
     targetDistance:opts.distance??cfg.cameraDistance,actualDistance:opts.distance??cfg.cameraDistance,
     shoulder:opts.shoulder??cfg.shoulder,shoulderSign:opts.shoulderSign??1,aim:false,sprinting:false,minPitch:cfg.minPitch,maxPitch:cfg.maxPitch,
     shake:0,recoilPitch:0,recoilYaw:0,targetReady:false,lookScale:1,invertY:false,effectiveShoulderSign:opts.shoulderSign??1,
-    initialized:false,collapsedFor:0,recoveries:0,lastSolveRatio:1,lastSafeDistance:opts.distance??cfg.cameraDistance,forceSnap:true,
+    initialized:false,collapsedFor:0,recoveries:0,lastSolveRatio:1,lastSafeDistance:opts.distance??cfg.cameraDistance,resolvedDistance:opts.distance??cfg.cameraDistance,clearFor:0,forceSnap:true,
     obstructed:false,lastRecoveryReason:'initial solve',lastResetReason:'initial solve'
   };
-  const temp={target:new THREE.Vector3(),smoothedTarget:new THREE.Vector3(),desired:new THREE.Vector3(),look:new THREE.Vector3(),pos:new THREE.Vector3(),velocity:new THREE.Vector3(),candidate:new THREE.Vector3(),best:new THREE.Vector3()};
+  const temp={target:new THREE.Vector3(),smoothedTarget:new THREE.Vector3(),desired:new THREE.Vector3(),look:new THREE.Vector3(),pos:new THREE.Vector3(),velocity:new THREE.Vector3(),candidate:new THREE.Vector3(),best:new THREE.Vector3(),right:new THREE.Vector3()};
   function rotate(dx,dy,{touch=false}={}){const s=(touch?cfg.touchLookSensitivity:cfg.lookSensitivity)*(state.lookScale||1),iy=state.invertY?-1:1;state.yaw-=dx*s;state.pitch=clamp(state.pitch+dy*s*iy,state.minPitch,state.maxPitch)}
   function zoom(delta){state.targetDistance=clamp(state.targetDistance+delta,Math.max(2.7,cfg.minCameraDistance+1),7.5)}
   function swapShoulder(){state.shoulderSign*=-1;return state.shoulderSign}
@@ -359,7 +395,7 @@ export function createThirdPersonCamera(THREE,camera,core,presetName='island',op
   function kick(pitch=.035,yaw=0,shake=.04){state.recoilPitch+=pitch;state.recoilYaw+=yaw;state.shake=Math.max(state.shake,shake)}
   function reset(target,colliders=[],options={}){
     state.yaw=options.yaw??target?.yaw??state.yaw;state.pitch=clamp(options.pitch??cfg.recoveryPitch??.07,state.minPitch,state.maxPitch);
-    state.distance=state.targetDistance=options.distance??cfg.cameraDistance;state.recoilPitch=0;state.recoilYaw=0;state.shake=0;state.collapsedFor=0;state.forceSnap=true;state.targetReady=false;state.recoveries++;state.lastResetReason=options.reason||'manual/reset';state.lastRecoveryReason=state.lastResetReason;
+    state.distance=state.targetDistance=options.distance??cfg.cameraDistance;state.resolvedDistance=state.distance;state.clearFor=0;state.recoilPitch=0;state.recoilYaw=0;state.shake=0;state.collapsedFor=0;state.forceSnap=true;state.targetReady=false;state.recoveries++;state.lastResetReason=options.reason||'manual/reset';state.lastRecoveryReason=state.lastResetReason;
     if(target)update(target,colliders,1/30,{...options,forceSnap:true});
     return state;
   }
@@ -411,7 +447,14 @@ export function createThirdPersonCamera(THREE,camera,core,presetName='island',op
     if(!solved){candidatePosition(temp.target,yaw,pitch,desiredDist,targetShoulder,cfg.cameraLift??.18,temp.best);solved={hit:desiredDist,full:desiredDist,ratio:1,pitch,shoulder:targetShoulder,pos:temp.best.clone()};}
     state.lastSolveRatio=solved.ratio;state.obstructed=solved.ratio<.985;state.effectiveShoulderSign=targetShoulder&&Math.sign(solved.shoulder)!==Math.sign(targetShoulder)?-state.shoulderSign:state.shoulderSign;
     const dir=temp.desired.copy(solved.pos).sub(temp.target),full=dir.length()||1;dir.multiplyScalar(1/full);
-    const usable=Math.max(.34,Math.min(full,solved.hit));temp.pos.copy(temp.target).addScaledVector(dir,usable);
+    const rawUsable=Math.max(.34,Math.min(full,solved.hit));
+    // W.11 camera hysteresis: retract promptly when blocked, but do not expand again
+    // until the view has stayed clear briefly. Door frames and clutter can therefore
+    // flicker between obstructed/unobstructed without pumping the camera in and out.
+    if(state.forceSnap||!state.initialized||!Number.isFinite(state.resolvedDistance))state.resolvedDistance=rawUsable;
+    if(rawUsable<state.resolvedDistance-.025){state.clearFor=0;state.resolvedDistance=damp(state.resolvedDistance,rawUsable,32,dt)}
+    else{state.clearFor=rawUsable>state.resolvedDistance+.045?state.clearFor+dt:Math.max(0,state.clearFor-dt*2);if(state.clearFor>.11)state.resolvedDistance=damp(state.resolvedDistance,rawUsable,state.aim?9:6.5,dt)}
+    const usable=Math.max(.34,Math.min(full,state.resolvedDistance));temp.pos.copy(temp.target).addScaledVector(dir,usable);
     const minDist=options.minCameraDistance??cfg.minCameraDistance??1.35;
     if(usable<minDist){state.collapsedFor+=dt}else{state.collapsedFor=Math.max(0,state.collapsedFor-dt*2.5);state.lastSafeDistance=usable;}
     // A roof/awning/nearby platform can trap the requested ray. Recover the view automatically instead of leaving the camera glued to the avatar.
@@ -419,7 +462,7 @@ export function createThirdPersonCamera(THREE,camera,core,presetName='island',op
     if(state.shake>.001){temp.pos.x+=(Math.random()-.5)*state.shake;temp.pos.y+=(Math.random()-.5)*state.shake*.65;}
     const snap=state.forceSnap||!state.initialized||options.forceSnap;
     if(snap){camera.position.copy(temp.pos);state.forceSnap=false;state.initialized=true}else camera.position.lerp(temp.pos,1-Math.exp(-(state.aim?19:15)*dt));
-    const sy=Math.sin(yaw),cy=Math.cos(yaw),right=new THREE.Vector3(cy,0,-sy);temp.look.copy(temp.target).addScaledVector(right,state.aim?.14*state.effectiveShoulderSign:0);camera.lookAt(temp.look);
+    const sy=Math.sin(yaw),cy=Math.cos(yaw);temp.right.set(cy,0,-sy);temp.look.copy(temp.target).addScaledVector(temp.right,state.aim?.14*state.effectiveShoulderSign:0);camera.lookAt(temp.look);
     const targetRoll=clamp(-(options.turnRate||0)*.0065,-.018,.018);camera.rotation.z=damp(camera.rotation.z||0,targetRoll,8,dt);
     const fov=state.aim?cfg.aimFov:state.sprinting?cfg.sprintFov:cfg.fov;camera.fov=damp(camera.fov||cfg.fov,fov,9,dt);camera.updateProjectionMatrix();
     state.actualDistance=temp.target.distanceTo(camera.position);return state;
@@ -543,7 +586,7 @@ export function animateFamilyRig(actor,dt,{aim=false,recoil=0,lookPitch=0,turnRa
     poseBlend(p.weaponAnchor,'y',moving?Math.sin(phase)*.012:0,14,dt);
     posBlend(p.weaponAnchor,'y',basePos(p.weaponAnchor,'y',.36)+bob*.45,16,dt);
     posBlend(p.weaponAnchor,'x',basePos(p.weaponAnchor,'x',.16)+(aim?0:Math.sin(phase)*.004),16,dt);
-    posBlend(p.weaponAnchor,'z',basePos(p.weaponAnchor,'z',-.34)+recoil*.06,20,dt);
+    posBlend(p.weaponAnchor,'z',basePos(p.weaponAnchor,'z',.34)-recoil*.06,20,dt);
     const coil=p.weapon?.userData?.energyCoil;if(coil){const pulse=1+Math.max(0,recoil)*.35;scaleBlend(coil,'x',pulse,24,dt);scaleBlend(coil,'z',pulse,24,dt)}
   }
   if(p.leftArm&&p.rightArm){
@@ -637,9 +680,10 @@ export function configureShadowCastingLight(light,{mapSize=2048,left=-28,right=2
   if(!light)return light;light.castShadow=true;if(light.shadow?.mapSize?.set)light.shadow.mapSize.set(mapSize,mapSize);if(light.shadow?.camera){Object.assign(light.shadow.camera,{left,right,top,bottom,near,far});light.shadow.camera.updateProjectionMatrix?.()}if(light.shadow){light.shadow.bias=bias;light.shadow.normalBias=normalBias;light.shadow.radius=2}return light;
 }
 
-export function createPerformanceGovernor(renderer,{targetFps=55,minPixelRatio=.8,maxPixelRatio=2}={}){
-  let acc=0,frames=0,lastAdjust=0,current=Math.min(maxPixelRatio,typeof devicePixelRatio==='number'?devicePixelRatio:1.5);
+export function createPerformanceGovernor(renderer,{targetFps=55,minPixelRatio=.8,maxPixelRatio=2,onQualityChange=null}={}){
+  let acc=0,frames=0,lastAdjust=0,current=Math.min(maxPixelRatio,typeof devicePixelRatio==='number'?devicePixelRatio:1.5),quality='high',emaFps=targetFps;
   renderer.setPixelRatio(current);
-  function sample(dt){acc+=dt;frames++;if(acc<2.2)return current;const fps=frames/acc,now=typeof performance!=='undefined'?performance.now():Date.now();if(now-lastAdjust>3000){let next=current;if(fps<targetFps-10)next=Math.max(minPixelRatio,current-.18);else if(fps>targetFps+4)next=Math.min(maxPixelRatio,current+.1);if(Math.abs(next-current)>.04){current=next;renderer.setPixelRatio(current);lastAdjust=now}acc=0;frames=0}return current}
-  return {sample,get pixelRatio(){return current}};
+  const setQuality=next=>{if(next===quality)return;quality=next;onQualityChange?.(quality,{fps:emaFps,pixelRatio:current})};
+  function sample(dt){acc+=dt;frames++;if(acc<1.8)return current;const fps=frames/Math.max(.001,acc),now=typeof performance!=='undefined'?performance.now():Date.now();emaFps=emaFps*.68+fps*.32;if(now-lastAdjust>2400){let next=current;if(emaFps<targetFps-11)next=Math.max(minPixelRatio,current-.16);else if(emaFps>targetFps+5)next=Math.min(maxPixelRatio,current+.08);if(Math.abs(next-current)>.035){current=next;renderer.setPixelRatio(current);lastAdjust=now}if(emaFps<36)setQuality('low');else if(emaFps<49)setQuality('medium');else if(emaFps>targetFps-1)setQuality('high');acc=0;frames=0}return current}
+  return {sample,get pixelRatio(){return current},get quality(){return quality},get fps(){return emaFps}};
 }

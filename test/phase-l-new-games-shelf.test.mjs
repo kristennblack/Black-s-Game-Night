@@ -18,7 +18,7 @@ test('Mexican Train, Skip-Bo, Backgammon and Black Gammon are visible on the act
   assert.match(app,/mexicantrain:\{name:'Mexican Train'/);
   assert.match(app,/skipbo:\{name:'Skip-Bo'/);
   assert.match(app,/backgammon:\{name:'Backgammon'/);
-  assert.match(app,/blackgammon:\{name:'Black Gammon'/);
+  assert.match(app,/blackgammon:\{name:'Blackgammon'/);
 });
 
 test('the table-game shelf entries are wired into playable extra-game routing',()=>{

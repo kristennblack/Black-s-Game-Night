@@ -3,6 +3,27 @@
 ## Master 3D Development Directive
 
 
+# PHASE W.11 PROP HUNT SMOOTHNESS + STABILITY OVERRIDE — HIGHEST 3D RUNTIME PRECEDENCE
+
+`MASTER_PHASE_W11_PROP_HUNT_SMOOTHNESS_STABILITY_DIRECTIVE.md` governs the immediate Prop Hunt runtime stability pass. It is additive to the approved-character and W.9 detail requirements but outranks older techniques that destabilize mobile play.
+
+Core W.11 rules:
+- one authoritative player collision body; render/animation follows simulation;
+- fixed 60 Hz gameplay step with bounded catch-up and render interpolation;
+- player collision, camera obstruction and vision/projectile responsibility are separable;
+- multi-sample camera solve with obstruction hysteresis, fast retract and slower clear-view expansion;
+- last-known-safe recovery is exceptional and deterministic rather than an every-frame relocation tool;
+- coyote time, jump buffering, variable jump, step/slide and validated mantle remain player-intent helpers;
+- disguises and decoys must validate open placement before consuming resources;
+- repeated shot/transform effects use capped pooling/shared geometry where practical;
+- hot render/shot loops reuse math/ray objects where practical to reduce GC hitches;
+- dynamic quality reduces pixel ratio, particles/decorative detail and expensive shadows before controls become choppy;
+- recent p95 frame time matters more than average FPS alone;
+- browser background/resume and WebGL context recovery are first-class phone scenarios;
+- Papa's Shop + approved John is the performance benchmark; no new Prop Hunt content until the phone stability gate passes.
+
+Authoring requirements such as actual character LOD meshes, material atlasing, repeated-prop instancing and baked static lighting remain required future asset work. Do not label them implemented until the assets and real-device measurements exist.
+
 # PHASE W.5 CHARACTER ART OVERRIDE — HIGHEST PRECEDENCE
 
 The file `MASTER_APPROVED_FAMILY_CHARACTER_DIRECTIVE.md` is now the highest-precedence source for family character identity. For characters with an explicitly approved turnaround, the older **stylized realism** target is superseded by the approved **ultra-simplified family cartoon** target.

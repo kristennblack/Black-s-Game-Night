@@ -8,7 +8,7 @@ const BUILD='GAME-NIGHT-STAGING-PHASE-T1-PROP-HUNT-HUNTER-RELEASE-COMBAT-19';
 const CACHE='black-family-game-night-staging-phase-t1-prop-hunt-hunter-release-combat-19';
 
 test('Phase T has a fresh isolated build/cache identity',()=>{
-  assert.equal(read('VERSION.txt').trim(),BUILD);
+  assert.equal(read('VERSION.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W11-PROP-HUNT-SMOOTHNESS-STABILITY-35');
   assert.match(read('public/app.js'),new RegExp(BUILD));
   assert.match(read('public/sw.js'),new RegExp(CACHE));
   assert.match(read('wrangler.staging.jsonc'),/black-family-game-night-phase-t1-staging/);
@@ -46,7 +46,7 @@ test('jump landing and mantle have a stronger gameplay-feel pass',()=>{
 test('hider disguise, decoy and flash actions have deliberate readable feedback',()=>{
   const src=read('public/prop-hunt-3d.js');
   for(const token of ['spawnTransformBurst','_propTransform=1','spawnPlacementRing','spawnFlashBurst','Decoy placed.']) assert.ok(src.includes(token),token);
-  assert.match(src,/a\.x\+fwdX\*\.78/);
+  assert.match(src,/safeDecoyPlacement/);assert.match(src,/core\.supportHeight/);
 });
 
 test('damage and Classic elimination move into a spectator camera instead of a dead view',()=>{

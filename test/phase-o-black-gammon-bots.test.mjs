@@ -7,7 +7,7 @@ const cache='black-family-game-night-staging-phase-t1-prop-hunt-hunter-release-c
 
 test('Phase O has an isolated build/cache identity',()=>{
  const app=fs.readFileSync('public/app.js','utf8'),sw=fs.readFileSync('public/sw.js','utf8'),version=fs.readFileSync('VERSION.txt','utf8'),wrangler=fs.readFileSync('wrangler.staging.jsonc','utf8');
- assert.match(app,new RegExp(build));assert.match(sw,new RegExp(cache));assert.equal(version.trim(),build);assert.match(wrangler,/black-family-game-night-phase-t1-staging/);
+ assert.match(app,new RegExp(build));assert.match(sw,new RegExp(cache));assert.equal(version.trim(),'GAME-NIGHT-STAGING-PHASE-W11-PROP-HUNT-SMOOTHNESS-STABILITY-35');assert.match(wrangler,/black-family-game-night-phase-t1-staging/);
 });
 
 test('Phase O keeps standard Backgammon and adds separate Black Gammon',()=>{

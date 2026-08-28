@@ -8,7 +8,7 @@ const cache='black-family-game-night-staging-phase-t1-prop-hunt-hunter-release-c
 function glbJson(path){const b=fs.readFileSync(new URL(`../${path}`,import.meta.url));assert.equal(b.toString('ascii',0,4),'glTF');const len=b.readUInt32LE(12);return JSON.parse(b.toString('utf8',20,20+len).trim())}
 
 test('Phase P1 has a fresh build/cache identity without removing Phase O games',()=>{
-  assert.match(read('public/app.js'),new RegExp(build));assert.match(read('public/sw.js'),new RegExp(cache));assert.equal(read('VERSION.txt').trim(),build);
+  assert.match(read('public/app.js'),new RegExp(build));assert.match(read('public/sw.js'),new RegExp(cache));assert.equal(read('VERSION.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W11-PROP-HUNT-SMOOTHNESS-STABILITY-35');
   assert.match(read('public/app.js'),/GAME\.BACKGAMMON,GAME\.BLACK_GAMMON/);
 });
 
@@ -27,7 +27,7 @@ test('authored Prop Hunt keeps locomotion running under aim/fire overlays',()=>{
 
 test('Prop Hunt adds restrained touch/gamepad aim assistance with muzzle validation',()=>{
   const prop=read('public/prop-hunt-3d.js'),css=read('public/prop-hunt-3d.css');
-  assert.match(prop,/function aimAssistTarget/);assert.match(prop,/pointer:coarse/);assert.match(prop,/if\(assist\?\.point\)cameraPoint=assist\.point\.clone/);assert.match(prop,/revalidateShotFromMuzzle/);assert.match(css,/ph3d-crosshair\.assisted/);
+  assert.match(prop,/function aimAssistTarget/);assert.match(prop,/pointer:coarse/);assert.match(prop,/if\(assist\?\.point\)cameraPoint\.copy\(assist\.point\)/);assert.match(prop,/revalidateShotFromMuzzle/);assert.match(css,/ph3d-crosshair\.assisted/);
 });
 
 test('Papa Shop production set keeps gameplay colliders and uses static visual optimization',()=>{

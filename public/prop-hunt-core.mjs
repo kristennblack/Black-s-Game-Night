@@ -64,7 +64,7 @@ export function cameraObstructionDistance(target,desired,colliders,padding=.18,v
   for(const o of offsets){
     const origin={x:target.x+o.x,y:target.y+o.y,z:target.z+o.z};
     for(const b of colliders){
-      if(b.noCamera||b.solid===false)continue;
+      if(b.noCamera||b.blocksCamera===false||b.solid===false)continue;
       const t=rayAabbDistance(origin,dir,b,len);
       if(t!=null&&t<nearest)nearest=t;
     }
@@ -77,7 +77,7 @@ export function lineOfSightClear(origin,target,colliders,padding=.04){
   const dx=target.x-origin.x,dy=target.y-origin.y,dz=target.z-origin.z;
   const len=Math.hypot(dx,dy,dz)||1,dir={x:dx/len,y:dy/len,z:dz/len};
   for(const b of colliders){
-    if(b.noVision||b.solid===false)continue;
+    if(b.noVision||b.blocksVision===false||b.solid===false)continue;
     const t=rayAabbDistance(origin,dir,b,len);
     if(t!=null&&t<len-padding)return false;
   }
@@ -94,7 +94,7 @@ export function overlapsCircleAabb(x,z,r,b){
 export function supportHeight(x,z,r,colliders,currentY,maxStep=.42){
   let support=0;
   for(const b of colliders){
-    if(!b.walkableTop)continue;
+    if(!b.walkableTop||b.blocksPlayer===false)continue;
     const top=(b.y??0)+b.h;
     if(top>currentY+maxStep+0.02)continue;
     if(x+r>b.x-b.w/2&&x-r<b.x+b.w/2&&z+r>b.z-b.d/2&&z-r<b.z+b.d/2)support=Math.max(support,top);
@@ -106,7 +106,7 @@ export function ceilingBottom(x,z,r,feetY,height,nextY,colliders){
   if(nextY<=feetY)return null;
   const oldHead=feetY+height,newHead=nextY+height;let nearest=null;
   for(const b of colliders){
-    if(b.solid===false)continue;const bottom=b.y??0;
+    if(b.solid===false||b.blocksPlayer===false)continue;const bottom=b.y??0;
     if(bottom<oldHead-.015||bottom>newHead+.015)continue;
     if(overlapsCircleAabb(x,z,r,b))nearest=nearest==null?bottom:Math.min(nearest,bottom);
   }
@@ -116,7 +116,7 @@ export function ceilingBottom(x,z,r,feetY,height,nextY,colliders){
 export function blockingCollider(x,z,r,feetY,height,colliders,ignore=null){
   const headY=feetY+height;
   for(const b of colliders){
-    if(b===ignore||b.solid===false)continue;
+    if(b===ignore||b.solid===false||b.blocksPlayer===false)continue;
     const bottom=b.y??0,top=bottom+b.h;
     if(headY<=bottom+.02||feetY>=top-.02)continue;
     if(overlapsCircleAabb(x,z,r,b))return b;

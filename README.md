@@ -1,3 +1,21 @@
+# CURRENT RUNTIME + DESIGN RELEASE — PHASE W.11 PROP HUNT SMOOTHNESS + STABILITY 35
+
+**Current runtime release:** `GAME-NIGHT-STAGING-PHASE-W11-PROP-HUNT-SMOOTHNESS-STABILITY-35`  
+**Current design release:** `GAME-NIGHT-DESIGN-PHASE-W11-PROP-HUNT-SMOOTHNESS-STABILITY-35`  
+**Package version:** `3.12.0-staging-phase-w11-prop-hunt-smoothness-stability-35`
+
+W.11 is the focused Prop Hunt stability pass. It preserves the W.8 arcade/token runtime and cumulative W.7 combat work while adding a fixed 60 Hz gameplay step, render interpolation, camera obstruction hysteresis, collision responsibility flags, last-known-safe recovery, safe disguise/decoy placement, capped pooled effects, dynamic phone quality scaling, browser resume/context-loss handling and frame-time-tail QA.
+
+**Canonical master prompt:** `MASTER_GAME_DESIGN_PRODUCTION_PROMPT_W11.md`  
+**Dedicated W.11 directive:** `MASTER_PHASE_W11_PROP_HUNT_SMOOTHNESS_STABILITY_DIRECTIVE.md`  
+**Phone QA gate:** `PHONE_QA_PHASE_W11_PROP_HUNT_SMOOTHNESS_STABILITY_35.md`
+
+This release deliberately does **not** claim authored character LOD meshes, final Papa's Shop instancing/baked lighting or full server reconciliation are finished. Those remain explicit future work until the assets/protocol and real-device measurements exist.
+
+Papa's Shop + approved John remains the performance benchmark. Do not expand Prop Hunt content until the real-phone W.11 stability gate is passed.
+
+---
+
 # CURRENT DESIGN RELEASE - PHASE W.10 PROFESSIONAL MASTER PROMPT 34
 
 **Current design release:** `GAME-NIGHT-STAGING-PHASE-W10-PRO-DESIGN-MASTER-34`  
@@ -106,3 +124,7 @@ Use `PHONE_QA_PHASE_U_CABIN_BREAKOUT_20.md` for the real-device pass.
 ### W.10 identity note
 
 This archive contains the unchanged W.8 gameplay runtime plus the W.10 professional design master. Runtime identifiers intentionally remain W.8/T1-compatible; the documentation release is identified separately in `DESIGN_RELEASE.txt`.
+
+
+## Phase W.12 — Gameplay Corrections 36
+This runtime repair focuses on core turn completion and table readability across Blackgammon, Prop Hunt, Mexican Train, Last Haven, Deck Sweep and Prairie Pots. The canonical prompt is now `MASTER_GAME_DESIGN_PRODUCTION_PROMPT_W12.md`. See `PHASE_W12_GAMEPLAY_CORRECTIONS_REPORT.md` and `PHONE_QA_PHASE_W12_GAMEPLAY_CORRECTIONS_36.md`.

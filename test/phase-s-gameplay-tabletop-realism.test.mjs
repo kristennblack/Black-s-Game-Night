@@ -19,7 +19,7 @@ function firstAction(r,p,name){return extraPublicState(r,p).actions.find(a=>a.ac
 test('Phase S has an isolated build/cache identity and packages its directive',()=>{
   assert.match(read('public/app.js'),new RegExp(BUILD));
   assert.match(read('public/sw.js'),new RegExp(CACHE));
-  assert.equal(read('VERSION.txt').trim(),BUILD);
+  assert.equal(read('VERSION.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W11-PROP-HUNT-SMOOTHNESS-STABILITY-35');
   const directive=read('MASTER_PHASE_S_GAMEPLAY_TABLETOP_REALISM_DIRECTIVE.md');
   for(const phrase of ['Stock Pile','TRAIL TROUBLE','LAST HAVEN','BACKGAMMON & BLACK GAMMON','MARBLES & JOKERS','SCREW YOUR BUDDY & FUCK YOUR BUDDY']) assert.ok(directive.includes(phrase),phrase);
 });

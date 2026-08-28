@@ -183,3 +183,23 @@ For all next-build work, `MASTER_GAME_DESIGN_PRODUCTION_PROMPT_W10.md` is the ca
 The older phrase `stylized realism` must not be interpreted as permission to redesign an approved family avatar. For approved characters, the target is dimensional, polished cartoon 3D that preserves the exact approved identity.
 
 The flagship 3D production strategy is vertical-slice first: prove one excellent John/Papa's Shop full-round phone experience before copying the controller/character pipeline across the cast or other maps.
+
+## W.11 Stability Amendment — Smoothness Is Gameplay
+
+For Family Prop Hunt, W.11 establishes a constitutional production gate: the project may not trade away stable controls, camera behavior, collision, frame pacing or real-phone usability merely to add visual complexity or new content.
+
+- Papa's Shop + approved John is the flagship stability benchmark.
+- Simulation ownership is authoritative capsule/body first; camera and animation are presentation/independent systems.
+- Actual phone proof is required for smoothness claims.
+- Frame-time tail latency, camera recoveries, collision failures and browser-resume behavior are QA signals, not cosmetic details.
+- Asset-stage optimization requirements must be described honestly as future until authored and measured.
+- `MASTER_GAME_DESIGN_PRODUCTION_PROMPT_W11.md` is the current canonical next-build prompt.
+
+
+## W.12 Gameplay Correction Amendment
+- `MASTER_GAME_DESIGN_PRODUCTION_PROMPT_W12.md` is the current canonical prompt.
+- Current house-game spelling is **Blackgammon**.
+- A core turn is not complete unless its legal action is visible and executable in shipped UI.
+- Public tabletop state should be visible; private cards remain hidden.
+- W.12 explicitly locks the corrected Mexican Train, Last Haven, Deck Sweep and Prairie Pots table-state requirements.
+- W.11 Prop Hunt stability remains mandatory while W.12 corrects speed, controller direction and forward weapon/hand presentation.

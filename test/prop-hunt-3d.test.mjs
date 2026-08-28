@@ -110,7 +110,7 @@ test('raycast shooting and bot sight use world geometry so walls block both shot
   assert.ok(js.includes('ray.intersectObjects(targets,false)'));
   assert.ok(js.includes('const targets=[...game.world.raycastMeshes]'));
   assert.ok(js.includes('function hasLineOfSight'));
-  assert.ok(js.includes('ray.intersectObjects(game.world.raycastMeshes,true)'));
+  assert.ok(js.includes('q.losRay.intersectObjects(game.world.raycastMeshes,true)'));
 });
 
 test('mobile/desktop controls expose crosshair-first shooting, sprint, jump-auto-mantle, prop, flash, decoy and lock without a separate aim button',()=>{

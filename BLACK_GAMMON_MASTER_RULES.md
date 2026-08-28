@@ -1,16 +1,16 @@
-# Black Gammon - Master House Rules
+# Blackgammon - Master House Rules
 
 **Status:** Locked implementation specification for Black Family Game Night  
 **Build:** `GAME-NIGHT-STAGING-PHASE-P0-FLAGSHIP-FOUNDATION-13`
 
-Black Gammon is a two-player Black family house game inspired by backgammon. It keeps the familiar 24-point board, Bar, home boards and bearing-off race, but changes the opening layout, dice control, matching-dice bonuses, direction, stacking, rescue and transfer rules.
+Blackgammon is a two-player Black family house game inspired by backgammon. It keeps the familiar 24-point board, Bar, home boards and bearing-off race, but changes the opening layout, dice control, matching-dice bonuses, direction, stacking, rescue and transfer rules.
 
 ## 1. Players, colours and board
 
 - Exactly 2 players.
 - Each player chooses a player colour. The same colour is used for that player's checkers and two normal dice.
 - Each player has 15 checkers.
-- The board uses the standard backgammon occupied starting point locations, with Black Gammon counts of 4 / 4 / 4 / 3:
+- The board uses the standard backgammon occupied starting point locations, with Blackgammon counts of 4 / 4 / 4 / 3:
   - Player 1: point 24 = 4, point 13 = 4, point 8 = 4, point 6 = 3.
   - Player 2: point 1 = 4, point 12 = 4, point 17 = 4, point 19 = 3.
 - The confirmed visual reference is `BLACK_GAMMON_STARTING_SETUP.png`.
@@ -19,7 +19,7 @@ Black Gammon is a two-player Black family house game inspired by backgammon. It 
 ## 2. Winning
 
 - A player must bring all 15 checkers into their home board before bearing off.
-- Bearing off then follows normal exact-die and higher-die/farthest-checker rules, subject to Black Gammon's direction rules.
+- Bearing off then follows normal exact-die and higher-die/farthest-checker rules, subject to Blackgammon's direction rules.
 - The first player to bear off all 15 checkers wins immediately. Remaining dice/moves are not resolved after the 15th checker leaves.
 - A borne-off checker is permanently safe and never returns to the board.
 - One completed game counts as one win. No gammon/backgammon multiplier scoring is used.
@@ -172,9 +172,9 @@ Once both normal rolls exist, the four dice are treated as one shared pool. Orig
 
 ## 15. Digital presentation
 
-- Black Gammon remains a separate Game Shelf entry from standard Backgammon.
+- Blackgammon remains a separate Game Shelf entry from standard Backgammon.
 - Standard Backgammon shares the same family/player-colour treatment for checkers and normal dice, but keeps standard backgammon rules.
-- When a Black Gammon checker is selected:
+- When a Blackgammon checker is selected:
   - blue highlight = legal forward destination
   - red highlight = legal backward destination
   - gold highlight = legal rescue/save destination
@@ -184,7 +184,7 @@ Once both normal rolls exist, the four dice are treated as one shared pool. Orig
   - Clear the Bar first.
   - Point already has 4 of your checkers.
   - Single 4 cannot enter from the Bar.
-- Black Gammon supports human-vs-human and human-vs-bot play.
+- Blackgammon supports human-vs-human and human-vs-bot play.
 
 ## 16. Bots / shared app behavior
 

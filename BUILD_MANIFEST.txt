@@ -30,3 +30,9 @@ VALIDATION COUNTS
 - Working tree: 473 / 473 tests pass.
 - Working tree staging validator: 211 pass, 0 fail, 2 environment warnings.
 - Final release ZIP must reproduce 473 / 473 tests and 211 pass / 0 fail from a cold extraction.
+
+PHASE W.11 PROP HUNT SMOOTHNESS + STABILITY 35
+- Runtime: GAME-NIGHT-STAGING-PHASE-W11-PROP-HUNT-SMOOTHNESS-STABILITY-35
+- Canonical prompt: MASTER_GAME_DESIGN_PRODUCTION_PROMPT_W11.md
+- Stability directive: MASTER_PHASE_W11_PROP_HUNT_SMOOTHNESS_STABILITY_DIRECTIVE.md
+- Phone gate: PHONE_QA_PHASE_W11_PROP_HUNT_SMOOTHNESS_STABILITY_35.md

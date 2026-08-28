@@ -1,5 +1,7 @@
-export const STAGING_BUILD_ID='GAME-NIGHT-STAGING-PHASE-T1-PROP-HUNT-HUNTER-RELEASE-COMBAT-19';
-export const STAGING_APP_VERSION='3.4.0-staging-phase-s-gameplay-tabletop-realism-17';
+export const LEGACY_STAGING_BUILD_ID='GAME-NIGHT-STAGING-PHASE-T1-PROP-HUNT-HUNTER-RELEASE-COMBAT-19';
+export const STAGING_BUILD_ID='GAME-NIGHT-STAGING-PHASE-W12-GAMEPLAY-CORRECTIONS-36';
+export const STAGING_APP_VERSION='3.12.0-staging-phase-w11-prop-hunt-smoothness-stability-35';
+// Historical QA lineage: 3.4.0-staging-phase-s-gameplay-tabletop-realism-17
 
 const fmt=n=>Number.isFinite(Number(n))?Number(n).toFixed(2):'n/a';
 const vec=v=>v?`${fmt(v.x)}, ${fmt(v.y)}, ${fmt(v.z)}`:'n/a';

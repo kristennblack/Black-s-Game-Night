@@ -14,7 +14,7 @@ function room(type,n=2){const players=new Map(Array.from({length:n},(_,i)=>{cons
 test('Phase Q has a fresh build, cache, and QA identity',()=>{
   assert.match(read('public/app.js'),new RegExp(BUILD));
   assert.match(read('public/sw.js'),new RegExp(CACHE));
-  assert.equal(read('VERSION.txt').trim(),BUILD);
+  assert.equal(read('VERSION.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W11-PROP-HUNT-SMOOTHNESS-STABILITY-35');
   assert.match(read('public/phase-e-qa.mjs'),/3\.4\.0-staging-phase-s-gameplay-tabletop-realism-17/);
 });
 

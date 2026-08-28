@@ -9,7 +9,7 @@ const CACHE='black-family-game-night-staging-phase-t1-prop-hunt-hunter-release-c
 test('Phase R build identity and directive are packaged',()=>{
   assert.match(read('public/app.js'),new RegExp(BUILD));
   assert.match(read('public/sw.js'),new RegExp(CACHE));
-  assert.equal(read('VERSION.txt').trim(),BUILD);
+  assert.equal(read('VERSION.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W11-PROP-HUNT-SMOOTHNESS-STABILITY-35');
   const report=read('PHASE_R_PROP_HUNT_P2_GAMMON_UX_REPORT.md');
   const qa=read('PHONE_QA_PHASE_R_PROP_HUNT_P2_GAMMON_UX_16.md');
   for(const phrase of ['Prop Hunt P2 + Gammon UX','screen-first Gammon surface','John PH-CHAR-01-P2','Vertical line artifact','Technical validation']) assert.ok(report.includes(phrase)||qa.includes(phrase),phrase);

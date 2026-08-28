@@ -74,7 +74,7 @@ test('Four is the normal own-point cap but temporary overstack is permitted whil
 
 test('Black Gammon UI is on the shelf, uses direction/rescue colors, and bot controls default Easy with readable selects',async()=>{
  const app=await readFile(new URL('../public/app.js',import.meta.url),'utf8'),css=await readFile(new URL('../public/styles.css',import.meta.url),'utf8'),worker=await readFile(new URL('../worker.mjs',import.meta.url),'utf8');
- for(const token of ['BLACK_GAMMON','Black Gammon','blackGammonBoard','BLUE · FORWARD','RED · BACKWARD','GOLD · RESCUE'])assert.match(app,new RegExp(token.replaceAll('.','\\.')));
+ for(const token of ['BLACK_GAMMON','Blackgammon','blackGammonBoard','BLUE · FORWARD','RED · BACKWARD','GOLD · RESCUE'])assert.match(app,new RegExp(token.replaceAll('.','\\.')));
  assert.match(app,/botDifficultyOptions\('easy'\)/);assert.match(app,/value\|\|'easy'/);assert.match(worker,/normalizeDifficulty[\s\S]*:'easy'/);assert.match(worker,/makeBot\(room,difficulty='easy'/);
  assert.match(css,/bot-add-grid select[\s\S]*#fff7e5/);assert.match(css,/black-dest-actions button\.forward/);assert.match(css,/black-dest-actions button\.backward/);assert.match(css,/black-dest-actions button\.rescue/);
 });

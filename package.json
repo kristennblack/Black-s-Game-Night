@@ -1,9 +1,9 @@
 {
   "name": "black-family-game-night",
-  "version": "3.11.0-staging-phase-w8-arcade-tutorial-store-33",
+  "version": "3.13.0-staging-phase-w12-gameplay-corrections-36",
   "private": true,
   "type": "module",
-  "description": "Black Family Game Night W.8 runtime packaged with W.10 professional game-design master prompt and production bible; runtime gameplay/assets unchanged.",
+  "description": "Black Family Game Night W.12 gameplay corrections: Blackgammon movement, Prop Hunt controls, Mexican Train visibility, Last Haven hand, Deck Sweep table flow, and Prairie Pots progression.",
   "scripts": {
     "test": "node --test",
     "check": "node --check worker.mjs && node --check propHuntRoom.mjs && node --check islandLifeRoom.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check threeNewGames.mjs && node --check blackGammon.mjs && node --check public/app.js && node --check public/prop-hunt-core.mjs && node --check public/shared-3d-art-kit.mjs && node --check public/shared-3d-gameplay.mjs && node --check public/approved-family-characters.mjs && node --check public/arcade-tutorials.mjs && node --check public/avatar-cosmetics.mjs && node --check public/shared-3d-studio.mjs && node --check public/prop-hunt-3d.js && node --check public/island-life-core.mjs && node --check public/island-life.js && node --check public/birthday-climb.js && node --check public/phase-e-qa.mjs && node --check public/sw.js && node --test",

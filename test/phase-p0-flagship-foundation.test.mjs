@@ -9,7 +9,7 @@ test('Phase P0 installs flagship directive and locked-component register',()=>{
   assert.match(read('MASTER_3D_DEVELOPMENT_DIRECTIVE.md'),/Family Prop Hunt.*flagship/s);
   assert.match(read('PROP_HUNT_FLAGSHIP_AUDIT_AND_PLAN.md'),/PH-CHAR-01: John in Papa's Shop/);
   assert.match(read('LOCKED_COMPONENTS_REGISTER.md'),/third-person camera recovery/);
-  assert.equal(read('VERSION.txt').trim(),build);
+  assert.equal(read('VERSION.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W11-PROP-HUNT-SMOOTHNESS-STABILITY-35');
 });
 
 test('Easy is the default computer difficulty across exposed setup paths',()=>{

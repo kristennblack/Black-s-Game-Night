@@ -29,12 +29,12 @@ test('shared recovery repairs invalid transforms and horizontal bounds, not only
 });
 
 test('Prop Hunt camera aim is revalidated from the actual weapon muzzle before a hit is accepted',()=>{
-  for(const token of ['function muzzleWorldPosition','function revalidateShotFromMuzzle','const muzzleRay=new THREE.Raycaster','target=validated.target'])assert.ok(prop.includes(token),token);
+  for(const token of ['function muzzleWorldPosition','function revalidateShotFromMuzzle','muzzleRay:new THREE.Raycaster()','target=validated.target'])assert.ok(prop.includes(token),token);
 });
 
 test('Prop Hunt decoys preserve elevated support height locally and across network playback',()=>{
-  assert.ok(prop.includes('const supportY=core.supportHeight'));
-  assert.ok(prop.includes('spawnDecoy(a.prop,x,Number.isFinite(y)?y:a.y,z,{rotation:a.yaw})'));
+  assert.ok(prop.includes('y=core.supportHeight'));assert.ok(prop.includes('safeDecoyPlacement'));
+  assert.ok(prop.includes('spawnDecoy(a.prop,place.x,place.y,place.z,{rotation:place.rotation})'));
   assert.ok(prop.includes("spawnDecoy(m.prop,m.position?.x||0,m.position?.y||0,m.position?.z||0,{rotation:m.rotation,id:m.decoyId||null})"));
   assert.ok(prop.includes('mesh.position.set(x,Number.isFinite(Number(y))?Number(y):0,z)'));
 });

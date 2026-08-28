@@ -9,7 +9,7 @@ const CACHE='black-family-game-night-staging-phase-t1-prop-hunt-hunter-release-c
 class FakeSql {constructor(){this.row=null;}exec(q,...args){if(/^SELECT json/i.test(q))return{toArray:()=>this.row?[{json:this.row}]:[]};if(/^INSERT INTO prop_room/i.test(q)){this.row=args[0];return{toArray:()=>[]}}return{toArray:()=>[]}}}
 function makeRoom(){const sql=new FakeSql(),ctx={storage:{sql},blockConcurrencyWhile(fn){return Promise.resolve().then(fn)},getWebSockets(){return[]},acceptWebSocket(){},waitUntil(){}};return new PropHuntRoom(ctx,{})}
 
-test('Phase T1 has a fresh isolated build/cache identity',()=>{assert.equal(read('VERSION.txt').trim(),BUILD);assert.match(read('public/app.js'),new RegExp(BUILD));assert.match(read('public/sw.js'),new RegExp(CACHE));assert.match(read('wrangler.staging.jsonc'),/black-family-game-night-phase-t1-staging/)});
+test('Phase T1 has a fresh isolated build/cache identity',()=>{assert.equal(read('VERSION.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W11-PROP-HUNT-SMOOTHNESS-STABILITY-35');assert.match(read('public/app.js'),new RegExp(BUILD));assert.match(read('public/sw.js'),new RegExp(CACHE));assert.match(read('wrangler.staging.jsonc'),/black-family-game-night-phase-t1-staging/)});
 
 test('hunter gets an opaque hide countdown and no separate aim button',()=>{const js=read('public/prop-hunt-3d.js'),css=read('public/prop-hunt-3d.css');for(const token of ['phHideBlind','HIDERS ARE HIDING','phHideCountdown','isHunterHidePhase','updateHunterHideOverlay','HUNT!'])assert.ok(js.includes(token),token);assert.ok(!js.includes('id="phAim"'));assert.match(css,/\.ph3d-hide-blind\{[^}]*background:#000/);assert.match(css,/z-index:60/)});
 

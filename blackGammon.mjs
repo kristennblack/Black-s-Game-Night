@@ -17,20 +17,20 @@ const emptyDue=()=>Array(24).fill(null);
 const clonePoints=pts=>Object.fromEntries(Object.entries(pts).map(([id,a])=>[id,[...a]]));
 const sum=a=>(a||[]).reduce((n,x)=>n+Number(x||0),0);
 
-export const BLACK_GAMMON_META={name:'Black Gammon',icon:'⚫',sub:'Black family house rules: shared dice, backward sets, stacking, rescue and bar play',min:2,max:2};
+export const BLACK_GAMMON_META={name:'Blackgammon',icon:'⚫',sub:'Black family house rules: shared dice, backward sets, stacking, rescue and bar play',min:2,max:2};
 export const BLACK_GAMMON_DEFAULTS={beginnerHelp:true};
 
 function setup(room){
- const ids=order(room);if(ids.length!==2)throw new Error('Black Gammon needs exactly 2 players');
+ const ids=order(room);if(ids.length!==2)throw new Error('Blackgammon needs exactly 2 players');
  const points=Object.fromEntries(ids.map(id=>[id,empty24()]));
- // Same occupied points as standard backgammon, Black Gammon counts 4/4/4/3.
+ // Same occupied points as standard backgammon, Blackgammon counts 4/4/4/3.
  points[ids[0]][23]=4;points[ids[0]][12]=4;points[ids[0]][7]=4;points[ids[0]][5]=3;
  points[ids[1]][0]=4;points[ids[1]][11]=4;points[ids[1]][16]=4;points[ids[1]][18]=3;
  return {points,bar:Object.fromEntries(ids.map(id=>[id,0])),off:Object.fromEntries(ids.map(id=>[id,0])),top:Array(24).fill(null)};
 }
 function resetPlayers(room){for(const p of room.players.values()){p.hand=[];p.score=0;p.bid=null;p.tricks=0;p.continued=false;p.eliminated=false}}
 function setExtra(room,ex){room.game.extra=ex;room.game.phase='extra';room.game.winnerIds=[];room.game.history=ex.history||[]}
-function finish(room,winnerId){const ex=room.game.extra;ex.phase='gameOver';ex.turnPlayerId=null;ex.winnerId=winnerId;ex.message=`${P(room,winnerId).name} bore off all 15 checkers and wins Black Gammon.`;room.game.phase='gameOver';room.game.winnerIds=[winnerId];room.game.history=ex.history||[];P(room,winnerId).score=1}
+function finish(room,winnerId){const ex=room.game.extra;ex.phase='gameOver';ex.turnPlayerId=null;ex.winnerId=winnerId;ex.message=`${P(room,winnerId).name} bore off all 15 checkers and wins Blackgammon.`;room.game.phase='gameOver';room.game.winnerIds=[winnerId];room.game.history=ex.history||[];P(room,winnerId).score=1}
 
 export function startBlackGammon(room){
  resetPlayers(room);const ids=order(room),b=setup(room);
@@ -148,7 +148,7 @@ export function actionBlackGammon(room,p,{action,args={}}){const ex=room.game.ex
  if(action==='blackAllocate'){if(!['allocate','allocateBig'].includes(ex.phase)||ex.controllerId!==p.id)throw new Error('You do not control this allocation');const plans=blackAllocationPlans(room,{big:ex.phase==='allocateBig'}),pl=plans[Number(args.planIndex)];if(!pl)throw new Error('Choose a valid dice split');beginMovement(room,pl.assignments);return}
  if(action==='blackMove'){if(ex.phase!=='moving'||ex.turnPlayerId!==p.id)throw new Error('Not your movement opportunity');const legal=blackLegalMoves(room,p.id).find(m=>m.tokenId===args.tokenId&&String(m.from)===String(args.from)&&String(m.to)===String(args.to)&&Number(m.count)===Number(args.count)&&Number(m.value)===Number(args.value));if(!legal)throw new Error(illegalHint(room,p.id));applyMove(room,p.id,legal);if(ex.off[p.id]>=15)return finish(room,p.id);if(!(ex.assignments[p.id]||[]).length||!blackLegalMoves(room,p.id).length)finishMover(room,p.id);else ex.message=`${P(room,p.id).name}: keep moving. Matching sets must use as many legal moves as possible.`;return}
  if(action==='blackNoMove'){if(ex.phase!=='moving'||ex.turnPlayerId!==p.id)throw new Error('Not your movement opportunity');if(blackLegalMoves(room,p.id).length)throw new Error('A legal move remains and must be played');return finishMover(room,p.id)}
- throw new Error('Invalid Black Gammon action')
+ throw new Error('Invalid Blackgammon action')
 }
 
 export const BLACK_GAMMON_BIG_DIE_VALUES=[...BIG_DIE_VALUES];

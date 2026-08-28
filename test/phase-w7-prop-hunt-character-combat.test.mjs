@@ -11,10 +11,14 @@ test('W7 release identity remains preserved after cumulative later phases',()=>{
   const app=read('public/app.js'),sw=read('public/sw.js');
   assert.match(app,/PHASE_W7_RELEASE='GAME-NIGHT-STAGING-PHASE-W7-PROP-HUNT-CHARACTER-COMBAT-32'/);
   assert.match(app,/PHASE_W8_RELEASE='GAME-NIGHT-STAGING-PHASE-W8-ARCADE-TUTORIAL-STORE-33'/);
-  assert.match(app,/CURRENT_BUILD=PHASE_W8_RELEASE/);
+  assert.match(app,/PHASE_W11_RELEASE='GAME-NIGHT-STAGING-PHASE-W11-PROP-HUNT-SMOOTHNESS-STABILITY-35'/);
+  assert.match(app,/PHASE_W11_RELEASE='GAME-NIGHT-STAGING-PHASE-W11-PROP-HUNT-SMOOTHNESS-STABILITY-35'/);
+  assert.match(app,/CURRENT_BUILD=PHASE_W12_RELEASE/);
   assert.match(sw,/PHASE_W7_CACHE='black-family-game-night-staging-phase-w7-prop-hunt-character-combat-32'/);
   assert.match(sw,/PHASE_W8_CACHE='black-family-game-night-staging-phase-w8-arcade-tutorial-store-33'/);
-  assert.match(sw,/const CACHE=PHASE_W8_CACHE/);
+  assert.match(sw,/PHASE_W11_CACHE='black-family-game-night-staging-phase-w11-prop-hunt-smoothness-stability-35'/);
+  assert.match(sw,/PHASE_W11_CACHE='black-family-game-night-staging-phase-w11-prop-hunt-smoothness-stability-35'/);
+  assert.match(sw,/const CACHE=PHASE_W12_CACHE/);
 });
 
 test('approved John blocks the unapproved legacy GLB and keeps the approved procedural fallback',()=>{
@@ -58,14 +62,14 @@ test('visible crosshair is centered on the actual camera ray on phones and deskt
   assert.match(css,/\.ph3d-crosshair\{[^}]*left:50%;top:50%/);
   assert.match(css,/\.ph3d-hit\{[^}]*left:50%;top:50%/);
   assert.doesNotMatch(css,/\.ph3d-crosshair\{top:44%\}/);
-  assert.match(prop,/ray\.setFromCamera\(new THREE\.Vector2\(0,0\),game\.camera\)/);
+  assert.match(prop,/ray\.setFromCamera\((?:new THREE\.Vector2\(0,0\)|q\.screenCenter),game\.camera\)/);
 });
 
 test('shots remain muzzle-validated and now render readable tracer plus impact feedback',()=>{
   const prop=read('public/prop-hunt-3d.js');
   assert.match(prop,/revalidateShotFromMuzzle/);
   assert.match(prop,/muzzleWorldPosition/);
-  assert.match(prop,/new THREE\.CylinderGeometry\(\.014,\.022,len/);
+  assert.match(prop,/new THREE\.CylinderGeometry\(\.014,\.022,(?:len|1)/);
   assert.match(prop,/spawnImpactBurst\(hitPoint/);
   assert.match(prop,/new THREE\.RingGeometry\(\.055,\.11,20\)/);
   assert.match(prop,/showShotImpact/);

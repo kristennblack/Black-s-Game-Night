@@ -73,3 +73,27 @@ Automated tests may establish technical health. They do not constitute visual ap
 - Mobile performance is measured through frame-time profiling, significance/LOD/culling and WebGL budgets rather than desktop-only fps.
 - Local QA telemetry may diagnose camera/stuck/mantle/transform/shot/frame-time failures without third-party tracking.
 - Automated tests never substitute for actual phone visual/control approval.
+
+## Phase W.11 Prop Hunt smoothness/stability locks
+- Canonical prompt: `MASTER_GAME_DESIGN_PRODUCTION_PROMPT_W11.md`.
+- Dedicated stability contract: `MASTER_PHASE_W11_PROP_HUNT_SMOOTHNESS_STABILITY_DIRECTIVE.md`.
+- No new Prop Hunt content before John + Papa's Shop real-phone stability gate.
+- Fixed 60 Hz gameplay simulation with bounded catch-up and render interpolation.
+- Camera obstruction hysteresis; camera failure does not automatically relocate a valid player.
+- Last-known-safe recovery for actual invalid player states.
+- Collider responsibilities separately support player/camera/vision behavior.
+- Disguise and decoy placement must be validated before committing/spending.
+- Repeated gameplay effects are capped/pooled where practical; quality tier reduces cost under load.
+- QA includes recent p95/peak frame time, draw calls, triangles, quality tier, pixel ratio and recovery count.
+- Background/resume and WebGL context loss/restore are phone-stability scenarios.
+- Authored character LODs, material atlases, Papa's Shop instancing/baked lighting and full network reconciliation remain future/asset-dependent until actually produced and device-tested.
+
+
+## Phase W.12 gameplay-correction locks
+- Canonical prompt: `MASTER_GAME_DESIGN_PRODUCTION_PROMPT_W12.md`.
+- Blackgammon is one word; legal checker moves must remain executable after rolling/allocation with a direct-move fallback.
+- Prop Hunt: faster baseline movement, camera-relative mobile controller corrected, hunter hands/weapon forward.
+- Mexican Train: end-for-end flip control, all player trains + Family Train visible, score outside board.
+- Last Haven: viewer supply/resource + survival-card hand visible for planning.
+- Deck Sweep: rank-first sorting; 10 special highlight; each face-down slot unlocks when its own covering face-up card is played; opponent table state visible without hidden-card identities.
+- Prairie Pots: pot awards update chip totals and are explicitly reported/displayed; no silent sequence stall.
