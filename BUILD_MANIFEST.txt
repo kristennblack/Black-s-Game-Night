@@ -1,38 +1,30 @@
 BLACK FAMILY GAME NIGHT
-PHASE W.8 ARCADE TUTORIAL + AVATAR TOKEN STORE MANIFEST
+PHASE W.16 CABIN + REALISTIC COSMETICS RUNTIME MANIFEST
 
-Current release: GAME-NIGHT-STAGING-PHASE-W8-ARCADE-TUTORIAL-STORE-33
-Package version: 3.11.0-staging-phase-w8-arcade-tutorial-store-33
+Current release: GAME-NIGHT-STAGING-PHASE-W16-CABIN-COSMETICS-RUNTIME-38
+Design release: GAME-NIGHT-DESIGN-PHASE-W16-CABIN-COSMETICS-RUNTIME-38
+Package version: 3.14.0-staging-phase-w16-cabin-cosmetics-runtime-38
 Worker main: worker.mjs
 Cloudflare static asset directory: ./public
 Assets binding: ASSETS
 Staging config: wrangler.staging.jsonc
-Service-worker cache: black-family-game-night-staging-phase-w8-arcade-tutorial-store-33
+Service-worker cache: black-family-game-night-staging-phase-w16-cabin-cosmetics-runtime-38
 
-CURRENT W.8 WORK
-- Detailed visual HOW TO tutorials for all 16 active arcade games.
-- Per-profile/per-game SHOW TUTORIAL / SKIP FOR ME choice.
-- Dedicated earned-only Tokens Store.
-- Hat, Glasses and Accessory equip slots with 14 launch cosmetics.
-- +5 first-play tokens and +10 daily three-game challenge.
-- Server-idempotent achievement token awards and validated cosmetic unlocks.
-- Cosmetics render on selected avatar surfaces without modifying approved identity.
-- Future 3D cosmetic sockets reserved: HeadTop, Face, ChestAccessory.
-- Legacy Breakout/Rocket/Snake remain self-contained.
+W.16 RUNTIME
+- Home -> Visit the Cabin direct route.
+- Cabin overview, named rooms, guest rooms, room editor, owner-only save, reactions and guest book.
+- W.13 400 room-item records connected to the live Cabin Shop.
+- Server-backed room blueprint purchase/ownership and placement enforcement.
+- 154 fitted realistic wearable records.
+- Emoji-era cosmetic renderer superseded and old emoji CSS removed.
+- Portrait-variant conflict suppression for existing hats/glasses/scarves/earrings.
+- Shared fitted cosmetic renderer used by normal avatarHTML portrait surfaces.
+- Game Night Tokens are the visible universal currency label.
 
 CUMULATIVE PRESERVATION
-- W.7 Prop Hunt John character/combat vertical slice remains included.
-- W.6 multigame gameplay/UX repairs remain included.
-- W.5 approved family-character identity registry/turnarounds remain locked.
-- W.4 and earlier gameplay/mobile fixes remain included.
+- W.12 gameplay corrections remain included.
+- W.11 Prop Hunt smoothness/stability remains included.
+- W.10 production discipline remains included.
+- W.5 approved family-character identity locks remain mandatory.
 
-VALIDATION COUNTS
-- Working tree: 473 / 473 tests pass.
-- Working tree staging validator: 211 pass, 0 fail, 2 environment warnings.
-- Final release ZIP must reproduce 473 / 473 tests and 211 pass / 0 fail from a cold extraction.
-
-PHASE W.11 PROP HUNT SMOOTHNESS + STABILITY 35
-- Runtime: GAME-NIGHT-STAGING-PHASE-W11-PROP-HUNT-SMOOTHNESS-STABILITY-35
-- Canonical prompt: MASTER_GAME_DESIGN_PRODUCTION_PROMPT_W11.md
-- Stability directive: MASTER_PHASE_W11_PROP_HUNT_SMOOTHNESS_STABILITY_DIRECTIVE.md
-- Phone gate: PHONE_QA_PHASE_W11_PROP_HUNT_SMOOTHNESS_STABILITY_35.md
+FINAL VALIDATION COUNTS ARE RECORDED IN PHASE_W16_* FILES AFTER COLD-ZIP VALIDATION.

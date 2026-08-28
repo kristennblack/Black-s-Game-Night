@@ -1,0 +1,39 @@
+W13 CABIN CATALOG VALIDATION
+
+Total items: 400
+Source type counts:
+- Achievement Reward: 6
+- Birthday / Seasonal Reward: 35
+- Buy with Game Night Tokens: 175
+- Collection Completion Reward: 20
+- Secret / Prestige: 20
+- Win in Arcade: 144
+
+Rarity counts:
+- Uncommon: 103
+- Rare: 123
+- Common: 34
+- Epic: 94
+- Family Legendary: 46
+
+Top category counts:
+- Collectibles: 54
+- Wall Decor: 45
+- Storage: 39
+- Lighting: 38
+- Tables: 34
+- Electronics: 33
+- Rugs: 32
+- Decorations: 21
+- Seating: 20
+- Beds: 17
+- Wallpaper: 15
+- Flooring: 11
+- Windows & Doors: 10
+- Special Effects: 7
+- Plants: 6
+- Pet Items: 5
+- Architecture: 5
+- Games: 3
+- Toys & Hobbies: 3
+- Ceiling & Trim: 2

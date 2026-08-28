@@ -112,3 +112,16 @@ Automated tests may establish technical health. They do not constitute visual ap
 - LOCK: single store with Avatar / Furniture / Walls & Floors / Decorations / Specials tabs.
 - LOCK: Collection Book, secret `???` entries, collection completion rewards, seasonal/birthday heirlooms and family-history inspect metadata.
 - LOCK: authoritative W.13 launch catalog contains exactly 400 entries in `CABIN_ROOMS_400_ITEM_MASTER_CATALOG_W13.xlsx`.
+
+## Phase W.16 — Cabin runtime + realistic fitted cosmetics
+- LOCK: Home exposes a direct, prominent **Visit the Cabin** route to `/cabin.html`.
+- LOCK: `/cabin.html` is a real runtime route with named family rooms plus permanent guest-room keys.
+- LOCK: room writes are owner-only; visitor guest-book/reaction writes remain allowed.
+- LOCK: 14×16 room coordinate system, 0.5-ft placement movement and 90° rotation remain the baseline editor contract.
+- LOCK: the W.13 400-item room catalog is connected to the merged Cabin Shop; token-purchasable room blueprints use Game Night Tokens.
+- LOCK: new room placements require an owned/starter blueprint server-side; grandfathered existing placements remain migration-safe.
+- LOCK: the live cosmetic renderer uses authored PNG/SVG assets, not Unicode emoji.
+- LOCK: launch W.16 wearable catalog contains 154 fitted records across independent slots.
+- LOCK: shared portrait cosmetics use anatomical fit anchors, per-character overrides and portrait-variant conflict suppression.
+- LOCK: fitted wearables remain visible wherever the shared avatar portrait renderer is used, including card/tabletop player portraits.
+- LOCK: W.16 is high-fidelity 2.5D for Cabin/portrait cosmetics; do not falsely relabel it as 400 unique furniture GLBs or full-body 3D wearable meshes until those are genuinely authored and tested.

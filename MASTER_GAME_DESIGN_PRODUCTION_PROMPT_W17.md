@@ -1,14 +1,47 @@
-
 # BLACK FAMILY GAME NIGHT
-# MASTER GAME DESIGN + PRODUCTION DIRECTIVE W.16
-## Cabin + Realistic Cosmetics Runtime Integration
+# MASTER GAME DESIGN + PRODUCTION DIRECTIVE W.17
+## Cabin Runtime + Portrait-Calibrated Realistic Cosmetics Polish
 
 Planning/build date: 2026-08-28
-Status: **HIGHEST-PRECEDENCE CURRENT MASTER PROMPT + IMPLEMENTED RUNTIME CONTRACT**
-Runtime release: `GAME-NIGHT-STAGING-PHASE-W16-CABIN-COSMETICS-RUNTIME-38`
-Design release: `GAME-NIGHT-DESIGN-PHASE-W16-CABIN-COSMETICS-RUNTIME-38`
+Status: **HIGHEST-PRECEDENCE CURRENT MASTER PROMPT**
+Runtime release: `GAME-NIGHT-STAGING-PHASE-W17-CABIN-COSMETICS-POLISH-39`
+Design release: `GAME-NIGHT-DESIGN-PHASE-W17-CABIN-COSMETICS-POLISH-39`
 
-W.16 converts the previously approved W.13-W.15 Cabin/Cosmetics design work into a real application runtime layer. Where W.16 conflicts with older token-store or cosmetic rendering language, W.16 wins. Approved family-character identity remains mandatory. W.12 gameplay corrections and W.11 Prop Hunt stability remain locked.
+W.17 supersedes W.16 for portrait cosmetic fitting and presentation. W.16 remains the architectural foundation for Cabin runtime, 400-room-item catalog integration, Game Night Tokens, and direct home navigation. W.15/W.14 remain the approved visual references.
+
+======================================================================
+0. W.17 IMMEDIATE LOCKS
+======================================================================
+
+1. **Visit the Cabin** must remain a real direct home-screen route, not a prompt-only requirement.
+2. Photo/avatar cosmetics may not use emoji or generic sticker positioning.
+3. Portrait wearables use semantic head/eye/ear/neck/chest anchors with approved-family portrait calibration.
+4. Cosmetic fitting must suppress built-in portrait accessories where stacking would look wrong.
+5. Small tabletop portraits simplify lower-body accessories rather than creating visual clutter.
+6. Card/tabletop portrait identity always remains the underlying approved photo/avatar.
+7. True 3D modes continue toward socket-mounted 3D wearables rather than stretching 2D portrait art into a 3D world.
+8. The W.14/W.15 realistic cabin/shop/wearables mockups remain the visual quality bar.
+
+======================================================================
+PART A — W.17 PORTRAIT FITTING STANDARD
+======================================================================
+
+The player-facing requirement is not merely that an accessory file loads. It must visually read as worn by that portrait.
+
+Required fitting model:
+- named semantic anchors for head, eyes, ears, neck, chest, badge area, and hair accessory area;
+- per-family-character calibration;
+- item-class scaling for caps, cowboy hats, toques, crowns, glasses, headphones, scarves, necklaces, earrings, tops, and badges;
+- independent width/height control for accessory classes whose natural asset aspect ratio would otherwise distort fit;
+- clipping to the portrait/avatar frame so wearables look integrated into the avatar rather than floating outside it;
+- z-order rules so top layers do not cover the face incorrectly;
+- tiny-score-avatar simplification.
+
+Do not consider the feature complete if hats cover eyes, glasses float on foreheads, earrings sit on the nose, scarves cover the mouth, or headphones cross the center of the face.
+
+======================================================================
+PART B — W.16 FOUNDATION CARRIED FORWARD
+======================================================================
 
 ======================================================================
 0. W.16 PRECEDENCE
@@ -48,7 +81,10 @@ Implemented initial production architecture:
 - Room data has an offline/local fallback so the editor does not silently lose work when the server is unavailable.
 - The room editor uses the locked 14x16-foot design space, 0.5-foot movement increments and 90-degree rotation.
 - Room placements are validated against the authoritative W.13 room catalog before server persistence.
+- Room placement also validates blueprint ownership server-side. Starter blueprints are seeded automatically; previously saved/grandfathered placements remain valid for migration safety.
 - The 400-item room catalog remains authoritative data.
+- Token-purchasable room blueprints use the same Game Night Token wallet as wearables through `/api/cabin/item`.
+- Earned/achievement/event/secret room items cannot silently be purchased with tokens.
 
 ## 3. REALISTIC COSMETICS RUNTIME
 The old W.8 emoji renderer is superseded.
@@ -78,23 +114,29 @@ Fitting model:
 - character-specific overrides for John, Kristen, Dorothy, James, Nana, Papa, Holly, Vanessa, Lizzie and Logan;
 - safe generic fallback for other avatar choices;
 - reduced/safe compatibility rules for dog avatars;
-- per-item override capability for exceptional assets.
+- per-item override capability for exceptional assets;
+- portrait-variant awareness so existing hats, glasses, scarves and earrings in a chosen portrait are not double-stacked with conflicting cosmetics.
 
 Quality rule:
 > An accessory is not considered implemented merely because it appears somewhere over the photo. It must visually sit on the correct anatomical region and remain readable at card-table portrait size.
 
 ## 5. REALISTIC STORE
-`/tokens-store.html` is now the Cabin Shop + Cosmetics runtime.
+`/tokens-store.html` is now the merged Cabin Shop + Cosmetics runtime, not a wearables-only page.
 
 Required behavior:
+- the 400-room-item catalog and 154 fitted wearables browse through one live shop surface;
+- a shared Game Night Token wallet pays for eligible room blueprints and eligible cosmetics;
 - large realistic item thumbnails;
-- live preview on the player's actual selected portrait;
+- live preview on the player's actual selected portrait for wearables;
+- live realistic room preview for furniture/room items;
 - search and category filters;
 - rarity/source labels;
 - Game Night Token pricing;
 - equip/unequip state;
 - reward-only items visibly explain that they are won/earned/event-unlocked instead of pretending to be purchasable;
 - current equipped-slot summary;
+- owned-blueprint state for room items;
+- server-backed room blueprint purchasing;
 - direct path into the Cabin.
 
 ## 6. ROOM ART COVERAGE — TRUTHFUL STATUS
@@ -119,7 +161,9 @@ Before any later phase may call Cabin/Cosmetics complete:
 - no emoji cosmetic rendering may reappear;
 - Visit the Cabin must remain reachable directly from Home;
 - fitted wearables must remain visible in shared tabletop portraits;
+- portrait variants that already contain a hat/glasses/etc. must suppress only conflicting overlay slots rather than stacking duplicate accessories;
 - room saves may only be written by the owner;
+- unowned room blueprints may not be injected into new room placements through a crafted client request;
 - secrets/achievement cosmetics may not silently become token purchases;
 - approved family base identity may never be painted over or replaced by a cosmetic;
 - mobile UI remains touch-sized and readable;
