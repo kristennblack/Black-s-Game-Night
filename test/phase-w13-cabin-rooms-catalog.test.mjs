@@ -4,8 +4,8 @@ import fs from 'node:fs';
 const read=p=>fs.readFileSync(new URL(`../${p}`,import.meta.url),'utf8');
 
 test('W13 cabin catalog remains authoritative under the promoted W16 runtime',()=>{
-  assert.equal(read('CURRENT_RELEASE.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W24-FLAGSHIP-EARRINGS-49');
-  assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W24-FLAGSHIP-EARRINGS-49');
+  assert.equal(read('CURRENT_RELEASE.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W29-FAMILY-V1-CANDIDATES-53');
+  assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W29-FAMILY-V1-CANDIDATES-53');
   const master=read('MASTER_GAME_DESIGN_PRODUCTION_PROMPT_W13.md');
   assert.match(master,/HIGHEST-PRECEDENCE CURRENT MASTER PROMPT/);
   assert.match(master,/Runtime release: `GAME-NIGHT-STAGING-PHASE-W12-GAMEPLAY-CORRECTIONS-36`/);

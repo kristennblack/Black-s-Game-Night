@@ -6,10 +6,10 @@ import {COSMETIC_BY_ID,fitProfileForAvatar,cosmeticOverlayHTML} from '../public/
 const root=path.resolve(new URL('..',import.meta.url).pathname);const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 
 test('W17 historical release remains preserved while W20 is current and Cabin route remains live',()=>{
- assert.equal(read('CURRENT_RELEASE.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W24-FLAGSHIP-EARRINGS-49');
- assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W24-FLAGSHIP-EARRINGS-49');
- const app=read('public/app.js');assert.match(app,/PHASE_W17_RELEASE='GAME-NIGHT-STAGING-PHASE-W17-CABIN-COSMETICS-POLISH-39'/);assert.match(app,/CURRENT_BUILD=PHASE_W24_RELEASE/);assert.match(app,/href="\/cabin\.html">Visit the Cabin<\/a>/);
- const sw=read('public/sw.js');assert.match(sw,/PHASE_W17_CACHE/);assert.match(sw,/const CACHE=PHASE_W24_CACHE/);
+ assert.equal(read('CURRENT_RELEASE.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W29-FAMILY-V1-CANDIDATES-53');
+ assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W29-FAMILY-V1-CANDIDATES-53');
+ const app=read('public/app.js');assert.match(app,/PHASE_W17_RELEASE='GAME-NIGHT-STAGING-PHASE-W17-CABIN-COSMETICS-POLISH-39'/);assert.match(app,/CURRENT_BUILD=PHASE_W29_RELEASE/);assert.match(app,/href="\/cabin\.html">Visit the Cabin<\/a>/);
+ const sw=read('public/sw.js');assert.match(sw,/PHASE_W17_CACHE/);assert.match(sw,/const CACHE=PHASE_W29_CACHE/);
 });
 
 test('W17 semantic portrait fitting remains represented in W20 universal anchors',()=>{

@@ -53,15 +53,49 @@ def beam_between(a,b,radius,material,name,scene,sections=10):
 # Embedded textures for John
 # -----------------------------
 def john_face_crop():
-    ref=Image.open(ROOT/'JOHN_16_LOOKS_REFERENCE.jpg').convert('RGB')
-    # Top-row third portrait is frontal and consistent with approved styling.
-    cell=ref.crop((512,0,768,256))
-    crop=cell.crop((48,20,218,230)).resize((512,600),Image.Resampling.LANCZOS)
-    # Tighter feathering keeps the likeness on the actual face instead of wrapping
-    # photo background around the temples / rear of the head.
-    alpha=Image.new('L',crop.size,0);d=ImageDraw.Draw(alpha);d.ellipse((48,18,crop.size[0]-48,crop.size[1]-18),fill=255)
-    alpha=alpha.filter(ImageFilter.GaussianBlur(16))
+    """Build the runtime face texture from John's locked stylized turnaround.
+
+    W26 proved that the rig and wearable sockets work, but the legacy photo-derived
+    face patch read incorrectly beside the approved cartoon body.  W27 keeps the
+    true curved facial geometry and replaces only its texture source with the
+    locked turnaround, so side/rear views remain genuinely 3D.
+    """
+    ref=Image.open(ROOT/'public'/'approved-character-turnarounds'/'john-approved-turnaround.png').convert('RGB')
+    # First/front turnaround view.  Crop tightly to the facial oval so hair, ears
+    # and clothing continue to come from their real 3D meshes rather than the map.
+    crop=ref.crop((86,285,226,448)).resize((512,600),Image.Resampling.LANCZOS)
+    alpha=Image.new('L',crop.size,0);d=ImageDraw.Draw(alpha);d.ellipse((10,3,crop.size[0]-10,crop.size[1]-3),fill=255)
+    alpha=alpha.filter(ImageFilter.GaussianBlur(22))
     out=crop.convert('RGBA');out.putalpha(alpha);return out
+
+
+def john_turnaround_head_crop(view):
+    """Transparent head-only crops for left/right/back curved head patches."""
+    ref=Image.open(ROOT/'public'/'approved-character-turnarounds'/'john-approved-turnaround.png').convert('RGBA')
+    boxes={
+        'left':(500,210,730,475),
+        'right':(920,210,1165,475),
+        'back':(690,205,945,475),
+    }
+    crop=ref.crop(boxes[view])
+    px=crop.load();w,h=crop.size
+    samples=[px[0,0][:3],px[w-1,0][:3],px[0,h-1][:3],px[w-1,h-1][:3]]
+    bg=tuple(sum(q[i] for q in samples)//len(samples) for i in range(3))
+    cut_start=int(h*.80)
+    for y in range(h):
+        for x in range(w):
+            r,g,b,a=px[x,y]
+            dist=((r-bg[0])**2+(g-bg[1])**2+(b-bg[2])**2)**.5
+            if dist<18 and r>210 and g>205 and b>195: aa=0
+            elif dist<42 and r>190 and g>185 and b>175: aa=int(max(0,min(255,(dist-18)/24*255)))
+            else: aa=255
+            if y>cut_start: aa=int(aa*max(0,(h-y)/max(1,h-cut_start)))
+            px[x,y]=(r,g,b,aa)
+    bbox=crop.getchannel('A').getbbox()
+    if bbox: crop=crop.crop(bbox)
+    canvas=Image.new('RGBA',(512,600),(0,0,0,0));crop.thumbnail((490,570),Image.Resampling.LANCZOS)
+    canvas.alpha_composite(crop,((512-crop.width)//2,(600-crop.height)//2))
+    return canvas
 
 def make_plaid(size=512):
     im=Image.new('RGB',(size,size),(109,47,39));d=ImageDraw.Draw(im)
@@ -184,12 +218,54 @@ def add_face_patch(center,radii,joint,mat_idx,cols=22,rows=26):
     for iy in range(rows+1):
         v=iy/rows;yn=-.74+1.42*v
         for ix in range(cols+1):
-            u=ix/cols;xn=-.79+1.58*u;q=max(.02,1-xn*xn-yn*yn);z=-rz*math.sqrt(q)-.004
+            u=ix/cols;xn=-.92+1.84*u;q=max(.02,1-xn*xn-yn*yn);z=-rz*math.sqrt(q)-.004
             pos.append([cx+rx*xn,cy+ry*yn,cz+z]);uv.append([u,1-v]);j.append([joint,0,0,0]);w.append([1,0,0,0])
     st=cols+1
     for iy in range(rows):
         for ix in range(cols):
             a=iy*st+ix;b=a+1;c=a+st;d=c+1;idx += [a,c,b,b,c,d]
+    return Prim(pos,uv,j,w,idx,mat_idx)
+
+
+def add_side_head_patch(center,radii,joint,mat_idx,side=1,cols=44,rows=48,reverse_u=False):
+    cx,cy,cz=center;rx,ry,rz=radii;pos=[];uv=[];j=[];w=[];idx=[]
+    for iy in range(rows+1):
+        v=iy/rows;yn=-.74+1.42*v
+        for iz in range(cols+1):
+            u=iz/cols;zn=-.76+1.52*u;q=max(.02,1-yn*yn-zn*zn);x=side*rx*math.sqrt(q)+side*.004
+            pos.append([cx+x,cy+ry*yn,cz+rz*zn]);uv.append([1-u if reverse_u else u,1-v]);j.append([joint,0,0,0]);w.append([1,0,0,0])
+    st=cols+1
+    for iy in range(rows):
+        for iz in range(cols):
+            a=iy*st+iz;b=a+1;c=a+st;d=c+1;idx += [a,c,b,b,c,d]
+    return Prim(pos,uv,j,w,idx,mat_idx)
+
+def add_back_head_patch(center,radii,joint,mat_idx,cols=48,rows=48):
+    cx,cy,cz=center;rx,ry,rz=radii;pos=[];uv=[];j=[];w=[];idx=[]
+    for iy in range(rows+1):
+        v=iy/rows;yn=-.74+1.42*v
+        for ix in range(cols+1):
+            u=ix/cols;xn=-.79+1.58*u;q=max(.02,1-xn*xn-yn*yn);z=rz*math.sqrt(q)+.004
+            pos.append([cx+rx*xn,cy+ry*yn,cz+z]);uv.append([u,1-v]);j.append([joint,0,0,0]);w.append([1,0,0,0])
+    st=cols+1
+    for iy in range(rows):
+        for ix in range(cols):
+            a=iy*st+ix;b=a+1;c=a+st;d=c+1;idx += [a,b,c,b,d,c]
+    return Prim(pos,uv,j,w,idx,mat_idx)
+
+
+def add_back_hair_patch(center,radii,joint,mat_idx,cols=42,rows=32):
+    """Smooth cropped-hair shell over upper rear skull, not a helmet band."""
+    cx,cy,cz=center;rx,ry,rz=radii;pos=[];uv=[];j=[];w=[];idx=[]
+    for iy in range(rows+1):
+        v=iy/rows;yn=-.28+1.06*v
+        for ix in range(cols+1):
+            u=ix/cols;xn=-.86+1.72*u;q=max(.02,1-xn*xn-yn*yn);z=rz*math.sqrt(q)+.006
+            pos.append([cx+rx*xn,cy+ry*yn,cz+z]);uv.append([u,1-v]);j.append([joint,0,0,0]);w.append([1,0,0,0])
+    st=cols+1
+    for iy in range(rows):
+        for ix in range(cols):
+            a=iy*st+ix;b=a+1;c=a+st;d=c+1;idx += [a,b,c,b,d,c]
     return Prim(pos,uv,j,w,idx,mat_idx)
 
 def add_tube(y0,y1,cx,cz,r0x,r0z,r1x,r1z,j0,j1,mat_idx,segments=18,rings=8,uv_repeat=1):
@@ -287,16 +363,18 @@ def build_skinned_john():
     face_tex=b.image(image_png_bytes(john_face_crop()),'JohnApprovedFace')
     plaid_tex=b.image(image_png_bytes(make_plaid()),'JohnPlaid')
     denim_tex=b.image(image_png_bytes(make_denim()),'JohnDenim')
-    m_skin=b.material('John_Skin',0xc18e6e,.76,0)
+    m_skin=b.material('John_Skin',0xe99443,.72,0)
     m_shirt=b.material('John_Shirt_PrimaryClothing',0x7a352e,.86,0,plaid_tex,extras={'materialRole':'primaryClothing'})
     m_denim=b.material('John_Denim',0x34516c,.9,0,denim_tex)
     m_boot=b.material('John_Boot_Leather',0x4a3322,.83,0)
     m_hair=b.material('John_Hair',0x241b16,.95,0)
     m_beard=b.material('John_Beard',0x35251e,.96,0)
-    m_face=b.material('John_FacePhoto',0xffffff,.78,0,face_tex,alpha=True,double=True)
+    m_face=b.material('John_ApprovedStylizedFace',0xffffff,.78,0,face_tex,alpha=True,double=True)
     m_metal=b.material('John_Buckle',0xb28a4c,.32,.7)
     m_eye_white=b.material('John_EyeWhite',0xf2e5d6,.7,0)
     m_eye=b.material('John_Eye',0x2a201a,.64,0)
+    m_iris=b.material('John_Iris',0x6a442c,.62,0)
+    m_pupil=b.material('John_Pupil',0x17100c,.52,0)
     m_lip=b.material('John_Lips',0x7b463d,.82,0)
 
     # Absolute bind positions. Node tree below converts to local translations.
@@ -356,34 +434,35 @@ def build_skinned_john():
         prims.append(add_ellipsoid_prim((side*.135,.075,-.175),(.095,.060,.135),joint_index[name+'Foot'],m_boot,seg=16,rings=8))
     # neck
     prims.append(add_tube(1.47,1.56,0,0,.064,.064,.061,.061,joint_index['neck'],joint_index['neck'],m_skin,segments=20,rings=3))
-    # head and face texture
-    prims.append(add_ellipsoid_prim((0,1.665,0),(.198,.207,.214),joint_index['head'],m_skin,seg=38,rings=24))
-    prims.append(add_face_patch((0,1.665,0),(.198,.207,.216),joint_index['head'],m_face,cols=40,rows=40))
-    # Hair is built as several overlapping volumes rather than a helmet-cap.  The
-    # asymmetry matters in the rear/three-quarter gameplay view where the face photo
-    # cannot carry the silhouette by itself.
-    prims.append(add_ellipsoid_prim((0,1.767,.020),(.200,.074,.198),joint_index['head'],m_hair,seg=30,rings=15))
-    for hx,hz,rx,rz in [(-.125,-.055,.082,.115),(-.048,-.095,.090,.105),(.045,-.100,.086,.108),(.126,-.050,.078,.118)]:
-        prims.append(add_ellipsoid_prim((hx,1.802,hz),(rx,.052,rz),joint_index['head'],m_hair,seg=18,rings=9))
-    # Beard/jaw/chin volumes keep John recognisable in side views without trying to
-    # fake a second face texture on the back of the head.
-    prims.append(add_ellipsoid_prim((0,1.570,-.208),(.130,.056,.026),joint_index['head'],m_beard,seg=28,rings=14))
-    prims.append(add_ellipsoid_prim((-.120,1.602,-.201),(.040,.070,.022),joint_index['head'],m_beard,seg=18,rings=10))
-    prims.append(add_ellipsoid_prim(( .120,1.602,-.201),(.040,.070,.022),joint_index['head'],m_beard,seg=18,rings=10))
-    prims.append(add_ellipsoid_prim((0,1.630,-.232),(.090,.020,.016),joint_index['head'],m_beard,seg=20,rings=8))
-    # Ears, nose bridge/tip, brow and chin give the textured face a truly dimensional silhouette.
-    prims.append(add_ellipsoid_prim((-.210,1.66,0),(.034,.056,.030),joint_index['head'],m_skin,seg=14,rings=8))
-    prims.append(add_ellipsoid_prim(( .210,1.66,0),(.034,.056,.030),joint_index['head'],m_skin,seg=14,rings=8))
-    prims.append(add_ellipsoid_prim((0,1.676,-.224),(.030,.047,.038),joint_index['head'],m_skin,seg=14,rings=8))
-    prims.append(add_ellipsoid_prim((0,1.638,-.238),(.038,.032,.031),joint_index['head'],m_skin,seg=14,rings=8))
-    prims.append(add_ellipsoid_prim((0,1.555,-.205),(.080,.038,.025),joint_index['head'],m_skin,seg=16,rings=8))
-    # P2 facial landmarks remain visible at gameplay distance even when the photo texture minifies.
-    for side in (-1,1):
-        ex=side*.071
-        prims.append(add_ellipsoid_prim((ex,1.704,-.206),(.043,.018,.012),joint_index['head'],m_eye_white,seg=14,rings=7))
-        prims.append(add_ellipsoid_prim((ex,1.704,-.220),(.014,.014,.009),joint_index['head'],m_eye,seg=12,rings=6))
-        prims.append(add_ellipsoid_prim((ex,1.738,-.211),(.052,.010,.010),joint_index['head'],m_hair,seg=12,rings=5))
-    prims.append(add_ellipsoid_prim((0,1.612,-.229),(.055,.010,.012),joint_index['head'],m_lip,seg=16,rings=6))
+    # W27 head repair, pass 4: one curved approved face surface plus full 3D
+    # head/hair/ears/jaw silhouette.  No duplicate modeled eyes or painted-photo
+    # conflict: the approved turnaround controls the visible face; geometry supplies
+    # volume for side/rear gameplay angles.
+    prims.append(add_ellipsoid_prim((0,1.665,.008),(.196,.216,.165),joint_index['head'],m_skin,seg=48,rings=30))
+    prims.append(add_face_patch((0,1.665,-.006),(.200,.210,.198),joint_index['head'],m_face,cols=56,rows=56))
+
+    # Smooth approved short-hair silhouette: textured-looking quiff in front,
+    # curved dark shell at the upper rear, and small sideburns.  This avoids the
+    # W26 helmet/band and the W27-v6 floating side clumps.
+    prims.append(add_back_hair_patch((0,1.690,.018),(.192,.190,.165),joint_index['head'],m_hair,cols=48,rows=36))
+    prims.append(add_ellipsoid_prim((0,1.787,.012),(.188,.069,.160),joint_index['head'],m_hair,seg=38,rings=18))
+    for hx,hy,hz,rx,ry,rz in [
+        (-.125,1.816,-.070,.068,.038,.070),(-.065,1.828,-.100,.074,.043,.068),
+        ( .005,1.833,-.112,.078,.045,.071),( .075,1.824,-.098,.071,.040,.071),
+        ( .135,1.808,-.060,.060,.034,.067)]:
+        prims.append(add_ellipsoid_prim((hx,hy,hz),(rx,ry,rz),joint_index['head'],m_hair,seg=20,rings=10))
+    prims.append(add_ellipsoid_prim((-.171,1.690,-.002),(.025,.072,.035),joint_index['head'],m_hair,seg=18,rings=10))
+    prims.append(add_ellipsoid_prim(( .171,1.690,-.002),(.025,.072,.035),joint_index['head'],m_hair,seg=18,rings=10))
+
+    # Ears match the warmer face/skin palette.
+    prims.append(add_ellipsoid_prim((-.203,1.660,-.005),(.029,.048,.024),joint_index['head'],m_skin,seg=18,rings=10))
+    prims.append(add_ellipsoid_prim(( .203,1.660,-.005),(.029,.048,.024),joint_index['head'],m_skin,seg=18,rings=10))
+
+    # Subtle dimensional nose and beard/jaw support preserve silhouette from 3/4
+    # and profile views without drawing a second competing face over the texture.
+    prims.append(add_ellipsoid_prim((0,1.654,-.210),(.024,.032,.024),joint_index['head'],m_skin,seg=20,rings=10))
+    prims.append(add_ellipsoid_prim((0,1.565,-.146),(.116,.062,.045),joint_index['head'],m_beard,seg=28,rings=15))
+
     # Knuckle/finger volumes stop the authored hands from reading as mittens at the
     # over-the-shoulder weapon distance.  They stay skinned to the hand joints.
     for side,name in [(-1,'left'),(1,'right')]:
@@ -432,7 +511,7 @@ def build_skinned_john():
     hs=b.add_node('headSocket',translation=[0,.20,0],extras={'socket':'head'});b.doc['nodes'][node_by_name['head']].setdefault('children',[]).append(hs)
     # Semantic helper nodes preserve the studio rig contract while the actual face/shirt are skinned mesh primitives.
     torso_alias=b.add_node('torso',translation=[0,0,0],extras={'semantic':'torso'});b.doc['nodes'][node_by_name['chest']].setdefault('children',[]).append(torso_alias)
-    face_alias=b.add_node('approvedFacePatch',translation=[0,0,0],extras={'semantic':'approved-face-texture','source':'JOHN_16_LOOKS_REFERENCE.jpg'});b.doc['nodes'][node_by_name['head']].setdefault('children',[]).append(face_alias)
+    face_alias=b.add_node('approvedFacePatch',translation=[0,0,0],extras={'semantic':'approved-face-texture','source':'/approved-character-turnarounds/john-approved-turnaround.png'});b.doc['nodes'][node_by_name['head']].setdefault('children',[]).append(face_alias)
     for nm,pos in [('leftEye',[-.07,.035,-.18]),('rightEye',[.07,.035,-.18]),('leftBrow',[-.07,.075,-.185]),('rightBrow',[.07,.075,-.185]),('mouth',[0,-.06,-.19])]:
         ai=b.add_node(nm,translation=pos,extras={'semanticFaceTarget':True});b.doc['nodes'][node_by_name['head']].setdefault('children',[]).append(ai)
 
@@ -485,7 +564,7 @@ def build_skinned_john():
     clip('Sit',1.0,[rot_track('leftHip',[0,1],[0,1.35]),rot_track('rightHip',[0,1],[0,1.35]),rot_track('leftKnee',[0,1],[0,-1.25]),rot_track('rightKnee',[0,1],[0,-1.25])])
 
     # Helpful extras for automated provenance/QA.
-    b.doc['asset']['extras']={'productionVerticalSlice':True,'productionFlagship':True,'flagshipBenchmark':'PH-CHAR-01-P2','phase':'P2','sourceReference':'JOHN_16_LOOKS_REFERENCE.jpg','character':'John','authoredClipCount':len(b.doc['animations']),'skinned':True,'artDirection':'stylized-realism','visualGate':'character-and-animation'}
+    b.doc['asset']['extras']={'productionVerticalSlice':True,'productionFlagship':True,'flagshipBenchmark':'PH-CHAR-01-P2','phase':'P2','sourceReference':'/approved-character-turnarounds/john-approved-turnaround.png','headRepair':'W27-JOHN-HEAD-REPAIR','character':'John','authoredClipCount':len(b.doc['animations']),'skinned':True,'artDirection':'stylized-realism','visualGate':'head-repair-device-pending'}
     size=b.finish(MODELS/'characters'/'john-production-skinned.glb')
     print('WROTE skinned John',size/1024,'KiB clips',len(b.doc['animations']))
 

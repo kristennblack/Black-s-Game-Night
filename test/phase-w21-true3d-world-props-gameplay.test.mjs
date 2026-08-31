@@ -11,21 +11,21 @@ import {WORLD_PROP_CATALOG,WORLD_PROP_COUNT,WORLD_PROP_FLAGSHIPS} from '../publi
 const root=path.resolve(new URL('..',import.meta.url).pathname);
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const W21='GAME-NIGHT-STAGING-PHASE-W21-TRUE3D-WORLD-PROPS-GAMEPLAY-43';
-const W22='GAME-NIGHT-STAGING-PHASE-W24-FLAGSHIP-EARRINGS-49';
+const W22='GAME-NIGHT-STAGING-PHASE-W29-FAMILY-V1-CANDIDATES-53';
 const player=(i,name=`Player ${i}`)=>({id:`p${i}`,token:`t${i}`,name,avatar:i===1?'kristen':'john',variant:0,outfitVariant:0,color:i===1?'#2f6b4f':'#8b593e',seat:i-1,ready:true,connected:true,bid:null,tricks:0,score:0,continued:false,hand:[],eliminated:false});
 function room(type,n=2,settings={}){const ps=new Map(Array.from({length:n},(_,i)=>{const p=player(i+1);return[p.id,p]}));return{id:crypto.randomUUID(),gameType:type,settings:{...extraDefaults(type),...settings},players:ps,game:{phase:'lobby',history:[],schedule:[],winnerIds:[],extra:null}}}
 const countBy=(rows,key)=>Object.fromEntries([...new Set(rows.map(x=>x[key]))].sort().map(v=>[v,rows.filter(x=>x[key]===v).length]));
 
 test('W21 remains preserved as history while W22 is current',()=>{
   assert.equal(read('CURRENT_RELEASE.txt').trim(),W22);
-  assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W24-FLAGSHIP-EARRINGS-49');
-  assert.equal(JSON.parse(read('package.json')).version,'3.22.0-staging-phase-w24-flagship-earrings-49');
+  assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W29-FAMILY-V1-CANDIDATES-53');
+  assert.equal(JSON.parse(read('package.json')).version,'3.26.0-staging-phase-w29-family-v1-candidates-53');
   const app=read('public/app.js'),sw=read('public/sw.js'),qa=read('public/phase-e-qa.mjs');
   assert.match(app,/PHASE_W20_RELEASE='GAME-NIGHT-STAGING-PHASE-W20-MASTER-CATALOG-42'/);
   assert.match(app,/PHASE_W21_RELEASE='GAME-NIGHT-STAGING-PHASE-W21-TRUE3D-WORLD-PROPS-GAMEPLAY-43'/);
-  assert.match(app,/CURRENT_BUILD=PHASE_W24_RELEASE/);
-  assert.match(sw,/const CACHE=PHASE_W24_CACHE/);
-  assert.match(qa,/STAGING_BUILD_ID='GAME-NIGHT-STAGING-PHASE-W24-FLAGSHIP-EARRINGS-49'/);
+  assert.match(app,/CURRENT_BUILD=PHASE_W29_RELEASE/);
+  assert.match(sw,/const CACHE=PHASE_W29_CACHE/);
+  assert.match(qa,/STAGING_BUILD_ID='GAME-NIGHT-STAGING-PHASE-W29-FAMILY-V1-CANDIDATES-53'/);
 });
 
 test('W21 cabin replaces the flat room decorator with a real Three.js room and raycast editing',()=>{

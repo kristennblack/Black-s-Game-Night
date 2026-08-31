@@ -13,17 +13,17 @@ const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const W19='GAME-NIGHT-STAGING-PHASE-W19-CABIN-ART-AVATAR-41';
 const W20='GAME-NIGHT-STAGING-PHASE-W20-MASTER-CATALOG-42';
 const W21='GAME-NIGHT-STAGING-PHASE-W21-TRUE3D-WORLD-PROPS-GAMEPLAY-43';
-const W22='GAME-NIGHT-STAGING-PHASE-W24-FLAGSHIP-EARRINGS-49';
+const W22='GAME-NIGHT-STAGING-PHASE-W29-FAMILY-V1-CANDIDATES-53';
 
 test('W19 and W21 identities remain historical while W22 is current',()=>{
   assert.equal(read('CURRENT_RELEASE.txt').trim(),W22);
-  assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W24-FLAGSHIP-EARRINGS-49');
-  assert.equal(JSON.parse(read('package.json')).version,'3.22.0-staging-phase-w24-flagship-earrings-49');
+  assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W29-FAMILY-V1-CANDIDATES-53');
+  assert.equal(JSON.parse(read('package.json')).version,'3.26.0-staging-phase-w29-family-v1-candidates-53');
   const app=read('public/app.js'),sw=read('public/sw.js');
   assert.match(app,/PHASE_W18_RELEASE='GAME-NIGHT-STAGING-PHASE-W18-GAMEPLAY-REALISM-40'/);
   assert.match(app,/PHASE_W19_RELEASE='GAME-NIGHT-STAGING-PHASE-W19-CABIN-ART-AVATAR-41'/);
   assert.match(app,/PHASE_W20_RELEASE='GAME-NIGHT-STAGING-PHASE-W20-MASTER-CATALOG-42'/);
-  assert.match(app,/CURRENT_BUILD=PHASE_W24_RELEASE/);assert.match(sw,/const CACHE=PHASE_W24_CACHE/);
+  assert.match(app,/CURRENT_BUILD=PHASE_W29_RELEASE/);assert.match(sw,/const CACHE=PHASE_W29_CACHE/);
 });
 
 test('W19 cabin starts as a bare pine architectural shell with a tiny low-end starter crate',()=>{

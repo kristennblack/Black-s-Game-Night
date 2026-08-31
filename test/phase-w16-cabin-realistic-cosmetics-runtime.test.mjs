@@ -49,7 +49,7 @@ test('W16 Cabin runtime connects the 400-item catalog, owner-only save API and s
 });
 
 test('W16 Cabin runtime remains preserved while W22 is current',()=>{
- assert.equal(read('CURRENT_RELEASE.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W24-FLAGSHIP-EARRINGS-49');assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W24-FLAGSHIP-EARRINGS-49');const pkg=JSON.parse(read('package.json'));assert.equal(pkg.version,'3.22.0-staging-phase-w24-flagship-earrings-49');const sw=read('public/sw.js');assert.match(sw,/PHASE_W17_CACHE/);assert.match(sw,/const CACHE=PHASE_W24_CACHE/);for(const f of ['cabin.html','cabin.css','cabin.js','cabin-room-catalog.mjs','cabin-progression.mjs'])assert.match(sw,new RegExp(f.replace('.','\\.')));
+ assert.equal(read('CURRENT_RELEASE.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W29-FAMILY-V1-CANDIDATES-53');assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W29-FAMILY-V1-CANDIDATES-53');const pkg=JSON.parse(read('package.json'));assert.equal(pkg.version,'3.26.0-staging-phase-w29-family-v1-candidates-53');const sw=read('public/sw.js');assert.match(sw,/PHASE_W17_CACHE/);assert.match(sw,/const CACHE=PHASE_W29_CACHE/);for(const f of ['cabin.html','cabin.css','cabin.js','cabin-room-catalog.mjs','cabin-progression.mjs'])assert.match(sw,new RegExp(f.replace('.','\\.')));
 });
 
 test('W16 master prompt is truthful about implemented runtime vs remaining unique 3D asset work',()=>{

@@ -28,20 +28,13 @@ def material(name, color, roughness=.75, metallic=0.0, emissive=None):
 
 
 def john_face_texture():
-    """Create a softly masked face texture from the approved John reference sheet.
-
-    This is deliberately used only on the curved front face patch.  The head remains
-    genuine 3D geometry with its own ears/hair/beard/back-of-head, so rear and side
-    views never turn into a camera-facing portrait.
-    """
-    ref = Image.open(ROOT / 'JOHN_16_LOOKS_REFERENCE.jpg').convert('RGB')
-    # Top-row third portrait is one of the most frontal approved references.
-    cell = ref.crop((512, 0, 768, 256))
-    crop = cell.crop((46, 25, 219, 226)).resize((384, 448), Image.Resampling.LANCZOS)
+    """Create John's curved face texture from the locked stylized turnaround."""
+    ref = Image.open(ROOT / 'public' / 'approved-character-turnarounds' / 'john-approved-turnaround.png').convert('RGB')
+    crop = ref.crop((86, 285, 226, 448)).resize((384, 448), Image.Resampling.LANCZOS)
     alpha = Image.new('L', crop.size, 0)
     d = ImageDraw.Draw(alpha)
-    d.ellipse((25, 8, crop.size[0]-25, crop.size[1]-8), fill=255)
-    alpha = alpha.filter(ImageFilter.GaussianBlur(18))
+    d.ellipse((22, 5, crop.size[0]-22, crop.size[1]-5), fill=255)
+    alpha = alpha.filter(ImageFilter.GaussianBlur(16))
     rgba_img = crop.convert('RGBA')
     rgba_img.putalpha(alpha)
     return rgba_img

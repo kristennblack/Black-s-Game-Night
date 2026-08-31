@@ -12,21 +12,21 @@ const root=path.resolve(new URL('..',import.meta.url).pathname);
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const W20='GAME-NIGHT-STAGING-PHASE-W20-MASTER-CATALOG-42';
 const W21='GAME-NIGHT-STAGING-PHASE-W21-TRUE3D-WORLD-PROPS-GAMEPLAY-43';
-const W22='GAME-NIGHT-STAGING-PHASE-W24-FLAGSHIP-EARRINGS-49';
+const W22='GAME-NIGHT-STAGING-PHASE-W29-FAMILY-V1-CANDIDATES-53';
 const countBy=(rows,key)=>Object.fromEntries([...new Set(rows.map(x=>x[key]))].sort().map(v=>[v,rows.filter(x=>x[key]===v).length]));
 
 test('W20 catalog milestone remains preserved while W22 is current',()=>{
   assert.equal(read('CURRENT_RELEASE.txt').trim(),W22);
-  assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W24-FLAGSHIP-EARRINGS-49');
-  assert.equal(JSON.parse(read('package.json')).version,'3.22.0-staging-phase-w24-flagship-earrings-49');
+  assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W29-FAMILY-V1-CANDIDATES-53');
+  assert.equal(JSON.parse(read('package.json')).version,'3.26.0-staging-phase-w29-family-v1-candidates-53');
   const app=read('public/app.js'),sw=read('public/sw.js');
   assert.match(app,/PHASE_W18_RELEASE='GAME-NIGHT-STAGING-PHASE-W18-GAMEPLAY-REALISM-40'/);
   assert.match(app,/PHASE_W19_RELEASE='GAME-NIGHT-STAGING-PHASE-W19-CABIN-ART-AVATAR-41'/);
   assert.match(app,/PHASE_W20_RELEASE='GAME-NIGHT-STAGING-PHASE-W20-MASTER-CATALOG-42'/);
-  assert.match(app,/CURRENT_BUILD=PHASE_W24_RELEASE/);
+  assert.match(app,/CURRENT_BUILD=PHASE_W29_RELEASE/);
   assert.match(sw,/PHASE_W19_CACHE='black-family-game-night-staging-phase-w19-cabin-art-avatar-41'/);
   assert.match(sw,/PHASE_W20_CACHE='black-family-game-night-staging-phase-w20-master-catalog-42'/);
-  assert.match(sw,/const CACHE=PHASE_W24_CACHE/);
+  assert.match(sw,/const CACHE=PHASE_W29_CACHE/);
 });
 
 test('W20 has exactly 2,000 home records and the approved category allocation',()=>{
@@ -66,7 +66,7 @@ test('W20 universal fitting keeps every wearable visible on every family avatar 
 
 test('W20 catalog store is scalable, searchable, collection-driven and keeps the approved visual target visible',()=>{
   const h=read('public/tokens-store.html');
-  for(const token of ['Search 4,000 items','categoryFilter','collectionFilter','rarityFilter','sortFilter','loadMore','2,000 home','2,000 avatar','Approved Lookbook','master-catalog-preview-w20.png','Preview in cabin','Preview on avatar'])assert.ok(h.includes(token),token);
+  for(const token of ['Search production items','categoryFilter','collectionFilter','rarityFilter','sortFilter','loadMore','4,000','Production Shop','Concept / Coming Soon','Approved Lookbook','master-catalog-preview-w20.png'])assert.ok(h.includes(token),token);
   assert.ok(fs.existsSync(path.join(root,'public',APPROVED_CATALOG_PREVIEW.replace(/^\//,''))));
 });
 

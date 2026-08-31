@@ -1,9 +1,9 @@
 {
   "name": "black-family-game-night",
-  "version": "3.22.0-staging-phase-w24-flagship-earrings-49",
+  "version": "3.26.0-staging-phase-w29-family-v1-candidates-53",
   "private": true,
   "type": "module",
-  "description": "Black Family Game Night W24: first production-quality 3D flagship earrings integrated into the shop with semantic earlobe fitting while preserving the Build 48 cabin recovery.",
+  "description": "Black Family Game Night W29: V1 candidate rollout for seven additional approved-turnaround human characters using the shared skinned head/body pipeline, with John Build 52 retained as the temporary visual baseline.",
   "scripts": {
     "test": "node --test",
     "check": "node --check worker.mjs && node --check propHuntRoom.mjs && node --check islandLifeRoom.mjs && node --check gameEngine.mjs && node --check extraGames.mjs && node --check threeNewGames.mjs && node --check blackGammon.mjs && node --check public/app.js && node --check public/prop-hunt-core.mjs && node --check public/shared-3d-art-kit.mjs && node --check public/shared-3d-gameplay.mjs && node --check public/approved-family-characters.mjs && node --check public/arcade-tutorials.mjs && node --check public/avatar-cosmetics.mjs && node --check public/cabin.js && node --check public/cabin-room-catalog.mjs && node --check public/shared-3d-studio.mjs && node --check public/prop-hunt-3d.js && node --check public/island-life-core.mjs && node --check public/island-life.js && node --check public/birthday-climb.js && node --check public/phase-e-qa.mjs && node --check public/sw.js && node --check public/cabin-3d-room.mjs && node --check public/world-prop-catalog.mjs && node --check public/catalog-approval-studio.js && node --check public/catalog-proof-3d.mjs && node --test",

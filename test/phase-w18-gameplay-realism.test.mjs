@@ -15,21 +15,21 @@ const W18='GAME-NIGHT-STAGING-PHASE-W18-GAMEPLAY-REALISM-40';
 const W19='GAME-NIGHT-STAGING-PHASE-W19-CABIN-ART-AVATAR-41';
 const W20='GAME-NIGHT-STAGING-PHASE-W20-MASTER-CATALOG-42';
 const W21='GAME-NIGHT-STAGING-PHASE-W21-TRUE3D-WORLD-PROPS-GAMEPLAY-43';
-const W22='GAME-NIGHT-STAGING-PHASE-W24-FLAGSHIP-EARRINGS-49';
+const W22='GAME-NIGHT-STAGING-PHASE-W29-FAMILY-V1-CANDIDATES-53';
 
 test('W22 is current without deleting the W18/W19/W20/W21 historical release constants',()=>{
   assert.equal(read('CURRENT_RELEASE.txt').trim(),W22);
-  assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W24-FLAGSHIP-EARRINGS-49');
+  assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W29-FAMILY-V1-CANDIDATES-53');
   const app=read('public/app.js'),sw=read('public/sw.js');
   assert.match(app,/PHASE_W17_RELEASE='GAME-NIGHT-STAGING-PHASE-W17-CABIN-COSMETICS-POLISH-39'/);
   assert.match(app,/PHASE_W18_RELEASE='GAME-NIGHT-STAGING-PHASE-W18-GAMEPLAY-REALISM-40'/);
   assert.match(app,/PHASE_W19_RELEASE='GAME-NIGHT-STAGING-PHASE-W19-CABIN-ART-AVATAR-41'/);
   assert.match(app,/PHASE_W20_RELEASE='GAME-NIGHT-STAGING-PHASE-W20-MASTER-CATALOG-42'/);
-  assert.match(app,/CURRENT_BUILD=PHASE_W24_RELEASE/);
+  assert.match(app,/CURRENT_BUILD=PHASE_W29_RELEASE/);
   assert.match(sw,/PHASE_W18_CACHE='black-family-game-night-staging-phase-w18-gameplay-realism-40'/);
   assert.match(sw,/PHASE_W19_CACHE='black-family-game-night-staging-phase-w19-cabin-art-avatar-41'/);
   assert.match(sw,/PHASE_W20_CACHE='black-family-game-night-staging-phase-w20-master-catalog-42'/);
-  assert.match(sw,/const CACHE=PHASE_W24_CACHE/);
+  assert.match(sw,/const CACHE=PHASE_W29_CACHE/);
 });
 
 test('W18 Golf rejection forces a flip for stock and discard draws until the last hidden card',()=>{

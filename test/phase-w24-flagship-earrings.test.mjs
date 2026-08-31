@@ -14,20 +14,20 @@ const ids=[
 const avatars=['john','kristen','holly','vanessa','elizabeth','logan','james','dorothy','papa','nana','kelsi','molly','gunner'];
 
 test('W24 flagship earrings is current while the Build 48 cabin recovery remains preserved',()=>{
- assert.equal(read('CURRENT_RELEASE.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W24-FLAGSHIP-EARRINGS-49');
- assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W24-FLAGSHIP-EARRINGS-49');
+ assert.equal(read('CURRENT_RELEASE.txt').trim(),'GAME-NIGHT-STAGING-PHASE-W29-FAMILY-V1-CANDIDATES-53');
+ assert.equal(read('DESIGN_RELEASE.txt').trim(),'GAME-NIGHT-DESIGN-PHASE-W29-FAMILY-V1-CANDIDATES-53');
  const pkg=JSON.parse(read('package.json')),app=read('public/app.js'),sw=read('public/sw.js');
- assert.equal(pkg.version,'3.22.0-staging-phase-w24-flagship-earrings-49');
+ assert.equal(pkg.version,'3.26.0-staging-phase-w29-family-v1-candidates-53');
  assert.match(app,/PHASE_W22_RELEASE='GAME-NIGHT-STAGING-PHASE-W23-CABIN-REGRESSION-RECOVERY-48'/);
  assert.match(app,/PHASE_W24_RELEASE='GAME-NIGHT-STAGING-PHASE-W24-FLAGSHIP-EARRINGS-49'/);
- assert.match(app,/CURRENT_BUILD=PHASE_W24_RELEASE/);assert.match(sw,/const CACHE=PHASE_W24_CACHE/);
+ assert.match(app,/CURRENT_BUILD=PHASE_W29_RELEASE/);assert.match(sw,/const CACHE=PHASE_W29_CACHE/);
  for(const token of ['cabin-aerial-scene.jpg','cabin-3d-room.mjs','empty-room-shell.svg'])assert.ok(sw.includes(token),token);
 });
 
 test('W24 replaces six placeholder jewelry records without changing the 2,000 wearable contract',()=>{
  assert.equal(COSMETIC_CATALOG.length,2000);const items=ids.map(id=>COSMETIC_BY_ID[id]);assert.equal(items.filter(Boolean).length,6);
- assert.deepEqual(items.map(x=>x.sku),['W24-E01','W24-E02','W24-E03','W24-E04','W24-E05','W24-E06']);
- for(const x of items){assert.equal(x.collection,'W24 Flagship Earrings');assert.equal(x.artStatus,'Approved Art');assert.equal(x.approvedForLive,false);assert.equal(x.fitAnchor,'earlobes');assert.equal(x.fitAuditStatus,'Geometry Fit Approved');assert.ok(x.asset.endsWith('.png'));assert.ok(x.shopAsset.endsWith('.png'));assert.ok(x.dogAsset.endsWith('.png'));for(const a of [x.asset,x.shopAsset,x.dogAsset])assert.ok(fs.existsSync(path.join(root,'public',a.replace(/^\//,''))),a)}
+ assert.deepEqual(items.map(x=>x.sku),['W24-E01','W25-A03','W24-E03','W24-E04','W24-E05','W24-E06']);
+ for(const [i,x] of items.entries()){assert.equal(x.approvedForLive,false);assert.equal(x.fitAnchor,'earlobes');assert.ok(x.asset.endsWith('.png'));assert.ok(x.shopAsset.endsWith('.png'));assert.ok(x.dogAsset.endsWith('.png'));for(const a of [x.asset,x.shopAsset,x.dogAsset])assert.ok(fs.existsSync(path.join(root,'public',a.replace(/^\//,''))),a);if(i===1){assert.equal(x.collection,'W25 Gold Standard');assert.equal(x.artStatus,'Production Asset');assert.equal(x.fitAuditStatus,'Fit Master Pending');assert.ok(x.productionModel.endsWith('.glb'))}else{assert.equal(x.collection,'W24 Flagship Earrings');assert.equal(x.artStatus,'Approved Art');assert.equal(x.fitAuditStatus,'Geometry Fit Approved')}}
 });
 
 test('W24 flagship earrings return finite visible semantic-ear fits on all 13 actual app avatars',()=>{
@@ -35,6 +35,7 @@ test('W24 flagship earrings return finite visible semantic-ear fits on all 13 ac
  const dog=cosmeticOverlayHTML({earrings:ids[1]},'gunner',0);assert.match(dog,/dog-e02-medium-hoops\.png/);const human=cosmeticOverlayHTML({earrings:ids[1]},'kristen',0);assert.match(human,/e02-medium-hoops\.png/);assert.doesNotMatch(human,/dog-e02/);
 });
 
-test('W24 shop uses dedicated 3D hero thumbnails while keeping new items staged until device approval',()=>{
- const h=read('public/tokens-store.html');assert.match(h,/W24 STAGING/);assert.match(h,/W24 FLAGSHIP COSMETICS/);assert.match(h,/x\.raw\?\.shopAsset\|\|x\.asset/);assert.match(h,/2,000 home/);assert.match(h,/2,000 avatar/);assert.match(h,/FIT \/ DEVICE APPROVAL PENDING/);
+test('W24 earring art remains preserved while W25 no longer presents PNG-only items as finished production shop inventory',()=>{
+ const h=read('public/tokens-store.html');assert.match(h,/W25 PRODUCTION SLICE/);assert.match(h,/Production Shop/);assert.match(h,/Concept \/ Coming Soon/);assert.match(h,/cardAsset=x=>w25ProductionSpec/);assert.match(h,/Device Approval Pending/);
+ for(const id of ids){const x=COSMETIC_BY_ID[id];assert.ok(fs.existsSync(path.join(root,'public',x.shopAsset.replace(/^\//,''))))}
 });

@@ -1,0 +1,54 @@
+{
+  "version": "W29-FAMILY-V1-CANDIDATES",
+  "characters": {
+    "kristen": {
+      "code": "CHAR_KRISTEN",
+      "displayName": "Kristen Black",
+      "model": "/models/characters/approved/CHAR_KRISTEN.glb",
+      "turnaround": "/approved-character-turnarounds/kristen-approved-turnaround.png",
+      "status": "V1_CANDIDATE_DEVICE_PENDING"
+    },
+    "holly": {
+      "code": "CHAR_HOLLY",
+      "displayName": "Holly",
+      "model": "/models/characters/approved/CHAR_HOLLY.glb",
+      "turnaround": "/approved-character-turnarounds/holly-approved-turnaround.png",
+      "status": "V1_CANDIDATE_DEVICE_PENDING"
+    },
+    "vanessa": {
+      "code": "CHAR_VANESSA",
+      "displayName": "Vanessa",
+      "model": "/models/characters/approved/CHAR_VANESSA.glb",
+      "turnaround": "/approved-character-turnarounds/vanessa-approved-turnaround.png",
+      "status": "V1_CANDIDATE_DEVICE_PENDING"
+    },
+    "elizabeth": {
+      "code": "CHAR_LIZZIE",
+      "displayName": "Elizabeth (Lizzy)",
+      "model": "/models/characters/approved/CHAR_LIZZIE.glb",
+      "turnaround": "/approved-character-turnarounds/elizabeth-approved-turnaround.png",
+      "status": "V1_CANDIDATE_DEVICE_PENDING"
+    },
+    "logan": {
+      "code": "CHAR_LOGAN",
+      "displayName": "Logan",
+      "model": "/models/characters/approved/CHAR_LOGAN.glb",
+      "turnaround": "/approved-character-turnarounds/logan-approved-turnaround.png",
+      "status": "V1_CANDIDATE_DEVICE_PENDING"
+    },
+    "james": {
+      "code": "CHAR_JAMES",
+      "displayName": "James",
+      "model": "/models/characters/approved/CHAR_JAMES.glb",
+      "turnaround": "/approved-character-turnarounds/james-approved-turnaround.png",
+      "status": "V1_CANDIDATE_DEVICE_PENDING"
+    },
+    "dorothy": {
+      "code": "CHAR_DOROTHY",
+      "displayName": "Dorothy",
+      "model": "/models/characters/approved/CHAR_DOROTHY.glb",
+      "turnaround": "/approved-character-turnarounds/dorothy-approved-turnaround.png",
+      "status": "V1_CANDIDATE_DEVICE_PENDING"
+    }
+  }
+}

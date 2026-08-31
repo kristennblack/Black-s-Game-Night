@@ -32,9 +32,11 @@ test('source catalogs carry explicit art status and are blocked from live promot
   const home=json('public/cabin-room-catalog-w20.json');
   const wear=json('public/wearable-catalog-w20.json');
   const world=json('public/world-prop-catalog-w21.json');
-  assert.ok(home.every(x=>x['Art Status']==='Concept'&&x['Review Status']==='Unreviewed'&&x['Approved For Live']==='No'));
-  assert.ok(wear.every(x=>x.artStatus==='Concept'&&x.reviewStatus==='Unreviewed'&&x.approvedForLive===false));
-  assert.ok(world.every(x=>x['Art Status']==='Concept'&&x['Review Status']==='Unreviewed'&&x['Approved For Live']==='No'));
+  const w25Home=home.filter(x=>x['W25 Production']==='Yes');const w25Wear=wear.filter(x=>x.catalogVersion===25&&x.productionAssetReady===true);
+  assert.equal(w25Home.length,4);assert.equal(w25Wear.length,4);
+  assert.ok(home.every(x=>x['Approved For Live']==='No'&&typeof x['Art Status']==='string'&&typeof x['Review Status']==='string'));
+  assert.ok(wear.every(x=>x.approvedForLive===false&&typeof x.artStatus==='string'&&typeof x.reviewStatus==='string'));
+  assert.ok(world.every(x=>x['Approved For Live']==='No'&&typeof x['Art Status']==='string'&&typeof x['Review Status']==='string'));
 });
 
 test('approval studio includes all three approved review formats and decision export/import',()=>{
@@ -59,10 +61,11 @@ test('real-use proof supports room, avatar, and world prop contexts',()=>{
   assert.match(proof,/createWorldPropMesh/);
 });
 
-test('staging store clearly identifies W24 and blocks new unlock of unapproved concepts',()=>{
+test('staging store clearly separates W25 production assets from unfinished concepts and keeps release gates closed',()=>{
   const h=read('public/tokens-store.html');
-  assert.match(h,/W24 STAGING/);
+  assert.match(h,/W25 PRODUCTION SLICE/);
   assert.match(h,/Approval Studio/);
-  assert.match(h,/PENDING ART APPROVAL/);
+  assert.match(h,/CONCEPT \/ COMING SOON/);
+  assert.match(h,/Device Approval Pending/);
   assert.match(h,/cannot be unlocked yet/);
 });
