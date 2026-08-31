@@ -1,5 +1,5 @@
 export const LEGACY_STAGING_BUILD_ID='GAME-NIGHT-STAGING-PHASE-T1-PROP-HUNT-HUNTER-RELEASE-COMBAT-19';
-export const STAGING_BUILD_ID='GAME-NIGHT-STAGING-PHASE-W23-CABIN-REGRESSION-RECOVERY-48';
+export const STAGING_BUILD_ID='GAME-NIGHT-STAGING-PHASE-W24-FLAGSHIP-EARRINGS-49';
 export const STAGING_APP_VERSION='3.20.0-staging-phase-w22-catalog-approval-studio-44';
 // Historical QA lineage: 3.4.0-staging-phase-s-gameplay-tabletop-realism-17
 
