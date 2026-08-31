@@ -4,7 +4,7 @@
 
 # MASTER PHASE W23 — CATALOG FIT + ACCESSORIES + TWO-STAGE APPROVAL DIRECTIVE
 
-Release: `GAME-NIGHT-STAGING-PHASE-W23-CATALOG-FIT-ACCESSORIES-45`
+Release: `GAME-NIGHT-STAGING-PHASE-W23-HEADWEAR-FIT-CORRECTION-46`
 
 This directive has highest precedence for catalog-art production and review. It does not erase the W21 gameplay and true-3D cabin recovery work.
 
@@ -5016,3 +5016,19 @@ The milestone is:
 > ONE APPROVED JOHN, IN ONE EXCELLENT PAPA'S SHOP ROUND, WITH CONTROLS, CAMERA, HANDS, WEAPON, SHOOTING, HIDING AND PERFORMANCE THAT FEEL FINISHED ON A PHONE.
 
 Once that exists, scale the proven system outward.
+
+
+======================================================================
+W23.1 HEADWEAR ACTUAL-AVATAR FIT CORRECTION ADDENDUM
+======================================================================
+
+- Headwear fit evidence must use the actual app avatar portraits/faces.
+- John regular cosmetic surfaces use the clean no-baked-in-headwear approved portrait; birthday-specific art remains a separate presentation concern.
+- Headwear assets used for fit calibration must use tight transparent/viewBox bounds.
+- Per-avatar head anchors include x/y/width and rotation where required.
+- Papa, Nana, Kelsi, Molly and Gunner require individual orientation/offset tuning.
+- Conventional hats/caps may use the calibrated head anchor.
+- Earmuffs must use ear/headset-style semantic anchoring.
+- Bun accessories require bun/hair-accessory anchoring.
+- Headbands require forehead/headband anchoring rather than ordinary hat placement.
+- A green geometry-fit result does not override the W23 final-art gate: final Stage 2 approval still requires the actual production asset on every applicable actual avatar.

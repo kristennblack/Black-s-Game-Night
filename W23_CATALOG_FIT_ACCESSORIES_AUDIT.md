@@ -1,7 +1,7 @@
 # W23 CATALOG FIT + ACCESSORIES AUDIT
 
 Date: 2026-08-31
-Release candidate: GAME-NIGHT-STAGING-PHASE-W23-CATALOG-FIT-ACCESSORIES-45
+Release candidate: GAME-NIGHT-STAGING-PHASE-W23-HEADWEAR-FIT-CORRECTION-46
 
 ## What was audited
 - Avatar/Wearable catalog: 2,000 records.

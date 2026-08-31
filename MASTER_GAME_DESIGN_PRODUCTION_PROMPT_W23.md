@@ -4,7 +4,7 @@
 
 # MASTER PHASE W23 — CATALOG FIT + ACCESSORIES + TWO-STAGE APPROVAL DIRECTIVE
 
-Release: `GAME-NIGHT-STAGING-PHASE-W23-CATALOG-FIT-ACCESSORIES-45`
+Release: `GAME-NIGHT-STAGING-PHASE-W23-HEADWEAR-FIT-CORRECTION-46`
 
 This directive has highest precedence for catalog-art production and review. It does not erase the W21 gameplay and true-3D cabin recovery work.
 

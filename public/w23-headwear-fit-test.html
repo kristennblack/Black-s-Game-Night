@@ -1,0 +1,20 @@
+<!doctype html><meta charset='utf-8'><title>W23 Headwear Fit Test</title>
+<style>
+body{margin:0;background:#0b1118;color:#f5ead5;font-family:Arial,sans-serif}.wrap{padding:18px}.title{position:sticky;top:0;background:#0b1118ee;padding:10px 0;z-index:30;border-bottom:1px solid #445}.item{margin:18px 0 30px}.item h2{margin:0 0 8px;font-size:24px}.grid{display:grid;grid-template-columns:repeat(7,180px);gap:12px}.card{background:#151e28;border:1px solid #42556b;border-radius:10px;padding:6px}.name{text-align:center;font-weight:700;font-size:13px;margin-top:5px}.stage{position:relative;width:166px;height:208px;overflow:hidden;border-radius:8px;background:#222;border:2px solid #997743}.stage>img.avatar-base{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.avatar-cosmetic{position:absolute;z-index:10;pointer-events:none;left:var(--cx);top:var(--cy);width:var(--cw);height:var(--ch,auto);max-width:none;object-fit:contain;transform:translate(-50%,-50%) rotate(var(--cr));transform-origin:50% 50%;filter:drop-shadow(0 2px 4px #000b)}
+.meta{font-size:11px;color:#b9c4cf;text-align:center;margin-top:3px}
+</style>
+<div class=wrap><div class=title><h1>W23 Actual App Avatar Headwear Fit Test</h1><div id=subtitle></div></div><div id=root></div></div>
+<script type=module>
+import {COSMETIC_BY_ID,fitProfileForAvatar} from './avatar-cosmetics.mjs';
+const avatars=[
+ ['john','John','/john-home-approved.jpg'],['kristen','Kristen','/avatars/kristen.png'],['holly','Holly','/avatars/holly.png'],['vanessa','Vanessa','/avatars/vanessa.png'],['elizabeth','Elizabeth / Lizzy','/avatars/elizabeth.png'],['logan','Logan','/avatars/logan.png'],['james','James','/avatars/james.png'],['dorothy','Dorothy','/avatars/dorothy.png'],['papa','Papa','/avatars/papa.png'],['nana','Nana','/avatars/nana.png'],['kelsi','Kelsi','/avatars/kelsi.png'],['molly','Molly','/avatars/molly.png'],['gunner','Gunner','/avatars/gunner.png']
+];
+const items=[
+'camp-cap','cowboy-hat','winter-toque','firefighter-helmet','birthday-crown',
+'tiara','legendary-top-hat','trail-trouble-cap','prop-hunt-hunter-hat','mexican-train-cap',
+'wear-flagship-w029-wide-brim-sun-hat','wear-flagship-w030-canvas-bucket-hat','wear-flagship-w032-tiny-party-crown','wear-flagship-w033-faux-fur-earmuffs','wear-flagship-w034-ballet-ribbon-bun-accessory',
+'wear-hats-headwear-0073-holly-cute-pop-weathered-gold-beret','wear-hats-headwear-0075-formal-family-embroidered-sky-flower-crown','wear-hats-headwear-0078-work-crew-embroidered-teal-headband','wear-hats-headwear-0080-summer-weekend-braided-plum-bandana-headwrap','wear-hats-headwear-0084-holly-cute-pop-embroidered-sky-newsboy-cap'
+];
+const page=Math.max(1,Math.min(4,Number(new URLSearchParams(location.search).get('page')||1)));const slice=items.slice((page-1)*5,page*5);document.querySelector('#subtitle').textContent=`Page ${page}/4 • ${slice.length} headwear items × ${avatars.length} actual family avatars`;
+for(const id of slice){const item=COSMETIC_BY_ID[id];const sec=document.createElement('section');sec.className='item';sec.innerHTML=`<h2>${item?.name||id} <small style="color:#9fb0c0">${id}</small></h2><div class=grid></div>`;const grid=sec.querySelector('.grid');for(const [key,name,src] of avatars){const f=fitProfileForAvatar(key,'hat',item,0);const card=document.createElement('div');card.className='card';card.innerHTML=`<div class=stage><img class=avatar-base src="${src}"><img class="avatar-cosmetic avatar-cosmetic-hat" src="${item.asset}" style="--cx:${f.x}%;--cy:${f.y}%;--cw:${f.w}%;--ch:${Number.isFinite(f.h)?f.h+'%':'auto'};--cr:${f.r||0}deg"></div><div class=name>${name}</div><div class=meta>x ${f.x.toFixed(1)} y ${f.y.toFixed(1)} w ${f.w.toFixed(1)}</div>`;grid.appendChild(card)}document.querySelector('#root').appendChild(sec)}
+</script>

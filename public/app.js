@@ -19,10 +19,10 @@ const PHASE_W18_RELEASE='GAME-NIGHT-STAGING-PHASE-W18-GAMEPLAY-REALISM-40';
 const PHASE_W19_RELEASE='GAME-NIGHT-STAGING-PHASE-W19-CABIN-ART-AVATAR-41';
 const PHASE_W20_RELEASE='GAME-NIGHT-STAGING-PHASE-W20-MASTER-CATALOG-42';
 const PHASE_W21_RELEASE='GAME-NIGHT-STAGING-PHASE-W21-TRUE3D-WORLD-PROPS-GAMEPLAY-43';
-const PHASE_W22_RELEASE='GAME-NIGHT-STAGING-PHASE-W23-CATALOG-FIT-ACCESSORIES-45';
+const PHASE_W22_RELEASE='GAME-NIGHT-STAGING-PHASE-W23-HEADWEAR-FIT-CORRECTION-46';
 const APP_VERSION='GAME-NIGHT-STAGING-PHASE-T1-PROP-HUNT-HUNTER-RELEASE-COMBAT-19';
 const CURRENT_BUILD=PHASE_W22_RELEASE;
-if('serviceWorker'in navigator)window.addEventListener('load',async()=>{try{const reg=await navigator.serviceWorker.register('/sw.js?v=W22-CATALOG-APPROVAL-STUDIO-44',{updateViaCache:'none'});reg.update().catch(()=>{})}catch{}});
+if('serviceWorker'in navigator)window.addEventListener('load',async()=>{try{const reg=await navigator.serviceWorker.register('/sw.js?v=W23-HEADWEAR-FIT-CORRECTION-46',{updateViaCache:'none'});reg.update().catch(()=>{})}catch{}});
 
 const GAME={SCREW:'screw',FUCK:'fuck',SMEAR:'smear',CAMPFIRE:'campfire',TRAIL:'trail',PRAIRIE:'prairie',BURN_LOGS:'burnlogs',DECK_SWEEP:'decksweep',CRIBBAGE:'cribbage',MARBLES:'marbles',EUCHRE:'euchre',THIRTY_ONE:'thirtyone',GOLF:'golf',CRAZY_EIGHTS:'crazy8',MITTS:'mitts',POKER:'poker',PRESIDENT:'president',LAST_HAVEN:'lasthaven',MEXICAN_TRAIN:'mexicantrain',SKIP_BO:'skipbo',BACKGAMMON:'backgammon',BLACK_GAMMON:'blackgammon'};
 // Legacy shelf compatibility: ['New Table Games',[GAME.MEXICAN_TRAIN,GAME.SKIP_BO,GAME.BACKGAMMON,GAME.BLACK_GAMMON]]
@@ -78,7 +78,7 @@ const futureGames=[];
 const suitSymbol={hearts:'♥',clubs:'♣',diamonds:'♦',spades:'♠',none:'Ø',joker:'🃏'};
 const suitName={hearts:'HEARTS',clubs:'CLUBS',diamonds:'DIAMONDS',spades:'SPADES',none:'NO TRUMP'};
 const familyAvatars=[
- ['john','John Black · Birthday Guy','/avatars/john-black.png'],
+ ['john','John Black · Birthday Guy','/john-home-approved.jpg'],
  ['dorothy','Dorothy','/avatars/dorothy.png'],['james','James','/avatars/james.png'],['elizabeth','Elizabeth','/avatars/elizabeth.png'],['holly','Holly','/avatars/holly.png'],
  ['vanessa','Vanessa','/avatars/vanessa.png'],['logan','Logan','/avatars/logan.png'],['papa','Papa','/avatars/papa.png'],['nana','Nana','/avatars/nana.png'],
  ['kristen','Kristen','/avatars/kristen.png'],['molly','Molly','/avatars/molly.png'],['kelsi','Kelsi','/avatars/kelsi.png'],['gunner','Gunner','/avatars/gunner.png']
