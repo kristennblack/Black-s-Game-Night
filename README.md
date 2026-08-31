@@ -31,5 +31,5 @@ Start with:
 5. `CABIN_ROOMS_400_ITEM_MASTER_CATALOG_W13.xlsx`
 
 ## W22 Catalog Approval Studio
-Current staging release: `GAME-NIGHT-STAGING-PHASE-W22-CATALOG-APPROVAL-STUDIO-44`.
+Current staging release: `GAME-NIGHT-STAGING-PHASE-W23-CATALOG-FIT-ACCESSORIES-45`.
 Open `/catalog-approval-studio.html` to review all 6,000 Home + Avatar + World Prop catalog records in 60 batches of 100 using collection lookbook, grid/board and real-use proof views. Unapproved concepts remain staging-only and cannot be newly unlocked from the W22 store.
