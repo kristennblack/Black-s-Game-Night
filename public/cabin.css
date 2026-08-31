@@ -18,3 +18,10 @@
 .room-scene.room-scene-3d .room-owner,.room-scene.room-scene-3d .empty-room-note{z-index:6;pointer-events:none}
 .room-scene.room-scene-3d .room-owner{background:#110b08dc;backdrop-filter:blur(4px)}
 @media(max-width:650px){.room-scene.room-scene-3d{min-height:600px}.cabin3d-help{font-size:.58rem;bottom:8px;padding:6px 8px;border-radius:12px}}
+
+/* W23 Build 48 cabin regression recovery: keep the room visible even if the optional WebGL/CDN module cannot load. */
+.cabin3d-static-fallback{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden;background:#17100c;isolation:isolate}
+.cabin3d-static-fallback>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.92;filter:saturate(.94) contrast(1.03)}
+.cabin3d-static-fallback:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0001 0,#0000 52%,#0b0705aa 100%);pointer-events:none}
+.cabin3d-static-fallback>div{position:relative;z-index:2;align-self:end;margin:0 16px 54px;padding:9px 12px;border:1px solid #a67c45;border-radius:10px;background:#140d09dc;color:#f4dfb7;box-shadow:0 8px 24px #0008;display:grid;gap:2px;text-align:center}
+.cabin3d-static-fallback b{font-size:.82rem}.cabin3d-static-fallback span{font:700 .68rem system-ui;color:#d5bf9a}

@@ -1,3 +1,7 @@
+# Build 48 Cabin Regression Recovery
+
+The cabin entrypoint is now isolated from optional WebGL/CDN startup failures, the aerial scene is precached, and room pages retain a visible static cabin-shell fallback if 3D cannot initialize. Existing cabin data is preserved. See `W23_CABIN_REGRESSION_RECOVERY_REPORT.md`.
+
 # Black Family Game Night — W.16 Cabin + Realistic Cosmetics Runtime
 
 ## Current runtime
@@ -31,5 +35,5 @@ Start with:
 5. `CABIN_ROOMS_400_ITEM_MASTER_CATALOG_W13.xlsx`
 
 ## W22 Catalog Approval Studio
-Current staging release: `GAME-NIGHT-STAGING-PHASE-W23-HEADWEAR-FIT-CORRECTION-46`.
+Current staging release: `GAME-NIGHT-STAGING-PHASE-W23-CABIN-REGRESSION-RECOVERY-48`.
 Open `/catalog-approval-studio.html` to review all 6,000 Home + Avatar + World Prop catalog records in 60 batches of 100 using collection lookbook, grid/board and real-use proof views. Unapproved concepts remain staging-only and cannot be newly unlocked from the W22 store.
