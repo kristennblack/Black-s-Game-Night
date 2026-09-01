@@ -165,7 +165,7 @@ window.FAMILY = {
   taunts:{james:'*coffee sip*',dorothy:"I'm going for a smoke.",john:'Seriously?',kristen:'Uhhh…',holly:'Please stop fighting.',vanessa:'*massive eye roll*',elizabeth:'*dramatic gasp*',logan:'Bruh.',kelsi:'*princess dog snort*',molly:'*excited bark*',gunner:'WOOF!',papa:'*beer can cracks open*',nana:"That's a sin!"}
 };
 window.avatarHTML=function(person,extra=''){
-  const src=person.id==='john'?'/avatars/styles/john-look-02.jpg':`/avatars/styles/${person.id}-cute.jpg`;
+  const src=person.id==='john'?'/avatars/styles/john-look-03.jpg':`/avatars/styles/${person.id}-cute.jpg`;
   return `<div class="avatar ${extra}"><img src="${src}" alt="" onerror="this.remove();this.parentElement.textContent='${person.short}'"></div>`;
 };
 
@@ -239,7 +239,7 @@ window.avatarHTML=function(person,extra=''){
     goatpen:{cls:'goatpen',icon:'&#128016;',one:'&#128055;',two:'&#127806;',three:'&#129387;'}
   };
   const pawnColors=['#d8a64b','#6f9fc4','#b65e55','#6fa46c','#9a72b6','#d88750','#5f8b8e','#c584a2','#8b744d','#7aa7c5','#9b9b72'];
-  function figureSrc(person){return person.id==='john'?'/avatars/styles/john-look-02.jpg':`/avatars/styles/${person.id}-cute.jpg`}
+  function figureSrc(person){return person.id==='john'?'/avatars/styles/john-look-03.jpg':`/avatars/styles/${person.id}-cute.jpg`}
   // W20 catalog integration: Family Mystery rooms showcase approved flagship identities from the shared cabin catalog.
   const mysteryCabinProps={
     camper:['home-flagship-h007-deep-hearth-sofa','home-flagship-h100-fishing-rod-ceiling-rack'],

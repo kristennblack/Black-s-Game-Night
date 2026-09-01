@@ -26,7 +26,7 @@ const money=n=>`$${Math.round(Number(n)||0).toLocaleString()}`;
 const clamp=move.clamp;
 const isDog=p=>!!p?.dog||['kelsi','molly','gunner'].includes(p?.id);
 const personById=id=>family.find(p=>p.id===id)||family.find(p=>p.id==='john')||{id:'john',name:'John'};
-const avatarThumb=id=>id==='john'?'/avatars/styles/john-look-02.jpg':`/avatars/styles/${id}-cute.jpg`;
+const avatarThumb=id=>id==='john'?'/avatars/styles/john-look-03.jpg':`/avatars/styles/${id}-cute.jpg`;
 const OUTFITS={john:{top:0x6f3f38,legs:0x3f5267,boots:0x47382d,skin:0xd4aa86,hair:0x4b3529},kristen:{top:0x657e74,legs:0x405873,skin:0xd8ae8b,hair:0x5a3828},holly:{top:0x75818f,legs:0x63758e,skin:0xd8ad8b,hair:0x8f7047},elizabeth:{top:0xbf786b,legs:0x5e7890,skin:0xd9ae8e,hair:0x664329},vanessa:{top:0x9a7252,legs:0x465d73,skin:0xd3a783,hair:0x4a3329},logan:{top:0x586879,legs:0x3f4f63,skin:0xd3a783,hair:0x4a3328},james:{top:0x587189,legs:0x465b70,skin:0xd1a17b,hair:0x8a8376},dorothy:{top:0x9d7181,legs:0x7d6b74,skin:0xd5a881,hair:0x8d7968},nana:{top:0x6f6d85,legs:0x3c3d48,skin:0xd4a57d,hair:0xb2a997},papa:{top:0x6c665a,legs:0x4a5967,skin:0xd0a079,hair:0x887e70},kelsi:{fur:0xd4bb8a,accent:0xf1e7d0},molly:{fur:0x7d624e,accent:0xc49c78},gunner:{fur:0x5e5147,accent:0x9b8068}};
 
 function toast(text){let el=root.querySelector('.il-toast');if(!el){el=document.createElement('div');el.className='il-toast';root.append(el)}el.textContent=text;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),1800)}

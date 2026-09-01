@@ -1,0 +1,21 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>W46 Approved Headwear Live QA</title>
+<link rel="stylesheet" href="/styles.css?v=W46-APPROVED-HEADWEAR-ART-64"><link rel="stylesheet" href="/phase-w-platform.css?v=W46-APPROVED-HEADWEAR-ART-64">
+<style>
+html,body{margin:0;background:#0d0907;color:#f7e4b9;font-family:system-ui,sans-serif}.wrap{max-width:1500px;margin:auto;padding:14px}.bar{background:#0d0907;border-bottom:1px solid #77552f;padding:10px 0}.bar h1{margin:0;font-size:28px}.bar p{margin:6px 0;color:#c7b99d}.grid{display:grid;grid-template-columns:repeat(3,minmax(280px,1fr));gap:12px;margin-top:14px}.card{border:1px solid #73522e;background:#18110d;border-radius:12px;overflow:hidden}.stage{position:relative;aspect-ratio:1;background:#241a13;overflow:hidden}.avatar-base{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.avatar-cosmetic{position:absolute!important;left:var(--cx)!important;top:var(--cy)!important;width:var(--cw)!important;height:var(--ch,auto)!important;max-width:none!important;object-fit:contain!important;transform:translate(var(--ctx,-50%),var(--cty,-50%)) rotate(var(--cr)) skewX(var(--cskew,0deg)) scale(var(--csx,1),var(--csy,1))!important;transform-origin:50% 50%!important;animation:none!important;filter:drop-shadow(0 4px 5px #000b)!important}.avatar-cosmetic-hat{z-index:12!important}.meta{padding:9px 10px 11px;font-size:12px}.meta b{display:block;color:#f2cb7e;font-size:14px}.ok{color:#99dda8}.small{color:#c8b99e;margin-top:3px}.badge{display:inline-block;padding:2px 6px;border:1px solid #7d6038;border-radius:999px;font-size:10px;color:#e9c57d;margin-top:4px}@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){.grid{grid-template-columns:1fr}}
+</style></head><body><div class="wrap"><header class="bar"><h1>W46 · APPROVED HEADWEAR IN ACTUAL PORTRAIT RENDERER</h1><p>Exact app portraits · approved Board 01 art overrides · W45 semantic head anchors preserved · candidate only until device approval</p></header><main id="grid" class="grid"></main></div>
+<script type="module">
+import {COSMETIC_BY_ID,cosmeticOverlayHTML} from './avatar-cosmetics.mjs?v=W46-APPROVED-HEADWEAR-ART-64';
+import {portraitStyleAsset,portraitHeadwearFit,portraitAccessoryAsset} from './portrait-accessory-anchors.mjs?v=W46-APPROVED-HEADWEAR-ART-64';
+const cases=[
+ ['john','John',0,'camp-cap'],['john','John',0,'cowboy-hat'],['kristen','Kristen',0,'winter-toque'],
+ ['holly','Holly',0,'firefighter-helmet'],['kristen','Kristen',0,'birthday-crown'],['kristen','Kristen',0,'tiara'],
+ ['logan','Logan',0,'legendary-top-hat'],['holly','Holly',0,'trail-trouble-cap'],['john','John',0,'prop-hunt-hunter-hat'],
+ ['elizabeth','Elizabeth',0,'mexican-train-cap'],['vanessa','Vanessa',0,'wear-flagship-w029-wide-brim-sun-hat'],['logan','Logan',0,'wear-flagship-w030-canvas-bucket-hat']
+];
+const grid=document.querySelector('#grid');
+for(const [avatar,name,variant,id] of cases){
+ const item=COSMETIC_BY_ID[id],fit=portraitHeadwearFit(avatar,variant,item),overlay=fit&&!fit.blocked?cosmeticOverlayHTML({hat:id},avatar,variant):'';
+ const asset=portraitAccessoryAsset(item);
+ grid.insertAdjacentHTML('beforeend',`<article class="card"><div class="stage avatar-frame"><img class="avatar-base" src="${portraitStyleAsset(avatar,variant)}">${overlay}</div><div class="meta"><b>${name} · ${item?.name||id}</b><span class="ok">${fit?.anchorMode||'blocked'}</span><div class="small">width ${fit?.w?.toFixed(1)||'--'}% · seat ${fit?.x?.toFixed(1)||'--'}, ${fit?.y?.toFixed(1)||'--'} · rot ${fit?.r?.toFixed(1)||'--'}°</div><span class="badge">${asset.includes('w46-approved-headwear')?'W46 APPROVED ART':'NOT W46'}</span></div></article>`)
+}
+</script></body></html>

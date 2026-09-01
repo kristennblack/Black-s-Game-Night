@@ -1,0 +1,13 @@
+W47 PRE-PACKAGE VERIFICATION
+Candidate: GAME-NIGHT-STAGING-CANDIDATE-W47-JOHN-30-LOOKS-SHOP-65
+
+Working-tree checks:
+- npm run check: PASS
+- automated tests: 692 / 692 PASS
+- staging validator: 4,384 PASS / 2 WARN / 0 FAIL
+- warnings are historical/infrastructure: Three.js CDN dependency and unavailable Wrangler deployment verification in this sandbox.
+- all 30 John runtime portrait files exist.
+- W47 Looks Shop catalog contains 30 unique records.
+- server-side buy/equip look tests pass.
+
+Cold ZIP verification is recorded separately after packaging.

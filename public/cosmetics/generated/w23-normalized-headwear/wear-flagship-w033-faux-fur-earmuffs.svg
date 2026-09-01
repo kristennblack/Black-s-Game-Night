@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 130" aria-label="Faux-Fur Earmuffs">
-<defs><linearGradient id="band" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f1e7df"/><stop offset="1" stop-color="#a88f86"/></linearGradient><radialGradient id="fur"><stop stop-color="#f7eee8"/><stop offset=".65" stop-color="#d4c0b6"/><stop offset="1" stop-color="#8f786f"/></radialGradient></defs>
-<path d="M38 91 C40 -18 180 -18 182 91" fill="none" stroke="url(#band)" stroke-width="13" stroke-linecap="round"/>
-<ellipse cx="40" cy="91" rx="27" ry="33" fill="url(#fur)" stroke="#6f5b54" stroke-width="5"/>
-<ellipse cx="180" cy="91" rx="27" ry="33" fill="url(#fur)" stroke="#6f5b54" stroke-width="5"/>
-<path d="M24 91c9-10 23-10 32 0M164 91c9-10 23-10 32 0" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="4" stroke-linecap="round"/>
-</svg>

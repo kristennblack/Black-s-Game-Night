@@ -1,5 +1,5 @@
 import { mountArcadeTutorial } from './arcade-tutorials.mjs';
-import { cosmeticOverlayHTML, normalizeEquipped } from './avatar-cosmetics.mjs?v=W45-HEADWEAR-SCALE-RECOVERY-63';
+import { cosmeticOverlayHTML, normalizeEquipped } from './avatar-cosmetics.mjs?v=W46-APPROVED-HEADWEAR-ART-64';
 const PROFILE_KEY='gn_profile_v1';
 const LOCAL_KEY='bfgn_arcade_phase_w_v1';
 // Arcade reward contract: +5 Game Night Tokens on first play of each game; +10 Game Night Tokens for the daily 3-different-games challenge.
@@ -24,7 +24,7 @@ const pathKey=(location.pathname.split('/').pop()||'').replace(/\.html$/,'');
 const cfg=GAMES[pathKey]||{id:pathKey||'arcade',name:document.title.split(' - ')[0],reaction:'Nice run.'};
 function readJSON(k,f={}){try{return JSON.parse(localStorage.getItem(k)||'')||f}catch{return f}}
 function profile(){const p=readJSON(PROFILE_KEY,{});return{profileId:String(p.profileId||'local-profile'),name:String(p.name||localStorage.getItem('gn_name')||'Family Player'),avatar:String(p.avatar||'john'),variant:Number(p.variant)||0,equippedCosmetics:normalizeEquipped(p.equippedCosmetics||{})}}
-function assetFor(person,p=null){if(!person)return'';const same=p&&String(p.avatar||'')===String(person);const v=same?Math.max(0,Number(p.variant)||0):0;if(person==='john')return `/avatars/styles/john-look-${String(Math.min(16,v+1)).padStart(2,'0')}.jpg`;const styles=['cute','goofy','rugged','glam'];return `/avatars/styles/${person}-${styles[v%4]}.jpg`}
+function assetFor(person,p=null){if(!person)return'';const same=p&&String(p.avatar||'')===String(person);const v=same?Math.max(0,Number(p.variant)||0):0;if(person==='john')return `/avatars/styles/john-look-${String(Math.min(30,v+1)).padStart(2,'0')}.jpg`;const styles=['cute','goofy','rugged','glam'];return `/avatars/styles/${person}-${styles[v%4]}.jpg`}
 function activeEvent(date=new Date()){
  const y=date.getFullYear(),one=(m,d)=>new Date(y,m-1,d,12),birthdays=[['James',2,2,'james'],['Logan',3,17,'logan'],['Holly',3,28,'holly'],['Dorothy',4,6,'dorothy'],['Kristen',4,15,'kristen'],['Papa',7,19,'papa'],['Nana',8,18,'nana'],['Lizzy',8,27,'elizabeth'],['John',9,28,'john'],['Vanessa',10,6,'vanessa']];
  const holidays=[['New Year',1,1],['Valentine’s Day',2,14],['Canada Day',7,1],['Halloween',10,31],['Christmas',12,25]];

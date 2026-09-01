@@ -1,0 +1,26 @@
+W47 primary changed/added files
+- public/app.js
+- public/styles.css
+- public/sw.js
+- public/tokens-store.html
+- public/cabin.js
+- public/island-life.js
+- public/new-games.html
+- public/phase-w-platform.mjs
+- public/john-looks-catalog.mjs [new]
+- public/john-looks-shop.html [new]
+- public/avatars/styles/john-look-01.jpg ... john-look-30.jpg [30 approved runtime looks]
+- worker.mjs
+- test/cloudflare-adapter.test.mjs
+- test/phase-w47-john-looks-shop.test.mjs [new]
+- JOHN_30_LOOKS_MANIFEST.json [new]
+- visual_proofs/john_30_looks/JOHN_LOOKS_COLLECTION_J1.png [new]
+- visual_proofs/john_30_looks/JOHN_LOOKS_COLLECTION_J2.png [new]
+- visual_proofs/john_30_looks/JOHN_LOOKS_COLLECTION_J3.png [new]
+- visual_proofs/john_30_looks/JOHN_30_RUNTIME_LOOKS_PROOF.jpg [new]
+- MASTER_PHASE_W47_JOHN_30_LOOKS_SHOP_DIRECTIVE.md [new]
+- MASTER_GAME_BUILD_PROMPT_W47_CURRENT_PRODUCTION_MASTER.md [new]
+- W47_JOHN_30_LOOKS_SHOP_REPORT.md [new]
+- PHONE_QA_PHASE_W47_JOHN_30_LOOKS_SHOP_65.md [new]
+- START_HERE_W47.txt [new]
+- CURRENT_MASTER_PROMPT.txt

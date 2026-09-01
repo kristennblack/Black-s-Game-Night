@@ -167,6 +167,45 @@ export const W42_PORTRAIT_ASSET_OVERRIDES={
   'safety-glasses':'/cosmetics/generated/w42-portrait-3d/safety-glasses.png',
 };
 
+
+export const W46_APPROVED_HEADWEAR_ASSET_OVERRIDES={
+  'camp-cap':'/cosmetics/generated/w46-approved-headwear/camp-cap.png',
+  'cowboy-hat':'/cosmetics/generated/w46-approved-headwear/cowboy-hat.png',
+  'winter-toque':'/cosmetics/generated/w46-approved-headwear/winter-toque.png',
+  'firefighter-helmet':'/cosmetics/generated/w46-approved-headwear/firefighter-helmet.png',
+  'birthday-crown':'/cosmetics/generated/w46-approved-headwear/birthday-crown.png',
+  'tiara':'/cosmetics/generated/w46-approved-headwear/tiara.png',
+  'legendary-top-hat':'/cosmetics/generated/w46-approved-headwear/legendary-top-hat.png',
+  'trail-trouble-cap':'/cosmetics/generated/w46-approved-headwear/trail-trouble-cap.png',
+  'prop-hunt-hunter-hat':'/cosmetics/generated/w46-approved-headwear/prop-hunt-hunter-hat.png',
+  'mexican-train-cap':'/cosmetics/generated/w46-approved-headwear/mexican-train-cap.png',
+  'wear-flagship-w029-wide-brim-sun-hat':'/cosmetics/generated/w46-approved-headwear/wide-brim-sun-hat.png',
+  'wear-flagship-w030-canvas-bucket-hat':'/cosmetics/generated/w46-approved-headwear/canvas-bucket-hat.png',
+};
+
+
+// W46 approved Board 01 portrait shaping. The approved product renders use
+// natural transparent aspect ratios, so width alone is not enough to make them
+// look worn on a portrait. targetDepthScale converts each exact portrait's
+// crown-to-seat depth into the desired visible hat height without shrinking the
+// approved lateral silhouette.
+export const W46_APPROVED_HEADWEAR_PORTRAIT_SHAPING={
+  // widthScale keeps the approved lateral silhouette; rollScale damps extreme
+  // portrait tilt so a product-render hat still reads as worn rather than pasted.
+  'camp-cap':{assetAspect:.787671,targetDepthScale:1.46,seatNudge:-7.0,widthScale:1.00,rollScale:.35},
+  'cowboy-hat':{assetAspect:.824713,targetDepthScale:1.95,seatNudge:-6.0,widthScale:1.00,rollScale:.38},
+  'winter-toque':{assetAspect:1.190,targetDepthScale:1.72,seatNudge:1.5,widthScale:.88,rollScale:.82},
+  'firefighter-helmet':{assetAspect:.699219,targetDepthScale:2.34,seatNudge:0.0,widthScale:1.10,rollScale:.82},
+  'birthday-crown':{assetAspect:.788079,targetDepthScale:2.28,seatNudge:0.0,widthScale:1.10,rollScale:.82},
+  'tiara':{assetAspect:.524740,targetDepthScale:1.62,seatNudge:-1.0,widthScale:1.05,rollScale:.82},
+  'legendary-top-hat':{assetAspect:.830013,targetDepthScale:3.22,seatNudge:0.0,widthScale:1.08,rollScale:.62},
+  'trail-trouble-cap':{assetAspect:.883495,targetDepthScale:1.96,seatNudge:0.0,widthScale:1.15,rollScale:.82},
+  'prop-hunt-hunter-hat':{assetAspect:1.038023,targetDepthScale:1.45,seatNudge:-7.0,widthScale:.94,rollScale:.35},
+  'mexican-train-cap':{assetAspect:.730290,targetDepthScale:2.28,seatNudge:0.0,widthScale:1.10,rollScale:.65},
+  'wear-flagship-w029-wide-brim-sun-hat':{assetAspect:.810687,targetDepthScale:1.82,seatNudge:-3.0,widthScale:1.10,rollScale:.52},
+  'wear-flagship-w030-canvas-bucket-hat':{assetAspect:.878743,targetDepthScale:2.18,seatNudge:-4.0,widthScale:.93,rollScale:.42},
+};
+
 export const W44_HEADWEAR_ASSET_OVERRIDES={
   'cowboy-hat':'/cosmetics/generated/w44-headwear-3d/cowboy-hat.png',
   'firefighter-helmet':'/cosmetics/generated/w44-headwear-3d/firefighter-helmet.png',
@@ -221,7 +260,7 @@ export function portraitAnchorProfile(avatar='john',variant=0){
   return {...merged,portraitStyleKey:styleKey,exactCalibration:!!exact};
 }
 export function portraitAccessoryAsset(item){
-  return W44_HEADWEAR_ASSET_OVERRIDES[item?.id]||W42_PORTRAIT_ASSET_OVERRIDES[item?.id]||item?.asset||'';
+  return W46_APPROVED_HEADWEAR_ASSET_OVERRIDES[item?.id]||W44_HEADWEAR_ASSET_OVERRIDES[item?.id]||W42_PORTRAIT_ASSET_OVERRIDES[item?.id]||item?.asset||'';
 }
 export function portraitEarringSideAsset(item,side='left'){
   return W44_EARRING_SIDE_ASSETS[item?.id]?.[side]||'';
@@ -271,6 +310,11 @@ const EARRING_GEOMETRY={
 // W45 visual-size recovery. These are visual wearing ratios, not collision-safe
 // bounds. The prior W44 values were conservative enough that otherwise-correct
 // hats looked miniaturized on the portrait heads.
+export const W46_APPROVED_HEADWEAR_GEOMETRY_OVERRIDES={
+  // The approved Board 01 Hunter Hat is a structured olive cap, not a cowboy hat.
+  'prop-hunt-hunter-hat':{kind:'cap',widthScale:1.08,templeScale:1.34,seatMix:.58,pivotY:88,minWidth:48,maxWidth:112},
+};
+
 export const W45_HEADWEAR_GEOMETRY={
   'cowboy-hat':{kind:'cowboy',widthScale:1.27,templeScale:1.56,seatMix:.54,pivotY:88,minWidth:54,maxWidth:132},
   'firefighter-helmet':{kind:'helmet',widthScale:1.17,templeScale:1.45,seatMix:.56,pivotY:88,minWidth:52,maxWidth:120},
@@ -339,6 +383,7 @@ export function w45HeadwearKindForItem(item=null){
 
 function w45HeadwearGeometryForItem(item=null){
   if(!item)return null;
+  if(W46_APPROVED_HEADWEAR_GEOMETRY_OVERRIDES[item.id])return W46_APPROVED_HEADWEAR_GEOMETRY_OVERRIDES[item.id];
   if(W45_HEADWEAR_GEOMETRY[item.id])return W45_HEADWEAR_GEOMETRY[item.id];
   const semantic=String(item.fitAnchor||'').toLowerCase();
   // These specialty anchors have dedicated solvers in avatar-cosmetics.
@@ -411,13 +456,24 @@ export function portraitHeadwearFit(avatar='john',variant=0,item=null){
   // three-quarter or tightly cropped portraits from shrinking hats merely because
   // one head-edge landmark is conservative.
   const visualBase=Math.max(headSpan*(g.widthScale||1),templeSpan*(g.templeScale||1));
-  const width=clamp(visualBase*(corr.scale||1),g.minWidth||24,g.maxWidth||132);
+  const w46Shape=W46_APPROVED_HEADWEAR_PORTRAIT_SHAPING[item?.id];
+  const width=clamp(visualBase*(corr.scale||1)*(w46Shape?.widthScale||1),g.minWidth||24,g.maxWidth||132);
+
+  // W46 keeps W45's corrected lateral size, but shapes the approved portrait
+  // render vertically from real head geometry. This is intentionally separate
+  // from width so a natural-aspect product render cannot become an enormous
+  // face-covering overlay. Non-W46 headwear remains exactly W45-compatible.
+  const crownDepth=Math.max(5,seat.y-p.head.top.y);
+  const targetHeight=w46Shape?crownDepth*w46Shape.targetDepthScale:null;
+  const naturalHeight=w46Shape?width*w46Shape.assetAspect:null;
+  const portraitSy=w46Shape?clamp(targetHeight/Math.max(1,naturalHeight),.22,.82):1;
 
   return {
-    x:seat.x,y:seat.y,w:width,r:roll,sx:1,sy:1,skew:0,tx:-50,ty:-g.pivotY,
+    x:seat.x,y:seat.y+(w46Shape?.seatNudge||0),w:width,r:roll*(w46Shape?.rollScale??1),sx:1,sy:portraitSy,skew:0,tx:-50,ty:-g.pivotY,ox:50,oy:g.pivotY,
     hidden:false,blocked:false,calibrated:true,exactCalibration:true,
     anchorMode:`w45-visual-head-${g.kind}-seat`,portraitKey:p.portraitStyleKey,
-    headwearKind:g.kind,visualScaleRecovery:true,
+    headwearKind:g.kind,visualScaleRecovery:true,w46ApprovedArt:Boolean(w46Shape),
+    w46PortraitShaping:w46Shape?{assetAspect:w46Shape.assetAspect,targetDepthScale:w46Shape.targetDepthScale,seatNudge:w46Shape.seatNudge||0,widthScale:w46Shape.widthScale||1,rollScale:w46Shape.rollScale??1,targetHeight,naturalHeight,scaleY:portraitSy}:null,
     landmarks:{headTop:p.head.top,headLeft:p.head.left,headRight:p.head.right,leftTemple:p.temples?.left,rightTemple:p.temples?.right,eyeMid,hairline,crownCenter,seat},
   };
 }

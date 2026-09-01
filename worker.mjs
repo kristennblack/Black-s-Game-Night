@@ -15,6 +15,7 @@ import {
 import { COSMETIC_BY_ID as ARCADE_COSMETICS, COSMETIC_SLOTS, normalizeEquipped as normalizeEquippedCosmetics } from './public/avatar-cosmetics.mjs';
 import { CABIN_ROOM_ITEM_BY_ID } from './public/cabin-room-catalog.mjs';
 import { normalizeCabinBlueprints, cabinItemPurchasable } from './public/cabin-progression.mjs';
+import { JOHN_LOOK_BY_ID, STARTER_JOHN_LOOK_ID, normalizeJohnLooks } from './public/john-looks-catalog.mjs';
 import { validateCabinPlacement, normalizeCabinPlacement } from './public/cabin-placement-validation.mjs';
 
 const rooms = new Map();
@@ -32,7 +33,7 @@ const namedAvatarKeys={
   'papa':'papa','nana':'nana','kristen':'kristen','molly':'molly','kelsi':'kelsi','gunner':'gunner'
 };
 const defaultAvatarForName=name=>namedAvatarKeys[String(name||'').trim().toLowerCase()]||'cowboy';
-const defaultVariantForName=name=>defaultAvatarForName(name)==='john'?1:0;
+const defaultVariantForName=name=>defaultAvatarForName(name)==='john'?2:0;
 const BOT_DIFFICULTIES=new Set(['easy','medium','hard']);
 const BOT_PERSONAS=[
   ['John','john'],['Kristen','kristen'],['Holly','holly'],['Elizabeth','elizabeth'],['Vanessa','vanessa'],['Logan','logan'],['James','james'],['Dorothy','dorothy'],['Nana','nana'],['Papa','papa'],['Kelsi','kelsi'],['Molly','molly'],['Gunner','gunner']
@@ -233,6 +234,7 @@ async function handleApi(request){
   if(u.pathname==='/api/arcade/profile'&&request.method==='GET'){const profileId=u.searchParams.get('profileId');return jsonResponse({profile:await activeHub.getArcadeProfile(profileId),familyWeekPlays:await activeHub.getFamilyWeekPlays()})}
   if(u.pathname==='/api/arcade/record'&&request.method==='POST'){const b=await parseBody(request);try{return jsonResponse({ok:true,profile:await activeHub.recordArcade(b)})}catch(err){return jsonResponse({error:err.message},400)}}
   if(u.pathname==='/api/arcade/cosmetic'&&request.method==='POST'){const b=await parseBody(request);try{return jsonResponse({ok:true,profile:await activeHub.updateArcadeCosmetic(b)})}catch(err){return jsonResponse({error:err.message},400)}}
+  if(u.pathname==='/api/arcade/look'&&request.method==='POST'){const b=await parseBody(request);try{return jsonResponse({ok:true,profile:await activeHub.updateJohnLook(b)})}catch(err){return jsonResponse({error:err.message},400)}}
   if(u.pathname==='/api/cabin/item'&&request.method==='POST'){const b=await parseBody(request);try{return jsonResponse({ok:true,profile:await activeHub.updateCabinBlueprint(b)})}catch(err){return jsonResponse({error:err.message},400)}}
   if(u.pathname==='/api/cabin/overview'&&request.method==='GET')return jsonResponse({rooms:await activeHub.getCabinOverview()});
   if(u.pathname==='/api/cabin/room'&&request.method==='GET'){const roomKey=u.searchParams.get('roomKey');return jsonResponse({room:await activeHub.getCabinRoom(roomKey)});}
@@ -290,9 +292,21 @@ export class GameHub {
   async getLeaderboard(){const data=await this.ctx.storage.get('leaderboard:v1');return data&&data.players?data:{players:{},recent:[]}}
   async addRequest(b){const text=String(b.text||'').trim().slice(0,800);if(!text)throw new Error('Please enter a request');const category=requestCategories.has(String(b.category))?String(b.category):'Other',name=String(b.name||'Family player').trim().slice(0,24)||'Family player',entry={id:crypto.randomUUID(),profileId:profileIdFrom(b),name,category,text,at:now(),status:'Requested'};const list=await this.getRequests();list.unshift(entry);await this.ctx.storage.put('requests:v1',list.slice(0,250));return entry}
   async getRequests(){const data=await this.ctx.storage.get('requests:v1');return Array.isArray(data)?data:[]}
-  async getArcadeProfile(profileId){const id=String(profileId||'').trim().slice(0,80);if(!id)return null;const p=await this.ctx.storage.get(`arcade-profile:${id}`);return p&&p.profileId?{...p,cosmetics:{...(p.cosmetics||{})},cabinBlueprints:normalizeCabinBlueprints(p.cabinBlueprints),equippedCosmetics:normalizeEquippedCosmetics(p.equippedCosmetics)}:{profileId:id,name:'Family Player',tokens:0,achievements:{},plays:{},records:{},cosmetics:{},cabinBlueprints:normalizeCabinBlueprints({}),equippedCosmetics:normalizeEquippedCosmetics({}),updatedAt:0}}
+  async getArcadeProfile(profileId){const id=String(profileId||'').trim().slice(0,80);if(!id)return null;const p=await this.ctx.storage.get(`arcade-profile:${id}`);if(p&&p.profileId){const johnLooks=normalizeJohnLooks(p.johnLooks);const equippedJohnLook=JOHN_LOOK_BY_ID[p.equippedJohnLook]?p.equippedJohnLook:STARTER_JOHN_LOOK_ID;johnLooks[equippedJohnLook]=johnLooks[equippedJohnLook]||{unlockedAt:0,source:'equipped-migration'};return {...p,cosmetics:{...(p.cosmetics||{})},cabinBlueprints:normalizeCabinBlueprints(p.cabinBlueprints),equippedCosmetics:normalizeEquippedCosmetics(p.equippedCosmetics),johnLooks,equippedJohnLook}}return {profileId:id,name:'Family Player',tokens:0,achievements:{},plays:{},records:{},cosmetics:{},cabinBlueprints:normalizeCabinBlueprints({}),equippedCosmetics:normalizeEquippedCosmetics({}),johnLooks:normalizeJohnLooks({}),equippedJohnLook:STARTER_JOHN_LOOK_ID,updatedAt:0}}
   async getFamilyWeekPlays(){const d=new Date(),day=(d.getUTCDay()+6)%7,monday=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate()-day));const key=`family-week:${monday.toISOString().slice(0,10)}`;return Number(await this.ctx.storage.get(key)||0)}
   async recordArcade(b){const id=profileIdFrom(b);if(!id)throw new Error('Missing profile id');const gameId=String(b.gameId||'arcade').slice(0,80),type=String(b.type||'play').slice(0,30);let p=await this.getArcadeProfile(id);p={...p,name:String(b.name||p.name||'Family Player').slice(0,24),achievements:{...(p.achievements||{})},plays:{...(p.plays||{})},records:{...(p.records||{})},cosmetics:{...(p.cosmetics||{})},cabinBlueprints:normalizeCabinBlueprints(p.cabinBlueprints)};if(type==='play'){p.plays[gameId]=Number(p.plays[gameId]||0)+1;const d=new Date(),day=(d.getUTCDay()+6)%7,monday=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate()-day)),wk=`family-week:${monday.toISOString().slice(0,10)}`;const total=Number(await this.ctx.storage.get(wk)||0)+1;await this.ctx.storage.put(wk,total)}if(Number.isFinite(Number(b.score))){const r=p.records[gameId]||{};r.highScore=Math.max(Number(r.highScore||0),Number(b.score));r.lastAt=now();p.records[gameId]=r}let rewardAllowed=true;if(b.achievement){const aid=String(b.achievement).slice(0,120);if(p.achievements[aid])rewardAllowed=false;else p.achievements[aid]={label:String(b.label||aid).slice(0,120),at:now()}}const requestedDelta=Math.max(-500,Math.min(500,Number(b.tokenDelta||0))),delta=rewardAllowed?requestedDelta:0;p.tokens=Math.max(0,Number(p.tokens||0)+delta);p.updatedAt=now();await this.ctx.storage.put(`arcade-profile:${id}`,p);return p}
+  async updateJohnLook(b){
+    const id=profileIdFrom(b);if(!id)throw new Error('Missing profile id');const action=String(b.action||'equip'),itemId=String(b.itemId||''),item=JOHN_LOOK_BY_ID[itemId]||null;let p=await this.getArcadeProfile(id);p={...p,name:String(b.name||p.name||'Family Player').slice(0,24),johnLooks:normalizeJohnLooks(p.johnLooks),equippedJohnLook:JOHN_LOOK_BY_ID[p.equippedJohnLook]?p.equippedJohnLook:STARTER_JOHN_LOOK_ID};
+    if(!item)throw new Error('Unknown John look');
+    if(action==='buy'){
+      if(!p.johnLooks[itemId]){const price=Math.max(0,Number(item.price)||0);if(Number(p.tokens||0)<price)throw new Error(`Need ${price} Game Night Tokens`);p.tokens=Number(p.tokens||0)-price;p.johnLooks[itemId]={unlockedAt:now(),source:price===0?'starter':'tokens'};}
+    }else if(action==='equip'){
+      if(!p.johnLooks[itemId])throw new Error('Unlock this John look first');p.equippedJohnLook=itemId;
+    }else if(action==='grant'){
+      if(!b.rewardKey)throw new Error('Missing reward key');p.johnLooks[itemId]=p.johnLooks[itemId]||{unlockedAt:now(),source:'reward',rewardKey:String(b.rewardKey).slice(0,120)};
+    }else throw new Error('Unknown John look action');
+    p.updatedAt=now();await this.ctx.storage.put(`arcade-profile:${id}`,p);return p;
+  }
   async updateArcadeCosmetic(b){
     const id=profileIdFrom(b);if(!id)throw new Error('Missing profile id');const action=String(b.action||'equip'),itemId=String(b.itemId||''),item=ARCADE_COSMETICS[itemId]||null;let p=await this.getArcadeProfile(id);p={...p,name:String(b.name||p.name||'Family Player').slice(0,24),cosmetics:{...(p.cosmetics||{})},equippedCosmetics:normalizeEquippedCosmetics(p.equippedCosmetics)};
     if(action==='buy'){if(!item)throw new Error('Unknown cosmetic');if(item.source&&item.source!=='token')throw new Error('This cosmetic is earned through play or an event');if(!p.cosmetics[itemId]){if(Number(p.tokens||0)<item.price)throw new Error(`Need ${item.price} Game Night Tokens`);p.tokens=Number(p.tokens||0)-item.price;p.cosmetics[itemId]={unlockedAt:now(),slot:item.slot}}}
