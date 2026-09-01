@@ -15,6 +15,7 @@ import {
 import { COSMETIC_BY_ID as ARCADE_COSMETICS, COSMETIC_SLOTS, normalizeEquipped as normalizeEquippedCosmetics } from './public/avatar-cosmetics.mjs';
 import { CABIN_ROOM_ITEM_BY_ID } from './public/cabin-room-catalog.mjs';
 import { normalizeCabinBlueprints, cabinItemPurchasable } from './public/cabin-progression.mjs';
+import { validateCabinPlacement, normalizeCabinPlacement } from './public/cabin-placement-validation.mjs';
 
 const rooms = new Map();
 let activeHub = null;
@@ -330,8 +331,9 @@ export class GameHub {
     }
     if(action==='save'){
       if(room.ownerProfileId!==profileId)throw new Error('Only the room owner can decorate this room');
-      const raw=Array.isArray(b.placements)?b.placements.slice(0,100):[];const placements=[],progress=await this.getArcadeProfile(profileId),owned=normalizeCabinBlueprints(progress?.cabinBlueprints),grandfathered=new Set((room.placements||[]).map(q=>String(q.itemId||'')));
-      for(const q of raw){const itemId=String(q?.itemId||'');if(!CABIN_ROOM_ITEM_BY_ID[itemId])continue;if(!owned[itemId]&&!grandfathered.has(itemId))throw new Error('Unlock this cabin blueprint before placing it');const x=Math.max(0,Math.min(14,Number(q.x)||0)),z=Math.max(0,Math.min(16,Number(q.z)||0)),rotation=((Math.round((Number(q.rotation)||0)/90)*90)%360+360)%360;placements.push({id:String(q.id||crypto.randomUUID()).slice(0,80),itemId,x,z,rotation,surface:String(q?.surface||'floor')==='wall'?'wall':'floor'})}
+      const raw=Array.isArray(b.placements)?b.placements.slice(0,100):[];const placements=[],progress=await this.getArcadeProfile(profileId),owned=normalizeCabinBlueprints(progress?.cabinBlueprints),grandfathered=new Set((room.placements||[]).map(q=>String(q.itemId||''))),existingById=new Map((room.placements||[]).map(q=>[String(q.id||''),q]));
+      const samePlacement=(a,b)=>!!a&&String(a.itemId||'')===String(b.itemId||'')&&Number(a.x||0)===Number(b.x||0)&&Number(a.z||0)===Number(b.z||0)&&Number(a.rotation||0)===Number(b.rotation||0)&&String(a.surface||'floor')===String(b.surface||'floor');
+      for(const q of raw){const itemId=String(q?.itemId||''),item=CABIN_ROOM_ITEM_BY_ID[itemId];if(!item)continue;if(!owned[itemId]&&!grandfathered.has(itemId))throw new Error('Unlock this cabin blueprint before placing it');const id=String(q.id||crypto.randomUUID()).slice(0,80),candidate=normalizeCabinPlacement(item,{...q,id,itemId}),state=q?.state&&typeof q.state==='object'&&typeof q.state.lampOn==='boolean'?{lampOn:q.state.lampOn}:{};candidate.state=state;const previous=existingById.get(id);if(previous&&samePlacement(previous,candidate)){placements.push(candidate);continue}const checked=validateCabinPlacement(item,candidate,{placements,catalogById:CABIN_ROOM_ITEM_BY_ID,ignoreId:id});if(!checked.ok)throw new Error(checked.message);placements.push({...checked.placement,state})}
       room.placements=placements;
       const validateFinish=(value,kind,current)=>{const id=String(value||current||'').slice(0,160);if(id==='bare-pine-wall'||id==='bare-pine-floor')return id;const item=CABIN_ROOM_ITEM_BY_ID[id];if(!item)throw new Error('Unknown cabin finish');if(item.Category!=='Architectural Finishes')throw new Error('This item is not a room finish');const surface=String(item['Placement Surface']||'');if(kind==='wall'&&!surface.includes('Wall'))throw new Error('Choose a wall finish');if(kind==='floor'&&!surface.includes('Floor'))throw new Error('Choose a floor finish');if(!owned[id])throw new Error('Unlock this finish before applying it');return id};
       room.wallpaper=validateFinish(b.wallpaper,'wall',room.wallpaper||'bare-pine-wall');room.flooring=validateFinish(b.flooring,'floor',room.flooring||'bare-pine-floor');room.decorVersion=21;room.updatedAt=now();

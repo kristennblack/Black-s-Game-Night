@@ -25,9 +25,10 @@ const PHASE_W25_RELEASE='GAME-NIGHT-STAGING-PHASE-W25-PRODUCTION-ASSET-VERTICAL-
 const PHASE_W26_RELEASE='GAME-NIGHT-STAGING-PHASE-W26-CHARACTER-WEARABLE-FIT-PROOF-51';
 const PHASE_W27_RELEASE='GAME-NIGHT-STAGING-PHASE-W27-JOHN-HEAD-REPAIR-52';
 const PHASE_W29_RELEASE='GAME-NIGHT-STAGING-PHASE-W29-FAMILY-V1-CANDIDATES-53';
+const PHASE_W30_RELEASE='GAME-NIGHT-STAGING-PHASE-W30-PROP-HUNT-P0-GAMEPLAY-54';
 const APP_VERSION='GAME-NIGHT-STAGING-PHASE-T1-PROP-HUNT-HUNTER-RELEASE-COMBAT-19';
-const CURRENT_BUILD=PHASE_W29_RELEASE;
-if('serviceWorker'in navigator)window.addEventListener('load',async()=>{try{const reg=await navigator.serviceWorker.register('/sw.js?v=W29-FAMILY-V1-CANDIDATES-53',{updateViaCache:'none'});reg.update().catch(()=>{})}catch{}});
+const CURRENT_BUILD=PHASE_W30_RELEASE;
+if('serviceWorker'in navigator)window.addEventListener('load',async()=>{try{const reg=await navigator.serviceWorker.register('/sw.js?v=W30-PROP-HUNT-P0-GAMEPLAY-54',{updateViaCache:'none'});reg.update().catch(()=>{})}catch{}});
 
 const GAME={SCREW:'screw',FUCK:'fuck',SMEAR:'smear',CAMPFIRE:'campfire',TRAIL:'trail',PRAIRIE:'prairie',BURN_LOGS:'burnlogs',DECK_SWEEP:'decksweep',CRIBBAGE:'cribbage',MARBLES:'marbles',EUCHRE:'euchre',THIRTY_ONE:'thirtyone',GOLF:'golf',CRAZY_EIGHTS:'crazy8',MITTS:'mitts',POKER:'poker',PRESIDENT:'president',LAST_HAVEN:'lasthaven',MEXICAN_TRAIN:'mexicantrain',SKIP_BO:'skipbo',BACKGAMMON:'backgammon',BLACK_GAMMON:'blackgammon'};
 // Legacy shelf compatibility: ['New Table Games',[GAME.MEXICAN_TRAIN,GAME.SKIP_BO,GAME.BACKGAMMON,GAME.BLACK_GAMMON]]

@@ -102,6 +102,34 @@ export function supportHeight(x,z,r,colliders,currentY,maxStep=.42){
   return support;
 }
 
+
+/** Multi-probe ground support for a circular character footprint. */
+export function groundSupport(x,z,r,colliders,currentY,maxStep=.42){
+  const rr=Math.max(.04,(Number(r)||.3)*.68),probes=[[0,0],[rr,0],[-rr,0],[0,rr],[0,-rr],[rr*.7,rr*.7],[-rr*.7,rr*.7],[rr*.7,-rr*.7],[-rr*.7,-rr*.7]];
+  let best=0,bestCount=0,bestCenter=false;
+  const levels=new Map();
+  for(let pi=0;pi<probes.length;pi++){
+    const [ox,oz]=probes[pi],px=x+ox,pz=z+oz;
+    for(const b of colliders||[]){
+      if(!b.walkableTop||b.blocksPlayer===false)continue;const top=(b.y??0)+b.h;if(top>currentY+maxStep+.02)continue;
+      if(px>=b.x-b.w/2&&px<=b.x+b.w/2&&pz>=b.z-b.d/2&&pz<=b.z+b.d/2){const key=top.toFixed(4),rec=levels.get(key)||{height:top,count:0,center:false};rec.count++;if(pi===0)rec.center=true;levels.set(key,rec)}
+    }
+  }
+  for(const rec of levels.values())if(rec.height>best&&((rec.center&&rec.count>=1)||rec.count>=2)){best=rec.height;bestCount=rec.count;bestCenter=rec.center}
+  return{height:best,normal:{x:0,y:1,z:0},slope:0,walkable:true,probeCount:bestCount,centerSupported:bestCenter};
+}
+
+/** Validate a mantle landing on top of the collider before committing the move. */
+export function mantleTarget(actor,block,dx,dz,colliders,opts={}){
+  if(!actor||!block||!block.climbable||!block.walkableTop)return null;const radius=opts.radius??actor.radius??.32,height=opts.height??actor.height??1.72,top=(block.y??0)+block.h;
+  const len=Math.hypot(dx,dz);if(len<1e-5)return null;const dirX=dx/len,dirZ=dz/len,pad=Math.max(.035,radius*.12);
+  const minX=block.x-block.w/2+radius+pad,maxX=block.x+block.w/2-radius-pad,minZ=block.z-block.d/2+radius+pad,maxZ=block.z+block.d/2-radius-pad;if(minX>maxX||minZ>maxZ)return null;
+  const tx=clamp(actor.x+dirX*(radius+.48),minX,maxX),tz=clamp(actor.z+dirZ*(radius+.48),minZ,maxZ),landingY=top+.015;
+  const overhead=blockingCollider(tx,tz,radius,landingY,height,colliders,block);if(overhead)return null;
+  const support=groundSupport(tx,tz,radius,colliders,landingY+.08,.16);if(Math.abs(support.height-top)>.08)return null;
+  return{targetY:top,x:tx,z:tz,collider:block};
+}
+
 export function ceilingBottom(x,z,r,feetY,height,nextY,colliders){
   if(nextY<=feetY)return null;
   const oldHead=feetY+height,newHead=nextY+height;let nearest=null;
@@ -131,9 +159,8 @@ function attemptMoveStep(actor,dx,dz,colliders,opts={}){
   const block=blockingCollider(next.x,next.z,radius,actor.y,height,colliders);
   if(!block)return {...next,mantle:null,blocked:false};
   const top=(block.y??0)+block.h,delta=top-actor.y;
-  if(block.climbable&&delta>maxStep&&delta<=maxMantle&&opts.jumpRequested){
-    const cx=block.x,cz=block.z,awayX=next.x-cx,awayZ=next.z-cz,l=Math.hypot(awayX,awayZ)||1;
-    return {x:next.x+awayX/l*.08,z:next.z+awayZ/l*.08,y:actor.y,mantle:{targetY:top,collider:block},blocked:true};
+  if(block.climbable&&block.walkableTop&&delta>maxStep&&delta<=maxMantle&&opts.jumpRequested){
+    const mantle=mantleTarget(actor,block,dx,dz,colliders,{radius,height});if(mantle)return{x:actor.x,z:actor.z,y:actor.y,mantle,blocked:true};
   }
   if(delta>0&&delta<=maxStep&&block.walkableTop){
     const above=blockingCollider(next.x,next.z,radius,top+.01,height,colliders,block);
@@ -182,7 +209,7 @@ export function sanitizeSnapshot(s,prev={}){
     vx:clamp(finite(s.vx,0),-20,20),
     vy:clamp(finite(s.vy,0),-30,30),
     vz:clamp(finite(s.vz,0),-20,20),
-    anim:['idle','walk','run','sprint','startMove','stopMove','turnLeft','turnRight','backward','strafeLeft','strafeRight','jump','fall','land','hardLand','mantle','aim','fire','hit'].includes(s.anim)?s.anim:'idle',
+    anim:['idle','walk','jog','run','sprint','startMove','stopMove','turnLeft','turnRight','sharpTurnLeft','sharpTurnRight','turn180Left','turn180Right','backward','strafeLeft','strafeRight','jump','fall','land','hardLand','mantle','aim','fire','hit','celebrate'].includes(s.anim)?s.anim:'idle',
     prop:typeof s.prop==='string'?s.prop.slice(0,48):null,
     locked:!!s.locked,
     seq:Math.max(0,Math.floor(finite(s.seq,prev.seq||0))),

@@ -1,6 +1,6 @@
 /*
  * Black Family Game Night - Family Prop Hunt
- * v3.12.0-phase-w11-smoothness-stability
+ * v4.3.0-phase-w36-leapfrog-hybrid-production
  *
  * Real WebGL third-person renderer. No Canvas 2D character projection is used.
  * Characters, dogs, buildings, props and weapons are actual 3D scene objects.
@@ -13,7 +13,9 @@
   const ART_URL='/shared-3d-art-kit.mjs';
   const CATALOG_URL='/cabin-room-catalog.mjs';
   const WORLD_CATALOG_URL='/world-prop-catalog.mjs';
-  const GAMEPLAY_URL='/shared-3d-gameplay.mjs';
+  const W35_VISUAL_URL='/w35-production-visuals.mjs?v=W36-LEAPFROG-HYBRID-57';
+  const W36_VISUAL_URL='/w36-leapfrog-visuals.mjs?v=W36-LEAPFROG-HYBRID-57';
+  const GAMEPLAY_URL='/shared-3d-gameplay.mjs?v=W36-LEAPFROG-HYBRID-57';
   const STUDIO_URL='/shared-3d-studio.mjs';
   const PHASE_E_URL='/phase-e-qa.mjs';
   const APPROVED_CHAR_URL='/approved-family-characters.mjs';
@@ -23,16 +25,21 @@
   const personById=id=>family().find(p=>p.id===id)||family()[0];
   const isDog=p=>!!p?.dog||['kelsi','molly','gunner'].includes(p?.id);
   const TEST_SCALE=location.search.includes('test=1') ? .03 : 1;
-  const QA_MODE=new URLSearchParams(location.search).get('qa3d')==='1';
+  const URL_FLAGS=new URLSearchParams(location.search);
+  const QA_MODE=URL_FLAGS.get('qa3d')==='1';
+  const W35_DEV_JOHN_PROXY=QA_MODE&&(URL_FLAGS.get('w35ProxyJohn')==='1'||URL_FLAGS.get('w36Benchmark')==='1');
+  const W35_LEGACY_PAPA=URL_FLAGS.get('legacyPapa')==='1';
+  const W36_FULL_PAPA=URL_FLAGS.get('compactPapa')!=='1';
+  const W36_BENCHMARK=URL_FLAGS.get('w36Benchmark')==='1';
   const CDN_NOTICE='Three.js 0.185.1';
 
-  let root=null,THREE=null,core=null,art=null,gameplay=null,studio=null,phaseE=null,approvedCharacters=null,catalogData=null,worldCatalogData=null,assets=null,audio=null,loadPromise=null,game=null,raf=0,lastFrame=0;
+  let root=null,THREE=null,core=null,art=null,gameplay=null,studio=null,w35vis=null,w36vis=null,phaseE=null,approvedCharacters=null,catalogData=null,worldCatalogData=null,assets=null,audio=null,loadPromise=null,game=null,raf=0,lastFrame=0;
   let network=null,roomState=null,ws=null,reconnectTimer=0,pollTimer=0;
   const keys=Object.create(null);
   const joy={x:0,z:0,id:null};
   const look={id:null,x:0,y:0};
   const HUNTER_FIRE_INTERVAL=1/4.8;
-  const input={jumpQueued:false,jumpHeld:false,sprint:false,shoot:false};
+  const input={jumpQueued:false,jumpHeld:false,sprint:false,aim:false,shoot:false};
   const setup={charId:'john',outfit:0,count:6,mode:'classic',mapKey:'papa',botConfigs:[]};
 
   const OUTFITS={
@@ -112,7 +119,7 @@
 
   async function ensureEngine(){
     if(loadPromise)return loadPromise;
-    loadPromise=Promise.all([import(THREE_URL),import(CORE_URL),import(ART_URL),import(GAMEPLAY_URL),import(STUDIO_URL),import(PHASE_E_URL),import(APPROVED_CHAR_URL),import(CATALOG_URL),import(WORLD_CATALOG_URL)]).then(([t,c,a,g,s,q,ch,cat,wcat])=>{THREE=t;core=c;art=a.create3DArtKit(THREE);gameplay=g;studio=s;phaseE=q;approvedCharacters=ch;catalogData=cat;worldCatalogData=wcat;for(const id of ch.APPROVED_FAMILY_CHARACTER_IDS||[]){if(OUTFITS[id])Object.assign(OUTFITS[id],ch.approvedFallbackStyle(id,OUTFITS[id]));}assets=studio.createAuthoredAssetPipeline(THREE,{assetVersion:phaseE.STAGING_BUILD_ID});audio=studio.createAudioSystem();return true}).catch(err=>{console.error('3D engine failed to load',err);throw new Error('The 3D engine could not load. Check the internet connection and reload the game.')});
+    loadPromise=Promise.all([import(THREE_URL),import(CORE_URL),import(ART_URL),import(GAMEPLAY_URL),import(STUDIO_URL),import(W35_VISUAL_URL),import(W36_VISUAL_URL),import(PHASE_E_URL),import(APPROVED_CHAR_URL),import(CATALOG_URL),import(WORLD_CATALOG_URL)]).then(([t,c,a,g,s,v,v36,q,ch,cat,wcat])=>{THREE=t;core=c;art=a.create3DArtKit(THREE);gameplay=g;studio=s;w35vis=v;w36vis=v36;phaseE=q;approvedCharacters=ch;catalogData=cat;worldCatalogData=wcat;for(const id of ch.APPROVED_FAMILY_CHARACTER_IDS||[]){if(OUTFITS[id])Object.assign(OUTFITS[id],ch.approvedFallbackStyle(id,OUTFITS[id]));}assets=studio.createAuthoredAssetPipeline(THREE,{assetVersion:phaseE.STAGING_BUILD_ID});audio=studio.createAudioSystem();return true}).catch(err=>{console.error('3D engine failed to load',err);throw new Error('The 3D engine could not load. Check the internet connection and reload the game.')});
     return loadPromise;
   }
 
@@ -129,7 +136,12 @@
     root=el;stop();
     const q=new URL(location.href).searchParams,roomId=q.get('room');
     if(roomId){network={roomId,playerToken:localStorage.getItem(`gn_prop_player_${roomId}`)||localStorage.getItem(`gn_player_${roomId}`),hostToken:localStorage.getItem(`gn_prop_host_${roomId}`)||localStorage.getItem(`gn_host_${roomId}`)};await openNetworkRoom();}
-    else renderSetup();
+    else if(QA_MODE&&q.get('autostart')==='1'){
+      const charId=q.get('char');if(charId&&family().some(p=>p.id===charId))setup.charId=charId;
+      const mapKey=q.get('map');if(['papa','camp','acreage','farm','rotate'].includes(mapKey))setup.mapKey=mapKey;
+      const count=Number(q.get('count'));if(Number.isFinite(count))setup.count=Math.max(2,Math.min(12,Math.round(count)));
+      try{await ensureEngine();startSolo()}catch(e){renderSetup();APP.toast(e.message)}
+    }else renderSetup();
   }
 
   function renderSetup(){
@@ -187,7 +199,9 @@
   function startSolo(){
     const human=personById(setup.charId),pool=family().filter(p=>p.id!==human.id),players=[{id:'local',name:human.name,avatar:human.id,isBot:false,difficulty:null,ready:true,role:null,health:3,alive:true,prop:null,propChanges:3,decoys:10,flash:true,disguiseOptions:[],hiderScore:0,lifetime:{rounds:0,hiderPoints:0,hunterElims:0,hiderSurvivals:0,hiderWins:0,hunterWins:0}}];
     for(let i=1;i<setup.count;i++){const p=pool[(i-1)%pool.length];players.push({id:`bot-${i}`,name:p.name,avatar:p.id,isBot:true,difficulty:'easy',ready:true,role:null,health:3,alive:true,prop:null,propChanges:3,decoys:10,flash:true,disguiseOptions:[],hiderScore:0,lifetime:{rounds:0,hiderPoints:0,hunterElims:0,hiderSurvivals:0,hiderWins:0,hunterWins:0}})}
-    const createdAt=Date.now(),seed=core.roundSeed('solo',1,createdAt),roles=core.assignRoles(players,1),firstMap=mapFor(setup.mapKey,1),assigned=core.assignDisguiseOptions(players,seed,core.disguisePoolForMap(firstMap),4);players.forEach(p=>{p.role=roles[p.id];p.disguiseOptions=p.role==='hider'?(assigned[p.id]||[]):[]});
+    const createdAt=Date.now(),seed=core.roundSeed('solo',1,createdAt),roles=core.assignRoles(players,1),firstMap=mapFor(setup.mapKey,1),forcedRole=QA_MODE?new URLSearchParams(location.search).get('qaRole'):null;
+    if(forcedRole==='hunter'||forcedRole==='hider'){const swap=players.find(p=>p.id!=='local'&&roles[p.id]===forcedRole);if(roles.local!==forcedRole&&swap){const prior=roles.local;roles.local=forcedRole;roles[swap.id]=prior}}
+    const assigned=core.assignDisguiseOptions(players,seed,core.disguisePoolForMap(firstMap),4);players.forEach(p=>{p.role=roles[p.id];p.disguiseOptions=p.role==='hider'?(assigned[p.id]||[]):[]});
     roomState={id:'solo',createdAt,phase:'hide',phaseEndsAt:Date.now()+30000*TEST_SCALE,round:1,wins:{hiders:0,hunters:0},roundSeed:seed,layoutVariant:core.layoutVariantForSeed(seed),weatherPreset:core.weatherForSeed(seed),roundSummary:null,settings:{mode:setup.mode,mapKey:setup.mapKey,rounds:6,hideSeconds:30,roundSeconds:300},players,viewerId:'local',isHost:true,activeMap:firstMap};network=null;startEngine(roomState.activeMap||firstMap);
   }
 
@@ -199,7 +213,7 @@
     const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:'high-performance'});gameplay.configureRendererForRealism(renderer,THREE,{exposure:1.18,pixelRatio:Math.min(2,devicePixelRatio||1)});
     const scene=new THREE.Scene();scene.background=new THREE.Color(0xa8c3cf);scene.fog=new THREE.Fog(0xa2b7bd,48,105);
     const camera=new THREE.PerspectiveCamera(60,1,.07,180);const clock=new THREE.Clock();
-    game={renderer,scene,camera,clock,mapKey,world:null,actors:[],actorsById:new Map(),player:null,keys,feed:[],effects:[],decoys:[],cameraYaw:Math.PI,cameraPitch:.18,cameraDistance:4.35,cameraActualDistance:4.35,shotCooldown:0,recoil:0,round:roomState.round||1,lastNetworkSend:0,startedAt:performance.now(),nearProp:null,controlDisposers:[],padPrev:{},padShoot:false,padSprint:false,padJumpHeld:false,spectateTarget:null,ghostMode:'free',ghost:null,lastSummaryRound:0,lastDamageAt:0,lastPhase:roomState.phase,hideReleaseAnnounced:false,roundSeed:roomState.roundSeed||0,layoutVariant:roomState.layoutVariant||0,weatherPreset:roomState.weatherPreset||'clear',fxBudget:84,qualityTier:'high',frameAlpha:1,contextLost:false,stability:{recoveries:0,fixedSteps:0,droppedSimulationTime:0,lastReason:'none'},qa:{frames:0,accum:0,fps:0,lastHud:0,frameTimes:[],p95Ms:0,maxMs:0}};
+    game={renderer,scene,camera,clock,mapKey,world:null,actors:[],actorsById:new Map(),player:null,keys,feed:[],effects:[],decoys:[],cameraYaw:Math.PI,cameraPitch:.18,cameraDistance:4.35,cameraActualDistance:4.35,shotCooldown:0,recoil:0,round:roomState.round||1,lastNetworkSend:0,startedAt:performance.now(),nearProp:null,controlDisposers:[],padPrev:{},padShoot:false,padAim:false,padSprint:false,padJumpHeld:false,spectateTarget:null,ghostMode:'free',ghost:null,lastSummaryRound:0,lastDamageAt:0,lastPhase:roomState.phase,hideReleaseAnnounced:false,roundSeed:roomState.roundSeed||0,layoutVariant:roomState.layoutVariant||0,weatherPreset:roomState.weatherPreset||'clear',fxBudget:84,qualityTier:'high',frameAlpha:1,contextLost:false,stability:{recoveries:0,fixedSteps:0,droppedSimulationTime:0,lastReason:'none'},qa:{frames:0,accum:0,fps:0,lastHud:0,frameTimes:[],p95Ms:0,maxMs:0}};
     game.fixedStep=gameplay.createFixedStepRunner({hz:60,maxFrame:.12,maxSteps:6});
     game.scratch={cameraDir:new THREE.Vector3(),cameraLook:new THREE.Vector3(),cameraTarget:{x:0,y:0,z:0,yaw:0},raycaster:new THREE.Raycaster(),muzzleRay:new THREE.Raycaster(),losRay:new THREE.Raycaster(),screenCenter:new THREE.Vector2(0,0),v1:new THREE.Vector3(),v2:new THREE.Vector3(),v3:new THREE.Vector3(),losOrigin:new THREE.Vector3(),losTarget:new THREE.Vector3(),losDir:new THREE.Vector3(),assistForward:new THREE.Vector3(),assistPoint:new THREE.Vector3(),assistDelta:new THREE.Vector3(),assistBest:new THREE.Vector3(),shotStart:new THREE.Vector3(),shotDir:new THREE.Vector3(),shotPoint:new THREE.Vector3(),shotValidatedPoint:new THREE.Vector3()};
     game.cameraRig=gameplay.createThirdPersonCamera(THREE,camera,core,'propHunt',{yaw:Math.PI,pitch:.18});
@@ -207,12 +221,12 @@
     initEffectPool();
     game.motionFx=art.createMotionFxSystem(scene,{color:mapKey==='camp'?0xc8b793:mapKey==='farm'?0xa88c68:0xb1a28d,max:24});
     game.cinematic=studio.createCinematicCamera(game.cameraRig);audio.setAmbience(mapKey==='camp'?{birds:.22,water:.28,wind:.18}:mapKey==='farm'?{birds:.3,wind:.25}:{birds:.12,wind:.08});
-    game.weatherPreset=roomState.weatherPreset||game.weatherPreset;game.layoutVariant=roomState.layoutVariant??game.layoutVariant;game.roundSeed=roomState.roundSeed||game.roundSeed;game.world=buildWorld(mapKey);const stage=root.querySelector('#ph3Stage');game.controlDisposers.push(phaseE.installInteractionGuards(stage),phaseE.mountZoomButtons(stage,game.cameraRig,{top:'136px',right:'8px'}));game.stagingQa=phaseE.mountStagingDiagnostics(stage,{gameName:'Family Prop Hunt',open:QA_MODE,getSnapshot:()=>{const a=game?.player,c=game?.camera,cs=game?.cameraRig?.state||{};return{game:'Family Prop Hunt',character:a?.person?.name||a?.person?.id,map:game?.mapKey,player:a?{x:a.x,y:a.y,z:a.z}:null,groundHeight:a?core.supportHeight(a.x,a.z,a.radius,game.world.colliders,a.y+.08,.5):null,camera:c?c.position:null,cameraDistance:a&&c?c.position.distanceTo(new THREE.Vector3(a.x,a.y,a.z)):null,desiredZoom:cs.targetDistance,actualZoom:cs.actualDistance,cameraPitch:cs.pitch,cameraObstructed:cs.obstructed,animation:a?.anim,studioAnimation:a?._studioAnimState||null,aimAssist:game?.aimAssist?.actor?.person?.name||null,movement:a?(!a.grounded?'air':Math.hypot(a.vx||0,a.vz||0)>.2?'moving':'idle'):'n/a',cameraRig:cs}}});game.controlDisposers.push(()=>game?.stagingQa?.dispose?.());game.nav=studio.createNavigationGrid({minX:game.world.bounds.minX,maxX:game.world.bounds.maxX,minZ:game.world.bounds.minZ,maxZ:game.world.bounds.maxZ,cellSize:.72,isBlocked:(x,z)=>!!core.blockingCollider(x,z,.34,0,1.55,game.world.colliders)});spawnActors();bindControls();onResize();resetPlayableView({announce:false});addFeed('Prop Hunt ready. Hide smart or start hunting.');if(network)addFeed('Family room connected.');lastFrame=performance.now();loop(lastFrame);
+    game.weatherPreset=roomState.weatherPreset||game.weatherPreset;game.layoutVariant=roomState.layoutVariant??game.layoutVariant;game.roundSeed=roomState.roundSeed||game.roundSeed;game.world=buildWorld(mapKey);const stage=root.querySelector('#ph3Stage');game.controlDisposers.push(phaseE.installInteractionGuards(stage),phaseE.mountZoomButtons(stage,game.cameraRig,{top:'136px',right:'8px'}));game.stagingQa=phaseE.mountStagingDiagnostics(stage,{gameName:'Family Prop Hunt',open:QA_MODE,getSnapshot:()=>{const a=game?.player,c=game?.camera,cs=game?.cameraRig?.state||{};return{game:'Family Prop Hunt',character:a?.person?.name||a?.person?.id,map:game?.mapKey,player:a?{x:a.x,y:a.y,z:a.z}:null,groundHeight:a?core.supportHeight(a.x,a.z,a.radius,game.world.colliders,a.y+.08,.5):null,camera:c?c.position:null,cameraDistance:a&&c?c.position.distanceTo(new THREE.Vector3(a.x,a.y,a.z)):null,desiredZoom:cs.targetDistance,actualZoom:cs.actualDistance,cameraPitch:cs.pitch,cameraObstructed:cs.obstructed,animation:a?.anim,studioAnimation:a?._studioAnimState||null,aimAssist:game?.aimAssist?.actor?.person?.name||null,movement:a?(!a.grounded?'air':Math.hypot(a.vx||0,a.vz||0)>.2?'moving':'idle'):'n/a',cameraRig:cs}}});game.controlDisposers.push(()=>game?.stagingQa?.dispose?.());game.nav=studio.createNavigationGrid({minX:game.world.bounds.minX,maxX:game.world.bounds.maxX,minZ:game.world.bounds.minZ,maxZ:game.world.bounds.maxZ,cellSize:.72,isBlocked:(x,z)=>!!core.blockingCollider(x,z,.34,0,1.55,game.world.colliders)});spawnActors();applyW36BenchmarkStart();bindControls();onResize();resetPlayableView({announce:false});addFeed('Prop Hunt ready. Hide smart or start hunting.');if(network)addFeed('Family room connected.');lastFrame=performance.now();loop(lastFrame);
   }
 
   function disposeRoot(){if(game?.controlDisposers)for(const off of game.controlDisposers){try{off?.()}catch{}}try{game?.motionFx?.dispose?.()}catch{}try{disposeEffectPool()}catch{}if(game?.renderer){try{game.renderer.dispose()}catch{}}game=null;}
 
-  function gameShell(){return `<div class="ph3d-shell"><section id="ph3Stage" class="ph3d-stage"><canvas id="ph3Canvas" class="ph3d-canvas"></canvas>${QA_MODE?'<pre id=\"ph3Qa\" class=\"ph3d-qa\"></pre>':''}<div class="ph3d-top"><span id="ph3Role" class="ph3d-chip role"></span><span id="ph3Phase" class="ph3d-chip map"></span><span id="ph3Health" class="ph3d-chip health"></span></div><div id="ph3Crosshair" class="ph3d-crosshair"></div><button id="phShoulder" class="ph3d-shoulder no-look" aria-label="Swap camera shoulder" title="Swap camera shoulder">↔</button><button id="phResetView" class="ph3d-reset-view no-look" aria-label="Reset camera and recover player" title="Reset camera and recover player">↺</button><button id="phSpectate" class="ph3d-spectate no-look" hidden>NEXT</button><button id="phGhostFree" class="ph3d-spectate ph3d-ghost-free no-look" hidden>FREE CAM</button><div id="ph3Hit" class="ph3d-hit">x</div><div id="ph3Flash" class="ph3d-flash"></div><div id="ph3Damage" class="ph3d-damage"></div><div id="ph3Prompt" class="ph3d-prop-prompt"></div><div id="phDisguiseTray" class="ph3d-disguise-tray" hidden></div><div id="phHideBlind" class="ph3d-hide-blind" hidden><div class="ph3d-hide-card"><span class="ph3d-hide-kicker">ROUND <b id="phHideRound">1</b></span><strong>HIDERS ARE HIDING</strong><span class="ph3d-hide-copy">Other player(s) are finding a hiding spot.</span><b id="phHideCountdown" class="ph3d-hide-countdown">30</b><span class="ph3d-hide-note">Your view, movement and weapon unlock when the hunt begins.</span></div></div><div id="phHuntRelease" class="ph3d-hunt-release" hidden>HUNT!</div>${QA_MODE?'<div class="ph3d-camera-help">QA controls: drag look · left stick/WASD move · pinch/wheel zoom · R resets view.</div>':''}<div class="ph3d-controls"><div id="phJoy" class="ph3d-joystick"><div id="phStick" class="ph3d-stick"></div></div><div class="ph3d-actions"><button id="phShoot" class="ph3d-act primary">SHOOT</button><button id="phJump" class="ph3d-act jump">JUMP</button><button id="phSprint" class="ph3d-act sprint">SPRINT</button><button id="phProp" class="ph3d-act prop">PROP</button><button id="phFlashBtn" class="ph3d-act flash">FLASH</button><button id="phDecoy" class="ph3d-act">DECOY</button><button id="phLock" class="ph3d-act lock">LOCK</button><button id="phInteract" class="ph3d-act interact">INTERACT</button></div></div></section><aside class="ph3d-side"><div class="ph3d-mini"><h3>Loadout</h3><div id="ph3Load" class="ph3d-readout"></div></div><div class="ph3d-mini"><h3>Quick controls</h3><div class="ph3d-legend"><span>Move & run</span><span>Crosshair shooting</span><span>Hold SHOOT = rapid fire</span><span>Jump & climb</span><span>Change prop</span></div></div><div class="ph3d-mini"><h3>Family feed</h3><div id="ph3Feed" class="ph3d-feed"></div></div></aside></div>`;}
+  function gameShell(){return `<div class="ph3d-shell"><section id="ph3Stage" class="ph3d-stage"><canvas id="ph3Canvas" class="ph3d-canvas"></canvas>${QA_MODE?'<pre id=\"ph3Qa\" class=\"ph3d-qa\"></pre>':''}${W35_DEV_JOHN_PROXY?'<div class="ph3d-w35-proxy">ANIMATION PROXY · JOHN LIKENESS NOT YET APPROVED</div>':''}<div class="ph3d-top"><span id="ph3Role" class="ph3d-chip role"></span><span id="ph3Phase" class="ph3d-chip map"></span><span id="ph3Health" class="ph3d-chip health"></span></div><div id="ph3Crosshair" class="ph3d-crosshair"></div><button id="phShoulder" class="ph3d-shoulder no-look" aria-label="Swap camera shoulder" title="Swap camera shoulder">↔</button><button id="phResetView" class="ph3d-reset-view no-look" aria-label="Reset camera and recover player" title="Reset camera and recover player">↺</button><button id="phSpectate" class="ph3d-spectate no-look" hidden>NEXT</button><button id="phGhostFree" class="ph3d-spectate ph3d-ghost-free no-look" hidden>FREE CAM</button><div id="ph3Hit" class="ph3d-hit">x</div><div id="ph3Flash" class="ph3d-flash"></div><div id="ph3Damage" class="ph3d-damage"></div><div id="ph3Prompt" class="ph3d-prop-prompt"></div><div id="phDisguiseTray" class="ph3d-disguise-tray" hidden></div><div id="phHideBlind" class="ph3d-hide-blind" hidden><div class="ph3d-hide-card"><span class="ph3d-hide-kicker">ROUND <b id="phHideRound">1</b></span><strong>HIDERS ARE HIDING</strong><span class="ph3d-hide-copy">Other player(s) are finding a hiding spot.</span><b id="phHideCountdown" class="ph3d-hide-countdown">30</b><span class="ph3d-hide-note">Your view, movement and weapon unlock when the hunt begins.</span></div></div><div id="phHuntRelease" class="ph3d-hunt-release" hidden>HUNT!</div>${QA_MODE?'<div class="ph3d-camera-help">QA controls: drag look · left stick/WASD move · pinch/wheel zoom · R resets view.</div>':''}<div class="ph3d-controls"><div id="phJoy" class="ph3d-joystick"><div id="phStick" class="ph3d-stick"></div></div><div class="ph3d-actions"><button id="phAim" class="ph3d-act aim">AIM</button><button id="phShoot" class="ph3d-act primary">SHOOT</button><button id="phJump" class="ph3d-act jump">JUMP</button><button id="phSprint" class="ph3d-act sprint">SPRINT</button><button id="phProp" class="ph3d-act prop">PROP</button><button id="phFlashBtn" class="ph3d-act flash">FLASH</button><button id="phDecoy" class="ph3d-act">DECOY</button><button id="phLock" class="ph3d-act lock">LOCK</button><button id="phAlign" class="ph3d-act align">ALIGN</button><button id="phInteract" class="ph3d-act interact">INTERACT</button></div></div></section><aside class="ph3d-side"><div class="ph3d-mini"><h3>Loadout</h3><div id="ph3Load" class="ph3d-readout"></div></div><div class="ph3d-mini"><h3>Quick controls</h3><div class="ph3d-legend"><span>Move · walk/jog/run</span><span>Hold AIM · shoulder view</span><span>Hold SHOOT · controlled rapid fire</span><span>Jump · auto mantle</span><span>Hiders: Prop · Flash · Decoy · Lock · Align</span></div></div><div class="ph3d-mini"><h3>Family feed</h3><div id="ph3Feed" class="ph3d-feed"></div></div></aside></div>`;}
 
   class WorldBuilder{
     constructor(scene,key){this.scene=scene;this.key=key;this.group=new THREE.Group();this.group.name=`world-${key}`;scene.add(this.group);this.colliders=[];this.raycastMeshes=[];this.props=[];this.npcs=[];this.interactives=[];this.shopLights=[];this.spawn={x:4,z:4};this.bounds={minX:0,maxX:20,minZ:0,maxZ:14};}
@@ -262,11 +276,50 @@
     const all=worldCatalogData?.WORLD_PROP_CATALOG||[],matches=all.filter(r=>r['Primary Map']===mapName||String(r['Secondary Uses']||'').includes(mapName.replace(' Prop Hunt','')));if(!matches.length)return;const b=zone||{x0:w.bounds.minX+1,x1:w.bounds.maxX-1,z0:w.bounds.minZ+1,z1:w.bounds.maxZ-1},step=Math.max(1,Math.floor(matches.length/count));for(let i=0;i<count;i++){const item=matches[(i*step+i*7)%matches.length],edge=i%4,margin=.55+((i*17)%8)*.11;let x,z;if(edge===0){x=b.x0+margin;z=b.z0+((i*37)%100)/100*(b.z1-b.z0)}else if(edge===1){x=b.x1-margin;z=b.z0+((i*53)%100)/100*(b.z1-b.z0)}else if(edge===2){x=b.x0+((i*71)%100)/100*(b.x1-b.x0);z=b.z0+margin}else{x=b.x0+((i*29)%100)/100*(b.x1-b.x0);z=b.z1-margin}w.addCatalogProp(item,x,z,(i*.83)%6.28)}w.worldCatalogCount=(w.worldCatalogCount||0)+count;
   }
 
+  function buildPapaProductionBenchmark(){
+    const w=new WorldBuilder(game.scene,'papa');
+    w.phaseW35ProductionSlice=true;
+    w.bounds={minX:.2,maxX:19.2,minZ:.2,maxZ:13.75};
+    // Spawn on the open shop apron looking toward the hero mechanic bay.
+    w.spawn={x:6.35,z:11.55};
+    w.layoutVariant=roomState?.layoutVariant||0;w.weatherPreset=roomState?.weatherPreset||'clear';
+
+    // W35 separation rule: these objects exist for physics/support only and never render as final art.
+    const collisionOnly=o=>{w35vis?.markCollisionOnly?.(o);return o};
+    const floor=collisionOnly(w.box({x:9.7,z:6.95,y:-.12,w:19.35,d:13.9,h:.12,color:0x777777,name:'W35 collision floor',walkableTop:true,climbable:false}));
+    floor.userData.w35GameplayOnly=true;
+    // Property edge only. Detailed building collision is extracted from the authored GLB after it loads.
+    for(const spec of [
+      {x:9.7,z:.12,w:19.4,d:.18,h:2.8,name:'W35 south boundary'},
+      {x:9.7,z:13.83,w:19.4,d:.18,h:2.8,name:'W35 north boundary'},
+      {x:.12,z:6.95,w:.18,d:13.9,h:2.8,name:'W35 west boundary'},
+      {x:19.28,z:6.95,w:.18,d:13.9,h:2.8,name:'W35 east boundary'}
+    ])collisionOnly(w.box({...spec,y:0,color:0x555555,noCamera:true}));
+
+    // Gameplay/disguise records are aligned to the authored prop-set coordinates. Their procedural
+    // meshes are collision-only; the authored prop-set GLB is what the player sees.
+    const gameplayProps=[
+      ['Tractor',4.25,6.75,0],['Motorcycle',7.75,6.65,0],['Papa Chair',9.35,8.0,0],['Tool Chest',7.45,2.78,0],
+      ['Gas Can',8.10,3.65,0],['Gas Can',4.25,11.60,0],['Beer Case',9.75,6.35,0],['Shop Vac',8.55,3.80,0],
+      ['Extension Cord',6.35,8.42,0],['Tire',5.15,9.85,0],['Bucket',11.4,10.55,0],['Toolbox',5.1,3.7,0],
+      ['Pallet',13.5,10.8,0],['Feed Bucket',14.65,8.8,0],['Hay Bale',15.85,10.1,0],['Parts Crate',17.1,11.35,0]
+    ];
+    for(const [type,x,z,rot] of gameplayProps){const rec=w.addProp(type,x,z,rot);w35vis?.markCollisionOnly?.(rec.mesh);rec.w35AuthoredVisual=true;}
+    w.addInteraction('TRACTOR HORN',4.25,6.75,'horn',{radius:2.2});
+    w.addInteraction('SHOP LIGHTS',7.3,2.5,'lights',{radius:1.8});
+    w.addInteraction('INSPECT PAPA\'S CHAIR',9.35,8.0,'legendary',{legendary:true,radius:1.35});
+    w.addInteraction('BARN BELL',14.8,4.0,'bell',{radius:1.7});
+    w.metrics={oldPlayableArea:258.4,playableArea:(w.bounds.maxX-w.bounds.minX)*(w.bounds.maxZ-w.bounds.minZ),scaleMultiple:1,visibleProps:gameplayProps.length,interactives:w.interactives.length,gameplayMeaningful:gameplayProps.length+w.interactives.length};
+    w.w35VisualStatus='loading-authored-world';
+    return w;
+  }
+
   function buildPapa(){
-    const w=new WorldBuilder(game.scene,'papa');w.phaseVExpanded=true;
+    if(!W36_FULL_PAPA&&!W35_LEGACY_PAPA)return buildPapaProductionBenchmark();
+    const w=new WorldBuilder(game.scene,'papa');w.phaseVExpanded=true;w.phaseW36Leapfrog=true;
     // Phase V footprint: 51.6 x 41.6 = 2,146.56 m² versus the previous 19 x 13.6 = 258.4 m².
     // This is ~8.31x the old actual traversable area, not decorative skybox area.
-    w.bounds={minX:.2,maxX:51.8,minZ:.2,maxZ:41.8};w.spawn={x:7.2,z:36.4};
+    w.bounds={minX:.2,maxX:51.8,minZ:.2,maxZ:41.8};w.spawn={x:14.2,z:17.4};
     const seed=roomState?.roundSeed||core.roundSeed?.(roomState?.id||'solo',roomState?.round||1,roomState?.createdAt||0)||1337;
     const rng=core.seededRandom?.(seed)||Math.random,variant=roomState?.layoutVariant??core.layoutVariantForSeed?.(seed)??0;
     w.layoutVariant=variant;w.weatherPreset=roomState?.weatherPreset||core.weatherForSeed?.(seed)||'clear';
@@ -347,7 +400,11 @@
     for(const [type,x,z] of [['goat',35.5,32],['goat',39.4,35.2],['pig',36.5,36.2],['pig',47.6,33.2],['goat',45.4,35.4],['peacock',49.1,37.0]])addNpcAnimal(w,type,x,z);
 
     // D/E. EQUIPMENT YARD + LUMBER/MATERIAL STORAGE with wide chase lanes.
-    const yardShift=(variant%3-1)*1.1;w.heroFallbacks.tractor=buildTractor(w,7.0+yardShift,27.2,.08);w.heroFallbacks.motorcycle=buildMotorcycle(w,12.0-yardShift*.5,26.6,-.25);buildTrailer(w,19.0,27.2,.05);art.buildLumberStack(w,5.0,34.0,0,{width:5.2,height:1.1,depth:1.4});art.buildLumberStack(w,11.5,34.4,Math.PI/2,{width:4.4,height:1.45,depth:1.35});art.buildLumberStack(w,18.0,35.0,0,{width:5.8,height:1.0,depth:1.3});
+    const yardShift=(variant%3-1)*1.1;
+    // W36 hero composition: keep a repair tractor + motorcycle inside the main mechanic bay so the
+    // normal third-person view immediately reads as Papa's working shop. Yard equipment remains too.
+    w.heroFallbacks.tractor=buildTractor(w,8.2,14.9,.08);w.heroFallbacks.motorcycle=buildMotorcycle(w,19.2,15.2,-.25);
+    buildTractor(w,7.0+yardShift,27.2,.08);buildMotorcycle(w,12.0-yardShift*.5,26.6,-.25);buildTrailer(w,19.0,27.2,.05);art.buildLumberStack(w,5.0,34.0,0,{width:5.2,height:1.1,depth:1.4});art.buildLumberStack(w,11.5,34.4,Math.PI/2,{width:4.4,height:1.45,depth:1.35});art.buildLumberStack(w,18.0,35.0,0,{width:5.8,height:1.0,depth:1.3});
     for(const [x,z] of [[4,29],[8,30.5],[13,29.5],[17,31],[21,29],[25,33.5]])art.buildCrate(w,x,z,0,{width:1.3,height:.65+(x%3)*.2,depth:1.0,name:'Yard crate'});
     for(const x of [3.8,7.1,10.4,13.7,17.0,20.3])w.addProp('Pallet',x,38.0,(x%2)*.2);for(const x of [4.5,8.5,12.5,16.5,20.5,24.5])w.addProp('Tire',x,31.5+rng()*2,rng()*Math.PI);
 
@@ -368,7 +425,7 @@
     w.addProp('Tractor',24.5,27.0,.2);w.addProp('Motorcycle',16.0,29.0,-.4);w.addProp('Papa Chair',22.9,19.2,.15);w.addProp('Tool Chest',24.8,7.1,0);w.addProp('Air Compressor',5.4,18.0,.2);w.addProp('Barrel Stack',28.7,31.5,.1);w.addProp('Tree',29.3,38.5,0);
 
     // Active interactions: common world flavor plus a few rare surprises. Interactions only open/animate/noise; they never seal a player in.
-    w.addInteraction('TRACTOR HORN',7.0+yardShift,27.2,'horn',{radius:2.2});w.addInteraction('SHOP LIGHTS',2.2,12.8,'lights',{radius:1.8});w.addInteraction('BARN BELL',32.6,14.0,'bell',{radius:1.8});w.addInteraction('OPEN SHORTCUT GATE',41.8,26.8,'shortcut',{radius:1.8});
+    w.addInteraction('TRACTOR HORN',8.2,14.9,'horn',{radius:2.2});w.addInteraction('SHOP LIGHTS',2.2,12.8,'lights',{radius:1.8});w.addInteraction('BARN BELL',32.6,14.0,'bell',{radius:1.8});w.addInteraction('OPEN SHORTCUT GATE',41.8,26.8,'shortcut',{radius:1.8});
     w.addInteraction('ODD OLD RADIO',24.0,20.6,'radio',{rare:true,radius:1.4});w.addInteraction('PEACOCK BUTTON?',49.0,37.5,'peacock',{rare:true,radius:1.4});w.addInteraction('MYSTERY SHOP SWITCH',25.8,18.8,'mystery',{rare:true,radius:1.3});w.addInteraction('INSPECT THE TATTERED CHAIR',22.9,19.2,'legendary',{legendary:true,radius:1.25});
     w.shortcutGate=w.box({x:41.8,z:26.8,w:2.5,d:.14,h:1.05,color:0x865642,name:'shortcut gate',climbable:true});for(const [lx,lz] of [[5.5,8.0],[14.0,8.0],[22.5,8.0]]){const light=new THREE.PointLight(0xffe0ad,1.25,10,2);light.position.set(lx,3.8,lz);w.group.add(light);w.shopLights.push(light)}
 
@@ -377,16 +434,44 @@
     if(w.weatherPreset==='light-snow')art.buildAmbientParticles(w,{x:26,z:21,y:1,width:50,depth:40,height:14,count:75,color:0xf3f2eb,kind:'snow'});
     w.metrics={oldPlayableArea:258.4,playableArea:(w.bounds.maxX-w.bounds.minX)*(w.bounds.maxZ-w.bounds.minZ),scaleMultiple:((w.bounds.maxX-w.bounds.minX)*(w.bounds.maxZ-w.bounds.minZ))/258.4,visibleProps:w.props.length,interactives:w.interactives.length,gameplayMeaningful:w.props.length+w.interactives.length+w.colliders.filter(c=>c.climbable).length};
     sprinkleWorldCatalog(w,"Papa's Shop Prop Hunt",56,{x0:2.2,x1:50.2,z0:4.8,z1:39.4});
+    w.w36LegacyMaterialPass=w36vis?.upgradeLegacyMaterials?.(w.group,THREE)||null;
     return w;
   }
 
   async function upgradePapaProductionSlice(w){
     if(!w||w.key!=='papa')return;
+    if(w.phaseW35ProductionSlice){
+      try{
+        await assets.ensureManifest();
+        const [environment,propSet]=await Promise.all([
+          assets.loadEnvironment('papaShop',{fallback:null}),
+          assets.loadSet('papaShopProps',{fallback:null})
+        ]);
+        if(!environment||!propSet)throw new Error('W35 authored Papa scene did not load');
+        w35vis.prepareAuthoredVisual(environment,{shadowMinRadius:.18});
+        w35vis.prepareAuthoredVisual(propSet,{shadowMinRadius:.10});
+        environment.userData.productionVerticalSlice=true;propSet.userData.productionVerticalSlice=true;
+        studio.optimizeStaticAuthoredScene(environment,{shadowMinRadius:.18,receiveShadow:true,freezeTransforms:true});
+        studio.optimizeStaticAuthoredScene(propSet,{shadowMinRadius:.10,receiveShadow:true,freezeTransforms:true});
+        w.group.add(environment,propSet);w.addRaycast(environment);w.addRaycast(propSet);
+        const authoredColliders=w35vis.addAuthoredCollisionShell(environment,w,THREE);
+        w.productionLighting=w35vis.addProductionLighting(game.scene,THREE,{center:{x:8,y:0,z:6.5},weather:w.weatherPreset});
+        w.productionEnvironment=environment;w.productionPropSet=propSet;w.w35VisualStatus='authored-world-active';
+        game.renderer.toneMappingExposure=1.08;
+        if(game.scene.fog){game.scene.fog.near=34;game.scene.fog.far=78;}
+        addFeed(`W35 production slice active: authored shop/barn, authored prop set, ${authoredColliders} authored wall colliders.`);
+      }catch(e){
+        w.w35VisualStatus='authored-world-failed';
+        console.error('W35 authored Papa production slice failed',e);
+        addFeed('W35 authored visual load failed. Gameplay collision shell remains active for safe fallback.');
+      }
+      return;
+    }
     // Phase V is an expanded playable world. Never replace it with the legacy small authored shell.
     // We still attempt to upgrade the hero benchmark props so the art pipeline remains active.
     if(w.phaseVExpanded){
-      await upgradePapaHeroAssets(w);
-      addFeed("Papa's Shop Phase V world active: expanded shop, barn, pens, yard and grass property.");
+      await upgradePapaLeapfrogHybrid(w);
+      addFeed("W36 Leapfrog active: full shop, barn, pens and yard preserved while production hero assets promote only when they pass the visual gate.");
       return;
     }
     const hideMesh=o=>{if(o?.isMesh)o.visible=false};
@@ -408,6 +493,33 @@
       console.warn('Papa production vertical slice unavailable; restoring benchmark hero fallbacks',e);
       w.group.traverse?.(o=>{if(o?.isMesh&&prototypeNames.test(String(o.name||'')))o.visible=true});
       await upgradePapaHeroAssets(w);
+    }
+  }
+
+  async function upgradePapaLeapfrogHybrid(w){
+    if(!w||w.key!=='papa'||!w.heroFallbacks)return;
+    const results=[];
+    const gates={tractor:{minMeshes:20,minTriangles:600,minMaterials:3,maxDim:8},motorcycle:{minMeshes:15,minTriangles:350,minMaterials:3,maxDim:6},chair:{minMeshes:7,minTriangles:100,minMaterials:2,maxDim:4},fireplace:{minMeshes:10,minTriangles:150,minMaterials:2,maxDim:6},workbench:{minMeshes:12,minTriangles:180,minMaterials:3,maxDim:6},toolChest:{minMeshes:10,minTriangles:150,minMaterials:2,maxDim:4},shelving:{minMeshes:10,minTriangles:120,minMaterials:3,maxDim:5}};
+    try{
+      await assets.ensureManifest();
+      const [tractor,motorcycle,chair,fireplace,workbench,toolChest,shelving]=await Promise.all([
+        assets.loadProp('tractor',{fallback:null}),assets.loadProp('motorcycle',{fallback:null}),assets.loadFurniture('papaChair',{fallback:null}),assets.loadFurniture('fireplace',{fallback:null}),assets.loadFurniture('workbench',{fallback:null}),assets.loadFurniture('toolChest',{fallback:null}),assets.loadFurniture('shelving',{fallback:null})
+      ]);
+      const slots=[['tractor',tractor,w.heroFallbacks.tractor],['motorcycle',motorcycle,w.heroFallbacks.motorcycle],['chair',chair,w.heroFallbacks.papaChair],['fireplace',fireplace,w.heroFallbacks.fireplace],['workbench',workbench,w.heroFallbacks.workbench],['toolChest',toolChest,w.heroFallbacks.toolChest],['shelving',shelving,w.heroFallbacks.shelving]];
+      for(const [slot,candidate,fallback] of slots){
+        const result=w36vis.promoteVisual({candidate,fallback,THREE,slot,tier:'production',gate:gates[slot],parent:w.group,prepare:obj=>w35vis?.prepareAuthoredVisual?.(obj,{shadowMinRadius:.08})});
+        results.push(result);
+        if(result.promoted){candidate.traverse?.(o=>{if(o.isMesh){o.userData.productionHero=true;w.raycastMeshes.push(o)}})}
+      }
+      w.productionHeroes={tractor,motorcycle,chair,fireplace,workbench,toolChest,shelving};
+      w.w36PromotionResults=results;
+      w.productionLighting=w36vis.addLeapfrogLighting(game.scene,THREE,{weather:w.weatherPreset});
+      game.renderer.toneMappingExposure=1.06;
+      const promoted=results.filter(r=>r.promoted).length;
+      addFeed(`W36 visual ratchet: ${promoted}/${results.length} hero replacements promoted; every rejected slot kept its fuller legacy visual.`);
+    }catch(e){
+      console.warn('W36 hybrid promotion failed; full legacy world remains visible',e);
+      w.w36PromotionResults=results;addFeed('W36 production asset load failed; full legacy shop remains visible with upgraded materials.');
     }
   }
 
@@ -513,6 +625,13 @@
     return g;
   }
 
+  function applyW36BenchmarkStart(){
+    if(!W36_BENCHMARK||!game?.player||!w36vis?.W36_BENCHMARK_VIEW)return;
+    const v=w36vis.W36_BENCHMARK_VIEW,a=game.player;a.x=v.player.x;a.z=v.player.z;a.y=core.groundSupport(a.x,a.z,a.radius,game.world.colliders,a.y+.3,2.5).height;
+    a.yaw=Math.atan2(v.lookAt.x-a.x,-(v.lookAt.z-a.z));a.vx=a.vy=a.vz=0;a.rig.position.set(a.x,a.y,a.z);a.rig.rotation.y=a.yaw;
+    a._simPrev={x:a.x,y:a.y,z:a.z,yaw:a.yaw};a._simCurr={...a._simPrev};game.cameraYaw=a.yaw;game.cameraDistance=v.camera.distance;game.cameraRig.cfg.cameraDistance=v.camera.distance;game._w36BenchmarkPitch=v.camera.pitch;
+  }
+
   function spawnActors(){
     const players=roomState.players,spawn=game.world.spawn;players.forEach((p,i)=>{const actor=createActor(p,i,spawn);const safe=gameplay.findSafeCharacterPosition(core,game.world.colliders,{x:actor.x,y:actor.y,z:actor.z},game.world.bounds,{radius:actor.radius,height:actor.height,requireCameraPocket:p.id===roomState.viewerId,cameraHeight:isDog(actor.person)?.64:1.17,cameraDistance:3.3,minCameraPocket:1.5});actor.x=safe.x;actor.y=safe.y;actor.z=safe.z;actor._simPrev={x:actor.x,y:actor.y,z:actor.z,yaw:actor.yaw};actor._simCurr={...actor._simPrev};actor._lastSafePosition={...actor._simPrev,at:Date.now()};actor.rig.position.set(actor.x,actor.y,actor.z);game.actors.push(actor);game.actorsById.set(p.id,actor);if(p.id===roomState.viewerId)game.player=actor});if(!game.player)game.player=game.actors[0];game.cameraYaw=game.player.yaw;
   }
@@ -539,7 +658,11 @@
       if(!entry?.file){assets.reportMissing(dog?'dogs':'characters',actor.person.id,{fallbackUsed:true,context:'Family Prop Hunt character'});return}
       // Never let a legacy GLB overwrite an explicitly approved turnaround. Until a model passes the
       // approved-model gate, the lightweight procedural avatar is the more truthful likeness.
-      if(approvedSpec&&entry.approvedModel!==true){assets.reportMissing('characters',actor.person.id,{fallbackUsed:true,context:'Approved turnaround lock - unapproved legacy GLB intentionally withheld'});actor.rig.userData.approvedModelWithheld=true;return}
+      if(approvedSpec&&entry.approvedModel!==true){
+        const allowW35Proxy=actor.person.id==='john'&&W35_DEV_JOHN_PROXY;
+        if(!allowW35Proxy){assets.reportMissing('characters',actor.person.id,{fallbackUsed:true,context:'Approved turnaround lock - unapproved legacy GLB intentionally withheld'});actor.rig.userData.approvedModelWithheld=true;return}
+        actor.devProxyModel=true;
+      }
       if((entry.games&&!entry.games.includes('propHunt'))||!game?.actorsById?.has(actor.id))return;
       const rig=await(dog?assets.loadDog(actor.person.id,{fallback:null}):assets.loadCharacter(actor.person.id,{fallback:null}));
       if(!rig||!game?.actorsById?.has(actor.id))return;
@@ -553,7 +676,7 @@
         parts.weapon=weapon;parts.weaponAnchor=productionSocket||parts.weaponAnchor;rig.userData.parts=parts;
       }
       tagActorMeshes(rig);
-      const old=actor.rig;actor.rig=rig;actor.rig.userData.actor=actor;actor.authored=true;
+      const old=actor.rig;actor.rig=rig;actor.rig.userData.actor=actor;actor.authored=true;if(actor.devProxyModel){rig.userData.w35DevelopmentProxy=true;if(actor===game.player)addFeed('W35 animation proxy active: skinned John rig + authored clips. Likeness is NOT approval-complete.')}
       actor.hasAuthoredClips=studio.hasAuthoredAnimationClips(rig);
       actor.animMixer=actor.hasAuthoredClips?new studio.SemanticAnimationMixer(THREE,rig,rig.userData.authoredAnimations||[]):null;
       game.scene.add(rig);game.scene.remove(old);applyActorVisual(actor);
@@ -568,33 +691,43 @@
   }
 
   function bindControls(){
-    window.addEventListener('keydown',onKeyDown);window.addEventListener('keyup',onKeyUp);window.addEventListener('resize',onResize);const stage=root.querySelector('#ph3Stage'),joyEl=root.querySelector('#phJoy'),stick=root.querySelector('#phStick');stage.addEventListener('pointerdown',()=>audio?.unlock?.(),{once:true});
-    game.controlDisposers.push(gameplay.bindPointerLook(stage,game.cameraRig,{ignoreSelector:'button,select,input,a,#phJoy,#phDisguiseTray'}));
-    game.controlDisposers.push(gameplay.bindVirtualJoystick(joyEl,stick,joy,{deadzone:.09,travel:.34}));game.controlDisposers.push(gameplay.mountControlPreferences(stage,game.cameraRig,{layoutTarget:stage,top:'112px'}));game.controlDisposers.push(studio.mountAudioPreferences(stage,audio,{top:'112px',right:'72px'}));
+    window.addEventListener('keydown',onKeyDown);window.addEventListener('keyup',onKeyUp);window.addEventListener('resize',onResize);
+    const stage=root.querySelector('#ph3Stage'),joyEl=root.querySelector('#phJoy'),stick=root.querySelector('#phStick');stage.addEventListener('pointerdown',()=>audio?.unlock?.(),{once:true});
+    game.controlDisposers.push(gameplay.bindPointerLook(stage,game.cameraRig,{ignoreSelector:'button,select,input,a,#phJoy,#phDisguiseTray',enabled:()=>!isHunterHidePhase()}));
+    game.controlDisposers.push(gameplay.bindVirtualJoystick(joyEl,stick,joy,{deadzone:.09,travel:.34,enabled:()=>!isHunterHidePhase()}));
+    game.controlDisposers.push(gameplay.mountControlPreferences(stage,game.cameraRig,{layoutTarget:stage,top:'112px'}));game.controlDisposers.push(studio.mountAudioPreferences(stage,audio,{top:'112px',right:'72px'}));
     stage.addEventListener('contextmenu',e=>e.preventDefault());
-    // W.11 lifecycle stability: phone browsers can suspend a tab, rotate the device,
-    // or lose the WebGL context. Clear held input and reset the fixed-step accumulator
-    // on resume so one long background frame cannot launch the player or camera.
     const canvas=game.renderer.domElement;
-    const clearHeldInput=()=>{input.shoot=false;input.jumpHeld=false;input.jumpQueued=false;game.padShoot=false;game.padJumpHeld=false;for(const k of Object.keys(keys))keys[k]=false;joy.x=0;joy.z=0};
+    const clearHeldInput=()=>{
+      input.shoot=false;input.aim=false;input.sprint=false;input.jumpHeld=false;input.jumpQueued=false;
+      game.padShoot=false;game.padAim=false;game.padSprint=false;game.padJumpHeld=false;
+      for(const k of Object.keys(keys))keys[k]=false;joy.x=0;joy.z=0;
+      root?.querySelector('#phSprint')?.classList.remove('active');root?.querySelector('#phAim')?.classList.remove('active');
+    };
+    game.clearHeldInput=clearHeldInput;
     const onContextLost=e=>{e.preventDefault();if(!game)return;game.contextLost=true;clearHeldInput();game.fixedStep?.reset?.();game.stability.lastReason='WebGL context lost';game.stagingQa?.setRecovery('WebGL context lost · waiting for restore');};
     const onContextRestored=()=>{if(!game)return;game.contextLost=false;clearHeldInput();game.fixedStep?.reset?.();lastFrame=performance.now();onResize();resetPlayableView({announce:false});game.stability.lastReason='WebGL context restored';game.stagingQa?.setRecovery('WebGL context restored · simulation reset');};
-    const onVisibility=()=>{if(document.visibilityState==='visible'&&game){clearHeldInput();game.fixedStep?.reset?.();lastFrame=performance.now();game.stability.lastReason='resumed from background';}};
-    canvas.addEventListener('webglcontextlost',onContextLost,false);canvas.addEventListener('webglcontextrestored',onContextRestored,false);document.addEventListener('visibilitychange',onVisibility);
-    game.controlDisposers.push(()=>{canvas.removeEventListener('webglcontextlost',onContextLost,false);canvas.removeEventListener('webglcontextrestored',onContextRestored,false);document.removeEventListener('visibilitychange',onVisibility)});
-    const jump=root.querySelector('#phJump');jump.onpointerdown=()=>{input.jumpQueued=true;input.jumpHeld=true};jump.onpointerup=jump.onpointercancel=()=>{input.jumpHeld=false};
-    root.querySelector('#phSprint').onclick=()=>{input.sprint=!input.sprint;root.querySelector('#phSprint').classList.toggle('active',input.sprint)};
-    const shootBtn=root.querySelector('#phShoot'),startFire=e=>{if(e?.button!=null&&e.button!==0)return;input.shoot=true;shoot();try{if(e?.pointerId!=null)shootBtn.setPointerCapture?.(e.pointerId)}catch{}},stopFire=()=>{input.shoot=false};
-    shootBtn.onpointerdown=startFire;shootBtn.onpointerup=shootBtn.onpointercancel=shootBtn.onlostpointercapture=stopFire;
-    const mouseDown=e=>{if(e.target?.closest?.('button,select,input,a,#phJoy,#phDisguiseTray'))return;if(e.button===0){input.shoot=true;shoot()}},mouseUp=e=>{if(e.button===0)input.shoot=false};stage.addEventListener('pointerdown',mouseDown);window.addEventListener('pointerup',mouseUp);window.addEventListener('blur',stopFire);game.controlDisposers.push(()=>{stage.removeEventListener('pointerdown',mouseDown);window.removeEventListener('pointerup',mouseUp);window.removeEventListener('blur',stopFire)});
-    root.querySelector('#phShoulder').onclick=()=>game.cameraRig.swapShoulder();root.querySelector('#phResetView').onclick=()=>resetPlayableView();root.querySelector('#phSpectate').onclick=()=>cycleSpectate();root.querySelector('#phGhostFree').onclick=()=>goGhostFree();root.querySelector('#phProp').onclick=()=>changeProp();root.querySelector('#phFlashBtn').onclick=()=>flash();root.querySelector('#phDecoy').onclick=()=>dropDecoy();root.querySelector('#phLock').onclick=()=>toggleLock();root.querySelector('#phInteract').onclick=()=>triggerInteraction();
+    const onVisibility=()=>{if(document.visibilityState!=='visible'){clearHeldInput();return}if(game){clearHeldInput();game.fixedStep?.reset?.();lastFrame=performance.now();game.stability.lastReason='resumed from background';}};
+    const onBlur=()=>{clearHeldInput();game?.fixedStep?.reset?.();};
+    canvas.addEventListener('webglcontextlost',onContextLost,false);canvas.addEventListener('webglcontextrestored',onContextRestored,false);document.addEventListener('visibilitychange',onVisibility);window.addEventListener('blur',onBlur);
+    game.controlDisposers.push(()=>{canvas.removeEventListener('webglcontextlost',onContextLost,false);canvas.removeEventListener('webglcontextrestored',onContextRestored,false);document.removeEventListener('visibilitychange',onVisibility);window.removeEventListener('blur',onBlur)});
+    const jump=root.querySelector('#phJump'),sprint=root.querySelector('#phSprint'),aim=root.querySelector('#phAim'),shootBtn=root.querySelector('#phShoot');
+    game.controlDisposers.push(gameplay.bindHoldButton(jump,held=>{input.jumpHeld=held;if(held)input.jumpQueued=true;}));
+    game.controlDisposers.push(gameplay.bindHoldButton(sprint,held=>{input.sprint=held;sprint.classList.toggle('active',held);}));
+    game.controlDisposers.push(gameplay.bindHoldButton(aim,held=>{input.aim=held;aim.classList.toggle('active',held);}));
+    game.controlDisposers.push(gameplay.bindHoldButton(shootBtn,held=>{input.shoot=held;if(held)shoot();}));
+    // Desktop mouse: left click hip-fires, right click aims. Touch pointer gestures are camera-only.
+    const mouseDown=e=>{if(e.pointerType!=='mouse'||e.target?.closest?.('button,select,input,a,#phJoy,#phDisguiseTray'))return;if(e.button===0){input.shoot=true;shoot()}else if(e.button===2){input.aim=true;root.querySelector('#phAim')?.classList.add('active')}};
+    const mouseUp=e=>{if(e.pointerType&&e.pointerType!=='mouse')return;if(e.button===0)input.shoot=false;if(e.button===2){input.aim=false;root.querySelector('#phAim')?.classList.remove('active')}};
+    stage.addEventListener('pointerdown',mouseDown);window.addEventListener('pointerup',mouseUp);game.controlDisposers.push(()=>{stage.removeEventListener('pointerdown',mouseDown);window.removeEventListener('pointerup',mouseUp)});
+    root.querySelector('#phShoulder').onclick=()=>game.cameraRig.swapShoulder();root.querySelector('#phResetView').onclick=()=>resetPlayableView();root.querySelector('#phSpectate').onclick=()=>cycleSpectate();root.querySelector('#phGhostFree').onclick=()=>goGhostFree();root.querySelector('#phProp').onclick=()=>changeProp();root.querySelector('#phFlashBtn').onclick=()=>flash();root.querySelector('#phDecoy').onclick=()=>dropDecoy();root.querySelector('#phLock').onclick=()=>toggleLock();root.querySelector('#phAlign').onclick=()=>alignProp();root.querySelector('#phInteract').onclick=()=>triggerInteraction();
     onResize();
   }
   function updateJoy(e){const el=root.querySelector('#phJoy'),stick=root.querySelector('#phStick'),r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,max=r.width*.31,l=Math.hypot(dx,dy)||1,k=Math.min(1,max/l);joy.x=dx/max*k;joy.z=-dy/max*k;stick.style.transform=`translate(${dx*k}px,${dy*k}px)`;}
-  function onKeyDown(e){keys[e.code]=true;if(e.code==='Space'){if(!e.repeat)input.jumpQueued=true;input.jumpHeld=true;e.preventDefault()}if(e.code==='KeyC'&&!e.repeat)game?.cameraRig?.swapShoulder();if(e.code==='KeyR'&&!e.repeat)resetPlayableView();if(e.code==='KeyE')changeProp();if(e.code==='KeyI')triggerInteraction();if(e.code==='KeyF')flash();if(e.code==='KeyQ')dropDecoy();if(e.code==='KeyL')toggleLock();}
+  function onKeyDown(e){keys[e.code]=true;if(e.code==='Space'){if(!e.repeat)input.jumpQueued=true;input.jumpHeld=true;e.preventDefault()}if(e.code==='KeyC'&&!e.repeat)game?.cameraRig?.swapShoulder();if(e.code==='KeyR'&&!e.repeat)resetPlayableView();if(e.code==='KeyE')changeProp();if(e.code==='KeyI')triggerInteraction();if(e.code==='KeyF')flash();if(e.code==='KeyQ')dropDecoy();if(e.code==='KeyL')toggleLock();if(e.code==='KeyX')alignProp();}
   function onKeyUp(e){keys[e.code]=false;if(e.code==='Space')input.jumpHeld=false;}
   function onResize(){if(!game?.renderer)return;const c=game.renderer.domElement,r=c.getBoundingClientRect();game.renderer.setSize(Math.max(320,r.width),Math.max(360,r.height),false);game.camera.aspect=Math.max(.5,r.width/Math.max(1,r.height));game.camera.updateProjectionMatrix();}
-  function resetPlayableView({announce=true}={}){const a=game?.player;if(!a)return;const moved=gameplay.recoverActorFromGeometry(core,a,game.world.colliders,game.world.bounds,{radius:a.radius,height:a.height,maxRadius:5,requireCameraPocket:true,cameraHeight:isDog(a.person)?.64:1.17,cameraDistance:3.4,minCameraPocket:1.5});game.cameraRig.reset(a,game.world.colliders,{yaw:a.yaw,pitch:.065,distance:game.cameraRig.cfg.cameraDistance,dog:isDog(a.person),height:a.prop?a.height*.55:(isDog(a.person)?.64:1.17),forceSnap:true,reason:'manual Reset View'});game.stagingQa?.setRecovery(moved?'manual Reset View + safe-position recovery':'manual Reset View');game.cameraYaw=game.cameraRig.state.yaw;game.cameraPitch=game.cameraRig.state.pitch;if(announce)addFeed(moved?'Player and view recovered to a safe spot.':'View reset behind your character.');}
+  function resetPlayableView({announce=true}={}){const a=game?.player;if(!a)return;const moved=gameplay.recoverActorFromGeometry(core,a,game.world.colliders,game.world.bounds,{radius:a.radius,height:a.height,maxRadius:5,requireCameraPocket:true,cameraHeight:isDog(a.person)?.64:1.17,cameraDistance:3.4,minCameraPocket:1.5});game.cameraRig.reset(a,game.world.colliders,{yaw:a.yaw,pitch:W36_BENCHMARK?(game._w36BenchmarkPitch??-.08):.065,distance:game.cameraRig.cfg.cameraDistance,dog:isDog(a.person),height:a.prop?a.height*.55:(isDog(a.person)?.64:1.17),forceSnap:true,reason:'manual Reset View'});game.stagingQa?.setRecovery(moved?'manual Reset View + safe-position recovery':'manual Reset View');game.cameraYaw=game.cameraRig.state.yaw;game.cameraPitch=game.cameraRig.state.pitch;if(announce)addFeed(moved?'Player and view recovered to a safe spot.':'View reset behind your character.');}
 
   function loop(now){
     if(!game)return;
@@ -607,7 +740,8 @@
   }
   function pollFrameInput(dt){
     const blindHunter=isHunterHidePhase();if(!blindHunter)gameplay.applyGamepadLook(game.cameraRig.state,dt);const pad=gameplay.readGamepadButtons();
-    if(!blindHunter&&pad.jump&&!game.padPrev.jump)input.jumpQueued=true;if(!blindHunter&&pad.shoulder&&!game.padPrev.shoulder)game.cameraRig?.swapShoulder();game.padShoot=!blindHunter&&!!pad.shoot;game.padSprint=!blindHunter&&pad.sprint;game.padJumpHeld=!blindHunter&&pad.jump;game.padPrev=pad;
+    if(!blindHunter&&pad.jump&&!game.padPrev.jump)input.jumpQueued=true;if(!blindHunter&&pad.shoulder&&!game.padPrev.shoulder)game.cameraRig?.swapShoulder();
+    game.padAim=!blindHunter&&!!pad.aim;game.padShoot=!blindHunter&&!!pad.shoot;game.padSprint=!blindHunter&&!!pad.sprint;game.padJumpHeld=!blindHunter&&!!pad.jump;game.padPrev=pad;
     game.cameraYaw=game.cameraRig.state.yaw;game.cameraPitch=game.cameraRig.state.pitch;if((input.shoot||game.padShoot)&&!blindHunter)shoot();
   }
   function snapshotSimulationStart(){for(const a of game.actors){if(network&&a!==game.player&&!(a.isBot&&roomState.isHost))continue;a._simPrev={x:a.x,y:a.y,z:a.z,yaw:a.yaw}}}
@@ -624,7 +758,7 @@
   function updateStabilityRecovery(dt){
     const a=game?.player;if(!a||!a.alive)return;gameplay.rememberSafeActorPosition(core,a,game.world.colliders,game.world.bounds,dt,{interval:.45});
     const finite=[a.x,a.y,a.z].every(Number.isFinite),blocked=finite?core.blockingCollider(a.x,a.z,a.radius,a.y,a.height,game.world.colliders):true,out=finite&&(a.x<game.world.bounds.minX+a.radius||a.x>game.world.bounds.maxX-a.radius||a.z<game.world.bounds.minZ+a.radius||a.z>game.world.bounds.maxZ-a.radius),fell=finite&&(a.y<-2.5||a.y>35);
-    if(!finite||blocked||out||fell){const reason=!finite?'invalid transform':blocked?'embedded collision':out?'left play bounds':'fell outside playable height';if(gameplay.recoverActorToLastSafe(core,a,game.world.colliders,game.world.bounds,{radius:a.radius,height:a.height,maxRadius:4.5,minY:-2.5,maxY:35})){game.stability.recoveries++;game.stability.lastReason=reason;game.stagingQa?.setRecovery(`automatic ${reason} recovery`);game.cameraRig.reset(a,game.world.colliders,{yaw:a.yaw,pitch:.065,distance:game.cameraRig.cfg.cameraDistance,dog:isDog(a.person),height:a.prop?a.height*.55:(isDog(a.person)?.64:1.17),forceSnap:true,reason:`automatic ${reason} recovery`});a._simPrev={x:a.x,y:a.y,z:a.z,yaw:a.yaw};a._simCurr={...a._simPrev}}}
+    if(!finite||blocked||out||fell){const reason=!finite?'invalid transform':blocked?'embedded collision':out?'left play bounds':'fell outside playable height';if(gameplay.recoverActorToLastSafe(core,a,game.world.colliders,game.world.bounds,{radius:a.radius,height:a.height,maxRadius:4.5,minY:-2.5,maxY:35})){game.stability.recoveries++;game.stability.lastReason=reason;game.stagingQa?.setRecovery(`automatic ${reason} recovery`);game.cameraRig.reset(a,game.world.colliders,{yaw:a.yaw,pitch:W36_BENCHMARK?(game._w36BenchmarkPitch??-.08):.065,distance:game.cameraRig.cfg.cameraDistance,dog:isDog(a.person),height:a.prop?a.height*.55:(isDog(a.person)?.64:1.17),forceSnap:true,reason:`automatic ${reason} recovery`});a._simPrev={x:a.x,y:a.y,z:a.z,yaw:a.yaw};a._simCurr={...a._simPrev}}}
   }
   function applyPerformanceQuality(tier){
     if(!game)return;game.qualityTier=tier;game.fxBudget=tier==='low'?30:tier==='medium'?54:84;if(game.renderer?.shadowMap)game.renderer.shadowMap.enabled=tier!=='low';
@@ -648,7 +782,7 @@
   function updateHunterHideOverlay(){
     const blind=root?.querySelector('#phHideBlind'),count=root?.querySelector('#phHideCountdown'),round=root?.querySelector('#phHideRound'),release=root?.querySelector('#phHuntRelease'),active=isHunterHidePhase();
     if(blind){blind.hidden=!active;blind.classList.toggle('final-count',active&&Math.ceil(Math.max(0,(roomState.phaseEndsAt-Date.now())/1000))<=3)}
-    if(active){const seconds=Math.max(0,Math.ceil((roomState.phaseEndsAt-Date.now())/1000));if(count)count.textContent=String(seconds);if(round)round.textContent=String(roomState.round||1);input.shoot=false;game.padShoot=false;game.hideReleaseAnnounced=false}
+    if(active){const seconds=Math.max(0,Math.ceil((roomState.phaseEndsAt-Date.now())/1000));if(count)count.textContent=String(seconds);if(round)round.textContent=String(roomState.round||1);input.shoot=false;input.aim=false;input.sprint=false;input.jumpHeld=false;input.jumpQueued=false;game.padShoot=false;game.padAim=false;game.padSprint=false;game.padJumpHeld=false;joy.x=joy.z=0;game.hideReleaseAnnounced=false}
     if(game.lastPhase==='hide'&&roomState.phase==='hunt'&&!game.hideReleaseAnnounced){game.hideReleaseAnnounced=true;if(release){release.hidden=false;release.classList.remove('on');void release.offsetWidth;release.classList.add('on');setTimeout(()=>{if(release){release.classList.remove('on');release.hidden=true}},760)}audio?.oneShot('ui',{volume:.11,pitch:1.28})}
     game.lastPhase=roomState.phase;
   }
@@ -663,14 +797,29 @@
   function nextSoloRound(){closeModal();roomState.round++;const seed=core.roundSeed(roomState.id,roomState.round,roomState.createdAt||0),roles=core.assignRoles(roomState.players,roomState.round),next=mapFor(roomState.settings.mapKey,roomState.round),assigned=core.assignDisguiseOptions(roomState.players,seed,core.disguisePoolForMap(next),4);roomState.players.forEach(p=>{p.role=roles[p.id];p.health=3;p.alive=true;p.prop=null;p.propChanges=3;p.decoys=10;p.flash=true;p.hiderScore=0;p.disguiseOptions=p.role==='hider'?(assigned[p.id]||[]):[]});roomState.roundSeed=seed;roomState.layoutVariant=core.layoutVariantForSeed(seed);roomState.weatherPreset=core.weatherForSeed(seed);roomState.roundSummary=null;roomState.phase='hide';roomState.phaseEndsAt=Date.now()+30000*TEST_SCALE;roomState.activeMap=next;disposeRoot();ensureEngine().then(()=>startEngine(next));}
 
   function updatePlayer(dt){
-    const a=game.player;if(!a.alive){a.vx=a.vz=0;if(roomState.settings.mode==='classic'&&game.ghostMode==='free')updateGhost(dt);return}if(isHunterHidePhase()){a.vx=a.vz=a.vy=0;a.anim='idle';a._sprinting=false;input.jumpQueued=false;input.jumpHeld=false;input.shoot=false;joy.x=joy.z=0;a.rig.position.set(a.x,a.y,a.z);return}if(a.locked&&a.prop){a.vx=a.vz=0;animateMantle(a,dt);return}if(a.mantle){animateMantle(a,dt);return}
-    const aiming=a.role==='hunter',correctedJoy={x:joy.x,z:-joy.z},intent=gameplay.movementIntent(keys,correctedJoy,game.cameraYaw),sprint=gameplay.wantsSprint(keys,input,{sprint:game.padSprint},intent);
-    const movingIntent=intent.strength>.07,targetYaw=aiming?game.cameraYaw:movingIntent?Math.atan2(intent.directionX,-intent.directionZ):a.yaw,oldYaw=a.yaw;
-    a.yaw=gameplay.dampAngle(a.yaw,targetYaw,aiming?29:movingIntent?17:10,dt);let d=a.yaw-oldYaw;while(d>Math.PI)d-=Math.PI*2;while(d<-Math.PI)d+=Math.PI*2;a.turnRate=d/Math.max(dt,.001);a.pitch=game.cameraPitch;
-    const preset=game.cameraRig.cfg;a._wasMoving=!!a._moving;a._sprinting=!!sprint;gameplay.smoothVelocity(a,intent,sprint?preset.runSpeed:preset.walkSpeed,dt,{accel:preset.groundAccel,brake:preset.groundBrake,airControl:preset.airControl});
+    const a=game.player;if(!a.alive){a.vx=a.vz=0;if(roomState.settings.mode==='classic'&&game.ghostMode==='free')updateGhost(dt);return}
+    if(gameplay.sanitizeActorKinematics(a,a._lastSafePosition)){game.stability.recoveries++;game.stability.lastReason='invalid kinematics rejected';game.stagingQa?.setRecovery('invalid kinematics rejected before simulation')}
+    if(isHunterHidePhase()){a.vx=a.vz=a.vy=0;a.anim='idle';a._sprinting=false;input.jumpQueued=false;input.jumpHeld=false;input.shoot=false;input.aim=false;input.sprint=false;joy.x=joy.z=0;a.rig.position.set(a.x,a.y,a.z);return}
+    if(a.mantle){animateMantle(a,dt);return}
+    // Virtual joystick already reports forward as +Z. Do not invert it again here.
+    const intent=gameplay.movementIntent(keys,joy,game.cameraYaw),movingIntent=intent.strength>.07;
+    if(a.locked&&a.prop){if(intent.strength>.18){a.locked=false;APP.toast('Prop unlocked')}else{a.vx=a.vz=0;return}}
+    const aiming=a.role==='hunter'&&roomState.phase==='hunt'&&!isHunterHidePhase()&&(input.aim||game.padAim),sprint=gameplay.wantsSprint(keys,input,{sprint:game.padSprint},intent),preset=game.cameraRig.cfg;
+    let targetSpeed=gameplay.movementSpeedForIntent(intent,preset,{sprinting:sprint}),turnError=gameplay.turnIntentError(a,intent),turnState=gameplay.turnSemantic(turnError);
+    // A near-180 redirect gets a brief visual plant/deceleration, never an input lock.
+    if(turnState?.startsWith('turn180')&&Math.hypot(a.vx,a.vz)>1.2)targetSpeed*=.58;else if(turnState?.startsWith('sharpTurn')&&Math.hypot(a.vx,a.vz)>1.6)targetSpeed*=.78;
+    const targetYaw=aiming?game.cameraYaw:movingIntent?Math.atan2(intent.directionX,-intent.directionZ):a.yaw,oldYaw=a.yaw;
+    a.yaw=gameplay.dampAngle(a.yaw,targetYaw,aiming?28:turnState?.startsWith('turn180')?12:movingIntent?18:10,dt);let d=a.yaw-oldYaw;while(d>Math.PI)d-=Math.PI*2;while(d<-Math.PI)d+=Math.PI*2;a.turnRate=d/Math.max(dt,.001);a.pitch=game.cameraPitch;
+    a._wasMoving=!!a._moving;a._sprinting=!!sprint;a._gait=gameplay.gaitForMovement(intent,{sprinting:sprint});a._turnSemantic=turnState;if(turnState)a._turnSemanticUntil=performance.now()+(turnState.startsWith('turn180')?360:240);
+    gameplay.smoothVelocityToward(a,intent,targetSpeed,dt,{accel:preset.groundAccel,brake:preset.groundBrake,airControl:preset.airControl});
     gameplay.updateJumpMemory(a,dt,input.jumpQueued);gameplay.consumeBufferedJump(a,preset.jumpSpeed);gameplay.applyVariableJump(a,input.jumpHeld||game.padJumpHeld);
-    const moving=Math.hypot(a.vx,a.vz)>.15;a._moving=moving;a._directional=gameplay.resolveDirectionalLocomotion(a,{aiming,sprinting:sprint});if(moving&&!a._wasMoving){a._moveTransition='startMove';a._moveTransitionUntil=performance.now()+240}else if(!moving&&a._wasMoving){a._moveTransition='stopMove';a._moveTransitionUntil=performance.now()+280}
-    moveActor(a,a.vx*dt,a.vz*dt,(a._jumpBuffer||0)>0||a.vy>1.2);resolveActorOverlap(a);input.jumpQueued=false;a.vy-=preset.gravity*dt;{const nextY=a.y+a.vy*dt,ceiling=a.vy>0?core.ceilingBottom(a.x,a.z,a.radius,a.y,a.height,nextY,game.world.colliders):null;if(ceiling!=null){a.y=ceiling-a.height-.015;a.vy=0}else a.y=nextY}const support=core.supportHeight(a.x,a.z,a.radius,game.world.colliders,a.y+.08,.46);if(a.y<=support){const impact=Math.max(0,-a.vy);if(impact>.8){a._landingStrength=clamp((impact-2.5)/7.5,.12,1);a.landTimer=impact>8.1?.24:.14;a._hardLandTimer=impact>8.1?.22:0}a.y=support;a.vy=0;a.grounded=true}else a.grounded=false;a.landTimer=Math.max(0,(a.landTimer||0)-dt);a._hardLandTimer=Math.max(0,(a._hardLandTimer||0)-dt);a._landingStrength=Math.max(0,(a._landingStrength||0)-dt*3.7);a.anim=gameplay.resolveLocomotionAnim(a,{moving,sprinting:sprint,aiming});a.rig.position.set(a.x,a.y,a.z);a.rig.rotation.y=a.yaw;
+    const moving=Math.hypot(a.vx,a.vz)>.15;a._moving=moving;a._directional=gameplay.resolveDirectionalLocomotion(a,{aiming,sprinting:sprint,gait:a._gait});if(moving&&!a._wasMoving){a._moveTransition='startMove';a._moveTransitionUntil=performance.now()+180}else if(!moving&&a._wasMoving){a._moveTransition='stopMove';a._moveTransitionUntil=performance.now()+220}
+    moveActor(a,a.vx*dt,a.vz*dt,(a._jumpBuffer||0)>0||a.vy>1.2);resolveActorOverlap(a);input.jumpQueued=false;a.vy-=preset.gravity*dt;
+    {const nextY=a.y+a.vy*dt,ceiling=a.vy>0?core.ceilingBottom(a.x,a.z,a.radius,a.y,a.height,nextY,game.world.colliders):null;if(ceiling!=null){a.y=ceiling-a.height-.015;a.vy=0}else a.y=nextY}
+    const support=core.groundSupport(a.x,a.z,a.radius,game.world.colliders,a.y+.08,.46);if(a.y<=support.height){const impact=Math.max(0,-a.vy);if(impact>.8){a._landingStrength=clamp((impact-2.5)/7.5,.12,1);a.landTimer=impact>8.1?.24:.14;a._hardLandTimer=impact>8.1?.22:0}a.y=support.height;a.vy=0;a.grounded=true}else a.grounded=false;
+    a.landTimer=Math.max(0,(a.landTimer||0)-dt);a._hardLandTimer=Math.max(0,(a._hardLandTimer||0)-dt);a._landingStrength=Math.max(0,(a._landingStrength||0)-dt*3.7);
+    a.anim=gameplay.resolveLocomotionAnim(a,{moving,sprinting:sprint,aiming});if(a._turnSemantic&&performance.now()<(a._turnSemanticUntil||0)&&moving&&Math.hypot(a.vx,a.vz)<2.2)a.anim=a._turnSemantic;
+    a.rig.position.set(a.x,a.y,a.z);a.rig.rotation.y=a.yaw;
   }
   function resolveActorOverlap(a){
     for(const b of game.actors){
@@ -681,10 +830,14 @@
       const push=Math.min(.12,(min-d)*.55);moveActor(a,dx/d*push,dz/d*push,false);
     }
   }
-  function moveActor(a,dx,dz,jumpRequested=false){const r=core.attemptCharacterMove(a,dx,dz,game.world.colliders,{radius:a.radius,height:a.height,maxStep:.42,maxMantle:isDog(a.person) ? .8 : 1.2,jumpRequested});if(r.mantle&&!a.prop){startMantle(a,r.mantle.collider,dx,dz);return}a.x=clamp(r.x,game.world.bounds.minX,game.world.bounds.maxX);a.z=clamp(r.z,game.world.bounds.minZ,game.world.bounds.maxZ);if(r.y>a.y)a.y=r.y;}
+  function moveActor(a,dx,dz,jumpRequested=false){
+    const r=core.attemptCharacterMove(a,dx,dz,game.world.colliders,{radius:a.radius,height:a.height,maxStep:.42,maxMantle:isDog(a.person)?.8:1.2,jumpRequested});
+    if(r.mantle&&!a.prop&&startMantle(a,r.mantle.collider,dx,dz))return;
+    a.x=clamp(r.x,game.world.bounds.minX,game.world.bounds.maxX);a.z=clamp(r.z,game.world.bounds.minZ,game.world.bounds.maxZ);if(r.y>a.y)a.y=r.y;
+  }
   function startMantle(a,b,dx,dz){
-    const dirLen=Math.hypot(dx,dz)||1,dirX=dx/dirLen,dirZ=dz/dirLen,top=(b.y||0)+b.h,tx=clamp(a.x+dirX*(a.radius+.54),b.x-b.w/2+a.radius,b.x+b.w/2-a.radius),tz=clamp(a.z+dirZ*(a.radius+.54),b.z-b.d/2+a.radius,b.z+b.d/2-a.radius);
-    a.mantle={t:0,duration:.48,fromX:a.x,fromY:a.y,fromZ:a.z,toX:tx,toY:top+.015,toZ:tz,dirX,dirZ};a.vx=a.vz=a.vy=0;a.anim='mantle';a._mantleVisual=1;
+    const target=core.mantleTarget(a,b,dx,dz,game.world.colliders,{radius:a.radius,height:a.height});if(!target)return false;
+    const len=Math.hypot(dx,dz)||1,dirX=dx/len,dirZ=dz/len;a.mantle={t:0,duration:.38,fromX:a.x,fromY:a.y,fromZ:a.z,toX:target.x,toY:target.targetY+.015,toZ:target.z,dirX,dirZ};a.vx=a.vz=a.vy=0;a.anim='mantle';a._mantleVisual=1;return true;
   }
   function animateMantle(a,dt){
     if(!a.mantle)return;const m=a.mantle;m.t=Math.min(1,m.t+dt/m.duration);const lift=clamp(m.t/.62,0,1),push=clamp((m.t-.12)/.88,0,1),ease=t=>t*t*(3-2*t);
@@ -694,7 +847,7 @@
 
 
   function updateBots(dt){
-    for(const a of game.actors){if(!a.isBot||!a.alive)continue;if(network&&!roomState.isHost)continue;if(a.mantle){animateMantle(a,dt);continue}a.ai.timer-=dt;a.ai.changeTimer-=dt;a.ai.decoyTimer-=dt;const enemies=game.actors.filter(b=>b.alive&&b.role!==a.role);if(a.role==='hunter'&&roomState.phase==='hunt')botHunter(a,enemies,dt);else if(a.role==='hunter'&&roomState.phase==='hide'){a.vx=a.vz=0;a.anim='idle'}else if(a.role==='hider')botHider(a,enemies,dt);else wanderBot(a,dt);resolveActorOverlap(a);a.vy-=18*dt;{const nextY=a.y+a.vy*dt,ceiling=a.vy>0?core.ceilingBottom(a.x,a.z,a.radius,a.y,a.height,nextY,game.world.colliders):null;if(ceiling!=null){a.y=ceiling-a.height-.015;a.vy=0}else a.y=nextY}const support=core.supportHeight(a.x,a.z,a.radius,game.world.colliders,a.y+.08,.46);if(a.y<=support){a.y=support;a.vy=0;a.grounded=true}else a.grounded=false;a.rig.position.set(a.x,a.y,a.z);a.rig.rotation.y=a.yaw;}
+    for(const a of game.actors){if(!a.isBot||!a.alive)continue;if(network&&!roomState.isHost)continue;if(a.mantle){animateMantle(a,dt);continue}a.ai.timer-=dt;a.ai.changeTimer-=dt;a.ai.decoyTimer-=dt;const enemies=game.actors.filter(b=>b.alive&&b.role!==a.role);if(a.role==='hunter'&&roomState.phase==='hunt')botHunter(a,enemies,dt);else if(a.role==='hunter'&&roomState.phase==='hide'){a.vx=a.vz=0;a.anim='idle'}else if(a.role==='hider')botHider(a,enemies,dt);else wanderBot(a,dt);resolveActorOverlap(a);a.vy-=18*dt;{const nextY=a.y+a.vy*dt,ceiling=a.vy>0?core.ceilingBottom(a.x,a.z,a.radius,a.y,a.height,nextY,game.world.colliders):null;if(ceiling!=null){a.y=ceiling-a.height-.015;a.vy=0}else a.y=nextY}const support=core.groundSupport(a.x,a.z,a.radius,game.world.colliders,a.y+.08,.46);if(a.y<=support.height){a.y=support.height;a.vy=0;a.grounded=true}else a.grounded=false;a.rig.position.set(a.x,a.y,a.z);a.rig.rotation.y=a.yaw;}
   }
   function botMoveToward(a,target,speed,dt,{jump=false,repath=.55}={}){
     if(!target)return false;const ai=a.ai||(a.ai={}),goalChanged=!ai.pathGoal||Math.hypot((ai.pathGoal.x||0)-target.x,(ai.pathGoal.z||0)-target.z)>.8;ai.pathTimer=(ai.pathTimer||0)-dt;
@@ -719,7 +872,7 @@
   function updateActorVisuals(dt){
     for(const a of game.actors){
       if(!a.alive){a.rig.visible=false;continue}
-      a.recoil=Math.max(0,(a.recoil||0)-dt*7);a.rig.visible=!(a===game.player&&a.cameraHidden);const speed=Math.hypot(a.vx||0,a.vz||0),aiming=a.role==='hunter',directional=gameplay.resolveDirectionalLocomotion(a,{aiming,sprinting:!!a._sprinting});a._directional=directional;
+      a.recoil=Math.max(0,(a.recoil||0)-dt*7);a.rig.visible=!(a===game.player&&a.cameraHidden);const speed=Math.hypot(a.vx||0,a.vz||0),aiming=a===game.player?a.role==='hunter'&&(input.aim||game.padAim):a.role==='hunter'&&!!a.ai?.detected,directional=gameplay.resolveDirectionalLocomotion(a,{aiming,sprinting:!!a._sprinting,gait:a._gait});a._directional=directional;
       let focus=null;
       if(a===game.player){const dir=game.scratch.cameraDir;game.camera.getWorldDirection(dir);focus={x:a.x+dir.x*6,y:a.y+(isDog(a.person)?.8:1.48)+dir.y*6,z:a.z+dir.z*6}}
       else if(a.ai?.detected?.alive)focus={x:a.ai.detected.x,y:a.ai.detected.y+a.ai.detected.height*.55,z:a.ai.detected.z};
@@ -728,15 +881,17 @@
       if(a.prop){updatePropMotionVisual(a,dt,directional,motion);continue}
       if(a.authored&&a.hasAuthoredClips&&a.animMixer){
         let base=a.anim||'idle',transient=a._transientAnim&&Date.now()<(a._transientAnimUntil||0)?a._transientAnim:null;
-        if(['idle','walk','run','sprint','aim'].includes(base)&&speed>.18)base=directional.semantic;if(base==='run'&&a._sprinting)base='sprint';
-        const absScale=base==='sprint'?clamp(speed/5.6,.78,1.28):base==='run'?clamp(speed/4.3,.72,1.3):['walk','backward','strafeLeft','strafeRight'].includes(base)?clamp(speed/2.35,.72,1.32):1,baseScale=base==='backward'?-absScale:absScale;
-        if((aiming||transient==='fire')&&['idle','walk','run','sprint','backward','strafeLeft','strafeRight','aim','fire'].includes(base)){
-          const lower=speed>.18?directional.semantic:'idle',lowerScale=lower==='backward'?-Math.max(.72,absScale):absScale,overlay=transient==='fire'?'fire':'aim';a.animMixer.playLayered(lower,overlay,{baseTimeScale:lowerScale,overlayTimeScale:1,overlayOnce:overlay==='fire'});
-        }else if(a._moveTransition&&performance.now()<(a._moveTransitionUntil||0)&&['idle','walk','run','sprint'].includes(base)){a.animMixer.play(a._moveTransition,{timeScale:1});}
-        else{a._moveTransition=null;a._moveTransitionUntil=0;a.animMixer.play(base,{timeScale:baseScale,once:['turnLeft','turnRight','hardLand','land','mantle'].includes(base)})}
-        a.animMixer.update(dt);a._studioAnimState=a.animMixer.getState?.();applyGameplayBodyFeel(a,dt,directional,motion,aiming);studio.applyFootIK(a,THREE,{heightAt:(x,z)=>core.supportHeight(x,z,a.radius,game.world.colliders,a.y+.1,.5),dt,maxLift:.075});
+        if(['idle','walk','jog','run','sprint','aim'].includes(base)&&speed>.18)base=directional.semantic;if(base==='run'&&a._sprinting)base='sprint';
+        if(a._turnSemantic&&performance.now()<(a._turnSemanticUntil||0)&&speed<2.2)base=a._turnSemantic;
+        const gait=a._gait||'walk',ref=gait==='sprint'?5.7:gait==='run'?4.5:gait==='jog'?3.35:2.35,absScale=['walk','jog','run','sprint','backward','strafeLeft','strafeRight'].includes(base)?clamp(speed/Math.max(.5,ref),.62,1.38):1,baseScale=base==='backward'?-absScale:absScale;
+        if((aiming||transient==='fire')&&['idle','walk','jog','run','sprint','backward','strafeLeft','strafeRight','aim','fire'].includes(base)){
+          const lower=speed>.18?directional.semantic:'idle',lowerScale=lower==='backward'?-Math.max(.62,absScale):absScale,overlay=transient==='fire'?'fire':'aim';a.animMixer.playLayered(lower,overlay,{baseTimeScale:lowerScale,overlayTimeScale:1,overlayOnce:overlay==='fire'});
+        }else if(a._moveTransition&&performance.now()<(a._moveTransitionUntil||0)&&['idle','walk','jog','run','sprint'].includes(base)){a.animMixer.play(a._moveTransition,{timeScale:1});}
+        else{a._moveTransition=null;a._moveTransitionUntil=0;a.animMixer.play(base,{timeScale:baseScale,once:['turnLeft','turnRight','sharpTurnLeft','sharpTurnRight','turn180Left','turn180Right','hardLand','land','mantle'].includes(base)})}
+        a.animMixer.update(dt);a._studioAnimState=a.animMixer.getState?.();applyGameplayBodyFeel(a,dt,directional,motion,aiming);studio.applyFootIK(a,THREE,{heightAt:(x,z)=>core.groundSupport(x,z,a.radius,game.world.colliders,a.y+.1,.5).height,dt,maxLift:.075});
       }else{
-        gameplay.animateFamilyRig(a,dt,{aim:a.role==='hunter',recoil:a.recoil||0,lookPitch:a.pitch||0,turnRate:a.turnRate||0,speed,grounded:a.grounded,attention});studio.updateProceduralFace(a,dt,{expression:a.anim==='hit'?'hurt':a.role==='hunter'?'focused':'neutral'});studio.applyFootIK(a,THREE,{heightAt:(x,z)=>core.supportHeight(x,z,a.radius,game.world.colliders,a.y+.1,.5),dt,maxLift:.1});applyGameplayBodyFeel(a,dt,directional,motion,aiming);
+        const now=performance.now(),moveTransition=a._moveTransition&&now<(a._moveTransitionUntil||0)?a._moveTransition:null;if(a._moveTransition&&!moveTransition&&now>=(a._moveTransitionUntil||0)){a._moveTransition=null;a._moveTransitionUntil=0}
+        gameplay.animateFamilyRig(a,dt,{aim:aiming,recoil:a.recoil||0,lookPitch:a.pitch||0,turnRate:a.turnRate||0,speed,grounded:a.grounded,attention,motion,directional,transition:moveTransition});studio.updateProceduralFace(a,dt,{expression:a.anim==='hit'?'hurt':aiming?'focused':'neutral'});studio.applyFootIK(a,THREE,{heightAt:(x,z)=>core.groundSupport(x,z,a.radius,game.world.colliders,a.y+.1,.5).height,dt,maxLift:.1});applyGameplayBodyFeel(a,dt,directional,motion,aiming);
       }
       if(a.rig.visible)for(const ev of gameplay.consumeMotionEvents(a)){game.motionFx?.emit(a.x,a.y,a.z,{strength:ev.strength,kind:ev.type});if((a===game.player||core.dist2(a,game.player)<8)&&!(isHunterHidePhase()&&a.role==='hider'))audio?.oneShot(ev.type==='land'?'land':'step',{volume:ev.type==='land'?.11:.03,pitch:.9+Math.random()*.18,pan:studio.computeStereoPan(game.cameraYaw,game.player,a),surface:propSurfaceAt(a)})}
     }
@@ -767,11 +922,11 @@
   function updateCamera(dt){
     const player=game.player;if(!player)return;if(!player.alive&&roomState.settings.mode==='classic'&&game.ghostMode==='free'&&game.ghost){const g=game.ghost,cs=game.cameraRig.state,dir=game.scratch.cameraDir,look=game.scratch.cameraLook,cp=Math.cos(cs.pitch);dir.set(Math.sin(cs.yaw)*cp,-Math.sin(cs.pitch),-Math.cos(cs.yaw)*cp);game.camera.position.set(g.x,g.y,g.z);look.copy(game.camera.position).addScaledVector(dir,1);game.camera.lookAt(look);game.cameraYaw=cs.yaw;game.cameraPitch=cs.pitch;return}
     let a=player;if(!player.alive&&roomState.settings.mode==='classic'){if(!game.spectateTarget?.alive)game.spectateTarget=game.actors.find(o=>o.alive&&o!==player)||null;if(game.spectateTarget)a=game.spectateTarget}
-    // Track the interpolated render root instead of the raw fixed-step body. That keeps
-    // the camera visually smooth while the authoritative capsule still simulates at 60 Hz.
-    const track=game.scratch.cameraTarget,rootPos=a.rig?.position||a;track.x=Number(rootPos.x??a.x)||0;track.y=Number(rootPos.y??a.y)||0;track.z=Number(rootPos.z??a.z)||0;track.yaw=a.rig?.rotation?.y??a.yaw;
+    const track=game.scratch.cameraTarget,rootPos=a.rig?.position||a;track.x=Number(rootPos.x??a.x)||0;track.y=Number(rootPos.y??a.y)||0;track.z=Number(rootPos.z??a.z)||0;track.yaw=Number(a.rig?.rotation?.y??a.yaw)||0;
     if(a===player&&game.cameraRig.state.collapsedFor>.72){game.cameraRig.reset(track,game.world.colliders,{yaw:a.yaw,pitch:.065,distance:game.cameraRig.cfg.cameraDistance,dog:isDog(a.person),height:a.prop?a.height*.55:(isDog(a.person)?.64:1.17),forceSnap:true,reason:'sustained camera collapse recovery'});game.stability.recoveries++;game.stability.lastReason='camera collapse';game.stagingQa?.setRecovery('automatic camera collapse recovery')}
-    const sprinting=a===player&&gameplay.wantsSprint(keys,input,{sprint:game.padSprint},{strength:Math.min(1,Math.hypot(a.vx,a.vz)/(game.cameraRig.cfg.runSpeed||1))}),hunterAim=a===player&&player.role==='hunter'&&player.alive&&roomState.phase==='hunt'&&!isHunterHidePhase();game.cameraRig.state.aim=hunterAim;game.cameraRig.update(track,game.world.colliders,dt,{aim:hunterAim,shoulderAlways:hunterAim,sprinting,dog:isDog(a.person),height:a.prop?a.height*.55:(isDog(a.person)?.64:1.20),velocity:{x:a.vx,z:a.vz},turnRate:a.turnRate||0,cameraBob:(a._motion?.landing||0)*-.032});game.cameraYaw=game.cameraRig.state.yaw;game.cameraPitch=game.cameraRig.state.pitch;game.cameraActualDistance=game.cameraRig.state.actualDistance;player.cameraHidden=player.alive&&game.cameraActualDistance<.72&&!player.prop;updateAimAssistIndicator();
+    const sprinting=a===player&&gameplay.wantsSprint(keys,input,{sprint:game.padSprint},{strength:Math.min(1,Math.hypot(a.vx,a.vz)/(game.cameraRig.cfg.runSpeed||1))}),hunterAim=a===player&&player.role==='hunter'&&player.alive&&roomState.phase==='hunt'&&!isHunterHidePhase()&&(input.aim||game.padAim);
+    game.cameraRig.state.aim=hunterAim;game.cameraRig.update(track,game.world.colliders,dt,{aim:hunterAim,shoulderAlways:hunterAim,sprinting,dog:isDog(a.person),height:a.prop?a.height*.55:(isDog(a.person)?.64:1.20),velocity:{x:Number(a.vx)||0,z:Number(a.vz)||0},turnRate:Number(a.turnRate)||0,cameraBob:(a._motion?.landing||0)*-.032});
+    game.cameraYaw=Number.isFinite(game.cameraRig.state.yaw)?game.cameraRig.state.yaw:a.yaw;game.cameraPitch=Number.isFinite(game.cameraRig.state.pitch)?game.cameraRig.state.pitch:.065;game.cameraActualDistance=Number.isFinite(game.cameraRig.state.actualDistance)?game.cameraRig.state.actualDistance:game.cameraRig.cfg.cameraDistance;player.cameraHidden=player.alive&&game.cameraActualDistance<.72&&!player.prop;updateAimAssistIndicator();
   }
 
 
@@ -780,8 +935,8 @@
   function revalidateShotFromMuzzle(a,cameraPoint,targets){const q=game.scratch,start=muzzleWorldPosition(a,q.shotStart),dir=q.shotDir.copy(cameraPoint).sub(start),distance=Math.min(32,dir.length()+.18);if(distance<.02)return{hitPoint:q.shotValidatedPoint.copy(cameraPoint),target:null,hit:null};dir.multiplyScalar(1/Math.max(.0001,dir.length()));q.muzzleRay.set(start,dir);q.muzzleRay.near=.01;q.muzzleRay.far=distance;const hits=q.muzzleRay.intersectObjects(targets,false).filter(h=>h.object.visible);if(!hits.length)return{hitPoint:q.shotValidatedPoint.copy(cameraPoint),target:null,hit:null};return{hitPoint:q.shotValidatedPoint.copy(hits[0].point),target:actorFromRayHit(hits[0]),hit:hits[0]}}
   function aimAssistTarget(a){
     if(!a||a.role!=='hunter'||roomState.phase!=='hunt')return null;const coarse=globalThis.matchMedia?.('(pointer:coarse)')?.matches||false,gamepad=!![...(navigator.getGamepads?.()||[])].find(Boolean);if(!coarse&&!gamepad)return null;
-    const q=game.scratch,origin=game.camera.position,forward=q.assistForward;game.camera.getWorldDirection(forward);let bestActor=null,bestScore=Infinity,bestAngle=0,bestDist=0,bx=0,by=0,bz=0;
-    for(const b of game.actors){if(b===a||!b.alive||b.role!=='hider')continue;const point=q.assistPoint.set(b.x,b.y+b.height*.56,b.z),delta=q.assistDelta.copy(point).sub(origin),dist=delta.length();if(dist>19||dist<.25)continue;delta.multiplyScalar(1/dist);const angle=Math.acos(clamp(forward.dot(delta),-1,1)),cone=coarse?.078:.048;if(angle>cone||!hasLineOfSight(a,b))continue;const score=angle*11+dist*.005;if(score<bestScore){bestScore=score;bestActor=b;bestAngle=angle;bestDist=dist;bx=point.x;by=point.y;bz=point.z}}
+    const q=game.scratch,origin=game.camera.position,forward=q.assistForward;game.camera.getWorldDirection(forward);let bestActor=null,bestScore=Infinity,bestAngle=0,bestDist=0,bx=0,by=0,bz=0,preciseAim=!!(input.aim||game.padAim);
+    for(const b of game.actors){if(b===a||!b.alive||b.role!=='hider')continue;const point=q.assistPoint.set(b.x,b.y+b.height*.56,b.z),delta=q.assistDelta.copy(point).sub(origin),dist=delta.length();if(dist>19||dist<.25)continue;delta.multiplyScalar(1/dist);const angle=Math.acos(clamp(forward.dot(delta),-1,1)),cone=coarse?(preciseAim?.072:.042):(preciseAim?.05:.032);if(angle>cone||!hasLineOfSight(a,b))continue;const score=angle*11+dist*.005;if(score<bestScore){bestScore=score;bestActor=b;bestAngle=angle;bestDist=dist;bx=point.x;by=point.y;bz=point.z}}
     if(!bestActor)return null;q.assistBest.set(bx,by,bz);return{actor:bestActor,point:q.assistBest,angle:bestAngle,dist:bestDist};
   }
   function updateAimAssistIndicator(){const e=root.querySelector('#ph3Crosshair');if(!e||!game?.player)return;const target=roomState.phase==='hunt'?aimAssistTarget(game.player):null;game.aimAssist=target;e.classList.toggle('assisted',!!target);e.setAttribute('data-assist',target?'target':'none')}
@@ -818,17 +973,18 @@
   function nearestProp(a,max=1.6){return core.nearestReachableProp(a,game.world.props,max,.55);}
   function changeProp(){const a=game?.player;if(!a||a.role!=='hider'||!a.alive)return;if(a.prop&&a.propChanges<=0){APP.toast('No prop changes left');return}renderDisguiseTray(a,true);}
   function safeDisguisePlacement(a,type){
-    const d=propDef(type),radius=Math.max(.18,Math.min(.55,Math.max(d.w,d.d)*.45)),height=Math.max(.2,d.h||.5),safe=gameplay.findSafeCharacterPosition(core,game.world.colliders,{x:a.x,y:a.y,z:a.z},game.world.bounds,{radius,height,maxRadius:1.25,step:.25});
-    if(safe.unsafe||Math.hypot(safe.x-a.x,safe.z-a.z)>1.3)return null;return{...safe,radius,height};
+    const d=propDef(type),radius=Math.max(.18,Math.min(.55,Math.max(d.w,d.d)*.45)),height=Math.max(.2,d.h||.5),safe=gameplay.findSafeCharacterPosition(core,game.world.colliders,{x:a.x,y:a.y,z:a.z},game.world.bounds,{radius,height,maxRadius:.22,step:.11});
+    if(safe.unsafe||Math.hypot(safe.x-a.x,safe.z-a.z)>.24)return null;return{...safe,radius,height};
   }
   function prepareDisguise(a,type,{announce=true}={}){const place=safeDisguisePlacement(a,type);if(!place){if(announce)APP.toast('Not enough room to disguise here');return false}a.x=place.x;a.y=place.y;a.z=place.z;a.vx=a.vy=a.vz=0;a._simPrev={x:a.x,y:a.y,z:a.z,yaw:a.yaw};a._simCurr={...a._simPrev};a.rig.position.set(a.x,a.y,a.z);return true}
   function applyDisguise(a,type,announce=true){
     if(!a||!type)return false;if(a.disguiseOptions?.length&&!a.disguiseOptions.includes(type)){if(announce)APP.toast('That prop is not in your four choices this round');return false}if(a.prop&&a.propChanges<=0)return false;if(!prepareDisguise(a,type,{announce}))return false;audio?.oneShot('ui',{volume:.07,pitch:.72});spawnTransformBurst(a.x,a.y+a.height*.42,a.z);if(a.prop)a.propChanges--;a.prop=type;a.flash=true;a.locked=false;applyActorVisual(a);a._propTransform=1;if(a.propMesh){a.propMesh.userData.p3BaseScale={x:a.propMesh.scale.x,y:a.propMesh.scale.y,z:a.propMesh.scale.z};a.propMesh.scale.multiplyScalar(.22)}gameplay.rememberSafeActorPosition(core,a,game.world.colliders,game.world.bounds,.5,{interval:.45});if(announce)addFeed(`${a.person.name} disguised as ${type}. ${propRiskLabel(type)} pays ${core.propSurvivalRate(type).toFixed(2)}x survival points.`);renderDisguiseTray(a,false);return true;
   }
   function toggleLock(){const a=game?.player;if(!a||a.role!=='hider'||!a.prop)return;a.locked=!a.locked;APP.toast(a.locked?'Prop locked':'Prop unlocked');}
+  function alignProp(){const a=game?.player;if(!a||a.role!=='hider'||!a.alive||!a.prop)return;const candidates=(game.world.props||[]).filter(p=>p.type===a.prop&&Math.hypot((p.x||0)-a.x,(p.z||0)-a.z)<=2.4).sort((u,v)=>Math.hypot(u.x-a.x,u.z-a.z)-Math.hypot(v.x-a.x,v.z-a.z));const target=candidates[0];if(!target){APP.toast('No matching prop close enough to align');return}const yaw=Number(target.mesh?.rotation?.y);if(!Number.isFinite(yaw)){APP.toast('That prop has no safe alignment');return}a.yaw=yaw;a.rig.rotation.y=yaw;a.vx=a.vz=0;a.locked=true;APP.toast('Prop aligned and locked');}
   function safeDecoyPlacement(a){
     const d=propDef(a.prop),r=Math.max(.18,Math.min(.55,Math.max(d.w,d.d)*.45)),height=Math.max(.2,d.h||.5),fwdX=Math.sin(a.yaw),fwdZ=-Math.cos(a.yaw),rightX=Math.cos(a.yaw),rightZ=Math.sin(a.yaw),tries=[[.92,0],[1.18,.38],[1.18,-.38],[1.48,.62],[1.48,-.62]];
-    for(const [forward,side] of tries){const x=clamp(a.x+fwdX*forward+rightX*side,game.world.bounds.minX+r+.03,game.world.bounds.maxX-r-.03),z=clamp(a.z+fwdZ*forward+rightZ*side,game.world.bounds.minZ+r+.03,game.world.bounds.maxZ-r-.03),y=core.supportHeight(x,z,r,game.world.colliders,a.y+.25,.65);if(!core.blockingCollider(x,z,r,y,height,game.world.colliders))return{x,y,z,rotation:a.yaw}}
+    for(const [forward,side] of tries){const x=clamp(a.x+fwdX*forward+rightX*side,game.world.bounds.minX+r+.03,game.world.bounds.maxX-r-.03),z=clamp(a.z+fwdZ*forward+rightZ*side,game.world.bounds.minZ+r+.03,game.world.bounds.maxZ-r-.03),y=core.groundSupport(x,z,r,game.world.colliders,a.y+.25,.65).height;if(!core.blockingCollider(x,z,r,y,height,game.world.colliders))return{x,y,z,rotation:a.yaw}}
     return null;
   }
   function dropDecoy(){
@@ -837,7 +993,7 @@
   function spawnDecoy(type,x,y,z,{rotation=null,id=null}={}){if(id&&game.decoys.some(d=>d.userData?.serverDecoyId===id))return null;const mesh=createPropMesh(type);mesh.position.set(x,Number.isFinite(Number(y))?Number(y):0,z);mesh.rotation.y=Number.isFinite(rotation)?rotation:Math.random()*Math.PI*2;if(id)mesh.userData.serverDecoyId=id;game.scene.add(mesh);game.decoys.push(mesh);spawnPlacementRing(mesh.position.x,mesh.position.y+.05,mesh.position.z);return mesh;}
   function syncRoomDecoys(){if(!network||!Array.isArray(roomState?.decoyObjects))return;const ids=new Set(roomState.decoyObjects.map(d=>d.id));for(let i=game.decoys.length-1;i>=0;i--){const d=game.decoys[i],id=d.userData?.serverDecoyId;if(id&&!ids.has(id)){game.scene.remove(d);game.decoys.splice(i,1)}}for(const d of roomState.decoyObjects){if(!d?.id||game.decoys.some(m=>m.userData?.serverDecoyId===d.id))continue;spawnDecoy(d.prop,d.position?.x||0,d.position?.y||0,d.position?.z||0,{rotation:d.rotation,id:d.id})}}
   function useFlash(a,announce=true){if(!a.flash)return;a.flash=false;audio?.oneShot('ui',{volume:.09,pitch:1.7});spawnFlashBurst(a.x,a.y+a.height*.48,a.z);for(const h of game.actors)if(h.role==='hunter'&&h.alive&&core.dist2(a,h)<3.5&&h===game.player)flashScreen();if(announce)addFeed(`${a.person.name} fired the flash.`);}
-  function flashScreen(){const ov=root.querySelector('#ph3Flash');ov?.classList.add('on');setTimeout(()=>ov?.classList.remove('on'),900);}
+  function flashScreen(){const ov=root.querySelector('#ph3Flash');ov?.classList.remove('on');void ov?.offsetWidth;ov?.classList.add('on');audio?.oneShot('impact',{volume:.08,pitch:.42,pan:0});setTimeout(()=>ov?.classList.remove('on'),1450);}
 
 
   function propRiskLabel(type){const tier=core.propRiskTier?.(type)||'medium';return tier==='giant'?'GIANT RISK':tier==='large'?'LARGE RISK':tier==='small'?'SMALL PROP':'MEDIUM PROP'}
@@ -857,10 +1013,11 @@
   function updateHud(){
     const a=game.player,phase=root.querySelector('#ph3Phase'),role=root.querySelector('#ph3Role'),health=root.querySelector('#ph3Health'),load=root.querySelector('#ph3Load'),feed=root.querySelector('#ph3Feed'),prompt=root.querySelector('#ph3Prompt'),spectate=root.querySelector('#phSpectate'),ghostFree=root.querySelector('#phGhostFree');if(!phase)return;updateHunterHideOverlay();const left=roomState.phaseEndsAt?Math.max(0,roomState.phaseEndsAt-Date.now()):0,weather=weatherLabel(roomState.weatherPreset||game.weatherPreset);
     phase.textContent=`${String(roomState.phase).toUpperCase()} ${left?fmt(left/1000):''} · ${weather} · ${mapName(game.mapKey)} · R${roomState.round}/${roomState.settings.rounds}`;const spectating=!a.alive&&roomState.settings.mode==='classic';role.textContent=spectating?(game.ghostMode==='free'?'GHOST · FREE CAM':`GHOST · FOLLOWING ${game.spectateTarget?.person?.name||'family'}`):a.role==='hunter'?'HUNTER':`HIDER${a.prop?` · ${a.prop}`:''}`;const hp=Math.max(0,a.health);health.textContent=`HP ${'●'.repeat(hp)}${'○'.repeat(Math.max(0,3-hp))}`;
-    const choices=(a.disguiseOptions||[]).map(x=>`${esc(x)} (${core.propSurvivalRate(x).toFixed(2)}x)`).join('<br>');load.innerHTML=a.role==='hider'?`Disguise: <b>${esc(a.prop||'none')}</b>${a.prop?` · <b>${core.propSurvivalRate(a.prop).toFixed(2)}x</b>`:''}<br>Survival points: <b>${Math.round(a.hiderScore||0)}</b><br>Changes left: <b>${a.propChanges}</b><br>Decoys: <b>${a.decoys}/10</b><br>Flash: <b>${a.flash?'READY':'USED'}</b><br><span class="ph3d-choice-list">This round's four:<br>${choices||'assigned at round start'}</span>`:`Weapon: <b>Prop Zapper</b><br>Crosshair: <b>ALWAYS ACTIVE</b><br>Hold SHOOT: <b>RAPID FIRE</b><br>Unlimited ammunition.<br>Hunters have full power from round start.`;
+    const choices=(a.disguiseOptions||[]).map(x=>`${esc(x)} (${core.propSurvivalRate(x).toFixed(2)}x)`).join('<br>');load.innerHTML=a.role==='hider'?`Disguise: <b>${esc(a.prop||'none')}</b>${a.prop?` · <b>${core.propSurvivalRate(a.prop).toFixed(2)}x</b>`:''}<br>Survival points: <b>${Math.round(a.hiderScore||0)}</b><br>Changes left: <b>${a.propChanges}</b><br>Decoys: <b>${a.decoys}/10</b><br>Flash: <b>${a.flash?'READY':'USED'}</b><br><span class="ph3d-choice-list">This round's four:<br>${choices||'assigned at round start'}</span>`:`Weapon: <b>Prop Zapper</b><br>Aim: <b>${input.aim||game.padAim?'ACTIVE':'READY'}</b><br>Hold AIM for shoulder precision.<br>SHOOT supports mild hip-fire.<br>Unlimited ammunition.`;
     if(feed){feed.innerHTML=game.feed.slice(-12).map(x=>`<div>${esc(x)}</div>`).join('');feed.scrollTop=feed.scrollHeight}const interaction=a.alive?nearestInteraction(a):null;if(prompt){if(interaction){prompt.textContent=`INTERACT: ${interaction.label}`;prompt.classList.add('on')}else prompt.classList.remove('on')}
-    const propBtn=root.querySelector('#phProp'),flashBtn=root.querySelector('#phFlashBtn'),decoyBtn=root.querySelector('#phDecoy'),lockBtn=root.querySelector('#phLock'),interactBtn=root.querySelector('#phInteract');if(propBtn)propBtn.textContent=`PROP ${a.propChanges}`;if(flashBtn)flashBtn.textContent=a.flash?'FLASH ✓':'FLASH ×';if(decoyBtn)decoyBtn.textContent=`DECOY ${a.decoys}`;if(lockBtn)lockBtn.textContent=a.locked?'UNLOCK':'LOCK';if(interactBtn){interactBtn.disabled=!interaction||!a.alive;interactBtn.textContent=interaction?'USE':'INTERACT'}
-    for(const id of ['phProp','phFlashBtn','phDecoy','phLock']){const b=root.querySelector('#'+id);if(b){b.disabled=a.role!=='hider'||!a.alive;b.classList.toggle('role-hidden',a.role!=='hider'||spectating)}}const shootBtn=root.querySelector('#phShoot');if(shootBtn){shootBtn.classList.toggle('role-hidden',a.role!=='hunter'||spectating);shootBtn.disabled=a.role!=='hunter'||roomState.phase!=='hunt'||!a.alive}if(spectate){spectate.hidden=false;spectate.textContent=game.ghostMode==='follow'&&game.spectateTarget?`NEXT · ${game.spectateTarget.person.name}`:'FOLLOW PLAYER';ghostFree.hidden=false;ghostFree.classList.toggle('active',game.ghostMode==='free')}else{spectate.hidden=true;ghostFree.hidden=true}
+    const propBtn=root.querySelector('#phProp'),flashBtn=root.querySelector('#phFlashBtn'),decoyBtn=root.querySelector('#phDecoy'),lockBtn=root.querySelector('#phLock'),alignBtn=root.querySelector('#phAlign'),interactBtn=root.querySelector('#phInteract');if(propBtn)propBtn.textContent=`PROP ${a.propChanges}`;if(flashBtn)flashBtn.textContent=a.flash?'FLASH ✓':'FLASH ×';if(decoyBtn)decoyBtn.textContent=`DECOY ${a.decoys}`;if(lockBtn)lockBtn.textContent=a.locked?'UNLOCK':'LOCK';if(alignBtn)alignBtn.disabled=!a.prop||a.role!=='hider'||!a.alive;if(interactBtn){interactBtn.disabled=!interaction||!a.alive;interactBtn.textContent=interaction?'USE':'INTERACT'}
+    for(const id of ['phProp','phFlashBtn','phDecoy','phLock','phAlign']){const b=root.querySelector('#'+id);if(b){b.disabled=a.role!=='hider'||!a.alive||(id==='phAlign'&&!a.prop);b.classList.toggle('role-hidden',a.role!=='hider'||spectating)}}for(const id of ['phAim','phShoot']){const b=root.querySelector('#'+id);if(b){b.classList.toggle('role-hidden',a.role!=='hunter'||spectating);b.disabled=a.role!=='hunter'||roomState.phase!=='hunt'||!a.alive}}
+    if(spectate){spectate.hidden=false;spectate.textContent=game.ghostMode==='follow'&&game.spectateTarget?`NEXT · ${game.spectateTarget.person.name}`:'FOLLOW PLAYER';ghostFree.hidden=false;ghostFree.classList.toggle('active',game.ghostMode==='free')}else{spectate.hidden=true;ghostFree.hidden=true}
   }
 
   function fmt(sec){sec=Math.ceil(sec);return `${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')}`;}
@@ -871,6 +1028,6 @@
   function modal(html,bind){closeModal();const d=document.createElement('div');d.className='modal-backdrop';d.id='ph3Modal';d.innerHTML=`<div class="modal">${html}</div>`;document.body.appendChild(d);if(bind)bind(d.querySelector('.modal'));}
   function closeModal(){document.getElementById('ph3Modal')?.remove();}
 
-  window.__PROP_HUNT_REAL3D__={version:'GAME-NIGHT-STAGING-PHASE-W11-PROP-HUNT-SMOOTHNESS-STABILITY-35',renderer:'WebGL',three:'0.185.1',usesDepthBuffer:true,usesCanvas2D:false,p3DirectionalLocomotion:true,p3SpectatorCamera:true,p3PropTransform:true,t1HunterBlindHide:true,t1CrosshairFire:true,t1HoldRapidFire:true,phaseVWorldExpansion:true,phaseVMapScale:8.31,phaseVRotatingDisguises:true,phaseVWeather:true,phaseVInteractions:true,phaseVGhostMvp:true,w7ApprovedJohnFallback:true,w7UnapprovedLegacyModelBlocked:true,w7TwoHandWeaponGrip:true,w7HunterAimCamera:true,w7VisibleBeamTracer:true,w7ImpactBurst:true,w11Fixed60HzSimulation:true,w11RenderInterpolation:true,w11CameraHysteresis:true,w11LastSafeRecovery:true,w11CollisionLayers:true,w11SafeDisguisePlacement:true,w11SafeDecoyPlacement:true,w11FxPooling:true,w11DynamicQualityGovernor:true,worldRelease:'GAME-NIGHT-STAGING-PHASE-V-PROP-HUNT-WORLD-24'};
+  window.__PROP_HUNT_REAL3D__={version:'GAME-NIGHT-STAGING-CANDIDATE-W36-LEAPFROG-HYBRID-57',renderer:'WebGL',three:'0.185.1',usesDepthBuffer:true,usesCanvas2D:false,p3DirectionalLocomotion:true,p3SpectatorCamera:true,p3PropTransform:true,t1HunterBlindHide:true,t1CrosshairFire:true,t1HoldRapidFire:true,phaseVWorldExpansion:true,phaseVMapScale:8.31,phaseVRotatingDisguises:true,phaseVWeather:true,phaseVInteractions:true,phaseVGhostMvp:true,w7ApprovedJohnFallback:true,w7UnapprovedLegacyModelBlocked:true,w7TwoHandWeaponGrip:true,w7HunterAimCamera:true,w7VisibleBeamTracer:true,w7ImpactBurst:true,w11Fixed60HzSimulation:true,w11RenderInterpolation:true,w11CameraHysteresis:true,w11LastSafeRecovery:true,w11CollisionLayers:true,w11SafeDisguisePlacement:true,w11SafeDecoyPlacement:true,w11FxPooling:true,w11DynamicQualityGovernor:true,w30P0InputLifecycle:true,w30AnalogGaits:true,w30ExplicitAim:true,w30MultiProbeGround:true,w30ValidatedMantle:true,w30PropAlign:true,w30FiniteGuards:true,w34ProceduralGaitCoverage:true,w34SingleMotionTelemetry:true,w34DirectionalAimLocomotion:true,w34PlantedTurnPose:true,w34StartStopPose:true,w34HardLandPose:true,w35ProductionVisualSlice:true,w35AuthoredVisibleWorld:true,w35CollisionVisualSeparation:true,w35AuthoredWallCollision:true,w35MaterialTuning:true,w35ProductionLighting:true,w35DevProxyAvailable:true,w35ApprovedModelGatePreserved:true,w36LeapfrogHybrid:true,w36FullWorldDefault:true,w36NoVisualRegressionRatchet:true,w36LegacyPbrUpgrade:true,w36HeroPromotionGate:true,w36FixedBenchmarkView:true,worldRelease:'GAME-NIGHT-STAGING-CANDIDATE-W36-LEAPFROG-HYBRID-57'};
   window.PropHunt={mount,stop};
 })();

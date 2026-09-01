@@ -1,0 +1,3 @@
+GAME-NIGHT-STAGING-CANDIDATE-W36-LEAPFROG-HYBRID-57
+Visual status: PENDING REAL-DEVICE W36 SCREENSHOT
+Technical status: candidate validation required from final cold ZIP

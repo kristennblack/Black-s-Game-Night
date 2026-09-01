@@ -1,6 +1,6 @@
 /*
  * Black Family Game Night - Shared 3D Gameplay System
- * v2.0.0
+ * v2.2.0 W34 production animation-feel pass
  *
  * PURPOSE
  * ------
@@ -16,6 +16,7 @@
  */
 
 export const GAMEPLAY_3D_VERSION='2.0.0';
+export const GAMEPLAY_ANIMATION_REVISION='W34.1';
 export const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 export const damp=(current,target,lambda,dt)=>current+(target-current)*(1-Math.exp(-lambda*Math.max(0,dt)));
 export const dampAngle=(current,target,lambda,dt)=>{
@@ -131,7 +132,9 @@ export function consumeMotionEvents(actor){
 
 export const CONTROL_PRESETS=Object.freeze({
   propHunt:{
-    walkSpeed:3.15,runSpeed:5.35,groundAccel:19.5,groundBrake:24,airControl:.34,
+    // P0 movement is intentionally responsive. Weight comes from animation and a
+    // tiny amount of acceleration, not from input lag.
+    walkSpeed:2.35,jogSpeed:3.35,runSpeed:4.50,sprintSpeed:5.70,groundAccel:25,groundBrake:34,airControl:.34,
     jumpSpeed:6.15,gravity:18.5,cameraDistance:4.35,aimDistance:3.25,
     cameraHeight:1.20,cameraLift:.18,minCameraDistance:1.40,recoveryPitch:.035,shoulder:.54,fov:59,aimFov:52,sprintFov:63,
     lookSensitivity:.00425,touchLookSensitivity:.00465,minPitch:-.16,maxPitch:.25
@@ -231,6 +234,50 @@ export function movementIntent(keys,joy,yaw,{gamepad=true}={}){
 
 
 /** Resolve world velocity into the actor's facing space. Positive z is forward. */
+/**
+ * Map analog strength to a walk/jog/run/sprint target without normalizing every
+ * stick position to full speed. Keyboard input naturally arrives at strength 1.
+ */
+export function movementSpeedForIntent(intent,preset=CONTROL_PRESETS.propHunt,{sprinting=false}={}){
+  const strength=clamp(Number(intent?.strength)||0,0,1);if(strength<.045)return 0;
+  const walk=Number(preset.walkSpeed)||2.35,jog=Number(preset.jogSpeed)||Math.max(walk,3.35),run=Number(preset.runSpeed)||Math.max(jog,4.5),sprint=Number(preset.sprintSpeed)||Math.max(run,5.7);
+  let speed;
+  if(strength<=.42)speed=walk*(strength/.42);
+  else if(strength<=.76)speed=walk+(jog-walk)*((strength-.42)/.34);
+  else speed=jog+(run-jog)*((strength-.76)/.24);
+  if(sprinting&&strength>.18){const sprintBlend=clamp((strength-.18)/.82,0,1);speed=Math.max(speed,run*.72+(sprint-run*.72)*sprintBlend)}
+  return Math.max(0,speed);
+}
+
+export function gaitForMovement(intent,{sprinting=false}={}){
+  const strength=clamp(Number(intent?.strength)||0,0,1);if(strength<.08)return'idle';if(sprinting&&strength>.45)return'sprint';if(strength<.48)return'walk';if(strength<.82)return'jog';return'run';
+}
+
+/** Smooth toward a final target speed. Unlike smoothVelocity, this does not
+ * multiply analog strength twice because targetSpeed already contains it. */
+export function smoothVelocityToward(actor,intent,targetSpeed,dt,{accel=22,brake=32,airControl=1}={}){
+  const grounded=actor.grounded!==false,factor=grounded?1:airControl,active=(intent?.strength||0)>.045;
+  const dx=Number(intent?.directionX)||0,dz=Number(intent?.directionZ)||0,safeSpeed=Number.isFinite(targetSpeed)?Math.max(0,targetSpeed):0;
+  const targetX=active?dx*safeSpeed:0,targetZ=active?dz*safeSpeed:0,rate=(active?accel:brake)*factor,t=1-Math.exp(-rate*Math.max(0,dt));
+  if(!Number.isFinite(actor.vx))actor.vx=0;if(!Number.isFinite(actor.vz))actor.vz=0;
+  actor.vx+=(targetX-actor.vx)*t;actor.vz+=(targetZ-actor.vz)*t;
+  if(!active&&Math.hypot(actor.vx,actor.vz)<.025){actor.vx=0;actor.vz=0}return actor;
+}
+
+export function turnIntentError(actor,intent){
+  if(!actor||!(intent?.strength>.07))return 0;const desired=Math.atan2(intent.directionX||0,-(intent.directionZ||0)),velocitySpeed=Math.hypot(Number(actor.vx)||0,Number(actor.vz)||0);if(velocitySpeed<.2)return wrapAngle(desired-(Number(actor.yaw)||0));const travel=Math.atan2(Number(actor.vx)||0,-(Number(actor.vz)||0));return wrapAngle(desired-travel);
+}
+
+export function turnSemantic(error){const a=Math.abs(Number(error)||0);if(a>2.55)return error<0?'turn180Left':'turn180Right';if(a>1.35)return error<0?'sharpTurnLeft':'sharpTurnRight';if(a>.45)return error<0?'turnLeft':'turnRight';return null}
+
+export function sanitizeActorKinematics(actor,fallback=null){
+  if(!actor)return false;let repaired=false;const fb=fallback||actor._lastSafePosition||{};
+  for(const key of ['x','y','z'])if(!Number.isFinite(actor[key])){actor[key]=Number.isFinite(fb[key])?fb[key]:0;repaired=true}
+  for(const key of ['vx','vy','vz'])if(!Number.isFinite(actor[key])){actor[key]=0;repaired=true}
+  if(!Number.isFinite(actor.yaw)){actor.yaw=Number.isFinite(fb.yaw)?fb.yaw:0;repaired=true}if(!Number.isFinite(actor.pitch)){actor.pitch=0;repaired=true}
+  if(repaired){actor.mantle=null;actor.grounded=true;actor.rig?.position?.set?.(actor.x,actor.y,actor.z)}return repaired;
+}
+
 export function movementRelativeToFacing(actor){
   const vx=Number(actor?.vx)||0,vz=Number(actor?.vz)||0,yaw=Number(actor?.yaw)||0,speed=Math.hypot(vx,vz);
   if(speed<1e-5)return{x:0,z:0,speed:0};
@@ -239,13 +286,13 @@ export function movementRelativeToFacing(actor){
 }
 
 /** Directional lower-body semantic used while the upper body stays on aim. */
-export function resolveDirectionalLocomotion(actor,{aiming=false,sprinting=false,walkThreshold=.22}={}){
-  const local=movementRelativeToFacing(actor),speed=local.speed;
+export function resolveDirectionalLocomotion(actor,{aiming=false,sprinting=false,walkThreshold=.22,gait=null}={}){
+  const local=movementRelativeToFacing(actor),speed=local.speed,forwardSemantic=gait&&gait!=='idle'?gait:(sprinting?'sprint':speed>4.05?'run':speed>2.75?'jog':'walk');
   if(speed<walkThreshold)return{semantic:'idle',local,speed};
-  if(!aiming)return{semantic:sprinting?'sprint':speed>3.25?'run':'walk',local,speed};
+  if(!aiming)return{semantic:forwardSemantic,local,speed};
   if(local.z<-.48&&Math.abs(local.z)>=Math.abs(local.x)*.72)return{semantic:'backward',local,speed};
   if(Math.abs(local.x)>.5&&Math.abs(local.x)>Math.abs(local.z)*.82)return{semantic:local.x<0?'strafeLeft':'strafeRight',local,speed};
-  return{semantic:sprinting?'sprint':speed>3.25?'run':'walk',local,speed};
+  return{semantic:forwardSemantic,local,speed};
 }
 
 export function smoothVelocity(actor,intent,speed,dt,{accel=18,brake=24,airControl=1}={}){
@@ -359,7 +406,7 @@ export function resolveLocomotionAnim(actor,{moving=false,sprinting=false,aiming
   if(actor?.grounded===false)return (actor?.vy||0)>0?'jump':'fall';
   if((actor?._hardLandTimer||0)>0)return 'hardLand';
   if((actor?.landTimer||0)>0)return 'land';
-  if(moving)return sprinting?'run':'walk';
+  if(moving)return actor?._gait&&actor._gait!=='idle'?actor._gait:(sprinting?'sprint':'walk');
   if(!aiming&&Math.abs(actor?.turnRate||0)>.8)return (actor.turnRate||0)<0?'turnLeft':'turnRight';
   return aiming?'aim':'idle';
 }
@@ -432,6 +479,9 @@ export function createThirdPersonCamera(THREE,camera,core,presetName='island',op
   }
   function update(target,colliders,dt,options={}){
     if(!target)return state;
+    const finiteTarget=[target.x,target.y,target.z].every(Number.isFinite);if(!finiteTarget)return state;
+    for(const key of ['yaw','pitch','distance','targetDistance','resolvedDistance'])if(!Number.isFinite(state[key])){state[key]=key==='yaw'?(Number(target.yaw)||0):key==='pitch'?(cfg.recoveryPitch??.07):cfg.cameraDistance;state.forceSnap=true;state.lastRecoveryReason='non-finite camera state recovery';state.recoveries++}
+    if(![camera.position.x,camera.position.y,camera.position.z].every(Number.isFinite)){camera.position.set(target.x,target.y+(options.height??cfg.cameraHeight),target.z+Math.max(cfg.minCameraDistance,2.8));state.forceSnap=true;state.initialized=false;state.lastRecoveryReason='non-finite camera transform recovery';state.recoveries++}
     state.aim=!!options.aim;state.sprinting=!!options.sprinting;
     state.recoilPitch=damp(state.recoilPitch,0,13,dt);state.recoilYaw=damp(state.recoilYaw,0,15,dt);state.shake=damp(state.shake,0,12,dt);
     state.distance=damp(state.distance,state.targetDistance,10,dt);
@@ -470,27 +520,38 @@ export function createThirdPersonCamera(THREE,camera,core,presetName='island',op
   return {state,cfg,rotate,zoom,swapShoulder,recenter,kick,reset,update};
 }
 
-export function bindPointerLook(element,cameraRig,{ignoreSelector='button,select,input,a,.no-look',rightHalfTouch=true,pinchScale=.012}={}){
+export function bindPointerLook(element,cameraRig,{ignoreSelector='button,select,input,a,.no-look',rightHalfTouch=true,pinchScale=.012,enabled=()=>true}={}){
   const points=new Map();let activeLook=null,lastX=0,lastY=0,lastPinch=0,pinching=false;
-  const eligible=e=>{if(e.pointerType==='mouse'&&e.button!==0)return false;if(e.target?.closest?.(ignoreSelector))return false;if(rightHalfTouch&&e.pointerType!=='mouse'){const r=element.getBoundingClientRect();if(e.clientX<r.left+r.width*.42&&points.size===0)return false}return true};
+  const eligible=e=>{if(!enabled())return false;if(e.pointerType==='mouse'&&e.button!==0)return false;if(e.target?.closest?.(ignoreSelector))return false;if(rightHalfTouch&&e.pointerType!=='mouse'){const r=element.getBoundingClientRect();if(e.clientX<r.left+r.width*.42&&points.size===0)return false}return true};
   const pinchDistance=()=>{const a=[...points.values()];return a.length<2?0:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)};
-  const down=e=>{if(!eligible(e))return;points.set(e.pointerId,{x:e.clientX,y:e.clientY,type:e.pointerType});element.setPointerCapture?.(e.pointerId);if(points.size===1){activeLook=e.pointerId;lastX=e.clientX;lastY=e.clientY;pinching=false}else if(points.size>=2){activeLook=null;lastPinch=pinchDistance();pinching=true;e.preventDefault?.()}};
-  const move=e=>{if(!points.has(e.pointerId))return;points.set(e.pointerId,{x:e.clientX,y:e.clientY,type:e.pointerType});if(points.size>=2){const d=pinchDistance();if(lastPinch>0&&d>0){const delta=d-lastPinch;cameraRig.zoom(-delta*pinchScale)}lastPinch=d;pinching=true;e.preventDefault?.();return}if(activeLook===e.pointerId&&!pinching){const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;cameraRig.rotate(dx,dy,{touch:e.pointerType!=='mouse'})}};
-  const up=e=>{if(!points.has(e.pointerId))return;points.delete(e.pointerId);if(points.size===1){const [rid,p]=points.entries().next().value;activeLook=rid;lastX=p.x;lastY=p.y;pinching=false;lastPinch=0}else if(points.size===0){activeLook=null;pinching=false;lastPinch=0}};
-  element.addEventListener('pointerdown',down);element.addEventListener('pointermove',move,{passive:false});element.addEventListener('pointerup',up);element.addEventListener('pointercancel',up);
-  const wheel=e=>cameraRig.zoom(Math.sign(e.deltaY)*.35);element.addEventListener('wheel',wheel,{passive:true});
-  return ()=>{element.removeEventListener('pointerdown',down);element.removeEventListener('pointermove',move);element.removeEventListener('pointerup',up);element.removeEventListener('pointercancel',up);element.removeEventListener('wheel',wheel)};
+  const clear=()=>{points.clear();activeLook=null;lastPinch=0;pinching=false};
+  const down=e=>{if(!eligible(e))return;points.set(e.pointerId,{x:e.clientX,y:e.clientY,type:e.pointerType});try{element.setPointerCapture?.(e.pointerId)}catch{}if(points.size===1){activeLook=e.pointerId;lastX=e.clientX;lastY=e.clientY;pinching=false}else if(points.size>=2){activeLook=null;lastPinch=pinchDistance();pinching=true;e.preventDefault?.()}};
+  const move=e=>{if(!enabled()){clear();return}if(!points.has(e.pointerId))return;points.set(e.pointerId,{x:e.clientX,y:e.clientY,type:e.pointerType});if(points.size>=2){const d=pinchDistance();if(lastPinch>0&&d>0){const delta=d-lastPinch;cameraRig.zoom(-delta*pinchScale)}lastPinch=d;pinching=true;e.preventDefault?.();return}if(activeLook===e.pointerId&&!pinching){const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;cameraRig.rotate(dx,dy,{touch:e.pointerType!=='mouse'})}};
+  const up=e=>{if(!points.has(e.pointerId))return;points.delete(e.pointerId);if(points.size===1){const [rid,p]=points.entries().next().value;activeLook=rid;lastX=p.x;lastY=p.y;pinching=false;lastPinch=0}else if(points.size===0)clear()};
+  const lost=e=>up(e),wheel=e=>{if(enabled())cameraRig.zoom(Math.sign(e.deltaY)*.35)},blur=()=>clear(),visibility=()=>{if(typeof document!=='undefined'&&document.visibilityState!=='visible')clear()};
+  element.addEventListener('pointerdown',down);element.addEventListener('pointermove',move,{passive:false});element.addEventListener('pointerup',up);element.addEventListener('pointercancel',up);element.addEventListener('lostpointercapture',lost);element.addEventListener('wheel',wheel,{passive:true});globalThis.addEventListener?.('blur',blur);globalThis.document?.addEventListener?.('visibilitychange',visibility);
+  return ()=>{clear();element.removeEventListener('pointerdown',down);element.removeEventListener('pointermove',move);element.removeEventListener('pointerup',up);element.removeEventListener('pointercancel',up);element.removeEventListener('lostpointercapture',lost);element.removeEventListener('wheel',wheel);globalThis.removeEventListener?.('blur',blur);globalThis.document?.removeEventListener?.('visibilitychange',visibility)};
 }
 
-export function bindVirtualJoystick(element,knob,joy,{deadzone=.08,travel=.34}={}){
+export function bindVirtualJoystick(element,knob,joy,{deadzone=.08,travel=.34,enabled=()=>true}={}){
   let id=null;
   const set=(x,z)=>{joy.x=x;joy.z=z;if(knob)knob.style.transform=`translate(${x*32}px,${-z*32}px)`};
+  const clear=()=>{id=null;set(0,0)};
   const update=e=>{const r=element.getBoundingClientRect(),x=e.clientX-(r.left+r.width/2),y=e.clientY-(r.top+r.height/2),raw=Math.hypot(x,y)/(r.width*travel),m=clamp((raw-deadzone)/(1-deadzone),0,1),a=Math.atan2(y,x);set(Math.cos(a)*m,-Math.sin(a)*m)};
-  const down=e=>{id=e.pointerId;element.setPointerCapture?.(id);update(e)};
-  const move=e=>{if(e.pointerId===id)update(e)};
-  const end=e=>{if(e.pointerId!==id)return;id=null;set(0,0)};
-  element.addEventListener('pointerdown',down);element.addEventListener('pointermove',move);element.addEventListener('pointerup',end);element.addEventListener('pointercancel',end);
-  return ()=>{set(0,0);element.removeEventListener('pointerdown',down);element.removeEventListener('pointermove',move);element.removeEventListener('pointerup',end);element.removeEventListener('pointercancel',end)};
+  const down=e=>{if(!enabled()){clear();return}if(id!=null&&id!==e.pointerId)return;id=e.pointerId;try{element.setPointerCapture?.(id)}catch{}update(e);e.preventDefault?.()};
+  const move=e=>{if(!enabled()){clear();return}if(e.pointerId===id){update(e);e.preventDefault?.()}};
+  const end=e=>{if(e.pointerId!==id)return;clear()};const blur=()=>clear(),visibility=()=>{if(typeof document!=='undefined'&&document.visibilityState!=='visible')clear()};
+  element.addEventListener('pointerdown',down);element.addEventListener('pointermove',move,{passive:false});element.addEventListener('pointerup',end);element.addEventListener('pointercancel',end);element.addEventListener('lostpointercapture',end);globalThis.addEventListener?.('blur',blur);globalThis.document?.addEventListener?.('visibilitychange',visibility);
+  return ()=>{clear();element.removeEventListener('pointerdown',down);element.removeEventListener('pointermove',move);element.removeEventListener('pointerup',end);element.removeEventListener('pointercancel',end);element.removeEventListener('lostpointercapture',end);globalThis.removeEventListener?.('blur',blur);globalThis.document?.removeEventListener?.('visibilitychange',visibility)};
+}
+
+/** Bind a press-and-hold action with complete pointer lifecycle cleanup. */
+export function bindHoldButton(element,onChange,{mouseButton=0,preventDefault=true}={}){
+  if(!element)return()=>{};let pointerId=null,held=false;const set=v=>{v=!!v;if(v===held)return;held=v;onChange?.(held)};
+  const down=e=>{if(e.pointerType==='mouse'&&e.button!==mouseButton)return;if(pointerId!=null)return;pointerId=e.pointerId;try{element.setPointerCapture?.(e.pointerId)}catch{}set(true);if(preventDefault)e.preventDefault?.()};
+  const end=e=>{if(pointerId!=null&&e?.pointerId!=null&&e.pointerId!==pointerId)return;pointerId=null;set(false)};const blur=()=>end({pointerId});const visibility=()=>{if(typeof document!=='undefined'&&document.visibilityState!=='visible')end({pointerId})};
+  element.addEventListener('pointerdown',down);element.addEventListener('pointerup',end);element.addEventListener('pointercancel',end);element.addEventListener('lostpointercapture',end);globalThis.addEventListener?.('blur',blur);globalThis.document?.addEventListener?.('visibilitychange',visibility);
+  return()=>{end({pointerId});element.removeEventListener('pointerdown',down);element.removeEventListener('pointerup',end);element.removeEventListener('pointercancel',end);element.removeEventListener('lostpointercapture',end);globalThis.removeEventListener?.('blur',blur);globalThis.document?.removeEventListener?.('visibilitychange',visibility)};
 }
 
 function poseBlend(obj,axis,target,rate,dt){if(!obj)return;obj.rotation[axis]=damp(obj.rotation[axis]||0,target,rate,dt)}
@@ -518,12 +579,27 @@ export function updateMotionTelemetry(actor,dt,{speed=0,turnRate=0,grounded=acto
  * `actor.anim` is a semantic state, not a clip name. This keeps procedural rigs
  * and future GLTF rigs speaking the same gameplay language.
  */
-export function animateFamilyRig(actor,dt,{aim=false,recoil=0,lookPitch=0,turnRate=0,speed=0,grounded=true,attention=null}={}){
+const PROCEDURAL_LOCOMOTION_PROFILES=Object.freeze({
+  walk:{move:.47,ref:2.35,lean:.006,arm:.60,knee:.64,bob:.022},
+  jog:{move:.64,ref:3.35,lean:.032,arm:.66,knee:.72,bob:.029},
+  run:{move:.79,ref:4.5,lean:.060,arm:.70,knee:.82,bob:.035},
+  sprint:{move:.94,ref:5.7,lean:.105,arm:.56,knee:.94,bob:.040},
+  backward:{move:.46,ref:2.85,lean:.035,arm:.48,knee:.62,bob:.020},
+  strafeLeft:{move:.52,ref:3.0,lean:.020,arm:.43,knee:.68,bob:.023},
+  strafeRight:{move:.52,ref:3.0,lean:.020,arm:.43,knee:.68,bob:.023},
+  startMove:{move:.40,ref:2.35,lean:.055,arm:.52,knee:.60,bob:.018},
+  stopMove:{move:.30,ref:2.35,lean:-.032,arm:.38,knee:.54,bob:.012}
+});
+const PROCEDURAL_TURN_STATES=new Set(['turnLeft','turnRight','sharpTurnLeft','sharpTurnRight','turn180Left','turn180Right']);
+const PROCEDURAL_DIRECTIONAL_BASES=new Set(['walk','jog','run','sprint']);
+
+export function animateFamilyRig(actor,dt,{aim=false,recoil=0,lookPitch=0,turnRate=0,speed=0,grounded=true,attention=null,motion=null,directional=null,transition=null}={}){
   const rig=actor?.rig;if(!rig)return;const p=rig.userData?.parts||{},dog=!!p.legs&&!p.leftLeg;
   actor.animTime=(actor.animTime||0)+dt;
-  const motion=updateMotionTelemetry(actor,dt,{speed,turnRate,grounded,verticalSpeed:actor.vy||0});
-  const anim=actor.anim||'idle',moving=['walk','run'].includes(anim),run=anim==='run',phase=motion?.stridePhase||actor.animTime,moveAmount=run?.78:moving?.49:0;
-  const speedFactor=clamp(speed/(run?4.5:2.7),.12,1.18),amount=moveAmount*(moving?speedFactor:1),bob=moving?Math.abs(Math.sin(phase*2))*(run?.034:.022):Math.sin(actor.animTime*1.55)*.004;
+  motion=motion||updateMotionTelemetry(actor,dt,{speed,turnRate,grounded,verticalSpeed:actor.vy||0});
+  const rawAnim=transition||actor.anim||'idle',localMove=directional?.local||movementRelativeToFacing(actor),directionalSemantic=aim&&PROCEDURAL_DIRECTIONAL_BASES.has(rawAnim)&&directional?.semantic?directional.semantic:null;
+  const anim=directionalSemantic||rawAnim,profile=PROCEDURAL_LOCOMOTION_PROFILES[anim]||null,moving=!!profile&&(speed>.045||anim==='startMove'||anim==='stopMove'),run=anim==='run'||anim==='sprint',sprint=anim==='sprint',jog=anim==='jog',backward=anim==='backward',strafing=anim==='strafeLeft'||anim==='strafeRight',turning=PROCEDURAL_TURN_STATES.has(anim),phase=motion?.stridePhase||actor.animTime;
+  const speedFactor=profile?clamp(speed/Math.max(.5,profile.ref),anim==='startMove'||anim==='stopMove'?.34:.18,1.18):1,amount=profile?profile.move*(moving?speedFactor:1):0,bob=moving?Math.abs(Math.sin(phase*2))*(profile?.bob||.022):Math.sin(actor.animTime*1.55)*.004;
   const accelLean=clamp((motion?.accel||0)*.008,-.075,.085),turnLean=clamp((motion?.turn||turnRate||0)*.045,-.09,.09),landing=(motion?.landing||0);
   const idleShift=!moving&&anim==='idle'?Math.sin((motion?.idleTime||0)*.72+(String(actor.id||'').length*.53)):.0;
   // Sparse fidgets keep long idle moments alive without making characters twitch constantly.
@@ -533,7 +609,7 @@ export function animateFamilyRig(actor,dt,{aim=false,recoil=0,lookPitch=0,turnRa
   const breathing=1+Math.sin(actor.animTime*1.7+(String(actor.id||'').length*.21))*(moving?.003:.009);
   const idleGlance=!moving&&anim==='idle'?Math.sin(actor.animTime*.43+(String(actor.id||'').length*.61))*.065:0,attentionYaw=(attention?.yaw||0)*(attention?.weight??0),attentionPitch=(attention?.pitch||0)*(attention?.weight??0);
   (p.eyes||[]).forEach(e=>{poseBlend(e,'y',attentionYaw*.42,11,dt);poseBlend(e,'x',-attentionPitch*.25,11,dt)});
-  const turnInPlace=!moving&&grounded?clamp((motion?.turn||turnRate||0)*.09,-.28,.28):0;
+  const turnSign=String(anim).includes('Left')?-1:String(anim).includes('Right')?1:Math.sign(motion?.turn||turnRate||0),turnStrength=String(anim).startsWith('turn180')?.34:String(anim).startsWith('sharpTurn')?.25:turning?.17:0,turnPose=grounded?(turning?turnSign*turnStrength:(!moving?clamp((motion?.turn||turnRate||0)*.09,-.22,.22):0)):0,turnInPlace=turnPose;
   if(p.torso){scaleBlend(p.torso,'y',breathing,6,dt);scaleBlend(p.torso,'x',2-breathing,6,dt)}
   if(dog){
     (p.legs||[]).forEach((leg,i)=>{const diagonal=(leg.front?1:-1)*(leg.side<0?1:-1),s=Math.sin(phase+diagonal*Math.PI*.48)*amount;poseBlend(leg.upper,'x',s,22,dt);poseBlend(leg.lower,'x',Math.max(0,-s)*.72-.09,22,dt)});
@@ -562,17 +638,19 @@ export function animateFamilyRig(actor,dt,{aim=false,recoil=0,lookPitch=0,turnRa
     if(anim==='hit'){if(p.head)poseBlend(p.head,'z',Math.sin(actor.animTime*28)*.16,24,dt);(p.legs||[]).forEach(leg=>poseBlend(leg.upper,'x',-.18,20,dt))}
     return;
   }
-  const crouch=anim==='land'?.075:anim==='mantle'?.045:anim==='sit'?.22:anim==='sleep'?.38:0;
-  if(p.hips){posBlend(p.hips,'y',basePos(p.hips,'y',.82)+bob-crouch-landing*.025,18,dt);poseBlend(p.hips,'y',(moving?Math.sin(phase)*.025:idleShift*.018),12,dt);poseBlend(p.hips,'z',-turnLean+idleShift*.012,10,dt);poseBlend(p.hips,'x',clamp(-accelLean*.35,-.04,.04),10,dt)}
-  if(p.upperBody){posBlend(p.upperBody,'y',basePos(p.upperBody,'y',.92)+bob*.55-crouch*.25-landing*.02,18,dt);poseBlend(p.upperBody,'z',turnLean+(anim==='hit'?.12:0)-idleShift*.01,10,dt);poseBlend(p.upperBody,'x',anim==='mantle'?.24:anim==='hit'?-.08:(run?.055:0)+accelLean+landing*.055,10,dt);poseBlend(p.upperBody,'y',(moving?-Math.sin(phase)*.018:idleShift*.012)+attentionYaw*.12,10,dt)}
-  if(p.head){poseBlend(p.head,'x',clamp(lookPitch,-.35,.35)*.28+attentionPitch*.55+(moving?Math.sin(phase*2)*.006:0)+clamp(-(motion?.vertical||0)*.006,-.045,.045),10,dt);poseBlend(p.head,'y',clamp((motion?.turn||turnRate||0)*.065,-.11,.11)+idleGlance+attentionYaw*.72,10,dt);poseBlend(p.head,'z',-turnLean*.22+idleShift*.008,9,dt)}
+  const crouch=anim==='hardLand'?.13:anim==='land'?.075:anim==='mantle'?.045:anim==='sit'?.22:anim==='sleep'?.38:0,gaitLean=profile?.lean||0,strideTwist=moving?-Math.sin(phase)*(.014+amount*.047)*(backward?-.78:1):0,sideDrive=strafing?(anim==='strafeLeft'?-1:1):clamp(localMove?.x||0,-1,1),strafeLean=strafing?sideDrive*.045:0;
+  if(p.hips){posBlend(p.hips,'y',basePos(p.hips,'y',.82)+bob-crouch-landing*.025,18,dt);poseBlend(p.hips,'y',strideTwist+turnPose*.62+(moving?sideDrive*.012:idleShift*.018),13,dt);poseBlend(p.hips,'z',-turnLean-strafeLean+idleShift*.012,11,dt);poseBlend(p.hips,'x',clamp(gaitLean*.35-accelLean*.30,-.055,.07),11,dt)}
+  if(p.upperBody){posBlend(p.upperBody,'y',basePos(p.upperBody,'y',.92)+bob*.55-crouch*.25-landing*.02,18,dt);poseBlend(p.upperBody,'z',turnLean+strafeLean*.72+(anim==='hit'?.12:0)-idleShift*.01,11,dt);poseBlend(p.upperBody,'x',anim==='mantle'?.24:anim==='hit'?-.08:gaitLean+accelLean+landing*.055,11,dt);poseBlend(p.upperBody,'y',-strideTwist*.72-turnPose*.82+(moving?sideDrive*.008:idleShift*.012)+attentionYaw*.12,12,dt)}
+  if(p.head){poseBlend(p.head,'x',clamp(lookPitch,-.35,.35)*.28+attentionPitch*.55+(moving?Math.sin(phase*2)*.006:0)+clamp(-(motion?.vertical||0)*.006,-.045,.045),10,dt);poseBlend(p.head,'y',clamp((motion?.turn||turnRate||0)*.065,-.11,.11)+turnPose*.18+idleGlance+attentionYaw*.72,10,dt);poseBlend(p.head,'z',-turnLean*.22-strafeLean*.18+idleShift*.008,9,dt)}
   if(p.leftLeg&&p.rightLeg){
-    let leg=Math.sin(phase)*amount;if(!moving)leg=0;
-    if(anim==='jump'){leg=clamp(-.22-(motion?.vertical||0)*.018,-.42,-.18)}else if(anim==='fall'){leg=.18+Math.min(.12,Math.abs(motion?.vertical||0)*.008)}else if(anim==='land'){leg=.1+landing*.16}else if(anim==='mantle'){leg=-.42}else if(anim==='sit'){leg=.82}else if(anim==='sleep'){leg=.96}
+    let leg=Math.sin(phase)*amount;if(backward)leg*=-.78;if(strafing)leg*=.56;if(!moving)leg=0;
+    if(anim==='jump'){leg=clamp(-.22-(motion?.vertical||0)*.018,-.42,-.18)}else if(anim==='fall'){leg=.18+Math.min(.12,Math.abs(motion?.vertical||0)*.008)}else if(anim==='hardLand'){leg=.18+landing*.22}else if(anim==='land'){leg=.1+landing*.16}else if(anim==='mantle'){leg=-.42}else if(anim==='sit'){leg=.82}else if(anim==='sleep'){leg=.96}
     poseBlend(p.leftLeg.hip,'x',leg,22,dt);poseBlend(p.rightLeg.hip,'x',-leg,22,dt);
-    poseBlend(p.leftLeg.knee,'x',moving?Math.max(0,-leg)*.66:(anim==='jump'?-.28:0),22,dt);
-    poseBlend(p.rightLeg.knee,'x',moving?Math.max(0,leg)*.66:(anim==='jump'?-.28:0),22,dt);
-    if(p.leftLeg.foot&&p.rightLeg.foot){const heelL=moving?clamp(-leg*.24,-.16,.16):0,heelR=moving?clamp(leg*.24,-.16,.16):0;poseBlend(p.leftLeg.foot,'x',heelL,18,dt);poseBlend(p.rightLeg.foot,'x',heelR,18,dt);poseBlend(p.leftLeg.foot,'y',turnInPlace,14,dt);poseBlend(p.rightLeg.foot,'y',-turnInPlace,14,dt);poseBlend(p.leftLeg.foot,'z',moving?clamp(turnLean*.18,-.035,.035):0,14,dt);poseBlend(p.rightLeg.foot,'z',moving?clamp(turnLean*.18,-.035,.035):0,14,dt)}
+    const kneeGain=profile?.knee||.66,turnCrouch=turning?.07:0,strafeCrouch=strafing?.025:0,landingCrouch=anim==='hardLand'?.24+landing*.12:anim==='land'?.11+landing*.06:0,staticKnee=anim==='jump'?-.28:turnCrouch+landingCrouch;
+    poseBlend(p.leftLeg.knee,'x',moving?Math.max(0,-leg)*kneeGain+strafeCrouch:staticKnee,22,dt);
+    poseBlend(p.rightLeg.knee,'x',moving?Math.max(0,leg)*kneeGain+strafeCrouch:staticKnee,22,dt);
+    poseBlend(p.leftLeg.hip,'y',turnPose*.22,15,dt);poseBlend(p.rightLeg.hip,'y',-turnPose*.22,15,dt);poseBlend(p.leftLeg.hip,'z',strafing?strafeLean*.52:0,15,dt);poseBlend(p.rightLeg.hip,'z',strafing?strafeLean*.52:0,15,dt);
+    if(p.leftLeg.foot&&p.rightLeg.foot){const heelScale=sprint?.31:run?.27:jog?.25:.22,heelL=moving?clamp(-leg*heelScale,-.19,.19):0,heelR=moving?clamp(leg*heelScale,-.19,.19):0;poseBlend(p.leftLeg.foot,'x',heelL,18,dt);poseBlend(p.rightLeg.foot,'x',heelR,18,dt);poseBlend(p.leftLeg.foot,'y',turnInPlace+(strafing?sideDrive*.055:0),15,dt);poseBlend(p.rightLeg.foot,'y',-turnInPlace+(strafing?sideDrive*.055:0),15,dt);poseBlend(p.leftLeg.foot,'z',moving?clamp(turnLean*.18+strafeLean*.14,-.045,.045):0,14,dt);poseBlend(p.rightLeg.foot,'z',moving?clamp(turnLean*.18+strafeLean*.14,-.045,.045):0,14,dt)}
   }
   const weaponGripActive=!!(aim||anim==='aim'||anim==='fire')&&p.weapon?.visible!==false;
   if(p.weapon?.userData?.gripHands){
@@ -598,7 +676,7 @@ export function animateFamilyRig(actor,dt,{aim=false,recoil=0,lookPitch=0,turnRa
       poseBlend(p.leftArm.shoulder,'x',-.38,16,dt);poseBlend(p.rightArm.shoulder,'x',-.38,16,dt);poseBlend(p.leftArm.shoulder,'z',-.2,16,dt);poseBlend(p.rightArm.shoulder,'z',.2,16,dt);poseBlend(p.leftArm.elbow,'x',-.18,16,dt);poseBlend(p.rightArm.elbow,'x',-.18,16,dt);
     }else if(anim==='fall'){
       poseBlend(p.leftArm.shoulder,'x',.2,14,dt);poseBlend(p.rightArm.shoulder,'x',.2,14,dt);poseBlend(p.leftArm.shoulder,'z',-.42,14,dt);poseBlend(p.rightArm.shoulder,'z',.42,14,dt);poseBlend(p.leftArm.elbow,'x',-.12,14,dt);poseBlend(p.rightArm.elbow,'x',-.12,14,dt);
-    }else if(anim==='land'){
+    }else if(anim==='land'||anim==='hardLand'){
       poseBlend(p.leftArm.shoulder,'x',.25+landing*.16,18,dt);poseBlend(p.rightArm.shoulder,'x',.25+landing*.16,18,dt);poseBlend(p.leftArm.elbow,'x',-.22,18,dt);poseBlend(p.rightArm.elbow,'x',-.22,18,dt);
     }else if(anim==='harvest'){
       const dig=Math.sin(actor.animTime*5.6);poseBlend(p.leftArm.shoulder,'x',-.75+dig*.26,16,dt);poseBlend(p.rightArm.shoulder,'x',-1.05-dig*.22,16,dt);poseBlend(p.leftArm.elbow,'x',-.7,16,dt);poseBlend(p.rightArm.elbow,'x',-.82,16,dt);poseBlend(p.upperBody,'x',.14+Math.max(0,dig)*.05,12,dt);
@@ -632,6 +710,8 @@ export function animateFamilyRig(actor,dt,{aim=false,recoil=0,lookPitch=0,turnRa
       poseBlend(p.leftArm.shoulder,'x',-.72+Math.sin(actor.animTime*6)*.2,16,dt);poseBlend(p.rightArm.shoulder,'x',-.72+Math.sin(actor.animTime*6+1)*.2,16,dt);poseBlend(p.leftArm.elbow,'x',-.55,16,dt);poseBlend(p.rightArm.elbow,'x',-.55,16,dt);
     }else if(anim==='celebrate'){
       poseBlend(p.leftArm.shoulder,'x',-2.35+Math.sin(actor.animTime*5)*.08,18,dt);poseBlend(p.rightArm.shoulder,'x',-2.35-Math.sin(actor.animTime*5)*.08,18,dt);poseBlend(p.leftArm.shoulder,'z',-.28,18,dt);poseBlend(p.rightArm.shoulder,'z',.28,18,dt);poseBlend(p.leftArm.elbow,'x',-.2,18,dt);poseBlend(p.rightArm.elbow,'x',-.2,18,dt);
+    }else if(turning&&grounded){
+      const brace=Math.abs(turnPose);poseBlend(p.leftArm.shoulder,'x',turnPose*.44,16,dt);poseBlend(p.rightArm.shoulder,'x',-turnPose*.44,16,dt);poseBlend(p.leftArm.shoulder,'z',-.04-brace*.10,15,dt);poseBlend(p.rightArm.shoulder,'z',.04+brace*.10,15,dt);poseBlend(p.leftArm.elbow,'x',-.08-brace*.34,15,dt);poseBlend(p.rightArm.elbow,'x',-.08-brace*.34,15,dt);
     }else if(anim==='idle'&&!moving&&idleFidget>0){
       // Occasional sleeve/face adjustment. This is intentionally rare so idle still feels calm.
       poseBlend(p.rightArm.shoulder,'x',-.22-idleFidget*.58,12,dt);poseBlend(p.rightArm.elbow,'x',-.08-idleFidget*.86,12,dt);poseBlend(p.rightArm.shoulder,'z',-.04-idleFidget*.08,12,dt);poseBlend(p.leftArm.shoulder,'x',idleShift*.025,10,dt);poseBlend(p.head,'y',idleGlance+idleFidget*.035,9,dt);
@@ -639,9 +719,11 @@ export function animateFamilyRig(actor,dt,{aim=false,recoil=0,lookPitch=0,turnRa
       // Two-hand hunter stance: trigger arm tucked, support arm reaches under the fore-end.
       poseBlend(p.rightArm.shoulder,'x',-1.24-recoil*.10,22,dt);poseBlend(p.rightArm.shoulder,'z',-.18,22,dt);poseBlend(p.rightArm.elbow,'x',-.94-recoil*.08,22,dt);poseBlend(p.rightArm.elbow,'z',-.04,18,dt);
       poseBlend(p.leftArm.shoulder,'x',-1.08,22,dt);poseBlend(p.leftArm.shoulder,'z',.28,22,dt);poseBlend(p.leftArm.elbow,'x',-1.12,22,dt);poseBlend(p.leftArm.elbow,'z',.06,18,dt);
+      if(p.upperBody){poseBlend(p.upperBody,'x',clamp(gaitLean-lookPitch*.08,-.09,.14),15,dt);poseBlend(p.upperBody,'y',clamp(-turnPose*.48+sideDrive*.035,-.16,.16),15,dt)}
     }else{
-      const swing=moving?Math.sin(phase)*amount*.62:idleShift*.025;
-      poseBlend(p.leftArm.shoulder,'x',-swing,18,dt);poseBlend(p.rightArm.shoulder,'x',swing,18,dt);poseBlend(p.leftArm.shoulder,'z',0,16,dt);poseBlend(p.rightArm.shoulder,'z',0,16,dt);poseBlend(p.leftArm.elbow,'x',moving?(run?-.22-.08*Math.max(0,Math.sin(phase)):-.1):-.015*Math.max(0,idleShift),16,dt);poseBlend(p.rightArm.elbow,'x',moving?(run?-.22-.08*Math.max(0,-Math.sin(phase)):-.1):-.015*Math.max(0,-idleShift),16,dt);
+      const swing=moving?Math.sin(phase)*amount*(profile?.arm||.60)*(backward?-1:1):idleShift*.025,elbowBase=sprint?-.48:run?-.29:jog?-.18:moving?-.10:0;
+      poseBlend(p.leftArm.shoulder,'x',-swing,18,dt);poseBlend(p.rightArm.shoulder,'x',swing,18,dt);poseBlend(p.leftArm.shoulder,'z',0,16,dt);poseBlend(p.rightArm.shoulder,'z',0,16,dt);
+      poseBlend(p.leftArm.elbow,'x',moving?elbowBase-.08*Math.max(0,Math.sin(phase)): -.015*Math.max(0,idleShift),16,dt);poseBlend(p.rightArm.elbow,'x',moving?elbowBase-.08*Math.max(0,-Math.sin(phase)): -.015*Math.max(0,-idleShift),16,dt);
     }
   }
 }

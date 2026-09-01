@@ -1,15 +1,15 @@
 export const W25_HOME_PRODUCTION = Object.freeze({
   "buy-with-game-night-tokens-everyday-basics-kristen-s-cozy-lodge-": {
-    sku:"W25-C01", label:"Kristen's Cozy Lodge Reading Chair", model:"/models/w25/w25-cognac-lodge-reading-chair.glb", kind:"room", thumb:"/catalog-review/w25-production-thumbs/chair.png", interaction:"sit", scale:1, camera:{distance:2.65,targetY:.68}, productionStatus:"Production Asset"
+    sku:"W25-C01", label:"Kristen's Cozy Lodge Reading Chair", model:"/models/w25/w25-cognac-lodge-reading-chair.glb", kind:"room", thumb:"/catalog-review/w25-production-thumbs/chair.png", interaction:"sit", physical:{w:1.23,h:1.376,d:.812}, scale:1, camera:{distance:2.65,targetY:.68}, productionStatus:"Production Asset"
   },
   "buy-with-game-night-tokens-rustic-cabin-live-edge-nightstand": {
-    sku:"W25-C02", label:"Live-Edge Nightstand", model:"/models/w25/w25-live-edge-side-table.glb", kind:"room", thumb:"/catalog-review/w25-production-thumbs/side-table.png", interaction:"surface", scale:1, camera:{distance:2.2,targetY:.42}, productionStatus:"Production Asset"
+    sku:"W25-C02", label:"Live-Edge Nightstand", model:"/models/w25/w25-live-edge-side-table.glb", kind:"room", thumb:"/catalog-review/w25-production-thumbs/side-table.png", interaction:"surface", physical:{w:1.11,h:.684,d:.62}, surfaceTopY:.764, scale:1, camera:{distance:2.2,targetY:.42}, productionStatus:"Production Asset"
   },
   "buy-with-game-night-tokens-everyday-basics-warm-table-lamp": {
-    sku:"W25-C03", label:"Warm Table Lamp", model:"/models/w25/w25-linen-bronze-table-lamp.glb", kind:"room", thumb:"/catalog-review/w25-production-thumbs/lamp.png", interaction:"toggle_light", scale:1, camera:{distance:2.1,targetY:.55}, productionStatus:"Production Asset"
+    sku:"W25-C03", label:"Warm Table Lamp", model:"/models/w25/w25-linen-bronze-table-lamp.glb", kind:"room", thumb:"/catalog-review/w25-production-thumbs/lamp.png", interaction:"toggle_light", physical:{w:.58,h:.978,d:.58}, scale:1, camera:{distance:2.1,targetY:.55}, productionStatus:"Production Asset"
   },
   "buy-with-game-night-tokens-everyday-basics-double-cabin-bed": {
-    sku:"W25-C04", label:"Double Cabin Bed", model:"/models/w25/w25-deep-walnut-upholstered-bed.glb", kind:"room", thumb:"/catalog-review/w25-production-thumbs/bed.png", interaction:"place_rotate", scale:1, camera:{distance:3.5,targetY:.75}, productionStatus:"Production Asset"
+    sku:"W25-C04", label:"Double Cabin Bed", model:"/models/w25/w25-deep-walnut-upholstered-bed.glb", kind:"room", thumb:"/catalog-review/w25-production-thumbs/bed.png", interaction:"sleep", physical:{w:2.08,h:1.645,d:1.58}, scale:1, camera:{distance:3.5,targetY:.75}, productionStatus:"Production Asset"
   }
 });
 
