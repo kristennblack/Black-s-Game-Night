@@ -1,0 +1,18 @@
+{
+  "character_id": "CHAR_JOHN",
+  "status": "VISUAL_REPLACEMENT_REQUIRED",
+  "technical_legacy_model": "/models/characters/john-production-skinned.glb",
+  "visual_target_reference": "references/john-approved-turnaround.png",
+  "finding": "The legacy skinned GLB has a usable named humanoid skeleton and animation contract, but its visible geometry is still blocky/segmented and is not the W26 stylized-realism quality target.",
+  "reuse": {
+    "keep_if_compatible": ["animation naming", "bone naming", "socket naming", "runtime loader contract"],
+    "replace": ["body mesh", "head mesh", "hair mesh", "face geometry", "hands", "boots", "visible segmented proportions"]
+  },
+  "canonical_existing_bones": [
+    "hips", "upperBody", "chest", "neck", "head", "leftShoulder", "leftElbow", "leftHand", "rightShoulder", "rightElbow", "rightHand", "leftHip", "leftKnee", "leftFoot", "rightHip", "rightKnee", "rightFoot"
+  ],
+  "canonical_existing_sockets": ["headSocket", "leftHandSocket", "rightHandSocket", "backSocket"],
+  "new_required_face_accessory_sockets": ["hatSocket", "glassesBridgeSocket", "leftTempleSocket", "rightTempleSocket", "leftEarSocket", "rightEarSocket", "faceMaskSocket"],
+  "export_file": "CHAR_JOHN.glb",
+  "coordinate_system": "Y-up, front faces -Z, meters"
+}
