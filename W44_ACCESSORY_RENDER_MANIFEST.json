@@ -1,0 +1,230 @@
+{
+  "cowboy-hat": {
+    "source": "/mnt/data/w43_portrait_anchor_recovery/public/models/w25/w25-dark-brown-ranch-cowboy-hat.glb",
+    "output": "cosmetics/generated/w44-headwear-3d/cowboy-hat.png",
+    "size": [
+      392,
+      206
+    ],
+    "visibleBounds": [
+      0,
+      0,
+      392,
+      206
+    ]
+  },
+  "firefighter-helmet": {
+    "source": "/mnt/data/W42A_ACCESSORY_CANDIDATES/04_firefighter-helmet.glb",
+    "output": "cosmetics/generated/w44-headwear-3d/firefighter-helmet.png",
+    "size": [
+      354,
+      240
+    ],
+    "visibleBounds": [
+      0,
+      0,
+      354,
+      240
+    ]
+  },
+  "birthday-crown": {
+    "source": "/mnt/data/W42A_ACCESSORY_CANDIDATES/05_birthday-crown.glb",
+    "output": "cosmetics/generated/w44-headwear-3d/birthday-crown.png",
+    "size": [
+      240,
+      208
+    ],
+    "visibleBounds": [
+      0,
+      0,
+      240,
+      208
+    ]
+  },
+  "tiara": {
+    "source": "/mnt/data/W42A_ACCESSORY_CANDIDATES/06_tiara.glb",
+    "output": "cosmetics/generated/w44-headwear-3d/tiara.png",
+    "size": [
+      214,
+      107
+    ],
+    "visibleBounds": [
+      0,
+      0,
+      214,
+      107
+    ]
+  },
+  "legendary-top-hat": {
+    "source": "/mnt/data/W42A_ACCESSORY_CANDIDATES/07_legendary-top-hat.glb",
+    "output": "cosmetics/generated/w44-headwear-3d/legendary-top-hat.png",
+    "size": [
+      294,
+      196
+    ],
+    "visibleBounds": [
+      0,
+      0,
+      294,
+      196
+    ]
+  },
+  "mexican-train-cap": {
+    "source": "/mnt/data/W42A_ACCESSORY_CANDIDATES/10_mexican-train-cap.glb",
+    "output": "cosmetics/generated/w44-headwear-3d/mexican-train-cap.png",
+    "size": [
+      268,
+      175
+    ],
+    "visibleBounds": [
+      0,
+      0,
+      268,
+      175
+    ]
+  },
+  "wear-jewelry-0032-vanessa-modern-woven-beaded-stud-earrings:left": {
+    "source": "/cosmetics/generated/w24-flagship-earrings/e01-small-studs.png",
+    "output": "cosmetics/generated/w44-earrings/wear-jewelry-0032-vanessa-modern-woven-beaded-stud-earrings-left.png",
+    "size": [
+      65,
+      66
+    ],
+    "pivot": [
+      50,
+      6
+    ]
+  },
+  "wear-jewelry-0032-vanessa-modern-woven-beaded-stud-earrings:right": {
+    "source": "/cosmetics/generated/w24-flagship-earrings/e01-small-studs.png",
+    "output": "cosmetics/generated/w44-earrings/wear-jewelry-0032-vanessa-modern-woven-beaded-stud-earrings-right.png",
+    "size": [
+      65,
+      66
+    ],
+    "pivot": [
+      50,
+      6
+    ]
+  },
+  "wear-jewelry-0036-vanessa-modern-curved-beaded-hoop-earrings:left": {
+    "source": "/cosmetics/generated/w24-flagship-earrings/e02-medium-hoops.png",
+    "output": "cosmetics/generated/w44-earrings/wear-jewelry-0036-vanessa-modern-curved-beaded-hoop-earrings-left.png",
+    "size": [
+      134,
+      188
+    ],
+    "pivot": [
+      50,
+      6
+    ]
+  },
+  "wear-jewelry-0036-vanessa-modern-curved-beaded-hoop-earrings:right": {
+    "source": "/cosmetics/generated/w24-flagship-earrings/e02-medium-hoops.png",
+    "output": "cosmetics/generated/w44-earrings/wear-jewelry-0036-vanessa-modern-curved-beaded-hoop-earrings-right.png",
+    "size": [
+      134,
+      188
+    ],
+    "pivot": [
+      50,
+      6
+    ]
+  },
+  "wear-jewelry-0041-retro-closet-woven-plaid-drop-earrings:left": {
+    "source": "/cosmetics/generated/w24-flagship-earrings/e03-pearl-drops.png",
+    "output": "cosmetics/generated/w44-earrings/wear-jewelry-0041-retro-closet-woven-plaid-drop-earrings-left.png",
+    "size": [
+      73,
+      143
+    ],
+    "pivot": [
+      50,
+      6
+    ]
+  },
+  "wear-jewelry-0041-retro-closet-woven-plaid-drop-earrings:right": {
+    "source": "/cosmetics/generated/w24-flagship-earrings/e03-pearl-drops.png",
+    "output": "cosmetics/generated/w44-earrings/wear-jewelry-0041-retro-closet-woven-plaid-drop-earrings-right.png",
+    "size": [
+      73,
+      143
+    ],
+    "pivot": [
+      50,
+      6
+    ]
+  },
+  "wear-jewelry-0046-vanessa-modern-slatted-gold-stud-earrings:left": {
+    "source": "/cosmetics/generated/w24-flagship-earrings/e04-gem-dangles.png",
+    "output": "cosmetics/generated/w44-earrings/wear-jewelry-0046-vanessa-modern-slatted-gold-stud-earrings-left.png",
+    "size": [
+      107,
+      174
+    ],
+    "pivot": [
+      50,
+      6
+    ]
+  },
+  "wear-jewelry-0046-vanessa-modern-slatted-gold-stud-earrings:right": {
+    "source": "/cosmetics/generated/w24-flagship-earrings/e04-gem-dangles.png",
+    "output": "cosmetics/generated/w44-earrings/wear-jewelry-0046-vanessa-modern-slatted-gold-stud-earrings-right.png",
+    "size": [
+      107,
+      174
+    ],
+    "pivot": [
+      50,
+      6
+    ]
+  },
+  "wear-jewelry-0050-vanessa-modern-woven-gold-hoop-earrings:left": {
+    "source": "/cosmetics/generated/w24-flagship-earrings/e05-heart-charms.png",
+    "output": "cosmetics/generated/w44-earrings/wear-jewelry-0050-vanessa-modern-woven-gold-hoop-earrings-left.png",
+    "size": [
+      94,
+      165
+    ],
+    "pivot": [
+      50,
+      6
+    ]
+  },
+  "wear-jewelry-0050-vanessa-modern-woven-gold-hoop-earrings:right": {
+    "source": "/cosmetics/generated/w24-flagship-earrings/e05-heart-charms.png",
+    "output": "cosmetics/generated/w44-earrings/wear-jewelry-0050-vanessa-modern-woven-gold-hoop-earrings-right.png",
+    "size": [
+      94,
+      165
+    ],
+    "pivot": [
+      50,
+      6
+    ]
+  },
+  "wear-jewelry-0055-retro-closet-slatted-turquoise-drop-earrings:left": {
+    "source": "/cosmetics/generated/w24-flagship-earrings/e06-statement-earrings.png",
+    "output": "cosmetics/generated/w44-earrings/wear-jewelry-0055-retro-closet-slatted-turquoise-drop-earrings-left.png",
+    "size": [
+      127,
+      213
+    ],
+    "pivot": [
+      50,
+      6
+    ]
+  },
+  "wear-jewelry-0055-retro-closet-slatted-turquoise-drop-earrings:right": {
+    "source": "/cosmetics/generated/w24-flagship-earrings/e06-statement-earrings.png",
+    "output": "cosmetics/generated/w44-earrings/wear-jewelry-0055-retro-closet-slatted-turquoise-drop-earrings-right.png",
+    "size": [
+      125,
+      213
+    ],
+    "pivot": [
+      50,
+      6
+    ]
+  }
+}

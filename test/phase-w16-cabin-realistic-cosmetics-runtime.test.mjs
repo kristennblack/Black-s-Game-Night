@@ -21,7 +21,7 @@ test('W16 cosmetic catalog is substantially expanded and asset-backed rather tha
 
 test('W16 fitted renderer outputs images with anatomical position variables and passes avatar identity into shared portraits',()=>{
  const html=cosmeticOverlayHTML({hat:'camp-cap',glasses:'aviator-sunglasses',accessory:'red-bandana'},'kristen');assert.match(html,/<img/);assert.match(html,/--cx:/);assert.match(html,/--cy:/);assert.match(html,/--cw:/);assert.doesNotMatch(html,/🧢|🕶|👓/);
- const k=fitProfileForAvatar('kristen','hat',COSMETIC_BY_ID['camp-cap']);assert.ok(k.w<=65);assert.ok(k.y<=12,'Kristen headwear should sit on the head rather than across the eyes');
+ const k=fitProfileForAvatar('kristen','hat',COSMETIC_BY_ID['camp-cap']);assert.ok(k.w>=70&&k.w<=100,'W45 headwear should use visual wearing scale instead of the old shrunken cap bound');assert.ok(k.y<22,'Kristen headwear should sit above the eyes while using the larger visual seat');
  const app=read('public/app.js');assert.match(app,/cosmeticOverlayHTML\(equipped,a\[0\],p\?\.variant\)/);const css=read('public/styles.css');assert.match(css,/Phase W\.16 fitted realistic cosmetics/);assert.match(css,/object-fit:contain/);
 });
 

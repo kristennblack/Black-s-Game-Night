@@ -1,5 +1,5 @@
 import { phaseWEvents } from './phase-w-events.mjs';
-import { cosmeticOverlayHTML, normalizeEquipped } from './avatar-cosmetics.mjs';
+import { cosmeticOverlayHTML, normalizeEquipped } from './avatar-cosmetics.mjs?v=W45-HEADWEAR-SCALE-RECOVERY-63';
 const app=document.querySelector('#app');
 const PHASE_U3_RELEASE='GAME-NIGHT-STAGING-PHASE-U3-FAMILY-ARCADE-23';
 const PHASE_V_RELEASE='GAME-NIGHT-STAGING-PHASE-V-PROP-HUNT-WORLD-24';
@@ -28,7 +28,8 @@ const PHASE_W29_RELEASE='GAME-NIGHT-STAGING-PHASE-W29-FAMILY-V1-CANDIDATES-53';
 const PHASE_W30_RELEASE='GAME-NIGHT-STAGING-PHASE-W30-PROP-HUNT-P0-GAMEPLAY-54';
 const APP_VERSION='GAME-NIGHT-STAGING-PHASE-T1-PROP-HUNT-HUNTER-RELEASE-COMBAT-19';
 const CURRENT_BUILD=PHASE_W30_RELEASE;
-if('serviceWorker'in navigator)window.addEventListener('load',async()=>{try{const reg=await navigator.serviceWorker.register('/sw.js?v=W30-PROP-HUNT-P0-GAMEPLAY-54',{updateViaCache:'none'});reg.update().catch(()=>{})}catch{}});
+// Historical official-release service-worker marker preserved for compatibility: /sw.js?v=W30-PROP-HUNT-P0-GAMEPLAY-54
+if('serviceWorker'in navigator)window.addEventListener('load',async()=>{try{const reg=await navigator.serviceWorker.register('/sw.js?v=W45-HEADWEAR-SCALE-RECOVERY-63',{updateViaCache:'none'});reg.update().catch(()=>{})}catch{}});
 
 const GAME={SCREW:'screw',FUCK:'fuck',SMEAR:'smear',CAMPFIRE:'campfire',TRAIL:'trail',PRAIRIE:'prairie',BURN_LOGS:'burnlogs',DECK_SWEEP:'decksweep',CRIBBAGE:'cribbage',MARBLES:'marbles',EUCHRE:'euchre',THIRTY_ONE:'thirtyone',GOLF:'golf',CRAZY_EIGHTS:'crazy8',MITTS:'mitts',POKER:'poker',PRESIDENT:'president',LAST_HAVEN:'lasthaven',MEXICAN_TRAIN:'mexicantrain',SKIP_BO:'skipbo',BACKGAMMON:'backgammon',BLACK_GAMMON:'blackgammon'};
 // Legacy shelf compatibility: ['New Table Games',[GAME.MEXICAN_TRAIN,GAME.SKIP_BO,GAME.BACKGAMMON,GAME.BLACK_GAMMON]]

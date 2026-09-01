@@ -55,7 +55,7 @@ test('W19 universal avatar fit never hides a cosmetic, including on Kelsi, Molly
   const avatars=['john','kristen','holly','vanessa','elizabeth','logan','james','dorothy','papa','nana','kelsi','molly','gunner'];
   for(const avatar of avatars)for(const item of COSMETIC_CATALOG){const fit=fitProfileForAvatar(avatar,item.slot,item,0);assert.notEqual(fit.hidden,true,`${avatar}/${item.id}`);assert.ok(Number.isFinite(fit.x)&&Number.isFinite(fit.y)&&Number.isFinite(fit.w),`${avatar}/${item.id} finite fit`);}
   const cosmetics=read('public/avatar-cosmetics.mjs'),styles=read('public/styles.css'),store=read('public/tokens-store.html');
-  assert.match(cosmetics,/hidden:false/);assert.match(styles,/aspect-ratio:4\/5/);assert.match(store,/aspect-ratio:4\/5/);
+  assert.match(cosmetics,/hidden:false/);assert.match(styles,/aspect-ratio:1\/1/);assert.match(store,/aspect-ratio:1\/1/); // W44 square portrait coordinate space matches card avatars.
 });
 
 class MemoryStorage{constructor(){this.map=new Map()}async list({prefix=''}={}){return new Map([...this.map].filter(([k])=>k.startsWith(prefix)))}async get(k){return this.map.get(k)}async put(k,v){this.map.set(k,structuredClone(v))}}

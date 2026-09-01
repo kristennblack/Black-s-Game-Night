@@ -2,6 +2,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.m
 import { create3DArtKit } from './shared-3d-art-kit.mjs';
 import { W25_HOME_PRODUCTION } from './w25-production-manifest.mjs';
 import { createW39CabinFurnitureMesh, w39PhysicalFootprintFt } from './w39-cabin-furniture.mjs';
+import { W40_BUILD_ID, collectSceneStats } from './w40-runtime-telemetry.mjs';
 
 let w25LoaderPromise=null;
 const w25Loader=()=>w25LoaderPromise||(w25LoaderPromise=import('https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/loaders/GLTFLoader.js').then(({GLTFLoader})=>new GLTFLoader()));
@@ -115,10 +116,47 @@ function categoryScale(item){
   return 1;
 }
 
+function cabinTruthEnabled(){
+  try{const q=new URLSearchParams(location.search);return q.get('w40Truth')==='1'||q.get('w40Telemetry')==='1'||q.get('qa3d')==='1'}catch{return false}
+}
+function makeCabinTruth(container,{scene,renderer,placementRoots}){
+  if(typeof document==='undefined')return{update(){},dispose(){}};
+  const enabled=cabinTruthEnabled();
+  let el=null,last=0;
+  if(enabled){
+    if(getComputedStyle(container).position==='static')container.style.position='relative';
+    el=document.createElement('aside');el.id='w40CabinRuntimeTruth';el.setAttribute('aria-label','W40 cabin runtime truth');
+    el.style.cssText='position:absolute;left:10px;top:10px;z-index:90;max-width:min(430px,calc(100% - 20px));background:rgba(8,10,12,.92);color:#f5ead7;border:1px solid rgba(255,219,154,.42);border-radius:10px;padding:9px 11px;font:11px/1.35 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.28)';
+    container.appendChild(el);
+  }
+  function snapshot(){
+    const stats=collectSceneStats(scene),tiers={production:0,designFallback:0,legacy:0,loading:0,error:0};
+    for(const root of placementRoots){const tier=root.userData?.w39VisualTier||'unknown';if(root.userData?.productionModelLoaded)tiers.production++;else if(root.userData?.productionModelError){tiers.error++;if(tier==='w39-design-specific-fallback')tiers.designFallback++;else tiers.legacy++;}else if(root.userData?.w25Spec?.model){tiers.loading++;}else if(tier==='w39-design-specific-fallback')tiers.designFallback++;else tiers.legacy++;}
+    const textureTotal=stats.maps+stats.normalMaps+stats.roughnessMaps+stats.metalnessMaps+stats.aoMaps,warnings=[];
+    if(tiers.designFallback+tiers.legacy>0)warnings.push(`${tiers.designFallback+tiers.legacy} FURNITURE FALLBACKS ACTIVE`);
+    if(tiers.loading>0)warnings.push(`${tiers.loading} PRODUCTION MODELS LOADING`);
+    if(tiers.error>0)warnings.push(`${tiers.error} PRODUCTION MODEL LOAD ERRORS`);
+    if(textureTotal<5)warnings.push('VERY LOW PBR MAP COVERAGE');
+    const data={build:W40_BUILD_ID,renderer:renderer?.isWebGLRenderer?'WebGL':'unknown',room:'14x16 ft true 3D',placements:placementRoots.length,tiers,scene:stats,warnings};
+    try{window.__W40_CABIN_RUNTIME_TRUTH__=data}catch{}
+    return data;
+  }
+  function update(force=false){const now=performance.now();if(!force&&now-last<500)return;last=now;const d=snapshot();if(!el)return;const s=d.scene,t=d.tiers;el.textContent=[
+    'W40 CABIN RUNTIME TRUTH',`BUILD ${d.build}`,`RENDERER ${d.renderer} · ROOM ${d.room}`,
+    `PLACED ${d.placements} · production GLB ${t.production} · design fallback ${t.designFallback} · legacy fallback ${t.legacy}`,
+    `LOAD STATE loading ${t.loading} · errors ${t.error}`,
+    `SCENE ${s.visibleMeshes} visible meshes · ${s.triangles.toLocaleString()} tris · ${s.materials} materials`,
+    `PBR maps base ${s.maps} · normal ${s.normalMaps} · rough ${s.roughnessMaps} · metal ${s.metalnessMaps} · AO ${s.aoMaps}`,
+    d.warnings.length?`STATUS ⚠ ${d.warnings.join(' | ')}`:'STATUS ✓ true-3D room active; no obvious fallback warning'
+  ].join('\n')}
+  function dispose(){el?.remove();el=null}
+  return{update,dispose,snapshot};
+}
+
 export function mountCabinRoom3D(container,{room,catalogById,isOwner=false,selectedId=null,onSelect=()=>{},onMove=()=>{},wallItem=null,floorItem=null,benchmarkMode=false}={}){
   if(!container)throw new Error('Cabin 3D mount element is required');
   let renderer;
-  try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:'high-performance'});}catch(err){container.innerHTML='<div class="cabin3d-fallback">3D room renderer could not start on this device. Use a WebGL-capable browser.</div>';return {dispose(){}}}
+  try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:'high-performance'});}catch(err){try{window.__W40_CABIN_RUNTIME_TRUTH__={build:W40_BUILD_ID,renderer:'FAILED',fallback:'2D/STATIC',error:String(err?.message||err)}}catch{}container.innerHTML='<div class="cabin3d-fallback"><b>W40 3D RENDERER FAILED</b><br>Static fallback only. This is not production visual proof.</div>';return {dispose(){}}}
   renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;renderer.domElement.className='cabin3d-canvas';renderer.domElement.setAttribute('aria-label','Interactive true 3D cabin room');container.replaceChildren(renderer.domElement);
   const scene=new THREE.Scene();scene.background=new THREE.Color(0x17100b);scene.fog=new THREE.Fog(0x17100b,18,34);
   const art=create3DArtKit(THREE),camera=new THREE.PerspectiveCamera(benchmarkMode?46:43,1,.05,80);let yaw=benchmarkMode ? .68 : .72,pitch=benchmarkMode ? .42 : .47,radius=benchmarkMode ? 8.25 : 9.4;const target=new THREE.Vector3(0,benchmarkMode ? 1.06 : 1.18,benchmarkMode ? .18 : -.25),raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2(),placementRoots=[],pickables=[],floorTargets=[],wallTargets=[];
@@ -185,6 +223,7 @@ export function mountCabinRoom3D(container,{room,catalogById,isOwner=false,selec
       }
     }
   }
+  const w40Truth=makeCabinTruth(container,{scene,renderer,placementRoots});w40Truth.update(true);
   let helper=null;
   function showSelection(id){if(helper){scene.remove(helper);helper.geometry?.dispose?.();helper.material?.dispose?.();helper=null}const g=placementRoots.find(x=>x.userData.placementId===id);if(g){helper=new THREE.BoxHelper(g,0xffd46a);helper.material.depthTest=false;helper.renderOrder=50;scene.add(helper)}}
   showSelection(selectedId);
@@ -204,7 +243,7 @@ export function mountCabinRoom3D(container,{room,catalogById,isOwner=false,selec
   renderer.domElement.addEventListener('pointercancel',e=>{activePointers.delete(e.pointerId);down=null;pinchStart=null;dragged=false});
   renderer.domElement.addEventListener('wheel',e=>{e.preventDefault();radius=clamp(radius*(e.deltaY>0?1.08:.92),5.4,15);setCamera()},{passive:false});
   renderer.domElement.addEventListener('dblclick',resetCamera);
-  let raf=0,last=performance.now();function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;art.animateAmbience?.(scene,now/1000,{dt});renderer.render(scene,camera);raf=requestAnimationFrame(frame)}raf=requestAnimationFrame(frame);
+  let raf=0,last=performance.now();function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;art.animateAmbience?.(scene,now/1000,{dt});w40Truth.update();renderer.render(scene,camera);raf=requestAnimationFrame(frame)}raf=requestAnimationFrame(frame);
   return {
     setSelected(id){selectedId=id;showSelection(id)},resetCamera,
     interact(id){
@@ -220,6 +259,6 @@ export function mountCabinRoom3D(container,{room,catalogById,isOwner=false,selec
       return {ok:true,type:kind,message:'Furniture interaction hook is ready.'}
     },
     getQAState(){return placementRoots.map(root=>({id:root.userData.placementId,itemId:root.userData.itemId,tier:root.userData.w39VisualTier||'unknown',productionLoaded:!!root.userData.productionModelLoaded,productionError:root.userData.productionModelError||'',family:root.children.find(c=>c.userData?.w39Family)?.userData?.w39Family||root.userData.w39Family||''}))},
-    dispose(){cancelAnimationFrame(raf);ro.disconnect();renderer.dispose();disposeTree(scene);container.replaceChildren()}
+    dispose(){cancelAnimationFrame(raf);ro.disconnect();w40Truth.dispose();renderer.dispose();disposeTree(scene);container.replaceChildren()}
   };
 }

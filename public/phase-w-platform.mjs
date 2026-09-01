@@ -1,5 +1,5 @@
 import { mountArcadeTutorial } from './arcade-tutorials.mjs';
-import { cosmeticOverlayHTML, normalizeEquipped } from './avatar-cosmetics.mjs';
+import { cosmeticOverlayHTML, normalizeEquipped } from './avatar-cosmetics.mjs?v=W45-HEADWEAR-SCALE-RECOVERY-63';
 const PROFILE_KEY='gn_profile_v1';
 const LOCAL_KEY='bfgn_arcade_phase_w_v1';
 // Arcade reward contract: +5 Game Night Tokens on first play of each game; +10 Game Night Tokens for the daily 3-different-games challenge.
@@ -23,8 +23,8 @@ const GAMES={
 const pathKey=(location.pathname.split('/').pop()||'').replace(/\.html$/,'');
 const cfg=GAMES[pathKey]||{id:pathKey||'arcade',name:document.title.split(' - ')[0],reaction:'Nice run.'};
 function readJSON(k,f={}){try{return JSON.parse(localStorage.getItem(k)||'')||f}catch{return f}}
-function profile(){const p=readJSON(PROFILE_KEY,{});return{profileId:String(p.profileId||'local-profile'),name:String(p.name||localStorage.getItem('gn_name')||'Family Player'),avatar:String(p.avatar||'john'),equippedCosmetics:normalizeEquipped(p.equippedCosmetics||{})}}
-function assetFor(person){if(!person)return'';return `/avatars/styles/${person==='john'?'john-look-02':person+'-cute'}.jpg`}
+function profile(){const p=readJSON(PROFILE_KEY,{});return{profileId:String(p.profileId||'local-profile'),name:String(p.name||localStorage.getItem('gn_name')||'Family Player'),avatar:String(p.avatar||'john'),variant:Number(p.variant)||0,equippedCosmetics:normalizeEquipped(p.equippedCosmetics||{})}}
+function assetFor(person,p=null){if(!person)return'';const same=p&&String(p.avatar||'')===String(person);const v=same?Math.max(0,Number(p.variant)||0):0;if(person==='john')return `/avatars/styles/john-look-${String(Math.min(16,v+1)).padStart(2,'0')}.jpg`;const styles=['cute','goofy','rugged','glam'];return `/avatars/styles/${person}-${styles[v%4]}.jpg`}
 function activeEvent(date=new Date()){
  const y=date.getFullYear(),one=(m,d)=>new Date(y,m-1,d,12),birthdays=[['James',2,2,'james'],['Logan',3,17,'logan'],['Holly',3,28,'holly'],['Dorothy',4,6,'dorothy'],['Kristen',4,15,'kristen'],['Papa',7,19,'papa'],['Nana',8,18,'nana'],['Lizzy',8,27,'elizabeth'],['John',9,28,'john'],['Vanessa',10,6,'vanessa']];
  const holidays=[['New Year',1,1],['Valentine’s Day',2,14],['Canada Day',7,1],['Halloween',10,31],['Christmas',12,25]];
@@ -42,7 +42,7 @@ function mountChrome(){
  const frame=document.createElement('div');frame.className='phase-w-frame';document.body.append(frame);
  const state=readJSON(LOCAL_KEY,{tokens:0,achievements:{},plays:{}}),p=profile();
  const status=document.createElement('div');status.className='phase-w-status';status.innerHTML=`<b>${state.tokens||0} TOKENS</b><span>${Object.keys(state.achievements||{}).length} BADGES</span><button type="button" data-how>HOW TO</button><button type="button" data-store>STORE</button><button type="button" data-hub>HUB</button>`;status.querySelector('[data-store]').onclick=()=>location.href='/tokens-store.html';status.querySelector('[data-hub]').onclick=()=>location.href='/arcade-hub.html';document.body.append(status);mountArcadeTutorial(cfg.id,{button:status.querySelector('[data-how]'),autoPrompt:cfg.id!=='logans-minefield'});
- if(cfg.person){const a=document.createElement('div');a.className='phase-w-avatar-stage';a.innerHTML=`<div class="phase-w-avatar-art"><img src="${assetFor(cfg.person)}" alt="${cfg.name}">${p.avatar===cfg.person?cosmeticOverlayHTML(p.equippedCosmetics):''}</div><strong>${cfg.name}</strong><small>PLAYABLE FAMILY ARCADE</small>`;document.body.append(a)}
+ if(cfg.person){const a=document.createElement('div');a.className='phase-w-avatar-stage';a.innerHTML=`<div class="phase-w-avatar-art"><img class="avatar-base" src="${assetFor(cfg.person,p)}" alt="${cfg.name}">${p.avatar===cfg.person?cosmeticOverlayHTML(p.equippedCosmetics,p.avatar,p.variant):''}</div><strong>${cfg.name}</strong><small>PLAYABLE FAMILY ARCADE</small>`;document.body.append(a)}
  const reaction=document.createElement('div');reaction.className='phase-w-reaction';reaction.innerHTML=`<b>FAMILY REACTION</b><strong>${cfg.name}</strong><span>${cfg.reaction}</span>`;document.body.append(reaction);window.BFGNReaction=(message=cfg.reaction,title=cfg.name)=>{reaction.querySelector('strong').textContent=title;reaction.querySelector('span').textContent=message;reaction.classList.add('show');clearTimeout(window.__pwReact);window.__pwReact=setTimeout(()=>reaction.classList.remove('show'),1500)};
  const evt=activeEvent();if(evt){const ribbon=document.createElement('div');ribbon.className='phase-w-event-ribbon';ribbon.innerHTML=`<strong>LIVE EVENT</strong> · ${evt.name} · seasonal decorations active`;document.body.append(ribbon)}
  const q=document.createElement('div');q.className='phase-w-quality';q.innerHTML='<button data-q="low">PHONE</button><button data-q="high">RICH</button>';const qv=localStorage.getItem('bfgn_quality')||'phone';q.querySelector(`[data-q="${qv==='high'?'high':'low'}"]`)?.classList.add('active');q.onclick=e=>{const b=e.target.closest('button');if(!b)return;localStorage.setItem('bfgn_quality',b.dataset.q==='high'?'high':'phone');location.reload()};document.body.append(q);

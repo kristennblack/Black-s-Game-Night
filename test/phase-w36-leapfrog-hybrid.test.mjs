@@ -64,7 +64,7 @@ test('W36 manifest locks the leapfrog production rules',()=>{
 
 test('W36 cache-busts Prop Hunt and service-worker caches the new visual module',()=>{
   const page=read('../public/new-games.html'),sw=read('../public/sw.js');
-  assert.match(page,/prop-hunt-3d\.js\?v=GAME-NIGHT-STAGING-CANDIDATE-W36-LEAPFROG-HYBRID-57/);
+  assert.match(page,/prop-hunt-3d\.js\?v=GAME-NIGHT-STAGING-CANDIDATE-W40-EXTERNAL-ASSET-PIPELINE-59/);
   assert.match(sw,/w36-leapfrog-visuals\.mjs/);
 });
 

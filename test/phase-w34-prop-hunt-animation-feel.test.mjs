@@ -82,10 +82,10 @@ test('Prop Hunt preserves the W34 animation contract inside the current W35 prod
   assert.match(src,/animateFamilyRig\(a,dt,\{[^}]*attention,motion,directional,transition:moveTransition/);
   assert.match(src,/w34ProceduralGaitCoverage:true/);
   assert.match(src,/w34SingleMotionTelemetry:true/);
-  assert.match(src,/GAME-NIGHT-STAGING-CANDIDATE-W36-LEAPFROG-HYBRID-57/);
-  assert.match(src,/shared-3d-gameplay\.mjs\?v=W36-LEAPFROG-HYBRID-57/);
+  assert.match(src,/GAME-NIGHT-STAGING-CANDIDATE-W40-EXTERNAL-ASSET-PIPELINE-59/);
+  assert.match(src,/shared-3d-gameplay\.mjs\?v=W40-EXTERNAL-ASSET-PIPELINE-59/);
   const page=fs.readFileSync(new URL('../public/new-games.html',import.meta.url),'utf8');
-  assert.match(page,/prop-hunt-3d\.js\?v=GAME-NIGHT-STAGING-CANDIDATE-W36-LEAPFROG-HYBRID-57/);
+  assert.match(page,/prop-hunt-3d\.js\?v=GAME-NIGHT-STAGING-CANDIDATE-W40-EXTERNAL-ASSET-PIPELINE-59/);
   const candidate=fs.readFileSync(new URL('../W34_ANIMATION_CANDIDATE.txt',import.meta.url),'utf8');
   assert.match(candidate,/TECHNICAL CANDIDATE|technical candidate/i);
 });

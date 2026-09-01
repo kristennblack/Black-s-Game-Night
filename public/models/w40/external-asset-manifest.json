@@ -1,0 +1,42 @@
+{
+  "version": "W40.1",
+  "build": "GAME-NIGHT-STAGING-CANDIDATE-W40-EXTERNAL-ASSET-PIPELINE-59",
+  "policy": "Incoming external assets are QA candidates only. Missing or rejected candidates must never hide the proven fallback.",
+  "environmentLighting": {
+    "provider": "Poly Haven",
+    "asset": "Small Workshop",
+    "license": "CC0",
+    "page": "https://polyhaven.com/a/small_workshop",
+    "hdri1k": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/small_workshop_1k.hdr"
+  },
+  "slots": {
+    "john": {
+      "candidate": "/models/w40/incoming/CHAR_JOHN_W40.glb",
+      "fallback": "/models/characters/john-production-skinned.glb",
+      "requiredApproval": "approved-likeness-and-rig",
+      "qaReady": false,
+      "approved": false,
+      "expectedMeters": {"height": 1.82},
+      "triangleBudget": {"lod0Min": 20000, "lod0Max": 65000, "lod1Max": 30000},
+      "requiredAnimations": ["Idle","Walk","Run","Sprint","Start_Move","Stop_Move","Turn_Left","Turn_Right","Jump","Fall","Land","Mantle","Aim","Fire"]
+    },
+    "papaShopHeroBay": {
+      "candidate": "/models/w40/incoming/ENV_PAPA_SHOP_HERO_BAY_W40.glb",
+      "fallback": "/models/environments/papa-shop-barn-production.glb",
+      "requiredApproval": "visual-device-qa",
+      "qaReady": false,
+      "approved": false,
+      "expectedMeters": {"width": 19.0, "depth": 13.6, "heightMax": 6.0},
+      "requiredMaterialMaps": ["baseColor","normal","roughness"],
+      "recommendedMaterialMaps": ["metallic","ao"]
+    },
+    "papaShopProps": {
+      "candidate": "/models/w40/incoming/SET_PAPA_SHOP_HERO_PROPS_W40.glb",
+      "fallback": "/models/sets/papa-shop-production-props.glb",
+      "requiredApproval": "visual-device-qa",
+      "qaReady": false,
+      "approved": false,
+      "requiredHeroProps": ["tractor","workbench","tool_chest","shelving","tires","welder","compressor","gas_can","bucket","toolbox"]
+    }
+  }
+}

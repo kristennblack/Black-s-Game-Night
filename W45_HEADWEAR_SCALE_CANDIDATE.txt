@@ -1,0 +1,3 @@
+GAME-NIGHT-STAGING-CANDIDATE-W45-HEADWEAR-SCALE-RECOVERY-63
+Base: W44 portrait earring/headwear candidate
+Gate: staging/device visual approval required before official CURRENT_RELEASE advances

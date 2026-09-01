@@ -30,9 +30,12 @@ test('W24 replaces six placeholder jewelry records without changing the 2,000 we
  for(const [i,x] of items.entries()){assert.equal(x.approvedForLive,false);assert.equal(x.fitAnchor,'earlobes');assert.ok(x.asset.endsWith('.png'));assert.ok(x.shopAsset.endsWith('.png'));assert.ok(x.dogAsset.endsWith('.png'));for(const a of [x.asset,x.shopAsset,x.dogAsset])assert.ok(fs.existsSync(path.join(root,'public',a.replace(/^\//,''))),a);if(i===1){assert.equal(x.collection,'W25 Gold Standard');assert.equal(x.artStatus,'Production Asset');assert.equal(x.fitAuditStatus,'Fit Master Pending');assert.ok(x.productionModel.endsWith('.glb'))}else{assert.equal(x.collection,'W24 Flagship Earrings');assert.equal(x.artStatus,'Approved Art');assert.equal(x.fitAuditStatus,'Geometry Fit Approved')}}
 });
 
-test('W24 flagship earrings return finite visible semantic-ear fits on all 13 actual app avatars',()=>{
- for(const id of ids)for(const avatar of avatars){const x=COSMETIC_BY_ID[id],f=fitProfileForAvatar(avatar,'earrings',x,0);assert.equal(f.hidden,false,`${id}/${avatar}`);for(const k of ['x','y','w','r'])assert.ok(Number.isFinite(f[k]),`${id}/${avatar}/${k}`);assert.ok(f.w>40&&f.w<110,`${id}/${avatar}/width`)}
- const dog=cosmeticOverlayHTML({earrings:ids[1]},'gunner',0);assert.match(dog,/dog-e02-medium-hoops\.png/);const human=cosmeticOverlayHTML({earrings:ids[1]},'kristen',0);assert.match(human,/e02-medium-hoops\.png/);assert.doesNotMatch(human,/dog-e02/);
+test('W24 historical earring fit API stays finite while W44 live portrait rendering fails closed when semantic lobe proof is unavailable',()=>{
+ for(const id of ids)for(const avatar of avatars){const x=COSMETIC_BY_ID[id],f=fitProfileForAvatar(avatar,'earrings',x,0);assert.equal(f.hidden,false,`${id}/${avatar}`);for(const k of ['x','y','w','r'])assert.ok(Number.isFinite(f[k]),`${id}/${avatar}/${k}`);assert.ok(f.w>0&&f.w<130,`${id}/${avatar}/width`)}
+ // W44 deliberately no longer forces human earrings onto dog portraits or through hair-covered ears.
+ assert.equal(cosmeticOverlayHTML({earrings:ids[1]},'gunner',0),'');
+ assert.equal(cosmeticOverlayHTML({earrings:ids[1]},'kristen',0),'');
+ const john=cosmeticOverlayHTML({earrings:ids[1]},'john',0);assert.match(john,/avatar-cosmetic-earrings-left/);assert.match(john,/avatar-cosmetic-earrings-right/);
 });
 
 test('W24 earring art remains preserved while W25 no longer presents PNG-only items as finished production shop inventory',()=>{

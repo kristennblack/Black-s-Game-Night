@@ -1,0 +1,5 @@
+GAME-NIGHT-STAGING-CANDIDATE-W42-PORTRAIT-ANCHORS-60
+Scope: shop/card portrait accessory anchor implementation.
+Approved visual target: W42A.3 anchored glasses proof.
+Actual code-driven proof: visual_proofs/W42A4_ACTUAL_CODE_DRIVEN_ANCHOR_PROOF.png
+Official CURRENT_RELEASE remains W30 until staging/device verification.

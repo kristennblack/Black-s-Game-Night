@@ -23,7 +23,7 @@ test('W20 keeps independent cosmetic width and height for face-safe fitting',()=
  const earrings=fitProfileForAvatar('elizabeth','earrings',COSMETIC_BY_ID['drop-earrings'],0);
  const headset=fitProfileForAvatar('logan','headset',COSMETIC_BY_ID['headphones-charcoal'],0);
  assert.ok(Number.isFinite(earrings.w));assert.ok(Number.isFinite(headset.w));
- const html=cosmeticOverlayHTML({earrings:'drop-earrings',headset:'headphones-charcoal'},'elizabeth',0);assert.match(html,/--ch:/);assert.match(html,/drop-earrings\.svg/);assert.match(html,/headphones-charcoal\.svg/);
+ const html=cosmeticOverlayHTML({earrings:'drop-earrings',headset:'headphones-charcoal'},'elizabeth',0);assert.match(html,/--ch:/);assert.doesNotMatch(html,/drop-earrings\.svg/);assert.match(html,/headphones-charcoal\.svg/); // W44 fails closed because Elizabeth's current portrait already has baked earrings.
 });
 
 test('W17 portrait clipping and W20 layered-avatar simplification remain explicit CSS rules',()=>{
