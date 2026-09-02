@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 95" aria-label="Ballet Ribbon Bun Accessory">
+<defs><linearGradient id="r" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f6d7df"/><stop offset=".55" stop-color="#c9869b"/><stop offset="1" stop-color="#824e68"/></linearGradient></defs>
+<circle cx="76" cy="47" r="23" fill="none" stroke="url(#r)" stroke-width="9"/>
+<path d="M58 46 C35 26 20 31 24 47 C29 64 45 64 61 53 Z" fill="url(#r)" stroke="#75465c" stroke-width="3"/>
+<path d="M94 46 C117 26 132 31 128 47 C123 64 107 64 91 53 Z" fill="url(#r)" stroke="#75465c" stroke-width="3"/>
+<path d="M66 63 C58 74 55 83 58 91 M87 63 C96 74 99 83 96 91" fill="none" stroke="#c9869b" stroke-width="7" stroke-linecap="round"/>
+<circle cx="76" cy="47" r="5" fill="#f6e9c6"/>
+</svg>
