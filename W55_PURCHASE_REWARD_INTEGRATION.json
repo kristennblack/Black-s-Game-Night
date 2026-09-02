@@ -1,0 +1,112 @@
+{
+  "ok": true,
+  "profileId": "w55-integration-profile",
+  "startTokens": 10000,
+  "endTokens": 9120,
+  "characters": [
+    {
+      "character": "john",
+      "buy": "john-look-02",
+      "price": 60,
+      "earn": "john-look-08",
+      "rewardKey": "john-shop-room-2",
+      "tokensAfter": 9940
+    },
+    {
+      "character": "holly",
+      "buy": "holly-look-02",
+      "price": 60,
+      "earn": "holly-look-08",
+      "rewardKey": "holly-memory-first-win",
+      "tokensAfter": 9880
+    },
+    {
+      "character": "gunner",
+      "buy": "gunner-look-02",
+      "price": 55,
+      "earn": "gunner-look-07",
+      "rewardKey": "gunner-goat-first-save",
+      "tokensAfter": 9825
+    },
+    {
+      "character": "dorothy",
+      "buy": "dorothy-look-02",
+      "price": 60,
+      "earn": "dorothy-look-05",
+      "rewardKey": "dorothy-garden-first-bloom",
+      "tokensAfter": 9765
+    },
+    {
+      "character": "molly",
+      "buy": "molly-look-02",
+      "price": 60,
+      "earn": "molly-look-06",
+      "rewardKey": "molly-lights-10",
+      "tokensAfter": 9705
+    },
+    {
+      "character": "kelsi",
+      "buy": "kelsi-look-02",
+      "price": 70,
+      "earn": "kelsi-look-03",
+      "rewardKey": "kelsi-rocks-10",
+      "tokensAfter": 9635
+    },
+    {
+      "character": "elizabeth",
+      "buy": "elizabeth-look-02",
+      "price": 95,
+      "earn": "elizabeth-look-08",
+      "rewardKey": "lizzy-lights-5",
+      "tokensAfter": 9540
+    },
+    {
+      "character": "james",
+      "buy": "james-look-02",
+      "price": 85,
+      "earn": "james-look-06",
+      "rewardKey": "james-lumber-5",
+      "tokensAfter": 9455
+    },
+    {
+      "character": "vanessa",
+      "buy": "vanessa-look-02",
+      "price": 85,
+      "earn": "vanessa-look-04",
+      "rewardKey": "vanessa-pipes-1",
+      "tokensAfter": 9370
+    },
+    {
+      "character": "logan",
+      "buy": "logan-look-02",
+      "price": 65,
+      "earn": "logan-look-07",
+      "rewardKey": "logan-trail-1",
+      "tokensAfter": 9305
+    },
+    {
+      "character": "papa",
+      "buy": "papa-look-02",
+      "price": 65,
+      "earn": "papa-look-06",
+      "rewardKey": "papa-paddle-1",
+      "tokensAfter": 9240
+    },
+    {
+      "character": "nana",
+      "buy": "nana-look-02",
+      "price": 60,
+      "earn": "nana-look-07",
+      "rewardKey": "nana-goat-10",
+      "tokensAfter": 9180
+    },
+    {
+      "character": "kristen",
+      "buy": "kristen-look-02",
+      "price": 60,
+      "earn": "kristen-look-07",
+      "rewardKey": "kristen-family-win-1",
+      "tokensAfter": 9120
+    }
+  ]
+}

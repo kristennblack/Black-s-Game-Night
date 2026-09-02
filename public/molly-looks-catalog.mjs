@@ -51,7 +51,11 @@ export const MOLLY_LOOKS = [
     "price": 70,
     "batch": "M1",
     "tag": "FUN",
-    "desc": "Shades on and ready for a bright, playful day."
+    "desc": "Shades on and ready for a bright, playful day.",
+    "earn": {
+      "rewardKey": "molly-lights-10",
+      "label": "Catch 10 lights in Molly's Light Chase"
+    }
   },
   {
     "id": "molly-look-07",
@@ -60,7 +64,7 @@ export const MOLLY_LOOKS = [
     "price": 85,
     "batch": "M1",
     "tag": "OUTDOORS",
-    "desc": "A country-cute cowboy look for Molly\u2019s adventurous side."
+    "desc": "A country-cute cowboy look for Molly’s adventurous side."
   },
   {
     "id": "molly-look-08",
@@ -78,7 +82,7 @@ export const MOLLY_LOOKS = [
     "price": 95,
     "batch": "M1",
     "tag": "SMART",
-    "desc": "A polished date-night portrait for Molly\u2019s fanciest moments."
+    "desc": "A polished date-night portrait for Molly’s fanciest moments."
   },
   {
     "id": "molly-look-10",
@@ -159,7 +163,11 @@ export const MOLLY_LOOKS = [
     "price": 75,
     "batch": "M2",
     "tag": "CUTE",
-    "desc": "A pink-accented sweet Molly variant."
+    "desc": "A pink-accented sweet Molly variant.",
+    "earn": {
+      "rewardKey": "molly-lights-25",
+      "label": "Catch 25 lights in Molly's Light Chase"
+    }
   },
   {
     "id": "molly-look-19",
@@ -267,7 +275,11 @@ export const MOLLY_LOOKS = [
     "price": 60,
     "batch": "M3",
     "tag": "COZY",
-    "desc": "Cabin pyjamas and wind-down comfort for bedtime Molly."
+    "desc": "Cabin pyjamas and wind-down comfort for bedtime Molly.",
+    "earn": {
+      "rewardKey": "molly-lights-40",
+      "label": "Catch 40 lights in Molly's Light Chase"
+    }
   }
 ];
 export const MOLLY_LOOK_BY_ID = Object.fromEntries(MOLLY_LOOKS.map((x,i)=>[x.id,{...x,index:i}]));

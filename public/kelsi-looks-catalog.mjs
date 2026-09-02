@@ -15,7 +15,7 @@ export const KELSI_LOOKS = [
     "price": 70,
     "batch": "K1",
     "tag": "PLAYFUL",
-    "desc": "A ballet-inspired portrait for Kelsi\u2019s sweet dancer energy."
+    "desc": "A ballet-inspired portrait for Kelsi’s sweet dancer energy."
   },
   {
     "id": "kelsi-look-03",
@@ -24,7 +24,11 @@ export const KELSI_LOOKS = [
     "price": 80,
     "batch": "K1",
     "tag": "PARTY",
-    "desc": "A birthday-ready Kelsi look for party moments and family celebrations."
+    "desc": "A birthday-ready Kelsi look for party moments and family celebrations.",
+    "earn": {
+      "rewardKey": "kelsi-rocks-10",
+      "label": "Score 10 in Kelsi's Rock 'n' Roll Rescue"
+    }
   },
   {
     "id": "kelsi-look-04",
@@ -159,7 +163,11 @@ export const KELSI_LOOKS = [
     "price": 75,
     "batch": "K2",
     "tag": "CUTE",
-    "desc": "Pink-accented sweetness with a bow-forward style."
+    "desc": "Pink-accented sweetness with a bow-forward style.",
+    "earn": {
+      "rewardKey": "kelsi-rocks-25",
+      "label": "Score 25 in Kelsi's Rock 'n' Roll Rescue"
+    }
   },
   {
     "id": "kelsi-look-19",
@@ -267,7 +275,11 @@ export const KELSI_LOOKS = [
     "price": 60,
     "batch": "K3",
     "tag": "COZY",
-    "desc": "Cabin pyjamas and wind-down comfort for bedtime Kelsi."
+    "desc": "Cabin pyjamas and wind-down comfort for bedtime Kelsi.",
+    "earn": {
+      "rewardKey": "kelsi-rocks-50",
+      "label": "Score 50 in Kelsi's Rock 'n' Roll Rescue"
+    }
   }
 ];
 export const KELSI_LOOK_BY_ID = Object.fromEntries(KELSI_LOOKS.map((x,i)=>[x.id,{...x,index:i}]));

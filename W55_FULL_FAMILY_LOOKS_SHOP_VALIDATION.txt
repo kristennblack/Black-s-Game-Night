@@ -1,0 +1,17 @@
+W55 FULL FAMILY LOOKS SHOP VALIDATION
+
+PASS: 13 character catalogs present.
+PASS: 30 looks per character.
+PASS: 390 complete looks total.
+PASS: all 390 have numeric purchase prices.
+PASS: starter look is free in every collection.
+PASS: 3 earnable/winnable looks per character, 39 total.
+PASS: 390 primary /look-assets JPGs present and non-empty.
+PASS: 390 backup /avatars/styles JPGs present and non-empty.
+PASS: reward keys have runtime milestone wiring.
+PASS: server purchase integration for all 13 characters: token deduction, permanent ownership, auto-equip, reload persistence.
+PASS: server reward grant integration for all 13 characters: ownership and reload persistence.
+PASS: full automated regression suite 703/703.
+PASS: staging validator 5,030 checks, 0 failures.
+WARN: existing Three.js CDN dependency remains in 3D features.
+WARN: real Cloudflare deployment cannot be verified from this packaging environment.

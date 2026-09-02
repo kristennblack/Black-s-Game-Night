@@ -22,6 +22,12 @@ import { DOROTHY_LOOK_BY_ID, STARTER_DOROTHY_LOOK_ID, normalizeDorothyLooks } fr
 import { MOLLY_LOOK_BY_ID, STARTER_MOLLY_LOOK_ID, normalizeMollyLooks } from './public/molly-looks-catalog.mjs';
 import { KELSI_LOOK_BY_ID, STARTER_KELSI_LOOK_ID, normalizeKelsiLooks } from './public/kelsi-looks-catalog.mjs';
 import { ELIZABETH_LOOK_BY_ID, STARTER_ELIZABETH_LOOK_ID, normalizeElizabethLooks } from './public/elizabeth-looks-catalog.mjs';
+import { JAMES_LOOK_BY_ID, STARTER_JAMES_LOOK_ID, normalizeJamesLooks } from './public/james-looks-catalog.mjs';
+import { VANESSA_LOOK_BY_ID, STARTER_VANESSA_LOOK_ID, normalizeVanessaLooks } from './public/vanessa-looks-catalog.mjs';
+import { LOGAN_LOOK_BY_ID, STARTER_LOGAN_LOOK_ID, normalizeLoganLooks } from './public/logan-looks-catalog.mjs';
+import { PAPA_LOOK_BY_ID, STARTER_PAPA_LOOK_ID, normalizePapaLooks } from './public/papa-looks-catalog.mjs';
+import { NANA_LOOK_BY_ID, STARTER_NANA_LOOK_ID, normalizeNanaLooks } from './public/nana-looks-catalog.mjs';
+import { KRISTEN_LOOK_BY_ID, STARTER_KRISTEN_LOOK_ID, normalizeKristenLooks } from './public/kristen-looks-catalog.mjs';
 import { validateCabinPlacement, normalizeCabinPlacement } from './public/cabin-placement-validation.mjs';
 
 const rooms = new Map();
@@ -302,7 +308,7 @@ export class GameHub {
     const id=String(profileId||'').trim().slice(0,80);if(!id)return null;
     const p=await this.ctx.storage.get(`arcade-profile:${id}`);
     if(p&&p.profileId){
-      const johnLooks=normalizeJohnLooks(p.johnLooks),hollyLooks=normalizeHollyLooks(p.hollyLooks),gunnerLooks=normalizeGunnerLooks(p.gunnerLooks),dorothyLooks=normalizeDorothyLooks(p.dorothyLooks),mollyLooks=normalizeMollyLooks(p.mollyLooks),kelsiLooks=normalizeKelsiLooks(p.kelsiLooks),elizabethLooks=normalizeElizabethLooks(p.elizabethLooks);
+      const johnLooks=normalizeJohnLooks(p.johnLooks),hollyLooks=normalizeHollyLooks(p.hollyLooks),gunnerLooks=normalizeGunnerLooks(p.gunnerLooks),dorothyLooks=normalizeDorothyLooks(p.dorothyLooks),mollyLooks=normalizeMollyLooks(p.mollyLooks),kelsiLooks=normalizeKelsiLooks(p.kelsiLooks),elizabethLooks=normalizeElizabethLooks(p.elizabethLooks),jamesLooks=normalizeJamesLooks(p.jamesLooks),vanessaLooks=normalizeVanessaLooks(p.vanessaLooks),loganLooks=normalizeLoganLooks(p.loganLooks),papaLooks=normalizePapaLooks(p.papaLooks),nanaLooks=normalizeNanaLooks(p.nanaLooks),kristenLooks=normalizeKristenLooks(p.kristenLooks);
       const equippedJohnLook=JOHN_LOOK_BY_ID[p.equippedJohnLook]?p.equippedJohnLook:STARTER_JOHN_LOOK_ID;
       const equippedHollyLook=HOLLY_LOOK_BY_ID[p.equippedHollyLook]?p.equippedHollyLook:STARTER_HOLLY_LOOK_ID;
       const equippedGunnerLook=GUNNER_LOOK_BY_ID[p.equippedGunnerLook]?p.equippedGunnerLook:STARTER_GUNNER_LOOK_ID;
@@ -310,6 +316,12 @@ export class GameHub {
       const equippedMollyLook=MOLLY_LOOK_BY_ID[p.equippedMollyLook]?p.equippedMollyLook:STARTER_MOLLY_LOOK_ID;
       const equippedKelsiLook=KELSI_LOOK_BY_ID[p.equippedKelsiLook]?p.equippedKelsiLook:STARTER_KELSI_LOOK_ID;
       const equippedElizabethLook=ELIZABETH_LOOK_BY_ID[p.equippedElizabethLook]?p.equippedElizabethLook:STARTER_ELIZABETH_LOOK_ID;
+      const equippedJamesLook=JAMES_LOOK_BY_ID[p.equippedJamesLook]?p.equippedJamesLook:STARTER_JAMES_LOOK_ID;
+      const equippedVanessaLook=VANESSA_LOOK_BY_ID[p.equippedVanessaLook]?p.equippedVanessaLook:STARTER_VANESSA_LOOK_ID;
+      const equippedLoganLook=LOGAN_LOOK_BY_ID[p.equippedLoganLook]?p.equippedLoganLook:STARTER_LOGAN_LOOK_ID;
+      const equippedPapaLook=PAPA_LOOK_BY_ID[p.equippedPapaLook]?p.equippedPapaLook:STARTER_PAPA_LOOK_ID;
+      const equippedNanaLook=NANA_LOOK_BY_ID[p.equippedNanaLook]?p.equippedNanaLook:STARTER_NANA_LOOK_ID;
+      const equippedKristenLook=KRISTEN_LOOK_BY_ID[p.equippedKristenLook]?p.equippedKristenLook:STARTER_KRISTEN_LOOK_ID;
       johnLooks[equippedJohnLook]=johnLooks[equippedJohnLook]||{unlockedAt:0,source:'equipped-migration'};
       hollyLooks[equippedHollyLook]=hollyLooks[equippedHollyLook]||{unlockedAt:0,source:'equipped-migration'};
       gunnerLooks[equippedGunnerLook]=gunnerLooks[equippedGunnerLook]||{unlockedAt:0,source:'equipped-migration'};
@@ -317,16 +329,22 @@ export class GameHub {
       mollyLooks[equippedMollyLook]=mollyLooks[equippedMollyLook]||{unlockedAt:0,source:'equipped-migration'};
       kelsiLooks[equippedKelsiLook]=kelsiLooks[equippedKelsiLook]||{unlockedAt:0,source:'equipped-migration'};
       elizabethLooks[equippedElizabethLook]=elizabethLooks[equippedElizabethLook]||{unlockedAt:0,source:'equipped-migration'};
-      return {...p,cosmetics:{...(p.cosmetics||{})},cabinBlueprints:normalizeCabinBlueprints(p.cabinBlueprints),equippedCosmetics:normalizeEquippedCosmetics(p.equippedCosmetics),johnLooks,equippedJohnLook,hollyLooks,equippedHollyLook,gunnerLooks,equippedGunnerLook,dorothyLooks,equippedDorothyLook,mollyLooks,equippedMollyLook,kelsiLooks,equippedKelsiLook,elizabethLooks,equippedElizabethLook};
+      jamesLooks[equippedJamesLook]=jamesLooks[equippedJamesLook]||{unlockedAt:0,source:'equipped-migration'};
+      vanessaLooks[equippedVanessaLook]=vanessaLooks[equippedVanessaLook]||{unlockedAt:0,source:'equipped-migration'};
+      loganLooks[equippedLoganLook]=loganLooks[equippedLoganLook]||{unlockedAt:0,source:'equipped-migration'};
+      papaLooks[equippedPapaLook]=papaLooks[equippedPapaLook]||{unlockedAt:0,source:'equipped-migration'};
+      nanaLooks[equippedNanaLook]=nanaLooks[equippedNanaLook]||{unlockedAt:0,source:'equipped-migration'};
+      kristenLooks[equippedKristenLook]=kristenLooks[equippedKristenLook]||{unlockedAt:0,source:'equipped-migration'};
+      return {...p,cosmetics:{...(p.cosmetics||{})},cabinBlueprints:normalizeCabinBlueprints(p.cabinBlueprints),equippedCosmetics:normalizeEquippedCosmetics(p.equippedCosmetics),johnLooks,equippedJohnLook,hollyLooks,equippedHollyLook,gunnerLooks,equippedGunnerLook,dorothyLooks,equippedDorothyLook,mollyLooks,equippedMollyLook,kelsiLooks,equippedKelsiLook,elizabethLooks,equippedElizabethLook,jamesLooks,equippedJamesLook,vanessaLooks,equippedVanessaLook,loganLooks,equippedLoganLook,papaLooks,equippedPapaLook,nanaLooks,equippedNanaLook,kristenLooks,equippedKristenLook};
     }
-    return {profileId:id,name:'Family Player',tokens:0,achievements:{},plays:{},records:{},cosmetics:{},cabinBlueprints:normalizeCabinBlueprints({}),equippedCosmetics:normalizeEquippedCosmetics({}),johnLooks:normalizeJohnLooks({}),equippedJohnLook:STARTER_JOHN_LOOK_ID,hollyLooks:normalizeHollyLooks({}),equippedHollyLook:STARTER_HOLLY_LOOK_ID,gunnerLooks:normalizeGunnerLooks({}),equippedGunnerLook:STARTER_GUNNER_LOOK_ID,dorothyLooks:normalizeDorothyLooks({}),equippedDorothyLook:STARTER_DOROTHY_LOOK_ID,mollyLooks:normalizeMollyLooks({}),equippedMollyLook:STARTER_MOLLY_LOOK_ID,kelsiLooks:normalizeKelsiLooks({}),equippedKelsiLook:STARTER_KELSI_LOOK_ID,elizabethLooks:normalizeElizabethLooks({}),equippedElizabethLook:STARTER_ELIZABETH_LOOK_ID,updatedAt:0};
+    return {profileId:id,name:'Family Player',tokens:0,achievements:{},plays:{},records:{},cosmetics:{},cabinBlueprints:normalizeCabinBlueprints({}),equippedCosmetics:normalizeEquippedCosmetics({}),johnLooks:normalizeJohnLooks({}),equippedJohnLook:STARTER_JOHN_LOOK_ID,hollyLooks:normalizeHollyLooks({}),equippedHollyLook:STARTER_HOLLY_LOOK_ID,gunnerLooks:normalizeGunnerLooks({}),equippedGunnerLook:STARTER_GUNNER_LOOK_ID,dorothyLooks:normalizeDorothyLooks({}),equippedDorothyLook:STARTER_DOROTHY_LOOK_ID,mollyLooks:normalizeMollyLooks({}),equippedMollyLook:STARTER_MOLLY_LOOK_ID,kelsiLooks:normalizeKelsiLooks({}),equippedKelsiLook:STARTER_KELSI_LOOK_ID,elizabethLooks:normalizeElizabethLooks({}),equippedElizabethLook:STARTER_ELIZABETH_LOOK_ID,jamesLooks:normalizeJamesLooks({}),equippedJamesLook:STARTER_JAMES_LOOK_ID,vanessaLooks:normalizeVanessaLooks({}),equippedVanessaLook:STARTER_VANESSA_LOOK_ID,loganLooks:normalizeLoganLooks({}),equippedLoganLook:STARTER_LOGAN_LOOK_ID,papaLooks:normalizePapaLooks({}),equippedPapaLook:STARTER_PAPA_LOOK_ID,nanaLooks:normalizeNanaLooks({}),equippedNanaLook:STARTER_NANA_LOOK_ID,kristenLooks:normalizeKristenLooks({}),equippedKristenLook:STARTER_KRISTEN_LOOK_ID,updatedAt:0};
   }
   async getFamilyWeekPlays(){const d=new Date(),day=(d.getUTCDay()+6)%7,monday=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate()-day));const key=`family-week:${monday.toISOString().slice(0,10)}`;return Number(await this.ctx.storage.get(key)||0)}
   async recordArcade(b){const id=profileIdFrom(b);if(!id)throw new Error('Missing profile id');const gameId=String(b.gameId||'arcade').slice(0,80),type=String(b.type||'play').slice(0,30);let p=await this.getArcadeProfile(id);p={...p,name:String(b.name||p.name||'Family Player').slice(0,24),achievements:{...(p.achievements||{})},plays:{...(p.plays||{})},records:{...(p.records||{})},cosmetics:{...(p.cosmetics||{})},cabinBlueprints:normalizeCabinBlueprints(p.cabinBlueprints)};if(type==='play'){p.plays[gameId]=Number(p.plays[gameId]||0)+1;const d=new Date(),day=(d.getUTCDay()+6)%7,monday=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate()-day)),wk=`family-week:${monday.toISOString().slice(0,10)}`;const total=Number(await this.ctx.storage.get(wk)||0)+1;await this.ctx.storage.put(wk,total)}if(Number.isFinite(Number(b.score))){const r=p.records[gameId]||{};r.highScore=Math.max(Number(r.highScore||0),Number(b.score));r.lastAt=now();p.records[gameId]=r}let rewardAllowed=true;if(b.achievement){const aid=String(b.achievement).slice(0,120);if(p.achievements[aid])rewardAllowed=false;else p.achievements[aid]={label:String(b.label||aid).slice(0,120),at:now()}}const requestedDelta=Math.max(-500,Math.min(500,Number(b.tokenDelta||0))),delta=rewardAllowed?requestedDelta:0;p.tokens=Math.max(0,Number(p.tokens||0)+delta);p.updatedAt=now();await this.ctx.storage.put(`arcade-profile:${id}`,p);return p}
   async updateFamilyLook(b){
     const id=profileIdFrom(b);if(!id)throw new Error('Missing profile id');
     const itemId=String(b.itemId||'');
-    const inferred=itemId.startsWith('holly-look-')?'holly':itemId.startsWith('gunner-look-')?'gunner':itemId.startsWith('dorothy-look-')?'dorothy':itemId.startsWith('molly-look-')?'molly':itemId.startsWith('kelsi-look-')?'kelsi':itemId.startsWith('elizabeth-look-')?'elizabeth':'john';
+    const inferred=itemId.startsWith('holly-look-')?'holly':itemId.startsWith('gunner-look-')?'gunner':itemId.startsWith('dorothy-look-')?'dorothy':itemId.startsWith('molly-look-')?'molly':itemId.startsWith('kelsi-look-')?'kelsi':itemId.startsWith('elizabeth-look-')?'elizabeth':itemId.startsWith('james-look-')?'james':itemId.startsWith('vanessa-look-')?'vanessa':itemId.startsWith('logan-look-')?'logan':itemId.startsWith('papa-look-')?'papa':itemId.startsWith('nana-look-')?'nana':itemId.startsWith('kristen-look-')?'kristen':'john';
     const character=String(b.character||inferred).toLowerCase();
     const systems={
       john:{label:'John',byId:JOHN_LOOK_BY_ID,starter:STARTER_JOHN_LOOK_ID,normalize:normalizeJohnLooks,ownedKey:'johnLooks',equippedKey:'equippedJohnLook'},
@@ -335,14 +353,20 @@ export class GameHub {
       dorothy:{label:'Dorothy',byId:DOROTHY_LOOK_BY_ID,starter:STARTER_DOROTHY_LOOK_ID,normalize:normalizeDorothyLooks,ownedKey:'dorothyLooks',equippedKey:'equippedDorothyLook'},
       molly:{label:'Molly',byId:MOLLY_LOOK_BY_ID,starter:STARTER_MOLLY_LOOK_ID,normalize:normalizeMollyLooks,ownedKey:'mollyLooks',equippedKey:'equippedMollyLook'},
       kelsi:{label:'Kelsi',byId:KELSI_LOOK_BY_ID,starter:STARTER_KELSI_LOOK_ID,normalize:normalizeKelsiLooks,ownedKey:'kelsiLooks',equippedKey:'equippedKelsiLook'},
-      elizabeth:{label:'Lizzy / Elizabeth',byId:ELIZABETH_LOOK_BY_ID,starter:STARTER_ELIZABETH_LOOK_ID,normalize:normalizeElizabethLooks,ownedKey:'elizabethLooks',equippedKey:'equippedElizabethLook'}
+      elizabeth:{label:'Lizzy / Elizabeth',byId:ELIZABETH_LOOK_BY_ID,starter:STARTER_ELIZABETH_LOOK_ID,normalize:normalizeElizabethLooks,ownedKey:'elizabethLooks',equippedKey:'equippedElizabethLook'},
+      james:{label:'James',byId:JAMES_LOOK_BY_ID,starter:STARTER_JAMES_LOOK_ID,normalize:normalizeJamesLooks,ownedKey:'jamesLooks',equippedKey:'equippedJamesLook'},
+      vanessa:{label:'Vanessa',byId:VANESSA_LOOK_BY_ID,starter:STARTER_VANESSA_LOOK_ID,normalize:normalizeVanessaLooks,ownedKey:'vanessaLooks',equippedKey:'equippedVanessaLook'},
+      logan:{label:'Logan',byId:LOGAN_LOOK_BY_ID,starter:STARTER_LOGAN_LOOK_ID,normalize:normalizeLoganLooks,ownedKey:'loganLooks',equippedKey:'equippedLoganLook'},
+      papa:{label:'Papa',byId:PAPA_LOOK_BY_ID,starter:STARTER_PAPA_LOOK_ID,normalize:normalizePapaLooks,ownedKey:'papaLooks',equippedKey:'equippedPapaLook'},
+      nana:{label:'Nana',byId:NANA_LOOK_BY_ID,starter:STARTER_NANA_LOOK_ID,normalize:normalizeNanaLooks,ownedKey:'nanaLooks',equippedKey:'equippedNanaLook'},
+      kristen:{label:'Kristen',byId:KRISTEN_LOOK_BY_ID,starter:STARTER_KRISTEN_LOOK_ID,normalize:normalizeKristenLooks,ownedKey:'kristenLooks',equippedKey:'equippedKristenLook'}
     };
     const sys=systems[character];if(!sys)throw new Error('Unknown Looks Shop character');
     const action=String(b.action||'equip'),item=sys.byId[itemId]||null;let p=await this.getArcadeProfile(id);
     p={...p,name:String(b.name||p.name||'Family Player').slice(0,24),[sys.ownedKey]:sys.normalize(p[sys.ownedKey]),[sys.equippedKey]:sys.byId[p[sys.equippedKey]]?p[sys.equippedKey]:sys.starter};
     if(!item)throw new Error(`Unknown ${sys.label} look`);
     if(action==='buy'){
-      if(!p[sys.ownedKey][itemId]){const price=Math.max(0,Number(item.price)||0);if(Number(p.tokens||0)<price)throw new Error(`Need ${price} Game Night Tokens`);p.tokens=Number(p.tokens||0)-price;p[sys.ownedKey][itemId]={unlockedAt:now(),source:price===0?'starter':'tokens'};}
+      if(!p[sys.ownedKey][itemId]){const price=Math.max(0,Number(item.price)||0);if(Number(p.tokens||0)<price)throw new Error(`Need ${price} Game Night Tokens`);p.tokens=Number(p.tokens||0)-price;p[sys.ownedKey][itemId]={unlockedAt:now(),source:price===0?'starter':'tokens'};}p[sys.equippedKey]=itemId;
     }else if(action==='equip'){
       if(!p[sys.ownedKey][itemId])throw new Error(`Unlock this ${sys.label} look first`);p[sys.equippedKey]=itemId;
     }else if(action==='grant'){

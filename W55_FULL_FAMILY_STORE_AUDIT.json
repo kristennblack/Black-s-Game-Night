@@ -1,0 +1,124 @@
+{
+  "release": "W55",
+  "characters": [
+    {
+      "char": "john",
+      "count": 30,
+      "earn": 3,
+      "priceOk": 30,
+      "assetOk": 30,
+      "fallbackOk": 30,
+      "starter": "john-look-01"
+    },
+    {
+      "char": "holly",
+      "count": 30,
+      "earn": 3,
+      "priceOk": 30,
+      "assetOk": 30,
+      "fallbackOk": 30,
+      "starter": "holly-look-01"
+    },
+    {
+      "char": "gunner",
+      "count": 30,
+      "earn": 3,
+      "priceOk": 30,
+      "assetOk": 30,
+      "fallbackOk": 30,
+      "starter": "gunner-look-01"
+    },
+    {
+      "char": "dorothy",
+      "count": 30,
+      "earn": 3,
+      "priceOk": 30,
+      "assetOk": 30,
+      "fallbackOk": 30,
+      "starter": "dorothy-look-01"
+    },
+    {
+      "char": "molly",
+      "count": 30,
+      "earn": 3,
+      "priceOk": 30,
+      "assetOk": 30,
+      "fallbackOk": 30,
+      "starter": "molly-look-01"
+    },
+    {
+      "char": "kelsi",
+      "count": 30,
+      "earn": 3,
+      "priceOk": 30,
+      "assetOk": 30,
+      "fallbackOk": 30,
+      "starter": "kelsi-look-01"
+    },
+    {
+      "char": "elizabeth",
+      "count": 30,
+      "earn": 3,
+      "priceOk": 30,
+      "assetOk": 30,
+      "fallbackOk": 30,
+      "starter": "elizabeth-look-01"
+    },
+    {
+      "char": "james",
+      "count": 30,
+      "earn": 3,
+      "priceOk": 30,
+      "assetOk": 30,
+      "fallbackOk": 30,
+      "starter": "james-look-01"
+    },
+    {
+      "char": "vanessa",
+      "count": 30,
+      "earn": 3,
+      "priceOk": 30,
+      "assetOk": 30,
+      "fallbackOk": 30,
+      "starter": "vanessa-look-01"
+    },
+    {
+      "char": "logan",
+      "count": 30,
+      "earn": 3,
+      "priceOk": 30,
+      "assetOk": 30,
+      "fallbackOk": 30,
+      "starter": "logan-look-01"
+    },
+    {
+      "char": "papa",
+      "count": 30,
+      "earn": 3,
+      "priceOk": 30,
+      "assetOk": 30,
+      "fallbackOk": 30,
+      "starter": "papa-look-01"
+    },
+    {
+      "char": "nana",
+      "count": 30,
+      "earn": 3,
+      "priceOk": 30,
+      "assetOk": 30,
+      "fallbackOk": 30,
+      "starter": "nana-look-01"
+    },
+    {
+      "char": "kristen",
+      "count": 30,
+      "earn": 3,
+      "priceOk": 30,
+      "assetOk": 30,
+      "fallbackOk": 30,
+      "starter": "kristen-look-01"
+    }
+  ],
+  "totalLooks": 390,
+  "errors": []
+}

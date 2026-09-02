@@ -1,0 +1,26 @@
+W55 FULL FAMILY LOOKS SHOP CONSOLIDATION
+Candidate: GAME-NIGHT-STAGING-CANDIDATE-W55-FULL-FAMILY-390-LOOKS-SHOP-73
+
+FULL ROSTER
+John, Holly, Gunner, Dorothy, Molly, Kelsi, Lizzy / Elizabeth, James, Vanessa, Logan, Papa, Nana, Kristen.
+
+WHAT CHANGED
+- Consolidated 13 approved 30-look collections: 390 complete avatar looks.
+- Added Nana and Kristen's approved 30-look boards as runtime store assets/catalogs.
+- Preserved the approved correct Papa collection and identity.
+- Completed Nana/Kristen persistent profile ownership and equip support.
+- Ensured all 390 looks are purchasable with a valid token price.
+- Ensured each character has 3 looks that can also be won through game/achievement milestones.
+- Added/standardized reward runtime wiring for John, Molly, Kelsi, James, Vanessa, Logan, Papa, Nana and Kristen while preserving existing Holly/Gunner/Dorothy/Lizzy reward systems.
+- Fixed complete-look purchases to use server action=buy, deduct tokens server-side, persist ownership and auto-equip.
+- Preserved local-only fallback for profiles that have not yet been created.
+- Kept robust image fallback: primary look asset -> backup style asset -> base avatar.
+- Moved candidate service worker to fresh W55 runtime cache with resilient allSettled precache install.
+- Preserved W30 as the official release identity while W55 remains a staging candidate.
+
+VALIDATION
+- Full-family catalog/image audit: PASS (390/390 primary + 390/390 backup assets)
+- Earnable wiring audit: PASS (39 earnable looks, 3 per character)
+- Purchase/reward persistence integration: PASS across all 13 characters
+- Historical regression tests: 703/703 PASS
+- Staging validation: 5,030 PASS, 0 FAIL, 2 existing warnings
