@@ -1,0 +1,35 @@
+{
+  "releaseCandidate": "GAME-NIGHT-STAGING-CANDIDATE-W52-LIZZY-30-LOOKS-SHOP-REPAIR-70",
+  "officialRuntimeIdentityPreserved": "GAME-NIGHT-STAGING-PHASE-W30-PROP-HUNT-P0-GAMEPLAY-54",
+  "completeLookCharacters": [
+    "john",
+    "holly",
+    "gunner",
+    "dorothy",
+    "molly",
+    "kelsi",
+    "elizabeth"
+  ],
+  "looksPerCharacter": 30,
+  "primaryLookImages": 210,
+  "fallbackLookImages": 210,
+  "verifiedDecodableImages": 420,
+  "lizzyLookCount": 30,
+  "looksShopImageFallback": "primary look-assets -> mirrored avatars/styles -> base avatar",
+  "serviceWorkerRuntimeCache": "PHASE_W52_CACHE",
+  "serviceWorkerInstall": "CORE_SHELL + Promise.allSettled",
+  "nodeTests": {
+    "pass": 703,
+    "fail": 0
+  },
+  "stagingValidation": {
+    "pass": 4663,
+    "warning": 2,
+    "fail": 0
+  },
+  "knownWarnings": [
+    "core 3D CDN dependency remains",
+    "actual Cloudflare deployment unverified in this environment"
+  ],
+  "zipRootFlat": true
+}

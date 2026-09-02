@@ -1,0 +1,250 @@
+{
+  "release": "GAME-NIGHT-STAGING-CANDIDATE-W52-LIZZY-30-LOOKS-SHOP-REPAIR-70",
+  "characterKey": "elizabeth",
+  "displayName": "Lizzy / Elizabeth",
+  "approvedSource": "visual_proofs/lizzy_30_looks/LIZZY_APPROVED_GAME_AVATAR_SOURCE.png",
+  "approvedBoard": "visual_proofs/lizzy_30_looks/LIZZY_30_APPROVED_LOOKS.png",
+  "runtimeProof": "visual_proofs/lizzy_30_looks/LIZZY_30_RUNTIME_LOOKS_PROOF.jpg",
+  "items": [
+    {
+      "id": "elizabeth-look-01",
+      "name": "Everyday Lizzy",
+      "path": "public/look-assets/elizabeth-look-01.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-01.jpg",
+      "bytes": 128262,
+      "sha256": "a9e15a840366528598ddecd4c939832649e4907b8c75e52f3934c6cb6acf88ae"
+    },
+    {
+      "id": "elizabeth-look-02",
+      "name": "Ballet Tiara Lizzy",
+      "path": "public/look-assets/elizabeth-look-02.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-02.jpg",
+      "bytes": 75431,
+      "sha256": "38562fe761f2e0d47b29036cd1a987c9c6fd793cefe24aa86a9ffc3bff033b84"
+    },
+    {
+      "id": "elizabeth-look-03",
+      "name": "Cabin Knit Lizzy",
+      "path": "public/look-assets/elizabeth-look-03.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-03.jpg",
+      "bytes": 88098,
+      "sha256": "a68bd7cf3a5da0263fdf90b2b7dce58dca6e66c5646a6f47270393b82ad9fdc1"
+    },
+    {
+      "id": "elizabeth-look-04",
+      "name": "Denim Overalls Lizzy",
+      "path": "public/look-assets/elizabeth-look-04.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-04.jpg",
+      "bytes": 80963,
+      "sha256": "89bf14acf212efa4749dd95339e65e16b1a0c0ee0a48d9dae18f70097a5d38df"
+    },
+    {
+      "id": "elizabeth-look-05",
+      "name": "Pink Bow Lizzy",
+      "path": "public/look-assets/elizabeth-look-05.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-05.jpg",
+      "bytes": 90380,
+      "sha256": "22d04f57d74697019d946065292af3c938599d018cfb0cc8f9cc02d29d1ae4be"
+    },
+    {
+      "id": "elizabeth-look-06",
+      "name": "Flower Crown Lizzy",
+      "path": "public/look-assets/elizabeth-look-06.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-06.jpg",
+      "bytes": 87521,
+      "sha256": "84ec1f702115b25ce422cc2fca1b28ebc203436bf8d788cce6ed551cddba226f"
+    },
+    {
+      "id": "elizabeth-look-07",
+      "name": "Sparkle Night Lizzy",
+      "path": "public/look-assets/elizabeth-look-07.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-07.jpg",
+      "bytes": 81744,
+      "sha256": "9255ad49bc56d51b3cc609132fecb6d062f85eb3167b8ec6856217875c91b919"
+    },
+    {
+      "id": "elizabeth-look-08",
+      "name": "Birthday Lizzy",
+      "path": "public/look-assets/elizabeth-look-08.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-08.jpg",
+      "bytes": 87823,
+      "sha256": "8b8f25b87c2cc2a6bf0d9f12dabc269fb0d59adaf64e6b0b0a37597aee634832"
+    },
+    {
+      "id": "elizabeth-look-09",
+      "name": "Scarf & Knit Lizzy",
+      "path": "public/look-assets/elizabeth-look-09.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-09.jpg",
+      "bytes": 93741,
+      "sha256": "36d089c63017fbd50e3ff7d4b9f42e980f91171850e95f3c07406a580a0e8cc2"
+    },
+    {
+      "id": "elizabeth-look-10",
+      "name": "Snow Day Lizzy",
+      "path": "public/look-assets/elizabeth-look-10.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-10.jpg",
+      "bytes": 88931,
+      "sha256": "a727908c0c54f1a6b672378ad57ba815405b6d8134f53edd95dd069c7c00f385"
+    },
+    {
+      "id": "elizabeth-look-11",
+      "name": "Spring Floral Lizzy",
+      "path": "public/look-assets/elizabeth-look-11.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-11.jpg",
+      "bytes": 86246,
+      "sha256": "4c0461972500023c7f4d69eb541bd898dbd4fbf45e5b8f5273d05b94ccaba4f5"
+    },
+    {
+      "id": "elizabeth-look-12",
+      "name": "Garden Sunhat Lizzy",
+      "path": "public/look-assets/elizabeth-look-12.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-12.jpg",
+      "bytes": 87302,
+      "sha256": "d88b664439d1d6949295d59cf421bd6c0b25719df2095da180a91ac04e563184"
+    },
+    {
+      "id": "elizabeth-look-13",
+      "name": "Purple Sport Lizzy",
+      "path": "public/look-assets/elizabeth-look-13.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-13.jpg",
+      "bytes": 86186,
+      "sha256": "f8375432e0cd558da2aee5fd5eab96e9ae1f3011fa182ac101fc005817ecf98e"
+    },
+    {
+      "id": "elizabeth-look-14",
+      "name": "School Chic Lizzy",
+      "path": "public/look-assets/elizabeth-look-14.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-14.jpg",
+      "bytes": 86371,
+      "sha256": "6ece4e82138bd3cc3f85dae9b8f2882a63a95e1a7409aebbd53427eab5f0312d"
+    },
+    {
+      "id": "elizabeth-look-15",
+      "name": "Heart Shades Lizzy",
+      "path": "public/look-assets/elizabeth-look-15.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-15.jpg",
+      "bytes": 85330,
+      "sha256": "56c0cdb3212a31cfa03d7a3a268b9b3c286ac97bf0d16f81302e95be9e8981b8"
+    },
+    {
+      "id": "elizabeth-look-16",
+      "name": "Lake Day Lizzy",
+      "path": "public/look-assets/elizabeth-look-16.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-16.jpg",
+      "bytes": 86980,
+      "sha256": "7ae4e74d09de94ad72943ff14120dee2231e43d18f8e19faa24997357a43bf7d"
+    },
+    {
+      "id": "elizabeth-look-17",
+      "name": "Rainy Day Lizzy",
+      "path": "public/look-assets/elizabeth-look-17.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-17.jpg",
+      "bytes": 88291,
+      "sha256": "ea3458f0112c06143917f69d8a31cb873d7b69d226d70a4588b474653c1d7f51"
+    },
+    {
+      "id": "elizabeth-look-18",
+      "name": "Summer Hat Lizzy",
+      "path": "public/look-assets/elizabeth-look-18.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-18.jpg",
+      "bytes": 90081,
+      "sha256": "9894ae3cfb5652a00ae66c7c09ff9a21ed656472c903f538a936dcb351b37873"
+    },
+    {
+      "id": "elizabeth-look-19",
+      "name": "Holiday Sweater Lizzy",
+      "path": "public/look-assets/elizabeth-look-19.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-19.jpg",
+      "bytes": 88008,
+      "sha256": "40e828502e43eb9479d82918f0b4fdcb7005e323cb93866c096df96b1b999da3"
+    },
+    {
+      "id": "elizabeth-look-20",
+      "name": "Emerald Evening Lizzy",
+      "path": "public/look-assets/elizabeth-look-20.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-20.jpg",
+      "bytes": 81311,
+      "sha256": "6a65fe83d3103f5063c94fb566ff413d12cd6f5de9fea87bf263441d5376b250"
+    },
+    {
+      "id": "elizabeth-look-21",
+      "name": "Sleepy Satin Lizzy",
+      "path": "public/look-assets/elizabeth-look-21.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-21.jpg",
+      "bytes": 88196,
+      "sha256": "f17d141e5c050e41f92d2abacebaa2b0251f066def1e240b0cc12dc667154ed8"
+    },
+    {
+      "id": "elizabeth-look-22",
+      "name": "Trail Hoodie Lizzy",
+      "path": "public/look-assets/elizabeth-look-22.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-22.jpg",
+      "bytes": 84463,
+      "sha256": "d32c991e6944ea7aca56ccce06444040b3ed739ad5f3477849d45dd5ee30f7a9"
+    },
+    {
+      "id": "elizabeth-look-23",
+      "name": "Daisy Cardigan Lizzy",
+      "path": "public/look-assets/elizabeth-look-23.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-23.jpg",
+      "bytes": 91674,
+      "sha256": "b612053e69292c3352f4169b61857dfe54ac9ba0288063bd941972ea190093e5"
+    },
+    {
+      "id": "elizabeth-look-24",
+      "name": "Flannel Lizzy",
+      "path": "public/look-assets/elizabeth-look-24.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-24.jpg",
+      "bytes": 89592,
+      "sha256": "5abe1e7f02026a90a72891264140406d655ad7742c2b68707b1f6119661e0da8"
+    },
+    {
+      "id": "elizabeth-look-25",
+      "name": "Glam Night Lizzy",
+      "path": "public/look-assets/elizabeth-look-25.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-25.jpg",
+      "bytes": 85731,
+      "sha256": "683cfc0515009e2d6b2fa4df9241eca6f0780bb3cfc1cbf11ae99013285fc45a"
+    },
+    {
+      "id": "elizabeth-look-26",
+      "name": "Art Day Lizzy",
+      "path": "public/look-assets/elizabeth-look-26.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-26.jpg",
+      "bytes": 85020,
+      "sha256": "019a25e45a3061b6cfb4a5474220906ddd31bf5f8359057420781f10b0da43f1"
+    },
+    {
+      "id": "elizabeth-look-27",
+      "name": "Celebration Lizzy",
+      "path": "public/look-assets/elizabeth-look-27.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-27.jpg",
+      "bytes": 85412,
+      "sha256": "f3f38b96dd1ca4f7edd690169a1983388ae4061b10e30f3abb9de581e198c356"
+    },
+    {
+      "id": "elizabeth-look-28",
+      "name": "Cozy Fleece Lizzy",
+      "path": "public/look-assets/elizabeth-look-28.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-28.jpg",
+      "bytes": 88161,
+      "sha256": "c23e728934693a5e52f36867268bc8272072c21beff259ec25b49b8bf4dc5349"
+    },
+    {
+      "id": "elizabeth-look-29",
+      "name": "Campfire Lizzy",
+      "path": "public/look-assets/elizabeth-look-29.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-29.jpg",
+      "bytes": 84092,
+      "sha256": "8a9b833ffd3e3f501054b69e061185c570888a671e494d9ef73e7daa10991a38"
+    },
+    {
+      "id": "elizabeth-look-30",
+      "name": "Princess Tiara Lizzy",
+      "path": "public/look-assets/elizabeth-look-30.jpg",
+      "fallback": "public/avatars/styles/elizabeth-look-30.jpg",
+      "bytes": 86315,
+      "sha256": "e05f49e6cf0d1fc81eef18d48a369fc3023c4d39136f8b5c36030c0719c965e4"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+W52 RELEASE NOTES
+- Added approved Lizzy / Elizabeth 30-look collection.
+- Added token purchase + three Dramatic Lights reward unlock paths.
+- Fixed complete-look rendering coverage for Molly and Kelsi and extended it to Elizabeth.
+- Added mirrored image fallback copies for every complete-look collection.
+- Added two-stage image fallback behavior in the Looks Shop.
+- Bumped the service-worker cache to W52 and made installation tolerant of missing optional cache items.
+- Prepared a root-flat upload ZIP to prevent deployment-root/path mistakes.

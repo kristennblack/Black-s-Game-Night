@@ -21,6 +21,7 @@ import { GUNNER_LOOK_BY_ID, STARTER_GUNNER_LOOK_ID, normalizeGunnerLooks } from 
 import { DOROTHY_LOOK_BY_ID, STARTER_DOROTHY_LOOK_ID, normalizeDorothyLooks } from './public/dorothy-looks-catalog.mjs';
 import { MOLLY_LOOK_BY_ID, STARTER_MOLLY_LOOK_ID, normalizeMollyLooks } from './public/molly-looks-catalog.mjs';
 import { KELSI_LOOK_BY_ID, STARTER_KELSI_LOOK_ID, normalizeKelsiLooks } from './public/kelsi-looks-catalog.mjs';
+import { ELIZABETH_LOOK_BY_ID, STARTER_ELIZABETH_LOOK_ID, normalizeElizabethLooks } from './public/elizabeth-looks-catalog.mjs';
 import { validateCabinPlacement, normalizeCabinPlacement } from './public/cabin-placement-validation.mjs';
 
 const rooms = new Map();
@@ -301,29 +302,31 @@ export class GameHub {
     const id=String(profileId||'').trim().slice(0,80);if(!id)return null;
     const p=await this.ctx.storage.get(`arcade-profile:${id}`);
     if(p&&p.profileId){
-      const johnLooks=normalizeJohnLooks(p.johnLooks),hollyLooks=normalizeHollyLooks(p.hollyLooks),gunnerLooks=normalizeGunnerLooks(p.gunnerLooks),dorothyLooks=normalizeDorothyLooks(p.dorothyLooks),mollyLooks=normalizeMollyLooks(p.mollyLooks),kelsiLooks=normalizeKelsiLooks(p.kelsiLooks);
+      const johnLooks=normalizeJohnLooks(p.johnLooks),hollyLooks=normalizeHollyLooks(p.hollyLooks),gunnerLooks=normalizeGunnerLooks(p.gunnerLooks),dorothyLooks=normalizeDorothyLooks(p.dorothyLooks),mollyLooks=normalizeMollyLooks(p.mollyLooks),kelsiLooks=normalizeKelsiLooks(p.kelsiLooks),elizabethLooks=normalizeElizabethLooks(p.elizabethLooks);
       const equippedJohnLook=JOHN_LOOK_BY_ID[p.equippedJohnLook]?p.equippedJohnLook:STARTER_JOHN_LOOK_ID;
       const equippedHollyLook=HOLLY_LOOK_BY_ID[p.equippedHollyLook]?p.equippedHollyLook:STARTER_HOLLY_LOOK_ID;
       const equippedGunnerLook=GUNNER_LOOK_BY_ID[p.equippedGunnerLook]?p.equippedGunnerLook:STARTER_GUNNER_LOOK_ID;
       const equippedDorothyLook=DOROTHY_LOOK_BY_ID[p.equippedDorothyLook]?p.equippedDorothyLook:STARTER_DOROTHY_LOOK_ID;
       const equippedMollyLook=MOLLY_LOOK_BY_ID[p.equippedMollyLook]?p.equippedMollyLook:STARTER_MOLLY_LOOK_ID;
       const equippedKelsiLook=KELSI_LOOK_BY_ID[p.equippedKelsiLook]?p.equippedKelsiLook:STARTER_KELSI_LOOK_ID;
+      const equippedElizabethLook=ELIZABETH_LOOK_BY_ID[p.equippedElizabethLook]?p.equippedElizabethLook:STARTER_ELIZABETH_LOOK_ID;
       johnLooks[equippedJohnLook]=johnLooks[equippedJohnLook]||{unlockedAt:0,source:'equipped-migration'};
       hollyLooks[equippedHollyLook]=hollyLooks[equippedHollyLook]||{unlockedAt:0,source:'equipped-migration'};
       gunnerLooks[equippedGunnerLook]=gunnerLooks[equippedGunnerLook]||{unlockedAt:0,source:'equipped-migration'};
       dorothyLooks[equippedDorothyLook]=dorothyLooks[equippedDorothyLook]||{unlockedAt:0,source:'equipped-migration'};
       mollyLooks[equippedMollyLook]=mollyLooks[equippedMollyLook]||{unlockedAt:0,source:'equipped-migration'};
       kelsiLooks[equippedKelsiLook]=kelsiLooks[equippedKelsiLook]||{unlockedAt:0,source:'equipped-migration'};
-      return {...p,cosmetics:{...(p.cosmetics||{})},cabinBlueprints:normalizeCabinBlueprints(p.cabinBlueprints),equippedCosmetics:normalizeEquippedCosmetics(p.equippedCosmetics),johnLooks,equippedJohnLook,hollyLooks,equippedHollyLook,gunnerLooks,equippedGunnerLook,dorothyLooks,equippedDorothyLook,mollyLooks,equippedMollyLook,kelsiLooks,equippedKelsiLook};
+      elizabethLooks[equippedElizabethLook]=elizabethLooks[equippedElizabethLook]||{unlockedAt:0,source:'equipped-migration'};
+      return {...p,cosmetics:{...(p.cosmetics||{})},cabinBlueprints:normalizeCabinBlueprints(p.cabinBlueprints),equippedCosmetics:normalizeEquippedCosmetics(p.equippedCosmetics),johnLooks,equippedJohnLook,hollyLooks,equippedHollyLook,gunnerLooks,equippedGunnerLook,dorothyLooks,equippedDorothyLook,mollyLooks,equippedMollyLook,kelsiLooks,equippedKelsiLook,elizabethLooks,equippedElizabethLook};
     }
-    return {profileId:id,name:'Family Player',tokens:0,achievements:{},plays:{},records:{},cosmetics:{},cabinBlueprints:normalizeCabinBlueprints({}),equippedCosmetics:normalizeEquippedCosmetics({}),johnLooks:normalizeJohnLooks({}),equippedJohnLook:STARTER_JOHN_LOOK_ID,hollyLooks:normalizeHollyLooks({}),equippedHollyLook:STARTER_HOLLY_LOOK_ID,gunnerLooks:normalizeGunnerLooks({}),equippedGunnerLook:STARTER_GUNNER_LOOK_ID,dorothyLooks:normalizeDorothyLooks({}),equippedDorothyLook:STARTER_DOROTHY_LOOK_ID,mollyLooks:normalizeMollyLooks({}),equippedMollyLook:STARTER_MOLLY_LOOK_ID,kelsiLooks:normalizeKelsiLooks({}),equippedKelsiLook:STARTER_KELSI_LOOK_ID,updatedAt:0};
+    return {profileId:id,name:'Family Player',tokens:0,achievements:{},plays:{},records:{},cosmetics:{},cabinBlueprints:normalizeCabinBlueprints({}),equippedCosmetics:normalizeEquippedCosmetics({}),johnLooks:normalizeJohnLooks({}),equippedJohnLook:STARTER_JOHN_LOOK_ID,hollyLooks:normalizeHollyLooks({}),equippedHollyLook:STARTER_HOLLY_LOOK_ID,gunnerLooks:normalizeGunnerLooks({}),equippedGunnerLook:STARTER_GUNNER_LOOK_ID,dorothyLooks:normalizeDorothyLooks({}),equippedDorothyLook:STARTER_DOROTHY_LOOK_ID,mollyLooks:normalizeMollyLooks({}),equippedMollyLook:STARTER_MOLLY_LOOK_ID,kelsiLooks:normalizeKelsiLooks({}),equippedKelsiLook:STARTER_KELSI_LOOK_ID,elizabethLooks:normalizeElizabethLooks({}),equippedElizabethLook:STARTER_ELIZABETH_LOOK_ID,updatedAt:0};
   }
   async getFamilyWeekPlays(){const d=new Date(),day=(d.getUTCDay()+6)%7,monday=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate()-day));const key=`family-week:${monday.toISOString().slice(0,10)}`;return Number(await this.ctx.storage.get(key)||0)}
   async recordArcade(b){const id=profileIdFrom(b);if(!id)throw new Error('Missing profile id');const gameId=String(b.gameId||'arcade').slice(0,80),type=String(b.type||'play').slice(0,30);let p=await this.getArcadeProfile(id);p={...p,name:String(b.name||p.name||'Family Player').slice(0,24),achievements:{...(p.achievements||{})},plays:{...(p.plays||{})},records:{...(p.records||{})},cosmetics:{...(p.cosmetics||{})},cabinBlueprints:normalizeCabinBlueprints(p.cabinBlueprints)};if(type==='play'){p.plays[gameId]=Number(p.plays[gameId]||0)+1;const d=new Date(),day=(d.getUTCDay()+6)%7,monday=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate()-day)),wk=`family-week:${monday.toISOString().slice(0,10)}`;const total=Number(await this.ctx.storage.get(wk)||0)+1;await this.ctx.storage.put(wk,total)}if(Number.isFinite(Number(b.score))){const r=p.records[gameId]||{};r.highScore=Math.max(Number(r.highScore||0),Number(b.score));r.lastAt=now();p.records[gameId]=r}let rewardAllowed=true;if(b.achievement){const aid=String(b.achievement).slice(0,120);if(p.achievements[aid])rewardAllowed=false;else p.achievements[aid]={label:String(b.label||aid).slice(0,120),at:now()}}const requestedDelta=Math.max(-500,Math.min(500,Number(b.tokenDelta||0))),delta=rewardAllowed?requestedDelta:0;p.tokens=Math.max(0,Number(p.tokens||0)+delta);p.updatedAt=now();await this.ctx.storage.put(`arcade-profile:${id}`,p);return p}
   async updateFamilyLook(b){
     const id=profileIdFrom(b);if(!id)throw new Error('Missing profile id');
     const itemId=String(b.itemId||'');
-    const inferred=itemId.startsWith('holly-look-')?'holly':itemId.startsWith('gunner-look-')?'gunner':itemId.startsWith('dorothy-look-')?'dorothy':itemId.startsWith('molly-look-')?'molly':itemId.startsWith('kelsi-look-')?'kelsi':'john';
+    const inferred=itemId.startsWith('holly-look-')?'holly':itemId.startsWith('gunner-look-')?'gunner':itemId.startsWith('dorothy-look-')?'dorothy':itemId.startsWith('molly-look-')?'molly':itemId.startsWith('kelsi-look-')?'kelsi':itemId.startsWith('elizabeth-look-')?'elizabeth':'john';
     const character=String(b.character||inferred).toLowerCase();
     const systems={
       john:{label:'John',byId:JOHN_LOOK_BY_ID,starter:STARTER_JOHN_LOOK_ID,normalize:normalizeJohnLooks,ownedKey:'johnLooks',equippedKey:'equippedJohnLook'},
@@ -331,7 +334,8 @@ export class GameHub {
       gunner:{label:'Gunner',byId:GUNNER_LOOK_BY_ID,starter:STARTER_GUNNER_LOOK_ID,normalize:normalizeGunnerLooks,ownedKey:'gunnerLooks',equippedKey:'equippedGunnerLook'},
       dorothy:{label:'Dorothy',byId:DOROTHY_LOOK_BY_ID,starter:STARTER_DOROTHY_LOOK_ID,normalize:normalizeDorothyLooks,ownedKey:'dorothyLooks',equippedKey:'equippedDorothyLook'},
       molly:{label:'Molly',byId:MOLLY_LOOK_BY_ID,starter:STARTER_MOLLY_LOOK_ID,normalize:normalizeMollyLooks,ownedKey:'mollyLooks',equippedKey:'equippedMollyLook'},
-      kelsi:{label:'Kelsi',byId:KELSI_LOOK_BY_ID,starter:STARTER_KELSI_LOOK_ID,normalize:normalizeKelsiLooks,ownedKey:'kelsiLooks',equippedKey:'equippedKelsiLook'}
+      kelsi:{label:'Kelsi',byId:KELSI_LOOK_BY_ID,starter:STARTER_KELSI_LOOK_ID,normalize:normalizeKelsiLooks,ownedKey:'kelsiLooks',equippedKey:'equippedKelsiLook'},
+      elizabeth:{label:'Lizzy / Elizabeth',byId:ELIZABETH_LOOK_BY_ID,starter:STARTER_ELIZABETH_LOOK_ID,normalize:normalizeElizabethLooks,ownedKey:'elizabethLooks',equippedKey:'equippedElizabethLook'}
     };
     const sys=systems[character];if(!sys)throw new Error('Unknown Looks Shop character');
     const action=String(b.action||'equip'),item=sys.byId[itemId]||null;let p=await this.getArcadeProfile(id);
