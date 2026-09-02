@@ -1,0 +1,217 @@
+{
+  "release": "GAME-NIGHT-STAGING-CANDIDATE-W55-FULL-FAMILY-390-LOOKS-SHOP-73",
+  "character": "kristen",
+  "approvedBoard": "visual_proofs/kristen_30_looks/KRISTEN_30_APPROVED_LOOKS.png",
+  "items": [
+    {
+      "id": "kristen-look-01",
+      "path": "public/look-assets/kristen-look-01.jpg",
+      "fallback": "public/avatars/styles/kristen-look-01.jpg",
+      "bytes": 74586,
+      "sha256": "3175008a2ecabf34431f85bb64dc929030d1d97b31a0b9542a961e97412c2ae4"
+    },
+    {
+      "id": "kristen-look-02",
+      "path": "public/look-assets/kristen-look-02.jpg",
+      "fallback": "public/avatars/styles/kristen-look-02.jpg",
+      "bytes": 75179,
+      "sha256": "aeb05655eb4ad7180606af2a6c7da333f979a2c3b22c12d813e75164e47c85a2"
+    },
+    {
+      "id": "kristen-look-03",
+      "path": "public/look-assets/kristen-look-03.jpg",
+      "fallback": "public/avatars/styles/kristen-look-03.jpg",
+      "bytes": 76002,
+      "sha256": "ac0fbc73b58c301eda0605aac55483bde981a246085d645a725474635ab45bce"
+    },
+    {
+      "id": "kristen-look-04",
+      "path": "public/look-assets/kristen-look-04.jpg",
+      "fallback": "public/avatars/styles/kristen-look-04.jpg",
+      "bytes": 74587,
+      "sha256": "2c05299e29545d1093edd5e06290f8baa0ed8d65f36eea165fbdbb057cc587c4"
+    },
+    {
+      "id": "kristen-look-05",
+      "path": "public/look-assets/kristen-look-05.jpg",
+      "fallback": "public/avatars/styles/kristen-look-05.jpg",
+      "bytes": 74806,
+      "sha256": "1befe79baedee38b129554a81b5f59c0e5e1ce7f679510e7d1470ab3c816c481"
+    },
+    {
+      "id": "kristen-look-06",
+      "path": "public/look-assets/kristen-look-06.jpg",
+      "fallback": "public/avatars/styles/kristen-look-06.jpg",
+      "bytes": 75695,
+      "sha256": "3dd108454689b1ba425b185cae199f4e50b61bdd542a59b6be1027dbc65c49da"
+    },
+    {
+      "id": "kristen-look-07",
+      "path": "public/look-assets/kristen-look-07.jpg",
+      "fallback": "public/avatars/styles/kristen-look-07.jpg",
+      "bytes": 75897,
+      "sha256": "10b1f8835c94be9cd7af24003d3bc845cf196aaa3180f0cd18ca4c6fc44ea949"
+    },
+    {
+      "id": "kristen-look-08",
+      "path": "public/look-assets/kristen-look-08.jpg",
+      "fallback": "public/avatars/styles/kristen-look-08.jpg",
+      "bytes": 75744,
+      "sha256": "d387daf09d50fc85c33f1827c61cce839e89805ccddc7d36ed048686bd5f4443"
+    },
+    {
+      "id": "kristen-look-09",
+      "path": "public/look-assets/kristen-look-09.jpg",
+      "fallback": "public/avatars/styles/kristen-look-09.jpg",
+      "bytes": 75929,
+      "sha256": "7ceb05432e74fb702d3ff39f9bc7fe2746ca78666e89b734cd22c952737621c3"
+    },
+    {
+      "id": "kristen-look-10",
+      "path": "public/look-assets/kristen-look-10.jpg",
+      "fallback": "public/avatars/styles/kristen-look-10.jpg",
+      "bytes": 68416,
+      "sha256": "39e45d23abdb1514946ff9a239ca2b7b870cf0b636619ac3ba00509c79b71957"
+    },
+    {
+      "id": "kristen-look-11",
+      "path": "public/look-assets/kristen-look-11.jpg",
+      "fallback": "public/avatars/styles/kristen-look-11.jpg",
+      "bytes": 79130,
+      "sha256": "c59adc3284fc21d9f941b755863e6e56bbe8f17470abdc1a24e0b2f71b0a6f12"
+    },
+    {
+      "id": "kristen-look-12",
+      "path": "public/look-assets/kristen-look-12.jpg",
+      "fallback": "public/avatars/styles/kristen-look-12.jpg",
+      "bytes": 74571,
+      "sha256": "ab439f536ce1497869c78ca4aeac4e2d96f2eead10880dadb8fea11d9e5e9a60"
+    },
+    {
+      "id": "kristen-look-13",
+      "path": "public/look-assets/kristen-look-13.jpg",
+      "fallback": "public/avatars/styles/kristen-look-13.jpg",
+      "bytes": 78604,
+      "sha256": "e0de649a311f663bed91fd4c88176e2d34444c09a075f3c93a7dd60045888cf5"
+    },
+    {
+      "id": "kristen-look-14",
+      "path": "public/look-assets/kristen-look-14.jpg",
+      "fallback": "public/avatars/styles/kristen-look-14.jpg",
+      "bytes": 77516,
+      "sha256": "20155e4273ac8a789fa8aade0f296a8cf58d541096c100dc610ad288337ef5d6"
+    },
+    {
+      "id": "kristen-look-15",
+      "path": "public/look-assets/kristen-look-15.jpg",
+      "fallback": "public/avatars/styles/kristen-look-15.jpg",
+      "bytes": 76027,
+      "sha256": "98bd17dc5c677f132feffdd1861576857265efe6d1c99499435ffcad79eb67c2"
+    },
+    {
+      "id": "kristen-look-16",
+      "path": "public/look-assets/kristen-look-16.jpg",
+      "fallback": "public/avatars/styles/kristen-look-16.jpg",
+      "bytes": 81079,
+      "sha256": "b5132e2e9d66bea8d6657aefe82964f22d3a3bb7967043aefd1e28b3e3b01c83"
+    },
+    {
+      "id": "kristen-look-17",
+      "path": "public/look-assets/kristen-look-17.jpg",
+      "fallback": "public/avatars/styles/kristen-look-17.jpg",
+      "bytes": 75035,
+      "sha256": "58603bca8b555ec146e57bd6bd17036f3ea5669b78f6ae481d55b8722495d1f4"
+    },
+    {
+      "id": "kristen-look-18",
+      "path": "public/look-assets/kristen-look-18.jpg",
+      "fallback": "public/avatars/styles/kristen-look-18.jpg",
+      "bytes": 85741,
+      "sha256": "3af38b26294784e25ca2d52998034a91c82e82cd845e36be15ae13895219de49"
+    },
+    {
+      "id": "kristen-look-19",
+      "path": "public/look-assets/kristen-look-19.jpg",
+      "fallback": "public/avatars/styles/kristen-look-19.jpg",
+      "bytes": 75461,
+      "sha256": "479bd2566c01bf670262728c2bfbad916726835bfbc85879f13a1befa0aaf42c"
+    },
+    {
+      "id": "kristen-look-20",
+      "path": "public/look-assets/kristen-look-20.jpg",
+      "fallback": "public/avatars/styles/kristen-look-20.jpg",
+      "bytes": 72016,
+      "sha256": "6913e1f8b2a1b060f07f626ca7f375980e6c8a91761ff7ed22816b8dcfb36fc8"
+    },
+    {
+      "id": "kristen-look-21",
+      "path": "public/look-assets/kristen-look-21.jpg",
+      "fallback": "public/avatars/styles/kristen-look-21.jpg",
+      "bytes": 85161,
+      "sha256": "9a30f30d45a623fbd8a92206554abf2ed0f76ea243e29af0b8aceed9a46c80da"
+    },
+    {
+      "id": "kristen-look-22",
+      "path": "public/look-assets/kristen-look-22.jpg",
+      "fallback": "public/avatars/styles/kristen-look-22.jpg",
+      "bytes": 76487,
+      "sha256": "32bca591b78acea29644e5b8cfa992fc53ea0875143f00e27dd0bc9fbbd6b318"
+    },
+    {
+      "id": "kristen-look-23",
+      "path": "public/look-assets/kristen-look-23.jpg",
+      "fallback": "public/avatars/styles/kristen-look-23.jpg",
+      "bytes": 78189,
+      "sha256": "1946e8fee5e996dea0ee934e34a80588097572a92ff543b53bc9cd25a3afbc24"
+    },
+    {
+      "id": "kristen-look-24",
+      "path": "public/look-assets/kristen-look-24.jpg",
+      "fallback": "public/avatars/styles/kristen-look-24.jpg",
+      "bytes": 78291,
+      "sha256": "725b77e3520185bf1fef5b30c1316d6b0034edfbdd3ad4c76bc745a217f4a3a1"
+    },
+    {
+      "id": "kristen-look-25",
+      "path": "public/look-assets/kristen-look-25.jpg",
+      "fallback": "public/avatars/styles/kristen-look-25.jpg",
+      "bytes": 74721,
+      "sha256": "e9a77438b77d6791cb45e5a1907dd337817866fe6f2b1afab2e017e03fcda4f9"
+    },
+    {
+      "id": "kristen-look-26",
+      "path": "public/look-assets/kristen-look-26.jpg",
+      "fallback": "public/avatars/styles/kristen-look-26.jpg",
+      "bytes": 76117,
+      "sha256": "ba84dbc0b2dfb12c6d1e5ce28bdb89414ef6fb52602cc17eaa5d4f83aa15bef9"
+    },
+    {
+      "id": "kristen-look-27",
+      "path": "public/look-assets/kristen-look-27.jpg",
+      "fallback": "public/avatars/styles/kristen-look-27.jpg",
+      "bytes": 74599,
+      "sha256": "6ad2e9038229cf8f2f15810a713a3b5334510819654db9451e78f4ebacec395f"
+    },
+    {
+      "id": "kristen-look-28",
+      "path": "public/look-assets/kristen-look-28.jpg",
+      "fallback": "public/avatars/styles/kristen-look-28.jpg",
+      "bytes": 75634,
+      "sha256": "63888c2acd270f0a96c8d9ce57807aefeac15726663b3dad12b280e1edeefd41"
+    },
+    {
+      "id": "kristen-look-29",
+      "path": "public/look-assets/kristen-look-29.jpg",
+      "fallback": "public/avatars/styles/kristen-look-29.jpg",
+      "bytes": 75760,
+      "sha256": "edead84be9567875cb0dbf03c709439e7a8ce5c242c3fe705cf0314d43639f63"
+    },
+    {
+      "id": "kristen-look-30",
+      "path": "public/look-assets/kristen-look-30.jpg",
+      "fallback": "public/avatars/styles/kristen-look-30.jpg",
+      "bytes": 78087,
+      "sha256": "9c84c88b3ec2b64a97be853649717a16faebfd8ed4eb1b528383aa36fbb96490"
+    }
+  ]
+}

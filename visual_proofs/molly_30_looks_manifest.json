@@ -1,0 +1,302 @@
+[
+  {
+    "id": "molly-look-01",
+    "path": "public/look-assets/molly-look-01.jpg",
+    "box": [
+      53,
+      133,
+      188,
+      313
+    ]
+  },
+  {
+    "id": "molly-look-02",
+    "path": "public/look-assets/molly-look-02.jpg",
+    "box": [
+      236,
+      133,
+      371,
+      313
+    ]
+  },
+  {
+    "id": "molly-look-03",
+    "path": "public/look-assets/molly-look-03.jpg",
+    "box": [
+      418,
+      133,
+      553,
+      313
+    ]
+  },
+  {
+    "id": "molly-look-04",
+    "path": "public/look-assets/molly-look-04.jpg",
+    "box": [
+      601,
+      133,
+      736,
+      313
+    ]
+  },
+  {
+    "id": "molly-look-05",
+    "path": "public/look-assets/molly-look-05.jpg",
+    "box": [
+      782,
+      133,
+      917,
+      313
+    ]
+  },
+  {
+    "id": "molly-look-06",
+    "path": "public/look-assets/molly-look-06.jpg",
+    "box": [
+      964,
+      133,
+      1099,
+      313
+    ]
+  },
+  {
+    "id": "molly-look-07",
+    "path": "public/look-assets/molly-look-07.jpg",
+    "box": [
+      53,
+      382,
+      188,
+      562
+    ]
+  },
+  {
+    "id": "molly-look-08",
+    "path": "public/look-assets/molly-look-08.jpg",
+    "box": [
+      236,
+      382,
+      371,
+      562
+    ]
+  },
+  {
+    "id": "molly-look-09",
+    "path": "public/look-assets/molly-look-09.jpg",
+    "box": [
+      418,
+      382,
+      553,
+      562
+    ]
+  },
+  {
+    "id": "molly-look-10",
+    "path": "public/look-assets/molly-look-10.jpg",
+    "box": [
+      601,
+      382,
+      736,
+      562
+    ]
+  },
+  {
+    "id": "molly-look-11",
+    "path": "public/look-assets/molly-look-11.jpg",
+    "box": [
+      782,
+      382,
+      917,
+      562
+    ]
+  },
+  {
+    "id": "molly-look-12",
+    "path": "public/look-assets/molly-look-12.jpg",
+    "box": [
+      964,
+      382,
+      1099,
+      562
+    ]
+  },
+  {
+    "id": "molly-look-13",
+    "path": "public/look-assets/molly-look-13.jpg",
+    "box": [
+      53,
+      611,
+      188,
+      791
+    ]
+  },
+  {
+    "id": "molly-look-14",
+    "path": "public/look-assets/molly-look-14.jpg",
+    "box": [
+      236,
+      611,
+      371,
+      791
+    ]
+  },
+  {
+    "id": "molly-look-15",
+    "path": "public/look-assets/molly-look-15.jpg",
+    "box": [
+      418,
+      611,
+      553,
+      791
+    ]
+  },
+  {
+    "id": "molly-look-16",
+    "path": "public/look-assets/molly-look-16.jpg",
+    "box": [
+      601,
+      611,
+      736,
+      791
+    ]
+  },
+  {
+    "id": "molly-look-17",
+    "path": "public/look-assets/molly-look-17.jpg",
+    "box": [
+      782,
+      611,
+      917,
+      791
+    ]
+  },
+  {
+    "id": "molly-look-18",
+    "path": "public/look-assets/molly-look-18.jpg",
+    "box": [
+      964,
+      611,
+      1099,
+      791
+    ]
+  },
+  {
+    "id": "molly-look-19",
+    "path": "public/look-assets/molly-look-19.jpg",
+    "box": [
+      53,
+      856,
+      188,
+      1036
+    ]
+  },
+  {
+    "id": "molly-look-20",
+    "path": "public/look-assets/molly-look-20.jpg",
+    "box": [
+      236,
+      856,
+      371,
+      1036
+    ]
+  },
+  {
+    "id": "molly-look-21",
+    "path": "public/look-assets/molly-look-21.jpg",
+    "box": [
+      418,
+      856,
+      553,
+      1036
+    ]
+  },
+  {
+    "id": "molly-look-22",
+    "path": "public/look-assets/molly-look-22.jpg",
+    "box": [
+      601,
+      856,
+      736,
+      1036
+    ]
+  },
+  {
+    "id": "molly-look-23",
+    "path": "public/look-assets/molly-look-23.jpg",
+    "box": [
+      782,
+      856,
+      917,
+      1036
+    ]
+  },
+  {
+    "id": "molly-look-24",
+    "path": "public/look-assets/molly-look-24.jpg",
+    "box": [
+      964,
+      856,
+      1099,
+      1036
+    ]
+  },
+  {
+    "id": "molly-look-25",
+    "path": "public/look-assets/molly-look-25.jpg",
+    "box": [
+      53,
+      1121,
+      188,
+      1301
+    ]
+  },
+  {
+    "id": "molly-look-26",
+    "path": "public/look-assets/molly-look-26.jpg",
+    "box": [
+      236,
+      1121,
+      371,
+      1301
+    ]
+  },
+  {
+    "id": "molly-look-27",
+    "path": "public/look-assets/molly-look-27.jpg",
+    "box": [
+      418,
+      1121,
+      553,
+      1301
+    ]
+  },
+  {
+    "id": "molly-look-28",
+    "path": "public/look-assets/molly-look-28.jpg",
+    "box": [
+      601,
+      1121,
+      736,
+      1301
+    ]
+  },
+  {
+    "id": "molly-look-29",
+    "path": "public/look-assets/molly-look-29.jpg",
+    "box": [
+      782,
+      1121,
+      917,
+      1301
+    ]
+  },
+  {
+    "id": "molly-look-30",
+    "path": "public/look-assets/molly-look-30.jpg",
+    "box": [
+      964,
+      1121,
+      1099,
+      1301
+    ]
+  }
+]

@@ -1,0 +1,217 @@
+{
+  "release": "GAME-NIGHT-STAGING-CANDIDATE-W55-FULL-FAMILY-390-LOOKS-SHOP-73",
+  "character": "nana",
+  "approvedBoard": "visual_proofs/nana_30_looks/NANA_30_APPROVED_LOOKS.png",
+  "items": [
+    {
+      "id": "nana-look-01",
+      "path": "public/look-assets/nana-look-01.jpg",
+      "fallback": "public/avatars/styles/nana-look-01.jpg",
+      "bytes": 75782,
+      "sha256": "fbe9e36fd515602d0dbd3d1fa2f51508d436b5bf2f8ec1ea2596f12107066b89"
+    },
+    {
+      "id": "nana-look-02",
+      "path": "public/look-assets/nana-look-02.jpg",
+      "fallback": "public/avatars/styles/nana-look-02.jpg",
+      "bytes": 83881,
+      "sha256": "372ab87af0c7455e003777a45670a9be8d64ca0d4bb75f34017585f5d7bf5876"
+    },
+    {
+      "id": "nana-look-03",
+      "path": "public/look-assets/nana-look-03.jpg",
+      "fallback": "public/avatars/styles/nana-look-03.jpg",
+      "bytes": 85139,
+      "sha256": "65f8459bc096c1ae131633bfdcd2d9060929f2096accea079765ba2e1a8e3add"
+    },
+    {
+      "id": "nana-look-04",
+      "path": "public/look-assets/nana-look-04.jpg",
+      "fallback": "public/avatars/styles/nana-look-04.jpg",
+      "bytes": 80381,
+      "sha256": "3996a92cfa1666e7ecb3dcb3d3b351afd85f2185c232dda7cac248f061f22820"
+    },
+    {
+      "id": "nana-look-05",
+      "path": "public/look-assets/nana-look-05.jpg",
+      "fallback": "public/avatars/styles/nana-look-05.jpg",
+      "bytes": 85539,
+      "sha256": "1049070b440297c44659e148c508f877f7338d1bcb56c2751186cad364661ceb"
+    },
+    {
+      "id": "nana-look-06",
+      "path": "public/look-assets/nana-look-06.jpg",
+      "fallback": "public/avatars/styles/nana-look-06.jpg",
+      "bytes": 79381,
+      "sha256": "4257ab25afed522ef9b51fa20718f7b87d13222d00c0ef3fedc0d368d340a3f2"
+    },
+    {
+      "id": "nana-look-07",
+      "path": "public/look-assets/nana-look-07.jpg",
+      "fallback": "public/avatars/styles/nana-look-07.jpg",
+      "bytes": 80710,
+      "sha256": "3f08d4203b2e64573cd55e082d5aecd718321bddc823072f6c65a675e95be02a"
+    },
+    {
+      "id": "nana-look-08",
+      "path": "public/look-assets/nana-look-08.jpg",
+      "fallback": "public/avatars/styles/nana-look-08.jpg",
+      "bytes": 86222,
+      "sha256": "788a1cdc315568f8673624c79f9b332c84bda514807f53155e2d69c4e305fb1c"
+    },
+    {
+      "id": "nana-look-09",
+      "path": "public/look-assets/nana-look-09.jpg",
+      "fallback": "public/avatars/styles/nana-look-09.jpg",
+      "bytes": 75755,
+      "sha256": "7ef2abde45cd283af354787805272edb0b23fadeb41ad73111fe8f5395ec74c6"
+    },
+    {
+      "id": "nana-look-10",
+      "path": "public/look-assets/nana-look-10.jpg",
+      "fallback": "public/avatars/styles/nana-look-10.jpg",
+      "bytes": 88840,
+      "sha256": "11c0a912f0a508e3052d632f7629373fae116a32af5fef4f0d792cd1c608e793"
+    },
+    {
+      "id": "nana-look-11",
+      "path": "public/look-assets/nana-look-11.jpg",
+      "fallback": "public/avatars/styles/nana-look-11.jpg",
+      "bytes": 80642,
+      "sha256": "5cd59004a610b1b8eb2793447e42e489c595e43b6d9b57b633107eccbdffcefe"
+    },
+    {
+      "id": "nana-look-12",
+      "path": "public/look-assets/nana-look-12.jpg",
+      "fallback": "public/avatars/styles/nana-look-12.jpg",
+      "bytes": 87235,
+      "sha256": "d99c070b5c84449778bf8b72032d3d10246f48a81f98de61e9d72485c4d756e3"
+    },
+    {
+      "id": "nana-look-13",
+      "path": "public/look-assets/nana-look-13.jpg",
+      "fallback": "public/avatars/styles/nana-look-13.jpg",
+      "bytes": 81832,
+      "sha256": "506dcd9c0d50eb6f5e6f88a30ea9fa8ea596d92a98058488af24b32a2d2deeef"
+    },
+    {
+      "id": "nana-look-14",
+      "path": "public/look-assets/nana-look-14.jpg",
+      "fallback": "public/avatars/styles/nana-look-14.jpg",
+      "bytes": 82636,
+      "sha256": "2ee648783b863bbca7c4545547cf19f4770280f8113e6f8691ada790c57073dc"
+    },
+    {
+      "id": "nana-look-15",
+      "path": "public/look-assets/nana-look-15.jpg",
+      "fallback": "public/avatars/styles/nana-look-15.jpg",
+      "bytes": 83465,
+      "sha256": "e71f68516b09fb394276de0deeae45300153dd3ae08add73ddc63842bbde4635"
+    },
+    {
+      "id": "nana-look-16",
+      "path": "public/look-assets/nana-look-16.jpg",
+      "fallback": "public/avatars/styles/nana-look-16.jpg",
+      "bytes": 81593,
+      "sha256": "39ab4ad7ce3995c2e2d3e450a1a75e67c64331fd9fb8c4bd4dff1c41adadf097"
+    },
+    {
+      "id": "nana-look-17",
+      "path": "public/look-assets/nana-look-17.jpg",
+      "fallback": "public/avatars/styles/nana-look-17.jpg",
+      "bytes": 86231,
+      "sha256": "c504067adc9bc0c89559474b00269f038a02b843255f16278c1ba0ed66ebb0c0"
+    },
+    {
+      "id": "nana-look-18",
+      "path": "public/look-assets/nana-look-18.jpg",
+      "fallback": "public/avatars/styles/nana-look-18.jpg",
+      "bytes": 86544,
+      "sha256": "8c0be3a712fa63b684ab229fc1667220137fc85f389dd2213829bd6b0f4ff965"
+    },
+    {
+      "id": "nana-look-19",
+      "path": "public/look-assets/nana-look-19.jpg",
+      "fallback": "public/avatars/styles/nana-look-19.jpg",
+      "bytes": 83244,
+      "sha256": "334ed3a0d789e3471511c868950ba1e846e1a8c4fbbffbc18e0ea31b0bd40ffb"
+    },
+    {
+      "id": "nana-look-20",
+      "path": "public/look-assets/nana-look-20.jpg",
+      "fallback": "public/avatars/styles/nana-look-20.jpg",
+      "bytes": 84649,
+      "sha256": "a24016873cfefe91fd94768d4a7181c6b71383ba08559442c3c39e40424f3dee"
+    },
+    {
+      "id": "nana-look-21",
+      "path": "public/look-assets/nana-look-21.jpg",
+      "fallback": "public/avatars/styles/nana-look-21.jpg",
+      "bytes": 73525,
+      "sha256": "9fcc1d791007b1a9521ae03d5d51475fa7dd65199f39382de61d599bc6eda341"
+    },
+    {
+      "id": "nana-look-22",
+      "path": "public/look-assets/nana-look-22.jpg",
+      "fallback": "public/avatars/styles/nana-look-22.jpg",
+      "bytes": 86570,
+      "sha256": "39226fb7aac37c78eca5e1c22bf5f349f739d1ec83e5244399d924ee8912cd83"
+    },
+    {
+      "id": "nana-look-23",
+      "path": "public/look-assets/nana-look-23.jpg",
+      "fallback": "public/avatars/styles/nana-look-23.jpg",
+      "bytes": 86823,
+      "sha256": "007c32bf7c349f06e654657302cf7ecca9860180b3f279ed7d939f8edd97db55"
+    },
+    {
+      "id": "nana-look-24",
+      "path": "public/look-assets/nana-look-24.jpg",
+      "fallback": "public/avatars/styles/nana-look-24.jpg",
+      "bytes": 86319,
+      "sha256": "0b8c68fcbacf9fa2acadae2e673d3f9b8a7464e4620726be7a8190911c2419e2"
+    },
+    {
+      "id": "nana-look-25",
+      "path": "public/look-assets/nana-look-25.jpg",
+      "fallback": "public/avatars/styles/nana-look-25.jpg",
+      "bytes": 78866,
+      "sha256": "e5dffc917ee9fd3b3f52904b869a503553fa04c6135b60948a0ce3086de185b9"
+    },
+    {
+      "id": "nana-look-26",
+      "path": "public/look-assets/nana-look-26.jpg",
+      "fallback": "public/avatars/styles/nana-look-26.jpg",
+      "bytes": 85911,
+      "sha256": "786b7436c5179fac0657f41ee99c84a92846fadf14668bf2cbd327d3004ebed5"
+    },
+    {
+      "id": "nana-look-27",
+      "path": "public/look-assets/nana-look-27.jpg",
+      "fallback": "public/avatars/styles/nana-look-27.jpg",
+      "bytes": 83926,
+      "sha256": "ed5fe6531c6832c19a7344352b037499149333f627ccfb55dd3048296ad8f821"
+    },
+    {
+      "id": "nana-look-28",
+      "path": "public/look-assets/nana-look-28.jpg",
+      "fallback": "public/avatars/styles/nana-look-28.jpg",
+      "bytes": 86006,
+      "sha256": "b5dc049d986b97ea0572c21be80f894c966828d31de7d3c407468551a07185af"
+    },
+    {
+      "id": "nana-look-29",
+      "path": "public/look-assets/nana-look-29.jpg",
+      "fallback": "public/avatars/styles/nana-look-29.jpg",
+      "bytes": 89494,
+      "sha256": "f257dfcffef1a1d6ec695eb6ae7237a51aee3163aa0de789939b410eee3f2b8e"
+    },
+    {
+      "id": "nana-look-30",
+      "path": "public/look-assets/nana-look-30.jpg",
+      "fallback": "public/avatars/styles/nana-look-30.jpg",
+      "bytes": 86731,
+      "sha256": "87eb629886ffbfb02e154f86f484c1b44fbeb88503351a1e52470a5ff9cbb75c"
+    }
+  ]
+}

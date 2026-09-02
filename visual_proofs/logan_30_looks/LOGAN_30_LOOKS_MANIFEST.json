@@ -1,0 +1,216 @@
+{
+  "release": "GAME-NIGHT-STAGING-CANDIDATE-W54-LOGAN-PAPA-30-LOOKS-SHOP-72",
+  "approvedBoard": "visual_proofs/logan_30_looks/LOGAN_30_APPROVED_LOOKS.png",
+  "items": [
+    {
+      "id": "logan-look-01",
+      "path": "public/look-assets/logan-look-01.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-01.jpg",
+      "bytes": 72532,
+      "sha256": "a59730cec1b3852ad436a3065e97cf109739f9312a466c00b62ee47c90d2194a"
+    },
+    {
+      "id": "logan-look-02",
+      "path": "public/look-assets/logan-look-02.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-02.jpg",
+      "bytes": 72356,
+      "sha256": "75d12ad4ccd8b3074aab1758a258b641edf5014093bf84699fa50017befb4459"
+    },
+    {
+      "id": "logan-look-03",
+      "path": "public/look-assets/logan-look-03.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-03.jpg",
+      "bytes": 71137,
+      "sha256": "1b009b8f9db3f21184acae58e0298356ad685315f51b7f64bd2fd0ba1618b5f4"
+    },
+    {
+      "id": "logan-look-04",
+      "path": "public/look-assets/logan-look-04.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-04.jpg",
+      "bytes": 73388,
+      "sha256": "ef2e89c5e4e583384e155143238fd3102893698bde71f5851bc1b88554659da2"
+    },
+    {
+      "id": "logan-look-05",
+      "path": "public/look-assets/logan-look-05.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-05.jpg",
+      "bytes": 67997,
+      "sha256": "fef7b8d0feeeaf338b5bc11471534c2b328037dcd50913aafc091d00fdfc87a7"
+    },
+    {
+      "id": "logan-look-06",
+      "path": "public/look-assets/logan-look-06.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-06.jpg",
+      "bytes": 78082,
+      "sha256": "40cde38449d16bfae82f71e5f320442feffe19d6c9c539888eacea0e52bc3d02"
+    },
+    {
+      "id": "logan-look-07",
+      "path": "public/look-assets/logan-look-07.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-07.jpg",
+      "bytes": 70562,
+      "sha256": "a0d1501f902c9bb576eb31f755a6136f31d5612cbea12440d79ae6cb9143d643"
+    },
+    {
+      "id": "logan-look-08",
+      "path": "public/look-assets/logan-look-08.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-08.jpg",
+      "bytes": 72092,
+      "sha256": "ff1becd647084c1d5f13bee237cdf0b5adaa80742bb3ffe7adf717f872b2c2f1"
+    },
+    {
+      "id": "logan-look-09",
+      "path": "public/look-assets/logan-look-09.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-09.jpg",
+      "bytes": 69621,
+      "sha256": "4ba24e361e0518f4b0378a62b444067a79fab64df2a2b879b09e97b0b6e77d78"
+    },
+    {
+      "id": "logan-look-10",
+      "path": "public/look-assets/logan-look-10.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-10.jpg",
+      "bytes": 72754,
+      "sha256": "840dd051a702a37829f003d185f7b9965876aa4f3b2d9594e3bec11c88761fef"
+    },
+    {
+      "id": "logan-look-11",
+      "path": "public/look-assets/logan-look-11.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-11.jpg",
+      "bytes": 73259,
+      "sha256": "6872f9712f1b0effff73b0adb527012abbb958252d17b3afdf45f57f5a9adda5"
+    },
+    {
+      "id": "logan-look-12",
+      "path": "public/look-assets/logan-look-12.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-12.jpg",
+      "bytes": 79024,
+      "sha256": "a4819998b99e2472ac524debe31efd478fe1600e19f832e60d0a61b3f7ced4b9"
+    },
+    {
+      "id": "logan-look-13",
+      "path": "public/look-assets/logan-look-13.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-13.jpg",
+      "bytes": 75904,
+      "sha256": "7d84a6138a806d18b4b317e3f05d4fe80bd27bce66f46633564030313b0cd8c7"
+    },
+    {
+      "id": "logan-look-14",
+      "path": "public/look-assets/logan-look-14.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-14.jpg",
+      "bytes": 79253,
+      "sha256": "ad33fd684d3b03d69e36671504006dc7378df3c18275f885842b05969f0d732b"
+    },
+    {
+      "id": "logan-look-15",
+      "path": "public/look-assets/logan-look-15.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-15.jpg",
+      "bytes": 68358,
+      "sha256": "2cd0cfe5d466d232679e2dd86f0f5f83c159cc5bca7d97be2154bd5f7b88ff9b"
+    },
+    {
+      "id": "logan-look-16",
+      "path": "public/look-assets/logan-look-16.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-16.jpg",
+      "bytes": 69471,
+      "sha256": "a6f466a37eb0a8bd8b1bee6da2f2775a93a2a831de72bc39ef818fd086999b39"
+    },
+    {
+      "id": "logan-look-17",
+      "path": "public/look-assets/logan-look-17.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-17.jpg",
+      "bytes": 70147,
+      "sha256": "e3ed1c86149b1bfa50716615ae3df8aff5216e66e76106e13e06bae741a8a8be"
+    },
+    {
+      "id": "logan-look-18",
+      "path": "public/look-assets/logan-look-18.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-18.jpg",
+      "bytes": 72204,
+      "sha256": "a298c6fd20d5301d997be602a711b6116a29f317f863e78ed2ddfea668056633"
+    },
+    {
+      "id": "logan-look-19",
+      "path": "public/look-assets/logan-look-19.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-19.jpg",
+      "bytes": 72894,
+      "sha256": "e6940b58d4033855dfb152c26e552c774cde1f5311f986edb0897dbf9bc59ca4"
+    },
+    {
+      "id": "logan-look-20",
+      "path": "public/look-assets/logan-look-20.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-20.jpg",
+      "bytes": 77949,
+      "sha256": "fe8d336cf4e005dfc568681dc59f4337eb3cbf7f1a283f6c18973c7aea02f4f1"
+    },
+    {
+      "id": "logan-look-21",
+      "path": "public/look-assets/logan-look-21.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-21.jpg",
+      "bytes": 76987,
+      "sha256": "c27ce6275da10d866d03e2be0e3da6379f88dbee02ebf3db17f1466e577a8304"
+    },
+    {
+      "id": "logan-look-22",
+      "path": "public/look-assets/logan-look-22.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-22.jpg",
+      "bytes": 62059,
+      "sha256": "7b87a49e5794e8c94f48254c335e49db73df736acad95843b1fd0969c926c923"
+    },
+    {
+      "id": "logan-look-23",
+      "path": "public/look-assets/logan-look-23.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-23.jpg",
+      "bytes": 68739,
+      "sha256": "b81a4f0bad543ff1c405989426e40404db214c2582519773dbd72d860a980828"
+    },
+    {
+      "id": "logan-look-24",
+      "path": "public/look-assets/logan-look-24.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-24.jpg",
+      "bytes": 74364,
+      "sha256": "cc5d504f019770d87183df38f0f33e5d28b238547d7d5791033c1c758d8771bd"
+    },
+    {
+      "id": "logan-look-25",
+      "path": "public/look-assets/logan-look-25.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-25.jpg",
+      "bytes": 70725,
+      "sha256": "30882e81e18e30dad31f55ad2416dbccf76c76b0e4562a6b4cffc90a3774662d"
+    },
+    {
+      "id": "logan-look-26",
+      "path": "public/look-assets/logan-look-26.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-26.jpg",
+      "bytes": 72549,
+      "sha256": "d1cbf6a1e5dc0468095f1e23e2537a56ca21e669f5dbd13c5f69e2aebde4a568"
+    },
+    {
+      "id": "logan-look-27",
+      "path": "public/look-assets/logan-look-27.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-27.jpg",
+      "bytes": 71850,
+      "sha256": "3033e8efadb3bd39047d598b3df305ac0f343a42b3c8620838c507c89ddfebe8"
+    },
+    {
+      "id": "logan-look-28",
+      "path": "public/look-assets/logan-look-28.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-28.jpg",
+      "bytes": 69734,
+      "sha256": "a07540c857c7575fe66701fd92a34e87825f9b93031dbc70317f8184d25001d2"
+    },
+    {
+      "id": "logan-look-29",
+      "path": "public/look-assets/logan-look-29.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-29.jpg",
+      "bytes": 75311,
+      "sha256": "c6d7fca59f2e081a84c94731c1a99491de96e7ec0c1ac593bc564088c14a0268"
+    },
+    {
+      "id": "logan-look-30",
+      "path": "public/look-assets/logan-look-30.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/logan-look-30.jpg",
+      "bytes": 72923,
+      "sha256": "b3f9d32aaa3b4e644751550db107d3737b50ddeecbaa2e4a7f108e9016601bd7"
+    }
+  ]
+}

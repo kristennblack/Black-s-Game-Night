@@ -1,0 +1,216 @@
+{
+  "release": "GAME-NIGHT-STAGING-CANDIDATE-W54-LOGAN-PAPA-30-LOOKS-SHOP-72",
+  "approvedBoard": "visual_proofs/papa_30_looks/PAPA_30_APPROVED_LOOKS.png",
+  "items": [
+    {
+      "id": "papa-look-01",
+      "path": "public/look-assets/papa-look-01.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-01.jpg",
+      "bytes": 74971,
+      "sha256": "64fc501bb1d38d7fd8d0ec95aa83e6bd7380201f57fb404cc8642a0c254d6a95"
+    },
+    {
+      "id": "papa-look-02",
+      "path": "public/look-assets/papa-look-02.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-02.jpg",
+      "bytes": 74655,
+      "sha256": "634387dc25c18f35167730b22b1d57f9d758afaa6be222e2b14efaa8259ced4f"
+    },
+    {
+      "id": "papa-look-03",
+      "path": "public/look-assets/papa-look-03.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-03.jpg",
+      "bytes": 80800,
+      "sha256": "735be87913c6c00455bb7059f5938cb105982e563d313e8eacf534dd1ba2d45a"
+    },
+    {
+      "id": "papa-look-04",
+      "path": "public/look-assets/papa-look-04.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-04.jpg",
+      "bytes": 80239,
+      "sha256": "7dc6339cb1f19564c1944a7199363d46decdb55f7f2a190b648e897534f1f70c"
+    },
+    {
+      "id": "papa-look-05",
+      "path": "public/look-assets/papa-look-05.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-05.jpg",
+      "bytes": 81318,
+      "sha256": "ca57ea6f2be935ea37b7df8a884101bbb0fa25da1894fda6bf99cea6546ce358"
+    },
+    {
+      "id": "papa-look-06",
+      "path": "public/look-assets/papa-look-06.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-06.jpg",
+      "bytes": 74506,
+      "sha256": "41fbc083c30776dcf9f273de7552d6efabb126a67c20e9aef56c0546279554a0"
+    },
+    {
+      "id": "papa-look-07",
+      "path": "public/look-assets/papa-look-07.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-07.jpg",
+      "bytes": 79820,
+      "sha256": "3e754389363b0f97d84c039efdefd1c976f3678301e9a8fb45747a1deafec740"
+    },
+    {
+      "id": "papa-look-08",
+      "path": "public/look-assets/papa-look-08.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-08.jpg",
+      "bytes": 88415,
+      "sha256": "ed79ddf76cae011cc400a8498f2e51b3890d9b1ebb41a3925a2064a5ccc68e43"
+    },
+    {
+      "id": "papa-look-09",
+      "path": "public/look-assets/papa-look-09.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-09.jpg",
+      "bytes": 81905,
+      "sha256": "69004e9105bf4c3428f3224971d02ac93f4b91bdc50e106ddf23cbb7a7dca7b3"
+    },
+    {
+      "id": "papa-look-10",
+      "path": "public/look-assets/papa-look-10.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-10.jpg",
+      "bytes": 78026,
+      "sha256": "39ba073fa48ffcd81490dfdb0b6562d661f6d0bd4562d10d96573911be1da559"
+    },
+    {
+      "id": "papa-look-11",
+      "path": "public/look-assets/papa-look-11.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-11.jpg",
+      "bytes": 85694,
+      "sha256": "8106d53eac0c9a923da2fbf5a1092fcab26fe65be1f9439f4cf920c9e805b526"
+    },
+    {
+      "id": "papa-look-12",
+      "path": "public/look-assets/papa-look-12.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-12.jpg",
+      "bytes": 74295,
+      "sha256": "23f841b9424d8bcd8652871cc836ba65fbf0f438f83f3204d584c3790d2d8078"
+    },
+    {
+      "id": "papa-look-13",
+      "path": "public/look-assets/papa-look-13.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-13.jpg",
+      "bytes": 78773,
+      "sha256": "6cf776bafe50c1bfda9d4dc818084124208b8ad1cbf7cbdae921888d2f5ce5fa"
+    },
+    {
+      "id": "papa-look-14",
+      "path": "public/look-assets/papa-look-14.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-14.jpg",
+      "bytes": 70984,
+      "sha256": "2b2188db647ea470d635c33b76349b3d27dc1e3116363f78e7e564ce48b2a2b7"
+    },
+    {
+      "id": "papa-look-15",
+      "path": "public/look-assets/papa-look-15.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-15.jpg",
+      "bytes": 82870,
+      "sha256": "c06f66d70eeed38fc3d8155c98b27fc3a573cc919acc2fd1f6956334775f3f82"
+    },
+    {
+      "id": "papa-look-16",
+      "path": "public/look-assets/papa-look-16.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-16.jpg",
+      "bytes": 79857,
+      "sha256": "198d8649f4e3a51dddaae567960f69bfa88cc8d97bce5ab73d7fa7660e9cbd3f"
+    },
+    {
+      "id": "papa-look-17",
+      "path": "public/look-assets/papa-look-17.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-17.jpg",
+      "bytes": 79209,
+      "sha256": "9aca66aa87d55c928983a598341809b848a6459d678f624471fdf5c8da289528"
+    },
+    {
+      "id": "papa-look-18",
+      "path": "public/look-assets/papa-look-18.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-18.jpg",
+      "bytes": 76593,
+      "sha256": "70d76db7480f852882a7ccd61241afd5bc8a95dd5cf6c15fd0313dfebb1d75ae"
+    },
+    {
+      "id": "papa-look-19",
+      "path": "public/look-assets/papa-look-19.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-19.jpg",
+      "bytes": 75111,
+      "sha256": "0e8228210cdcacbcef9b729ae4511bc881a59e86aae96412051427e35876ee6e"
+    },
+    {
+      "id": "papa-look-20",
+      "path": "public/look-assets/papa-look-20.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-20.jpg",
+      "bytes": 79269,
+      "sha256": "623d233bbad53823452892061bfbbd2b57ec62883c54e89ef6926404c0f5a3a5"
+    },
+    {
+      "id": "papa-look-21",
+      "path": "public/look-assets/papa-look-21.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-21.jpg",
+      "bytes": 77753,
+      "sha256": "d4149dc0750cbebf94f05d82ee19037025267b0828914343e01d1e2e8c772015"
+    },
+    {
+      "id": "papa-look-22",
+      "path": "public/look-assets/papa-look-22.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-22.jpg",
+      "bytes": 78606,
+      "sha256": "e24864c1aa593a35b8b993ef5143e3a2be02509259dd368db0f2b8c23492a018"
+    },
+    {
+      "id": "papa-look-23",
+      "path": "public/look-assets/papa-look-23.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-23.jpg",
+      "bytes": 76844,
+      "sha256": "fe280a955589a191e21794af6d3660919a83a1e77a996488139b5c7d39f86a15"
+    },
+    {
+      "id": "papa-look-24",
+      "path": "public/look-assets/papa-look-24.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-24.jpg",
+      "bytes": 73126,
+      "sha256": "fd553bb7cd23ba1ec72bb3e08374b75a646caad5503760208c4a20385122aba7"
+    },
+    {
+      "id": "papa-look-25",
+      "path": "public/look-assets/papa-look-25.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-25.jpg",
+      "bytes": 78718,
+      "sha256": "8ea72ad2e966592f41233777a22169ba8ba15dbff95005375bb3156e89ab07ab"
+    },
+    {
+      "id": "papa-look-26",
+      "path": "public/look-assets/papa-look-26.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-26.jpg",
+      "bytes": 61789,
+      "sha256": "004b5d28f06015f7ad5cd009f1b85e5f11e14ff79028276e18515abc2e3e25b8"
+    },
+    {
+      "id": "papa-look-27",
+      "path": "public/look-assets/papa-look-27.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-27.jpg",
+      "bytes": 72388,
+      "sha256": "bee900585408ccfe7ac828b47e6c33b254fc5482fc96e39dda8ef4b26d52db9d"
+    },
+    {
+      "id": "papa-look-28",
+      "path": "public/look-assets/papa-look-28.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-28.jpg",
+      "bytes": 76319,
+      "sha256": "9519ba19fc2d3ca28d598f11f3f888f1fd5ee37d77fe362cb03724b4d944ceee"
+    },
+    {
+      "id": "papa-look-29",
+      "path": "public/look-assets/papa-look-29.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-29.jpg",
+      "bytes": 71299,
+      "sha256": "89c9c966ad8239d564604edc34af7219c4876fd15bf274b7ff6242c02cde1114"
+    },
+    {
+      "id": "papa-look-30",
+      "path": "public/look-assets/papa-look-30.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/papa-look-30.jpg",
+      "bytes": 64031,
+      "sha256": "686e2f20555ee21d9e2ccc90c29eac18e2186b086b46f686a82ccc39f6125e82"
+    }
+  ]
+}
