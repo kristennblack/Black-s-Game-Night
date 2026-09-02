@@ -1,0 +1,75 @@
+{
+  "character_id": "CHAR_KELSI",
+  "status": "AUTHORING_REQUIRED",
+  "visual_target": "stylized-realistic small curly-coated dog, recognizable as Kelsi from the approved family reference",
+  "reference_precedence": [
+    "references/kelsi-w26-turnaround-reference.png",
+    "references/family-prop-hunt-lineup.png",
+    "references/w25-production-characters-sheet.png"
+  ],
+  "identity_locks": [
+    "small dog silhouette",
+    "curly warm golden/tan coat",
+    "recognizable rounded muzzle and expressive eyes",
+    "recognizable ears and tail",
+    "pink collar/tag identity when base outfit/accessory is visible",
+    "do not convert Kelsi into a generic golden retriever or primitive dog rig"
+  ],
+  "style": {
+    "realism": "stylized realism",
+    "avoid": ["four-legged box assembly", "stretched cylinder body", "generic dog head", "painted-on curls", "human accessory geometry stretched onto dog"],
+    "goal": "compact expressive family-game quadruped with readable curly coat volume and clean silhouette"
+  },
+  "game_scale": {
+    "shoulder_height_target_m": 0.48,
+    "note": "Provisional game-space target only. Tune against Kristen/John in the cabin scale gate; do not interpret as a real-world measurement."
+  },
+  "geometry": {
+    "lod0_triangle_target": [18000, 30000],
+    "lod1_triangle_target": [9000, 16000],
+    "lod2_triangle_target": [4000, 8000],
+    "lod3_triangle_target": [1200, 2800],
+    "max_material_slots_preferred": 4,
+    "separate_meshes_preferred": ["body_coat", "eyes", "collar_tag"],
+    "coat_note": "Use sculpted/groom-card hybrid or efficient groom shell treatment that reads as curls without excessive alpha overdraw."
+  },
+  "textures": {
+    "format": "PBR metallic-roughness",
+    "lod0_max_resolution": 2048,
+    "mobile_preferred_resolution": 1024,
+    "compression_target": "KTX2/Basis where runtime packaging supports it"
+  },
+  "rig": {
+    "type": "quadruped",
+    "required_bones": [
+      "root", "pelvis", "spine1", "spine2", "chest", "neck", "head", "jaw",
+      "leftEar", "rightEar",
+      "leftFrontUpper", "leftFrontLower", "leftFrontPaw",
+      "rightFrontUpper", "rightFrontLower", "rightFrontPaw",
+      "leftRearUpper", "leftRearLower", "leftRearPaw",
+      "rightRearUpper", "rightRearLower", "rightRearPaw",
+      "tail1", "tail2", "tail3"
+    ],
+    "required_sockets": [
+      "hatSocket", "collarSocket", "leftEarCharmSocket", "rightEarCharmSocket", "backAccessorySocket"
+    ],
+    "skin_quality": ["no paw skating in idle", "elbows/hocks bend naturally", "neck turns without coat tearing", "tail and ears deform cleanly"]
+  },
+  "accessory_adaptation": {
+    "cowboy_hat": "dog-specific crown/brim fit on hatSocket with ear clearance; same design identity, not a scaled human hat",
+    "aviators": "dog-specific bridge/temple adaptation or brow strap system; must not float",
+    "earrings": "use small ear-charm versions on left/right ear charm sockets",
+    "filter": "face material/effect mask adapted to canine face, only when visually appropriate"
+  },
+  "base_animation_contract": [
+    "Idle", "Walk", "Run", "Sprint", "Turn_Left", "Turn_Right", "Jump", "Fall", "Land", "Sit", "Lie_Down", "Head_Tilt", "Tail_Wag", "Celebrate"
+  ],
+  "export": {
+    "format": "GLB 2.0",
+    "file_name": "CHAR_KELSI.glb",
+    "coordinate_system": "Y-up, front faces -Z, meters",
+    "apply_object_transforms": true,
+    "embed_textures": true,
+    "required_validation": ["opens in clean glTF viewer", "all textures load", "quadruped rig present", "all sockets present", "animations named correctly", "no NaN transforms"]
+  }
+}

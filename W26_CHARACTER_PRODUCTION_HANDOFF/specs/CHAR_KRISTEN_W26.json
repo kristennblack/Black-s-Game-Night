@@ -1,0 +1,87 @@
+{
+  "character_id": "CHAR_KRISTEN",
+  "status": "AUTHORING_REQUIRED",
+  "visual_target": "stylized realism, preserving the approved Kristen identity and silhouette",
+  "reference_precedence": [
+    "references/kristen-approved-turnaround.png",
+    "references/family-prop-hunt-lineup.png",
+    "references/w25-production-characters-sheet.png"
+  ],
+  "identity_locks": [
+    "preserve face identity",
+    "preserve hair color and recognizable hairstyle",
+    "preserve age read",
+    "preserve feminine body proportions",
+    "preserve base outfit identity unless a later approved wardrobe replaces it",
+    "do not reuse John's body or head geometry"
+  ],
+  "style": {
+    "realism": "stylized realism",
+    "avoid": ["Roblox/block body", "segmented mannequin", "cylindrical limbs", "generic face", "flat painted hair"],
+    "goal": "recognizable family-specific mini-character with believable anatomy, materials, hair volume, hands, boots and facial structure"
+  },
+  "game_scale": {
+    "canonical_height_m": 1.70,
+    "note": "Production game-space target, not a claim about real-world height. Final scale is tuned against the cabin and John/Kelsi comparison gate."
+  },
+  "geometry": {
+    "lod0_triangle_target": [28000, 45000],
+    "lod1_triangle_target": [14000, 24000],
+    "lod2_triangle_target": [6000, 12000],
+    "lod3_triangle_target": [1800, 4000],
+    "max_material_slots_preferred": 5,
+    "separate_meshes_preferred": ["body", "hair", "eyes", "base_outfit", "boots"],
+    "requirements": ["closed clean topology", "deformation-friendly edge loops", "no accidental double surfaces", "no negative scales", "origin at ground midpoint"]
+  },
+  "textures": {
+    "format": "PBR metallic-roughness",
+    "lod0_max_resolution": 2048,
+    "mobile_preferred_resolution": 1024,
+    "channels": ["baseColor", "normal", "roughness", "metallic where applicable", "alpha only where necessary"],
+    "compression_target": "KTX2/Basis where runtime packaging supports it"
+  },
+  "rig": {
+    "type": "humanoid",
+    "compatibility_goal": "reuse the current Black Family animation contract",
+    "required_bones": [
+      "hips", "upperBody", "chest", "neck", "head",
+      "leftShoulder", "leftElbow", "leftHand",
+      "rightShoulder", "rightElbow", "rightHand",
+      "leftHip", "leftKnee", "leftFoot",
+      "rightHip", "rightKnee", "rightFoot"
+    ],
+    "required_sockets": [
+      "headSocket", "hatSocket", "glassesBridgeSocket", "leftTempleSocket", "rightTempleSocket",
+      "leftEarSocket", "rightEarSocket", "faceMaskSocket", "leftHandSocket", "rightHandSocket", "backSocket"
+    ],
+    "skin_quality": ["no shoulder tearing", "no elbow collapse", "no hip pinching", "hands remain connected", "feet remain planted during idle"]
+  },
+  "hair_system": {
+    "require_separate_hair_mesh": true,
+    "hat_behavior": "preserve hairstyle identity using compression/tuck profiles instead of deleting hair",
+    "required_hat_profiles": ["cowboy_hat", "cap_beanie"],
+    "implementation_note": "Hair mesh should expose named compression groups or alternate fit shapes that can be selected at runtime."
+  },
+  "wearable_anchors": {
+    "hat": "hatSocket or headSocket",
+    "glasses": ["glassesBridgeSocket", "leftTempleSocket", "rightTempleSocket"],
+    "earrings": ["leftEarSocket", "rightEarSocket"],
+    "filter": "faceMaskSocket/material mask"
+  },
+  "face": {
+    "minimum_morphs": ["blinkLeft", "blinkRight", "jawOpen", "smile", "frown", "browUp", "browDown"],
+    "note": "Keep expressions readable but preserve the approved likeness."
+  },
+  "base_animation_contract": [
+    "Idle", "Walk", "Run", "Sprint", "Start_Move", "Stop_Move", "Turn_Left", "Turn_Right",
+    "Jump", "Fall", "Land", "Mantle", "Crouch", "Aim", "Fire", "Hit_Reaction", "Wave", "Celebrate", "Sit"
+  ],
+  "export": {
+    "format": "GLB 2.0",
+    "file_name": "CHAR_KRISTEN.glb",
+    "coordinate_system": "Y-up, front faces -Z, meters",
+    "apply_object_transforms": true,
+    "embed_textures": true,
+    "required_validation": ["opens in clean glTF viewer", "all textures load", "all bones present", "all sockets present", "animations named correctly", "no NaN transforms"]
+  }
+}

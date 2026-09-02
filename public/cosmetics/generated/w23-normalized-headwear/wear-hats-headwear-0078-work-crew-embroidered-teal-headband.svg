@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 70" aria-label="Embroidered Teal Headband">
+<defs><linearGradient id="t" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#40b8ad"/><stop offset="1" stop-color="#176b6f"/></linearGradient></defs>
+<path d="M12 38 Q110 5 208 38 L202 61 Q110 31 18 61 Z" fill="url(#t)" stroke="#0e4a50" stroke-width="4"/>
+<path d="M47 43 Q110 24 173 43" fill="none" stroke="#e8d5a3" stroke-width="3" stroke-dasharray="5 5" opacity=".9"/>
+<path d="M102 31 l8 8 8-8 8 8" fill="none" stroke="#f7e9c4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

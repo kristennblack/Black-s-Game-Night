@@ -1,0 +1,302 @@
+[
+  {
+    "id": "kelsi-look-01",
+    "path": "public/look-assets/kelsi-look-01.jpg",
+    "box": [
+      59,
+      133,
+      194,
+      313
+    ]
+  },
+  {
+    "id": "kelsi-look-02",
+    "path": "public/look-assets/kelsi-look-02.jpg",
+    "box": [
+      242,
+      133,
+      377,
+      313
+    ]
+  },
+  {
+    "id": "kelsi-look-03",
+    "path": "public/look-assets/kelsi-look-03.jpg",
+    "box": [
+      424,
+      133,
+      559,
+      313
+    ]
+  },
+  {
+    "id": "kelsi-look-04",
+    "path": "public/look-assets/kelsi-look-04.jpg",
+    "box": [
+      607,
+      133,
+      742,
+      313
+    ]
+  },
+  {
+    "id": "kelsi-look-05",
+    "path": "public/look-assets/kelsi-look-05.jpg",
+    "box": [
+      788,
+      133,
+      923,
+      313
+    ]
+  },
+  {
+    "id": "kelsi-look-06",
+    "path": "public/look-assets/kelsi-look-06.jpg",
+    "box": [
+      970,
+      133,
+      1105,
+      313
+    ]
+  },
+  {
+    "id": "kelsi-look-07",
+    "path": "public/look-assets/kelsi-look-07.jpg",
+    "box": [
+      59,
+      382,
+      194,
+      562
+    ]
+  },
+  {
+    "id": "kelsi-look-08",
+    "path": "public/look-assets/kelsi-look-08.jpg",
+    "box": [
+      242,
+      382,
+      377,
+      562
+    ]
+  },
+  {
+    "id": "kelsi-look-09",
+    "path": "public/look-assets/kelsi-look-09.jpg",
+    "box": [
+      424,
+      382,
+      559,
+      562
+    ]
+  },
+  {
+    "id": "kelsi-look-10",
+    "path": "public/look-assets/kelsi-look-10.jpg",
+    "box": [
+      607,
+      382,
+      742,
+      562
+    ]
+  },
+  {
+    "id": "kelsi-look-11",
+    "path": "public/look-assets/kelsi-look-11.jpg",
+    "box": [
+      788,
+      382,
+      923,
+      562
+    ]
+  },
+  {
+    "id": "kelsi-look-12",
+    "path": "public/look-assets/kelsi-look-12.jpg",
+    "box": [
+      970,
+      382,
+      1105,
+      562
+    ]
+  },
+  {
+    "id": "kelsi-look-13",
+    "path": "public/look-assets/kelsi-look-13.jpg",
+    "box": [
+      59,
+      611,
+      194,
+      791
+    ]
+  },
+  {
+    "id": "kelsi-look-14",
+    "path": "public/look-assets/kelsi-look-14.jpg",
+    "box": [
+      242,
+      611,
+      377,
+      791
+    ]
+  },
+  {
+    "id": "kelsi-look-15",
+    "path": "public/look-assets/kelsi-look-15.jpg",
+    "box": [
+      424,
+      611,
+      559,
+      791
+    ]
+  },
+  {
+    "id": "kelsi-look-16",
+    "path": "public/look-assets/kelsi-look-16.jpg",
+    "box": [
+      607,
+      611,
+      742,
+      791
+    ]
+  },
+  {
+    "id": "kelsi-look-17",
+    "path": "public/look-assets/kelsi-look-17.jpg",
+    "box": [
+      788,
+      611,
+      923,
+      791
+    ]
+  },
+  {
+    "id": "kelsi-look-18",
+    "path": "public/look-assets/kelsi-look-18.jpg",
+    "box": [
+      970,
+      611,
+      1105,
+      791
+    ]
+  },
+  {
+    "id": "kelsi-look-19",
+    "path": "public/look-assets/kelsi-look-19.jpg",
+    "box": [
+      59,
+      856,
+      194,
+      1036
+    ]
+  },
+  {
+    "id": "kelsi-look-20",
+    "path": "public/look-assets/kelsi-look-20.jpg",
+    "box": [
+      242,
+      856,
+      377,
+      1036
+    ]
+  },
+  {
+    "id": "kelsi-look-21",
+    "path": "public/look-assets/kelsi-look-21.jpg",
+    "box": [
+      424,
+      856,
+      559,
+      1036
+    ]
+  },
+  {
+    "id": "kelsi-look-22",
+    "path": "public/look-assets/kelsi-look-22.jpg",
+    "box": [
+      607,
+      856,
+      742,
+      1036
+    ]
+  },
+  {
+    "id": "kelsi-look-23",
+    "path": "public/look-assets/kelsi-look-23.jpg",
+    "box": [
+      788,
+      856,
+      923,
+      1036
+    ]
+  },
+  {
+    "id": "kelsi-look-24",
+    "path": "public/look-assets/kelsi-look-24.jpg",
+    "box": [
+      970,
+      856,
+      1105,
+      1036
+    ]
+  },
+  {
+    "id": "kelsi-look-25",
+    "path": "public/look-assets/kelsi-look-25.jpg",
+    "box": [
+      59,
+      1121,
+      194,
+      1301
+    ]
+  },
+  {
+    "id": "kelsi-look-26",
+    "path": "public/look-assets/kelsi-look-26.jpg",
+    "box": [
+      242,
+      1121,
+      377,
+      1301
+    ]
+  },
+  {
+    "id": "kelsi-look-27",
+    "path": "public/look-assets/kelsi-look-27.jpg",
+    "box": [
+      424,
+      1121,
+      559,
+      1301
+    ]
+  },
+  {
+    "id": "kelsi-look-28",
+    "path": "public/look-assets/kelsi-look-28.jpg",
+    "box": [
+      607,
+      1121,
+      742,
+      1301
+    ]
+  },
+  {
+    "id": "kelsi-look-29",
+    "path": "public/look-assets/kelsi-look-29.jpg",
+    "box": [
+      788,
+      1121,
+      923,
+      1301
+    ]
+  },
+  {
+    "id": "kelsi-look-30",
+    "path": "public/look-assets/kelsi-look-30.jpg",
+    "box": [
+      970,
+      1121,
+      1105,
+      1301
+    ]
+  }
+]
