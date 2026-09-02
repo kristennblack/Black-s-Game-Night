@@ -1,0 +1,22 @@
+W50 RELEASE NOTES
+Release: GAME-NIGHT-STAGING-CANDIDATE-W50-DOROTHY-30-LOOKS-SHOP-68
+
+What changed:
+- Added Dorothy as a full 30-look collection in the Looks Shop.
+- Added Dorothy avatar look ownership / equip support to app + worker profile storage.
+- Added Dorothy purchasable looks to the store.
+- Added Dorothy winable look unlocks in Dorothy's Garden Merge.
+- Preserved John, Holly, and Gunner complete-look systems.
+- Preserved store cleanup focus around Looks Shop and Cabin Room Shop.
+- Added redirects on legacy lab pages so they do not behave like active public shop pages.
+- Bumped the service-worker runtime cache and added Dorothy assets to pre-cache.
+
+Primary files:
+- public/dorothy-looks-catalog.mjs
+- public/looks-shop.html
+- public/app.js
+- public/dorothys-garden-merge.html
+- public/sw.js
+- worker.mjs
+- DOROTHY_30_LOOKS_MANIFEST.json
+- visual_proofs/dorothy_30_looks/*

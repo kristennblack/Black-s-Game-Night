@@ -1,0 +1,28 @@
+Phase O primary changed/added files
+- blackGammon.mjs
+- gameEngine.mjs
+- extraGames.mjs
+- worker.mjs
+- public/app.js
+- public/styles.css
+- public/sw.js
+- public/index.html
+- public/new-games.html
+- public/island-life.html
+- public/prop-hunt-3d.js
+- public/phase-e-qa.mjs
+- package.json
+- wrangler.staging.jsonc
+- tools/phase_e_validate.mjs
+- test/black-gammon.test.mjs
+- test/phase-o-black-gammon-bots.test.mjs
+- test/phase-l-new-games-shelf.test.mjs
+- build/cache identity assertions in existing regression tests
+- BLACK_GAMMON_MASTER_RULES.md
+- BLACK_GAMMON_STARTING_SETUP.png
+- PHASE_O_BLACK_GAMMON_BOTS_REPORT.md
+- PHONE_QA_PHASE_O_BLACK_GAMMON_BOTS_12.md
+- README.md
+- BUILD_MANIFEST.txt
+- START_HERE.txt
+- VERSION.txt

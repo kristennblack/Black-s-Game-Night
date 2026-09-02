@@ -1,0 +1,19 @@
+BLACK FAMILY GAME NIGHT — W49 GUNNER 30 LOOKS SHOP + PLAYER SHOP CLEANUP
+
+Staging candidate: GAME-NIGHT-STAGING-CANDIDATE-W49-GUNNER-30-LOOKS-SHOP-CLEANUP-67
+
+START HERE
+1. MASTER_GAME_BUILD_PROMPT_W49_CURRENT_PRODUCTION_MASTER.md
+2. MASTER_PHASE_W49_GUNNER_30_LOOKS_SHOP_CLEANUP_DIRECTIVE.md
+3. W49_GUNNER_30_LOOKS_SHOP_CLEANUP_REPORT.md
+4. GUNNER_30_LOOKS_MANIFEST.json
+5. PHONE_QA_PHASE_W49_GUNNER_30_LOOKS_SHOP_CLEANUP_67.md
+6. visual_proofs/gunner_30_looks/GUNNER_APPROVED_GAME_AVATAR_SOURCE.png
+7. visual_proofs/gunner_30_looks/GUNNER_30_APPROVED_LOOKS.png
+8. visual_proofs/gunner_30_looks/GUNNER_30_RUNTIME_LOOKS_PROOF.jpg
+
+Player-facing shops in W49:
+- /looks-shop.html
+- /cabin-room-shop.html
+
+W49 extends the confirmed-avatar complete-look system to Gunner, repairs John/Holly shop image delivery, and removes production/approval labs from normal player navigation.

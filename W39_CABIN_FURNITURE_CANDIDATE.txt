@@ -1,0 +1,4 @@
+GAME-NIGHT-STAGING-CANDIDATE-W39-TRUE3D-CABIN-FURNITURE-58
+Base official release: GAME-NIGHT-STAGING-PHASE-W30-PROP-HUNT-P0-GAMEPLAY-54
+Scope: True-3D Cabin Furniture Realism vertical slice and furniture runtime foundation
+Gate: Technical staging candidate only. Actual WebGL device screenshot/video + interaction + performance approval required before CURRENT_RELEASE advances.

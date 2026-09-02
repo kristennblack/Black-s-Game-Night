@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>W39 True-3D Furniture Benchmark · Black Family Game Night</title>
+<link rel="stylesheet" href="/cabin.css">
+<style>
+body{margin:0;background:#0b0907;color:#f6e7c7;font-family:Georgia,"Times New Roman",serif}.w39-wrap{max-width:1500px;margin:auto;padding:12px}.w39-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:12px 15px;border:1px solid #805d35;border-radius:13px;background:linear-gradient(#291b12,#150e0a)}.w39-head h1{margin:3px 0;font-size:clamp(24px,4vw,42px)}.w39-head small{color:#d8a956;font-weight:900;letter-spacing:.12em}.w39-head p{margin:4px 0;color:#c9b693}.w39-head a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;border:1px solid #a87c42;border-radius:9px;color:#ffe9bd;text-decoration:none;background:#2b1d13;font-weight:800}.w39-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:12px;margin-top:12px}.w39-stage{position:relative;min-height:720px;border:1px solid #8a6438;border-radius:14px;overflow:hidden;background:#17100c}.w39-stage #mount{position:absolute;inset:0}.w39-badge{position:absolute;left:12px;top:12px;z-index:8;padding:8px 10px;border:1px solid #b4894d;border-radius:9px;background:#130d09dc;font:800 .72rem system-ui}.w39-side{display:grid;align-content:start;gap:10px}.w39-card{border:1px solid #7c5933;border-radius:12px;background:#1c130e;padding:12px}.w39-card h2,.w39-card h3{margin:0 0 8px}.w39-card p{margin:5px 0;color:#c9b693;line-height:1.4}.w39-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.w39-controls button{min-height:44px;border:1px solid #9a713d;border-radius:9px;background:#352318;color:#ffe8b8;font-weight:900}.w39-controls button.primary{background:#2d533a}.w39-status{white-space:pre-wrap;font:700 .72rem/1.45 system-ui;color:#dbc89f;max-height:280px;overflow:auto}.w39-gate{padding:9px 10px;border:1px solid #536e58;border-radius:9px;background:#193020;color:#ddf0dc;font:800 .72rem/1.45 system-ui}@media(max-width:900px){.w39-grid{grid-template-columns:1fr}.w39-stage{min-height:620px}.w39-side{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:620px){.w39-wrap{padding:6px}.w39-head{display:block}.w39-head a{margin-top:8px}.w39-stage{min-height:570px}.w39-side{grid-template-columns:1fr}.w39-controls{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<main class="w39-wrap">
+<header class="w39-head"><div><small>BLACK FAMILY GAME NIGHT · W39</small><h1>True-3D Furniture Benchmark</h1><p>Actual Cabin WebGL renderer. Actual W25 production GLBs plus W39 design-specific 3D fallbacks. This page does not alter ownership or room saves.</p></div><a href="/cabin.html">Back to Cabin</a></header>
+<div class="w39-grid">
+<section class="w39-stage"><div id="mount"><div class="cabin3d-fallback">Loading true-3D benchmark room…</div></div><div class="w39-badge">14 × 16 FT · REAL 3D BENCHMARK · QA ONLY</div></section>
+<aside class="w39-side">
+<section class="w39-card"><h2>Benchmark controls</h2><div class="w39-controls"><button data-id="w39-bed">Bed</button><button data-id="w39-chair">Reading chair</button><button data-id="w39-nightstand">Nightstand</button><button data-id="w39-lamp">Lamp</button><button data-id="w39-dresser">Dresser</button><button data-id="w39-rug">Rug</button><button data-id="w39-tv">Wall TV</button><button data-id="w39-desk-chair">Desk chair</button><button class="primary" id="toggleLamp">Toggle lamp</button><button id="resetCamera">Reset camera</button></div></section>
+<section class="w39-card"><h3>Release gate</h3><div class="w39-gate">This page is technical/runtime proof only. It does not grant visual or device approval until an actual running screenshot/video is reviewed on a real WebGL device.</div></section>
+<section class="w39-card"><h3>Live QA state</h3><div class="w39-status" id="status">Waiting for renderer…</div></section>
+</aside>
+</div>
+</main>
+<script type="module">
+import {CABIN_ROOM_ITEM_BY_ID} from './cabin-room-catalog.mjs?v=W39-TRUE3D-FURNITURE-58';
+import {mountCabinRoom3D} from './cabin-3d-room.mjs?v=W39-TRUE3D-FURNITURE-58';
+import {w39BenchmarkRoom} from './w39-cabin-furniture.mjs?v=W39-TRUE3D-FURNITURE-58';
+const status=document.getElementById('status'),room=w39BenchmarkRoom();let selected='w39-chair';
+const renderer=mountCabinRoom3D(document.getElementById('mount'),{room,catalogById:CABIN_ROOM_ITEM_BY_ID,isOwner:false,selectedId:selected,benchmarkMode:true,onSelect:id=>{selected=id;renderer.setSelected(id);update()}});
+function update(message=''){
+ const rows=renderer.getQAState?.()||[];status.textContent=(message?message+'\n\n':'')+rows.map(r=>`${r.id.replace('w39-','')}: ${r.tier}${r.productionLoaded?' · GLB LOADED':''}${r.productionError?' · LOAD ERROR':''}${r.family?` · ${r.family}`:''}`).join('\n');
+}
+document.querySelectorAll('[data-id]').forEach(b=>b.addEventListener('click',()=>{selected=b.dataset.id;renderer.setSelected(selected);update(`Selected ${b.textContent}.`)}));
+document.getElementById('toggleLamp').addEventListener('click',()=>{const r=renderer.interact?.('w39-lamp');update(r?.message||'Lamp unavailable.')});
+document.getElementById('resetCamera').addEventListener('click',()=>{renderer.resetCamera?.();update('Benchmark camera reset.')});
+setTimeout(()=>update('Renderer initialized. Production GLBs may continue loading asynchronously.'),600);
+setTimeout(()=>update(),2200);
+</script>
+</body>
+</html>

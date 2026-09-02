@@ -1,0 +1,182 @@
+[
+  {
+    "index": 1,
+    "id": "john-look-01",
+    "name": "Everyday Check",
+    "image": "/avatars/styles/john-look-01.jpg"
+  },
+  {
+    "index": 2,
+    "id": "john-look-02",
+    "name": "Workshop John",
+    "image": "/avatars/styles/john-look-02.jpg"
+  },
+  {
+    "index": 3,
+    "id": "john-look-03",
+    "name": "Birthday Legend",
+    "image": "/avatars/styles/john-look-03.jpg"
+  },
+  {
+    "index": 4,
+    "id": "john-look-04",
+    "name": "Cabin Hoodie",
+    "image": "/avatars/styles/john-look-04.jpg"
+  },
+  {
+    "index": 5,
+    "id": "john-look-05",
+    "name": "Lake Toque",
+    "image": "/avatars/styles/john-look-05.jpg"
+  },
+  {
+    "index": 6,
+    "id": "john-look-06",
+    "name": "Flannel Classic",
+    "image": "/avatars/styles/john-look-06.jpg"
+  },
+  {
+    "index": 7,
+    "id": "john-look-07",
+    "name": "Denim Rider",
+    "image": "/avatars/styles/john-look-07.jpg"
+  },
+  {
+    "index": 8,
+    "id": "john-look-08",
+    "name": "Cowboy John",
+    "image": "/avatars/styles/john-look-08.jpg"
+  },
+  {
+    "index": 9,
+    "id": "john-look-09",
+    "name": "Prop Hunt Hunter",
+    "image": "/avatars/styles/john-look-09.jpg"
+  },
+  {
+    "index": 10,
+    "id": "john-look-10",
+    "name": "Game Night Fuel",
+    "image": "/avatars/styles/john-look-10.jpg"
+  },
+  {
+    "index": 11,
+    "id": "john-look-11",
+    "name": "Formal Suit",
+    "image": "/avatars/styles/john-look-11.jpg"
+  },
+  {
+    "index": 12,
+    "id": "john-look-12",
+    "name": "Poker Night",
+    "image": "/avatars/styles/john-look-12.jpg"
+  },
+  {
+    "index": 13,
+    "id": "john-look-13",
+    "name": "Black Gammon Pro",
+    "image": "/avatars/styles/john-look-13.jpg"
+  },
+  {
+    "index": 14,
+    "id": "john-look-14",
+    "name": "Explorer John",
+    "image": "/avatars/styles/john-look-14.jpg"
+  },
+  {
+    "index": 15,
+    "id": "john-look-15",
+    "name": "Construction John",
+    "image": "/avatars/styles/john-look-15.jpg"
+  },
+  {
+    "index": 16,
+    "id": "john-look-16",
+    "name": "Firefighter John",
+    "image": "/avatars/styles/john-look-16.jpg"
+  },
+  {
+    "index": 17,
+    "id": "john-look-17",
+    "name": "Holiday Plaid",
+    "image": "/avatars/styles/john-look-17.jpg"
+  },
+  {
+    "index": 18,
+    "id": "john-look-18",
+    "name": "Winter Parka",
+    "image": "/avatars/styles/john-look-18.jpg"
+  },
+  {
+    "index": 19,
+    "id": "john-look-19",
+    "name": "Summer Beach",
+    "image": "/avatars/styles/john-look-19.jpg"
+  },
+  {
+    "index": 20,
+    "id": "john-look-20",
+    "name": "Fishing Trip",
+    "image": "/avatars/styles/john-look-20.jpg"
+  },
+  {
+    "index": 21,
+    "id": "john-look-21",
+    "name": "Trail Trouble Champ",
+    "image": "/avatars/styles/john-look-21.jpg"
+  },
+  {
+    "index": 22,
+    "id": "john-look-22",
+    "name": "Mexican Train Conductor",
+    "image": "/avatars/styles/john-look-22.jpg"
+  },
+  {
+    "index": 23,
+    "id": "john-look-23",
+    "name": "Cabin Sherpa",
+    "image": "/avatars/styles/john-look-23.jpg"
+  },
+  {
+    "index": 24,
+    "id": "john-look-24",
+    "name": "Vintage Leather",
+    "image": "/avatars/styles/john-look-24.jpg"
+  },
+  {
+    "index": 25,
+    "id": "john-look-25",
+    "name": "Varsity Cap",
+    "image": "/avatars/styles/john-look-25.jpg"
+  },
+  {
+    "index": 26,
+    "id": "john-look-26",
+    "name": "Family Photo John",
+    "image": "/avatars/styles/john-look-26.jpg"
+  },
+  {
+    "index": 27,
+    "id": "john-look-27",
+    "name": "Lumberjack John",
+    "image": "/avatars/styles/john-look-27.jpg"
+  },
+  {
+    "index": 28,
+    "id": "john-look-28",
+    "name": "Celebration Crown",
+    "image": "/avatars/styles/john-look-28.jpg"
+  },
+  {
+    "index": 29,
+    "id": "john-look-29",
+    "name": "Mountain Trek",
+    "image": "/avatars/styles/john-look-29.jpg"
+  },
+  {
+    "index": 30,
+    "id": "john-look-30",
+    "name": "Sunday Casual",
+    "image": "/avatars/styles/john-look-30.jpg"
+  }
+]

@@ -1,0 +1,3 @@
+GAME-NIGHT-STAGING-CANDIDATE-W34-PROP-HUNT-ANIMATION-FEEL-55
+Base release: GAME-NIGHT-STAGING-PHASE-W30-PROP-HUNT-P0-GAMEPLAY-54
+Gate: technical candidate only; real-phone animation approval required before CURRENT_RELEASE advances.

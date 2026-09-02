@@ -1,0 +1,3 @@
+GAME-NIGHT-STAGING-CANDIDATE-W43-PORTRAIT-ANCHOR-RECOVERY-61
+Base official release identity: GAME-NIGHT-STAGING-PHASE-W30-PROP-HUNT-P0-GAMEPLAY-54
+Gate: staging candidate only. Shop/card portrait accessory device approval is required before release promotion.

@@ -1,0 +1,219 @@
+{
+  "candidate": "GAME-NIGHT-STAGING-CANDIDATE-W50-DOROTHY-30-LOOKS-SHOP-68",
+  "confirmedAvatarSource": "visual_proofs/dorothy_30_looks/DOROTHY_APPROVED_GAME_AVATAR_SOURCE.png",
+  "approvedBoard": "visual_proofs/dorothy_30_looks/DOROTHY_30_APPROVED_LOOKS.png",
+  "runtimeProof": "visual_proofs/dorothy_30_looks/DOROTHY_30_RUNTIME_LOOKS_PROOF.jpg",
+  "canonicalRuntimeDirectory": "public/look-assets",
+  "items": [
+    {
+      "id": "dorothy-look-01",
+      "path": "public/look-assets/dorothy-look-01.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-01.jpg",
+      "bytes": 76673,
+      "sha256": "074ce9b775a04d22c4b5cf2d62bcd771b52f4939f0eaf484382a9f1868bea458"
+    },
+    {
+      "id": "dorothy-look-02",
+      "path": "public/look-assets/dorothy-look-02.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-02.jpg",
+      "bytes": 79868,
+      "sha256": "ed5f13a0f7b8a24d995c05feaedf9a1754740a0964dc9de03de8df45202226df"
+    },
+    {
+      "id": "dorothy-look-03",
+      "path": "public/look-assets/dorothy-look-03.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-03.jpg",
+      "bytes": 80507,
+      "sha256": "027ffcc3c2027d7e8ea8899015a80b5f1d3743e8f448a4c67b502c427579c659"
+    },
+    {
+      "id": "dorothy-look-04",
+      "path": "public/look-assets/dorothy-look-04.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-04.jpg",
+      "bytes": 77656,
+      "sha256": "fd346e617e4b6875927a2a40dd8c267037bb179a4e919942049c265f58741fd6"
+    },
+    {
+      "id": "dorothy-look-05",
+      "path": "public/look-assets/dorothy-look-05.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-05.jpg",
+      "bytes": 78120,
+      "sha256": "d41acf0b22b67208cf93908f42da00e4a97e5b9effeb859ab73856f75a441b04"
+    },
+    {
+      "id": "dorothy-look-06",
+      "path": "public/look-assets/dorothy-look-06.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-06.jpg",
+      "bytes": 80117,
+      "sha256": "f641bfa7c441f929edc60a9e2b70ab569f01c124befd5b14ce990cb5c6c2dcd2"
+    },
+    {
+      "id": "dorothy-look-07",
+      "path": "public/look-assets/dorothy-look-07.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-07.jpg",
+      "bytes": 79902,
+      "sha256": "1799eaaebf3671a224308eacaeb2e639941419231b38a04d06d16e0240bf20c1"
+    },
+    {
+      "id": "dorothy-look-08",
+      "path": "public/look-assets/dorothy-look-08.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-08.jpg",
+      "bytes": 76493,
+      "sha256": "af1339e88364f8a41502e6b64477cf9807e9fdb94022036e6b6d1ba64b24ec3e"
+    },
+    {
+      "id": "dorothy-look-09",
+      "path": "public/look-assets/dorothy-look-09.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-09.jpg",
+      "bytes": 79492,
+      "sha256": "088a6e8b423fcbef1163813cd6fab208d7eb4087696d306dcf2156066bbb94f3"
+    },
+    {
+      "id": "dorothy-look-10",
+      "path": "public/look-assets/dorothy-look-10.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-10.jpg",
+      "bytes": 84742,
+      "sha256": "80360a1312f52d6065149f538efba08b1d723c3a1c2d26c146c8bc95cdf529b7"
+    },
+    {
+      "id": "dorothy-look-11",
+      "path": "public/look-assets/dorothy-look-11.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-11.jpg",
+      "bytes": 76662,
+      "sha256": "967d0bd6e5b9540572021c86b9562fb9a3ac92e1493ed49dcd8fabc58eaafb0c"
+    },
+    {
+      "id": "dorothy-look-12",
+      "path": "public/look-assets/dorothy-look-12.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-12.jpg",
+      "bytes": 76821,
+      "sha256": "2f487ba7d3a959b24e1f9d76b6e91b72572f531ff9d53a4b456a861720555d66"
+    },
+    {
+      "id": "dorothy-look-13",
+      "path": "public/look-assets/dorothy-look-13.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-13.jpg",
+      "bytes": 75747,
+      "sha256": "cd36dbda03041c6f287b69dd05cc17fb7bd54fae0bfa4df1deb7b1e95b5ebba6"
+    },
+    {
+      "id": "dorothy-look-14",
+      "path": "public/look-assets/dorothy-look-14.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-14.jpg",
+      "bytes": 81847,
+      "sha256": "d455789641eb339279f725e8212b9b8c22a10d2bbc17052f00f18d124a1beeca"
+    },
+    {
+      "id": "dorothy-look-15",
+      "path": "public/look-assets/dorothy-look-15.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-15.jpg",
+      "bytes": 77966,
+      "sha256": "c65dcccaf77e4d6a5bb0f1a5851452a4281b950628c3a30489c37edeeb671842"
+    },
+    {
+      "id": "dorothy-look-16",
+      "path": "public/look-assets/dorothy-look-16.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-16.jpg",
+      "bytes": 81206,
+      "sha256": "46aaa16d0c856c202e437df7eb561da3923bc2498278fea979d8c2303942b49e"
+    },
+    {
+      "id": "dorothy-look-17",
+      "path": "public/look-assets/dorothy-look-17.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-17.jpg",
+      "bytes": 81198,
+      "sha256": "54928ee5f88ef707768d976065cbbe6cb35cd35f73d9a722f02752f8bc764386"
+    },
+    {
+      "id": "dorothy-look-18",
+      "path": "public/look-assets/dorothy-look-18.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-18.jpg",
+      "bytes": 77353,
+      "sha256": "b32abcf305fb0972b129bfbebae6552d63a14b3d1faa91a7cc5f50ae2ecafaea"
+    },
+    {
+      "id": "dorothy-look-19",
+      "path": "public/look-assets/dorothy-look-19.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-19.jpg",
+      "bytes": 78122,
+      "sha256": "84d9ef1153c2f4c1f59c81ab684d16049a28a158eb2a482a8e82189f681dd529"
+    },
+    {
+      "id": "dorothy-look-20",
+      "path": "public/look-assets/dorothy-look-20.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-20.jpg",
+      "bytes": 77119,
+      "sha256": "e0fc69a03154bd9ad51c5425662f1219770bf970ca7aa923b9b08464aadb459e"
+    },
+    {
+      "id": "dorothy-look-21",
+      "path": "public/look-assets/dorothy-look-21.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-21.jpg",
+      "bytes": 79724,
+      "sha256": "abede10985c494def74d93c504b762a0d3aba8955877a48aa5dc888a092b1cf4"
+    },
+    {
+      "id": "dorothy-look-22",
+      "path": "public/look-assets/dorothy-look-22.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-22.jpg",
+      "bytes": 81210,
+      "sha256": "f31c452f8be541140d007596d486461184b7856a7cc949caa19de008ed30b41e"
+    },
+    {
+      "id": "dorothy-look-23",
+      "path": "public/look-assets/dorothy-look-23.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-23.jpg",
+      "bytes": 77012,
+      "sha256": "5f0f9e8545f4186bdf60b605851a499a59ca75653c041110de0af481f2cb5c10"
+    },
+    {
+      "id": "dorothy-look-24",
+      "path": "public/look-assets/dorothy-look-24.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-24.jpg",
+      "bytes": 75478,
+      "sha256": "00e5efd4a9499edf501e6b7fed504e243b715561deceeb6339f62a15de4191f1"
+    },
+    {
+      "id": "dorothy-look-25",
+      "path": "public/look-assets/dorothy-look-25.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-25.jpg",
+      "bytes": 80187,
+      "sha256": "9291a16a602c8dba767865fce04376cf04b75182965f6ffc4d44144b3a17f9aa"
+    },
+    {
+      "id": "dorothy-look-26",
+      "path": "public/look-assets/dorothy-look-26.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-26.jpg",
+      "bytes": 73932,
+      "sha256": "adfef2b23d8c9f401e29678eda08ecf72b0276ff22702a0724cacce93d4b77cd"
+    },
+    {
+      "id": "dorothy-look-27",
+      "path": "public/look-assets/dorothy-look-27.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-27.jpg",
+      "bytes": 81619,
+      "sha256": "9763da672be7ff38667ee334119a0f7d383c1a4ff461f0f4f900e3ad65614be5"
+    },
+    {
+      "id": "dorothy-look-28",
+      "path": "public/look-assets/dorothy-look-28.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-28.jpg",
+      "bytes": 77433,
+      "sha256": "9fb8a92dfb7eeb36621310d8c37a5786a8e996780fbde5459489d88ca8f39990"
+    },
+    {
+      "id": "dorothy-look-29",
+      "path": "public/look-assets/dorothy-look-29.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-29.jpg",
+      "bytes": 76662,
+      "sha256": "09479b331c3df0850f6723130e34cee0d7b23254f8774920841d330d5fc1a7e4"
+    },
+    {
+      "id": "dorothy-look-30",
+      "path": "public/look-assets/dorothy-look-30.jpg",
+      "legacyCompatibilityPath": "public/avatars/styles/dorothy-look-30.jpg",
+      "bytes": 77577,
+      "sha256": "b40f6f5b07b39537436b962883fee34a7dfdb71eace85aa81228ac0b9ce02acb"
+    }
+  ]
+}

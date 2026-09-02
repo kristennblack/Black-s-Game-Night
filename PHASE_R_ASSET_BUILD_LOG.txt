@@ -1,0 +1,3 @@
+WROTE skinned John 2843.82421875 KiB clips 19
+WROTE public/models/environments/papa-shop-barn-production.glb 410.78125 KiB 927 nodes
+WROTE public/models/sets/papa-shop-production-props.glb 193.734375 KiB 172 nodes

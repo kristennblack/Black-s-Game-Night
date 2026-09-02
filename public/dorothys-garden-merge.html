@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Dorothy's Garden Merge - Black Family Game Night</title>
+<style>
+:root{color-scheme:dark;--ink:#fff8e9;--muted:#c8b99f;--gold:#e8bd70;--leaf:#66845b;--soil:#4d3424;--cream:#efe0bf}*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink);background:radial-gradient(circle at 50% 0,#687a54 0,#33472f 24%,#251b14 68%,#120d09 100%)}body{display:grid;place-items:center;padding:10px}.wrap{width:min(100%,620px)}.head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:0 4px 8px}.brand{font-family:Georgia,serif;font-weight:950;letter-spacing:.04em;line-height:1}.brand small{display:block;font:900 10px/1 system-ui;letter-spacing:.2em;color:#f0cf8b;margin-bottom:5px}.stats{text-align:right;font-size:11px;color:var(--muted);line-height:1.4}.stats b{font-size:18px;color:var(--gold)}.stats .level{display:block;color:#dce8cf;font-weight:900;letter-spacing:.04em}.garden-shell{position:relative;padding:7px;border-radius:28px;background:linear-gradient(145deg,#8b6b45,#4c3826 44%,#2c2118);border:1px solid #aa8658;box-shadow:0 22px 66px #0009,inset 0 1px #e0c69455}.garden-shell:before{content:"";position:absolute;inset:2px;border-radius:24px;border:1px solid #f3dca01c;pointer-events:none}canvas{display:block;width:100%;aspect-ratio:1;background:#2e3627;border-radius:21px;touch-action:none}.legend{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;margin:8px 4px 0;color:#d6c7ae;font-size:11px}.legend b{color:#f3ddaa}.legend i{width:7px;height:7px;border-radius:50%;background:#e9cb77;box-shadow:0 0 10px #efd88c;display:inline-block}.row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:8px 4px 0}.row button,.row a{min-height:44px;display:inline-flex;align-items:center;justify-content:center;padding:0 15px;border:1px solid #856b49;border-radius:12px;background:#30251c;color:#f8ead0;font-weight:900;text-decoration:none;font-size:12px}.row button{background:linear-gradient(#5a714d,#3f5739);border-color:#81936e}.row span{font-size:11px;color:var(--muted);text-align:center;line-height:1.3;flex:1}.garden-note{margin:8px 4px 0;padding:9px 11px;border-radius:13px;background:#1e271dbb;border:1px solid #617054;color:#d6dfca;font-size:11px;line-height:1.35}.garden-note strong{color:#f1dca8}@media(max-width:520px){body{padding:6px}.head{align-items:center}.brand{font-size:16px}.stats b{font-size:15px}.row{flex-wrap:wrap}.row span{order:3;flex-basis:100%}.garden-note{font-size:10px}}
+</style>
+<link rel="stylesheet" href="/phase-w-platform.css?v=W45-HEADWEAR-SCALE-RECOVERY-63">
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="brand"><small>DOROTHY · COTTAGE GARDEN</small>DOROTHY'S GARDEN MERGE</div>
+    <div class="stats">SCORE <b id="score">0</b> · BEST <b id="best">0</b><span class="level" id="level">POTTING CORNER</span></div>
+  </div>
+  <div class="garden-shell"><canvas id="game" width="720" height="720" aria-label="Dorothy's cozy cottage garden merge puzzle"></canvas></div>
+  <div class="legend"><i></i><b>Glowing plants can merge</b><span>·</span><span>matching plants become a new named flower or garden feature</span></div>
+  <div class="row"><button id="new" type="button">NEW GARDEN</button><span>Tap to enter · swipe or use arrow keys · merge matching plants and flowers</span><a href="/">Back to Lodge</a></div>
+  <div class="garden-note"><strong>Garden progression:</strong> richer beds, cottage details and new zones unlock as your plants grow. Weeds, roots, stones and broken pots may appear as garden jobs; strong merges clear them.</div>
+</div>
+<script>
+(()=>{
+const BFGN_PROGRESS_KEY='bfgn_arcade_progress_v1',BFGN_ACH_KEY='bfgn_arcade_achievements_v1';
+function bfRead(k,f){try{return JSON.parse(localStorage.getItem(k)||'')||f}catch{return f}}
+function bfWrite(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
+function bfPlay(id){const p=bfRead(BFGN_PROGRESS_KEY,{plays:0,games:{},wins:0});p.plays=(p.plays||0)+1;p.games=p.games||{};p.games[id]=(p.games[id]||0)+1;bfWrite(BFGN_PROGRESS_KEY,p)}
+function bfUnlock(id,label){const a=bfRead(BFGN_ACH_KEY,{});if(a[id])return;a[id]={label,at:Date.now()};bfWrite(BFGN_ACH_KEY,a)}
+async function bfGrantDorothyLook(itemId,rewardKey){try{const p=bfRead('gn_profile_v1',{}),key='bfgn_dorothy_looks_v1';if(!itemId)return;let local=bfRead(key,{});if(!local[itemId]){local[itemId]={unlockedAt:Date.now(),source:rewardKey||'arcade'};bfWrite(key,local);}const cache=bfRead('bfgn_arcade_phase_w_v1',{});cache.dorothyLooks=local;bfWrite('bfgn_arcade_phase_w_v1',cache);if(!p.profileId)return;const r=await fetch('/api/arcade/look',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({profileId:p.profileId,name:p.name||'Family Player',character:'dorothy',action:'grant',itemId,rewardKey})});const d=await r.json().catch(()=>({}));if(!r.ok||!d.profile)return;bfWrite(key,d.profile.dorothyLooks||local);const next=bfRead('bfgn_arcade_phase_w_v1',{});next.dorothyLooks=d.profile.dorothyLooks||local;bfWrite('bfgn_arcade_phase_w_v1',next)}catch{}}
+
+const c=document.getElementById('game'),g=c.getContext('2d'),scoreEl=document.getElementById('score'),bestEl=document.getElementById('best'),levelEl=document.getElementById('level');
+const STAGES={
+ 2:{short:'SEED',name:'Seed Packet',kind:'seed'},
+ 4:{short:'SPROUT',name:'Tiny Sprout',kind:'sprout'},
+ 8:{short:'DAISY',name:'Daisy Pot',kind:'daisy'},
+ 16:{short:'LAVENDER',name:'Lavender Pot',kind:'lavender'},
+ 32:{short:'ROSE',name:'Rose Planter',kind:'rose'},
+ 64:{short:'PEONY',name:'Peony Bed',kind:'peony'},
+ 128:{short:'COTTAGE',name:'Cottage Flower Bed',kind:'mixed'},
+ 256:{short:'TRELLIS',name:'Blooming Trellis',kind:'trellis'},
+ 512:{short:'GLASS',name:'Greenhouse Corner',kind:'greenhouse'},
+ 1024:{short:'GARDEN',name:'Cottage Garden',kind:'cottage'},
+ 2048:{short:'DOROTHY',name:"Dorothy's Family Garden",kind:'family'}
+};
+const BLOCKERS={'-1':'Weeds','-2':'Tangled Roots','-3':'Garden Stone','-4':'Broken Pot'};
+const LEVELS=[
+ {need:0,name:'POTTING CORNER'},
+ {need:32,name:'COTTAGE BEDS'},
+ {need:128,name:'BLOOMING WALK'},
+ {need:512,name:'GREENHOUSE CORNER'},
+ {need:2048,name:"DOROTHY'S FAMILY GARDEN"}
+];
+let board,score=0,best=Number(localStorage.getItem('dorothyGardenBest')||0),state='ready',gardenLevel=0,spawnedLevels=new Set(),message='',messageUntil=0,mergeBursts=[],petals=[];
+bestEl.textContent=best;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function isPlant(v){return Number(v)>0}function isBlocker(v){return Number(v)<0}
+function empty(){const a=[];for(let y=0;y<4;y++)for(let x=0;x<4;x++)if(board[y][x]===0)a.push([x,y]);return a}
+function highest(){let h=0;for(const row of board)for(const v of row)if(v>h)h=v;return h}
+function levelFor(v=highest()){let n=0;for(let i=0;i<LEVELS.length;i++)if(v>=LEVELS[i].need)n=i;return n}
+function addTile(){const e=empty();if(!e.length)return;const [x,y]=e[Math.floor(Math.random()*e.length)];board[y][x]=Math.random()<.9?2:4}
+function showMessage(text,ms=1800){message=text;messageUntil=performance.now()+ms}
+function sync(){scoreEl.textContent=score;best=Math.max(best,score);bestEl.textContent=best;localStorage.setItem('dorothyGardenBest',best);gardenLevel=levelFor();levelEl.textContent=LEVELS[gardenLevel].name;if(best>=128)bfGrantDorothyLook('dorothy-look-05','dorothy-garden-first-bloom')}
+function reset(){board=Array.from({length:4},()=>Array(4).fill(0));score=0;state='ready';gardenLevel=0;spawnedLevels=new Set();mergeBursts=[];petals=[];message='';addTile();addTile();sync()}
+function begin(){if(state==='ready'){state='play';bfPlay('dorothys-garden-merge');showMessage('Dorothy’s garden is open. Match the glowing plants.')}}
+function mergeSegment(seg){const vals=seg.filter(isPlant),out=[],merged=[];for(const v of vals){if(out.length&&out[out.length-1]===v&&!merged[out.length-1]){out[out.length-1]*=2;const nv=out[out.length-1];score+=nv;merged[out.length-1]=true;mergeBursts.push({value:nv,at:performance.now()});if(nv>=512){bfUnlock('dorothy-green-thumb','Dorothy Green Thumb');bfGrantDorothyLook('dorothy-look-10','dorothy-green-thumb')}if(nv>=2048){bfUnlock('dorothy-family-garden','Dorothy Family Garden');bfGrantDorothyLook('dorothy-look-29','dorothy-family-garden')}}else{out.push(v);merged.push(false)}}while(out.length<seg.length)out.push(0);return out}
+function lineMove(line){const out=line.slice();let start=0;for(let i=0;i<=line.length;i++){if(i===line.length||isBlocker(line[i])){const merged=mergeSegment(line.slice(start,i));for(let j=start;j<i;j++)out[j]=merged[j-start];if(i<line.length)out[i]=line[i];start=i+1}}return out}
+function transpose(a){return a[0].map((_,i)=>a.map(r=>r[i]))}
+function same(a,b){return JSON.stringify(a)===JSON.stringify(b)}
+function spawnBlockerForLevel(lvl){if(lvl<=0||spawnedLevels.has(lvl))return;spawnedLevels.add(lvl);const e=empty();if(!e.length)return;const [x,y]=e[Math.floor(Math.random()*e.length)],kind=-Math.min(4,lvl);board[y][x]=kind;showMessage(`${LEVELS[lvl].name} unlocked. ${BLOCKERS[kind]} need tending.`)}
+function clearOneBlocker(){const blocks=[];for(let y=0;y<4;y++)for(let x=0;x<4;x++)if(isBlocker(board[y][x]))blocks.push([x,y,board[y][x]]);if(!blocks.length)return false;const [x,y,v]=blocks[Math.floor(Math.random()*blocks.length)];board[y][x]=0;score+=20;showMessage(`${BLOCKERS[v]} cleared. +20 garden care bonus.`);return true}
+function emitPetals(count=14){for(let i=0;i<count;i++)petals.push({x:100+Math.random()*520,y:90+Math.random()*500,vx:(Math.random()-.5)*.45,vy:.25+Math.random()*.5,r:2+Math.random()*3,spin:Math.random()*6.28,life:900+Math.random()*900,born:performance.now()})}
+function move(dir){
+ if(state==='ready')begin();if(state==='over'){reset();begin();return}
+ const before=board.map(r=>r.slice()),beforeLevel=levelFor(),burstsBefore=mergeBursts.length;let b=board.map(r=>r.slice());
+ if(dir==='up'||dir==='down')b=transpose(b);if(dir==='right'||dir==='down')b=b.map(r=>r.slice().reverse());b=b.map(lineMove);if(dir==='right'||dir==='down')b=b.map(r=>r.slice().reverse());if(dir==='up'||dir==='down')b=transpose(b);board=b;
+ if(!same(before,board)){
+   const newMerges=mergeBursts.slice(burstsBefore);if(newMerges.some(m=>m.value>=16))clearOneBlocker();addTile();const afterLevel=levelFor();if(afterLevel>beforeLevel)for(let l=beforeLevel+1;l<=afterLevel;l++)spawnBlockerForLevel(l);if(newMerges.length)emitPetals(10+newMerges.length*5);sync();if(!canMove())state='over';
+ }
+}
+function canMove(){if(empty().length)return true;for(let y=0;y<4;y++)for(let x=0;x<4;x++){const v=board[y][x];if(!isPlant(v))continue;if(x<3&&board[y][x+1]===v)return true;if(y<3&&board[y+1][x]===v)return true}return false}
+function readyToMerge(x,y){const v=board[y][x];if(!isPlant(v))return false;return (x>0&&board[y][x-1]===v)||(x<3&&board[y][x+1]===v)||(y>0&&board[y-1][x]===v)||(y<3&&board[y+1][x]===v)}
+addEventListener('keydown',e=>{const d={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'up',ArrowDown:'down'}[e.key];if(d){e.preventDefault();move(d)}});
+let sx=0,sy=0;c.addEventListener('pointerdown',e=>{sx=e.clientX;sy=e.clientY;c.setPointerCapture?.(e.pointerId)});c.addEventListener('pointerup',e=>{const dx=e.clientX-sx,dy=e.clientY-sy;if(Math.max(Math.abs(dx),Math.abs(dy))<22){if(state==='over'){reset();begin()}else if(state==='ready')begin();return}move(Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up'))});document.getElementById('new').addEventListener('click',reset);
+
+function rr(x,y,w,h,r){g.beginPath();g.roundRect(x,y,w,h,r)}
+function shadowRect(x,y,w,h,r,shadow='#0007',offset=8){g.fillStyle=shadow;rr(x+offset,y+offset,w,h,r);g.fill()}
+function leaf(x,y,rx,ry,rot,color='#66845b'){g.save();g.translate(x,y);g.rotate(rot);g.fillStyle=color;g.beginPath();g.ellipse(0,0,rx,ry,0,0,Math.PI*2);g.fill();g.restore()}
+function flower(cx,cy,r,petalsCount,petal,center='#e8bd70'){g.save();g.translate(cx,cy);for(let i=0;i<petalsCount;i++){g.rotate((Math.PI*2)/petalsCount);g.fillStyle=petal;g.beginPath();g.ellipse(0,-r*.72,r*.38,r*.72,0,0,Math.PI*2);g.fill()}g.fillStyle=center;g.beginPath();g.arc(0,0,r*.32,0,Math.PI*2);g.fill();g.restore()}
+function stem(x,y,h){g.strokeStyle='#526f48';g.lineWidth=4;g.lineCap='round';g.beginPath();g.moveTo(x,y);g.quadraticCurveTo(x-3,y-h*.55,x,y-h);g.stroke();leaf(x-4,y-h*.5,8,4,-.5);leaf(x+5,y-h*.65,8,4,.5)}
+function pot(cx,baseY,w,h,color='#9c6546'){const grad=g.createLinearGradient(cx,baseY-h,cx,baseY);grad.addColorStop(0,'#c8895c');grad.addColorStop(1,color);g.fillStyle='#6b4735';rr(cx-w*.56,baseY-h-5,w*1.12,8,4);g.fill();g.fillStyle=grad;g.beginPath();g.moveTo(cx-w*.48,baseY-h);g.lineTo(cx+w*.48,baseY-h);g.lineTo(cx+w*.34,baseY);g.lineTo(cx-w*.34,baseY);g.closePath();g.fill();g.fillStyle='#f3d5a51e';g.fillRect(cx-w*.3,baseY-h+4,w*.12,h-8)}
+function drawSeed(cx,cy,s){g.fillStyle='#e6c58a';rr(cx-s*.22,cy-s*.18,s*.44,s*.36,8);g.fill();g.strokeStyle='#9b7447';g.lineWidth=2;g.stroke();g.fillStyle='#6a8457';g.font=`900 ${s*.11}px system-ui`;g.textAlign='center';g.fillText('SEEDS',cx,cy-s*.015);leaf(cx,cy+s*.08,s*.08,s*.035,-.5,'#789264')}
+function drawSprout(cx,cy,s){g.fillStyle='#553928';g.beginPath();g.ellipse(cx,cy+s*.14,s*.18,s*.06,0,0,Math.PI*2);g.fill();g.strokeStyle='#4d7544';g.lineWidth=5;g.beginPath();g.moveTo(cx,cy+s*.12);g.lineTo(cx,cy-s*.08);g.stroke();leaf(cx-s*.07,cy-s*.06,s*.09,s*.045,-.55,'#6e9a62');leaf(cx+s*.07,cy-s*.08,s*.09,s*.045,.55,'#7fa86d')}
+function drawPlant(kind,cx,cy,s){
+ if(kind==='seed')return drawSeed(cx,cy,s);if(kind==='sprout')return drawSprout(cx,cy,s);
+ if(kind==='daisy'){pot(cx,cy+s*.2,s*.42,s*.28);for(const dx of [-.12,0,.12]){stem(cx+s*dx,cy+s*.05,s*.28);flower(cx+s*dx,cy-s*.22+(Math.abs(dx)*s*.15),s*.12,8,'#f5efe1')}}
+ else if(kind==='lavender'){pot(cx,cy+s*.22,s*.44,s*.28,'#855945');for(const dx of [-.14,-.05,.05,.14]){stem(cx+s*dx,cy+s*.07,s*.32);for(let j=0;j<4;j++){g.fillStyle=j%2?'#9b75a8':'#b28abd';g.beginPath();g.arc(cx+s*dx+(j%2?3:-3),cy-s*(.1+j*.06),s*.035,0,Math.PI*2);g.fill()}}}
+ else if(kind==='rose'){pot(cx,cy+s*.23,s*.5,s*.25,'#7d4a38');for(const dx of [-.14,0,.14]){stem(cx+s*dx,cy+s*.08,s*.28);flower(cx+s*dx,cy-s*.18-(dx===0?s*.04:0),s*.13,7,dx===0?'#c95767':'#e17b86','#d9aa5e')}}
+ else if(kind==='peony'){g.fillStyle='#604332';rr(cx-s*.34,cy+s*.08,s*.68,s*.18,7);g.fill();g.fillStyle='#4a6c47';for(const dx of [-.22,-.1,.05,.2])leaf(cx+s*dx,cy+s*.02,s*.1,s*.05,dx*2);for(const [dx,dy,col] of [[-.2,-.06,'#e69aa6'],[-.05,-.17,'#f0b1bb'],[.12,-.08,'#df879a'],[.24,-.18,'#f1bdc4']])flower(cx+s*dx,cy+s*dy,s*.14,10,col,'#e4b770')}
+ else if(kind==='mixed'){g.fillStyle='#6f5a3b';rr(cx-s*.38,cy+s*.11,s*.76,s*.17,7);g.fill();const specs=[[-.26,-.08,'#f0e5d1'],[-.1,-.2,'#a58ac4'],[.06,-.1,'#d87583'],[.22,-.22,'#f0c164'],[.3,-.02,'#f3e9d8']];for(const [dx,dy,col] of specs){stem(cx+s*dx,cy+s*.12,s*(.22-dy*.25));flower(cx+s*dx,cy+s*dy,s*.105,8,col)}}
+ else if(kind==='trellis'){g.strokeStyle='#9b7651';g.lineWidth=5;for(const dx of [-.28,0,.28]){g.beginPath();g.moveTo(cx+s*dx,cy+s*.23);g.lineTo(cx+s*dx,cy-s*.3);g.stroke()}for(const yy of [-.18,.02]){g.beginPath();g.moveTo(cx-s*.34,cy+s*yy);g.lineTo(cx+s*.34,cy+s*yy);g.stroke()}g.strokeStyle='#57734c';g.lineWidth=5;g.beginPath();g.moveTo(cx-s*.28,cy+s*.2);g.bezierCurveTo(cx+s*.2,cy+s*.05,cx-s*.18,cy-s*.18,cx+s*.28,cy-s*.28);g.stroke();for(const [dx,dy] of [[-.2,.08],[.04,-.02],[-.08,-.16],[.24,-.24]])flower(cx+s*dx,cy+s*dy,s*.09,6,'#d8879b')}
+ else if(kind==='greenhouse'){g.fillStyle='#d7e5d433';g.strokeStyle='#d7e5d4aa';g.lineWidth=4;g.beginPath();g.moveTo(cx-s*.32,cy+s*.23);g.lineTo(cx-s*.32,cy-s*.12);g.lineTo(cx,cy-s*.34);g.lineTo(cx+s*.32,cy-s*.12);g.lineTo(cx+s*.32,cy+s*.23);g.closePath();g.fill();g.stroke();g.beginPath();g.moveTo(cx,cy-s*.34);g.lineTo(cx,cy+s*.23);g.moveTo(cx-s*.32,cy-s*.12);g.lineTo(cx+s*.32,cy-s*.12);g.stroke();for(const dx of [-.18,0,.18]){stem(cx+s*dx,cy+s*.2,s*.22);flower(cx+s*dx,cy-s*.01,s*.075,7,dx===0?'#e4b976':'#dc8ea1')}}
+ else if(kind==='cottage'||kind==='family'){g.fillStyle='#dcc89f';rr(cx-s*.28,cy-s*.06,s*.56,s*.32,6);g.fill();g.fillStyle='#7c4c3d';g.beginPath();g.moveTo(cx-s*.35,cy-s*.05);g.lineTo(cx,cy-s*.32);g.lineTo(cx+s*.35,cy-s*.05);g.closePath();g.fill();g.fillStyle='#5d4534';rr(cx-s*.06,cy+s*.08,s*.12,s*.18,3);g.fill();g.fillStyle='#9cc0b4';rr(cx-s*.21,cy+.01*s,s*.11,s*.1,2);g.fill();rr(cx+s*.1,cy+.01*s,s*.11,s*.1,2);g.fill();for(const [dx,col] of [[-.32,'#e49aa6'],[-.2,'#eee5d4'],[.22,'#d89ab7'],[.33,'#f0c26c']])flower(cx+s*dx,cy+s*.2,s*.075,7,col);if(kind==='family'){g.fillStyle='#f0c77a';g.font=`900 ${s*.16}px Georgia`;g.textAlign='center';g.fillText('♥',cx,cy-s*.1)}}
+}
+function drawBlocker(v,cx,cy,s){g.save();if(v===-1){for(let i=-2;i<=2;i++){g.strokeStyle=i%2?'#76905d':'#56734b';g.lineWidth=6;g.beginPath();g.moveTo(cx+i*s*.08,cy+s*.2);g.quadraticCurveTo(cx+i*s*.12,cy,cx+(i*.05-0.08)*s,cy-s*.2);g.stroke()}g.fillStyle='#d8b767';g.font=`900 ${s*.14}px system-ui`;g.textAlign='center';g.fillText('WEEDS',cx,cy+s*.35)}else if(v===-2){g.strokeStyle='#75583e';g.lineWidth=9;g.lineCap='round';for(let i=0;i<4;i++){g.beginPath();g.moveTo(cx-s*.28+i*s*.08,cy-s*.18);g.bezierCurveTo(cx+s*.25,cy-s*.05,cx-s*.25,cy+s*.1,cx+s*.26-i*s*.08,cy+s*.23);g.stroke()}g.fillStyle='#d8b767';g.font=`900 ${s*.12}px system-ui`;g.textAlign='center';g.fillText('ROOTS',cx,cy+s*.38)}else if(v===-3){g.fillStyle='#8b877d';g.beginPath();g.ellipse(cx,cy+s*.05,s*.28,s*.2,-.12,0,Math.PI*2);g.fill();g.fillStyle='#b6b0a444';g.beginPath();g.ellipse(cx-s*.06,cy-s*.01,s*.12,s*.07,-.2,0,Math.PI*2);g.fill();g.fillStyle='#e1c682';g.font=`900 ${s*.1}px system-ui`;g.textAlign='center';g.fillText('STONE',cx,cy+s*.38)}else{g.fillStyle='#a96549';g.beginPath();g.moveTo(cx-s*.22,cy-s*.12);g.lineTo(cx+s*.18,cy-s*.08);g.lineTo(cx+s*.1,cy+s*.24);g.lineTo(cx-s*.15,cy+s*.2);g.closePath();g.fill();g.strokeStyle='#e1a984';g.lineWidth=3;g.beginPath();g.moveTo(cx-s*.03,cy-s*.1);g.lineTo(cx+s*.04,cy+s*.05);g.lineTo(cx-s*.04,cy+s*.2);g.stroke();g.fillStyle='#e1c682';g.font=`900 ${s*.09}px system-ui`;g.textAlign='center';g.fillText('BROKEN POT',cx,cy+s*.39)}g.restore()}
+function wrapLabel(text,cx,y,maxWidth,fontSize){const words=text.split(' ');let line='',lines=[];g.font=`900 ${fontSize}px system-ui`;for(const w of words){const t=line?line+' '+w:w;if(g.measureText(t).width>maxWidth&&line){lines.push(line);line=w}else line=t}if(line)lines.push(line);lines=lines.slice(0,2);lines.forEach((ln,i)=>g.fillText(ln,cx,y+i*(fontSize+2)))}
+function drawPreparedBed(x,y,s,ready=false){shadowRect(x,y,s,s,16,'#0005',6);const grad=g.createLinearGradient(x,y,x,y+s);grad.addColorStop(0,gardenLevel>=2?'#73563a':'#624831');grad.addColorStop(1,'#3f2d22');g.fillStyle=grad;rr(x,y,s,s,16);g.fill();g.strokeStyle=ready?'#e9d28a':'#92724e';g.lineWidth=ready?3:2;g.stroke();g.fillStyle='#25170f55';rr(x+11,y+12,s-22,s-25,11);g.fill();for(let i=0;i<5;i++){g.fillStyle='#b89a7055';g.beginPath();g.arc(x+22+i*19,y+s-18-(i%2)*3,1.5,0,Math.PI*2);g.fill()}}
+function drawTile(x,y,v,s,ready,now){drawPreparedBed(x,y,s,ready);if(isBlocker(v)){drawBlocker(v,x+s/2,y+s/2-5,s*.75);return}if(!isPlant(v)){g.fillStyle='#b8ae9477';g.font=`800 ${s*.08}px system-ui`;g.textAlign='center';g.fillText('prepared soil',x+s/2,y+s*.54);return}const data=STAGES[Math.min(v,2048)]||STAGES[2048],pulse=ready?(Math.sin(now/220)+1)/2:0;g.save();if(ready){g.shadowColor='#f2da86';g.shadowBlur=12+10*pulse;g.strokeStyle=`rgba(242,218,134,${.45+.35*pulse})`;g.lineWidth=4;rr(x+4,y+4,s-8,s-8,14);g.stroke();g.translate(0,Math.sin(now/180)*1.6)}drawPlant(data.kind,x+s/2,y+s*.47,s*.82);g.restore();g.fillStyle='#fff3d8';g.textAlign='center';wrapLabel(data.name,x+s/2,y+s*.78,s*.86,clamp(s*.09,10,14));if(ready){g.fillStyle='#f0d484';g.font=`1000 ${s*.065}px system-ui`;g.fillText('READY TO MERGE',x+s/2,y+s*.96);for(let i=0;i<3;i++){const a=now/500+i*2.1,rx=x+s*(.18+.64*((Math.sin(a)+1)/2)),ry=y+s*(.14+.15*((Math.cos(a*1.3)+1)/2));g.fillStyle='#fff0b6';g.beginPath();g.arc(rx,ry,2.2,0,Math.PI*2);g.fill()}}}
+function drawWateringCan(x,y,scale=1){g.save();g.translate(x,y);g.scale(scale,scale);g.fillStyle='#6e8784';rr(-18,-10,30,22,5);g.fill();g.strokeStyle='#9bb0aa';g.lineWidth=4;g.beginPath();g.arc(2,-11,14,Math.PI,0);g.stroke();g.beginPath();g.moveTo(-18,-2);g.lineTo(-33,-12);g.lineTo(-38,-9);g.stroke();g.restore()}
+function drawBirdbath(x,y,scale=1){g.save();g.translate(x,y);g.scale(scale,scale);g.fillStyle='#a6a292';g.beginPath();g.ellipse(0,-10,22,7,0,0,Math.PI*2);g.fill();g.fillRect(-5,-8,10,26);g.beginPath();g.ellipse(0,20,16,5,0,0,Math.PI*2);g.fill();g.fillStyle='#88a9a7';g.beginPath();g.ellipse(0,-12,16,3,0,0,Math.PI*2);g.fill();g.restore()}
+function drawGardenFrame(now){const bg=g.createLinearGradient(0,0,0,720);bg.addColorStop(0,gardenLevel>=3?'#53684c':'#485b42');bg.addColorStop(.55,'#30402f');bg.addColorStop(1,'#243323');g.fillStyle=bg;g.fillRect(0,0,720,720);for(let i=0;i<18;i++){const x=(i*83+37)%720,y=42+(i*47)%630;g.fillStyle=i%3?'#d7c69b18':'#8da66e18';g.beginPath();g.arc(x,y,2+(i%4),0,Math.PI*2);g.fill()}shadowRect(26,26,668,654,27,'#10150e88',10);const frame=g.createLinearGradient(26,26,694,680);frame.addColorStop(0,'#92714b');frame.addColorStop(.45,'#5f4934');frame.addColorStop(1,'#403225');g.fillStyle=frame;rr(26,26,668,654,27);g.fill();g.strokeStyle='#d1ae7033';g.lineWidth=2;g.stroke();g.fillStyle='#2d3f2d';rr(45,47,630,614,22);g.fill();if(gardenLevel>=1){for(let i=0;i<10;i++){leaf(54+i*67,58+(i%2)*6,12,5,.3+(i%3)*.5,'#6f8f62')}}if(gardenLevel>=2){for(let i=0;i<7;i++)flower(74+i*92,650-(i%2)*8,8,6,i%2?'#d895a4':'#e8d9bb')}if(gardenLevel>=3){g.strokeStyle='#b7aa8d55';g.lineWidth=2;for(let x=110;x<630;x+=42){g.beginPath();g.moveTo(x,57);g.lineTo(x,73);g.stroke()}}if(gardenLevel>=4){g.fillStyle='#f4d48b';g.font='900 19px Georgia';g.textAlign='center';g.fillText('♥ FAMILY GARDEN ♥',360,70)}drawWateringCan(80,638,.8);drawBirdbath(638,625,.72);g.fillStyle='#d9c497';g.font='800 10px system-ui';g.textAlign='left';g.fillText('DOROTHY’S WATERING CAN',54,674);g.textAlign='right';g.fillText('BIRDBATH',668,674)}
+function updatePetals(now){petals=petals.filter(p=>now-p.born<p.life);for(const p of petals){const age=(now-p.born)/p.life;p.x+=p.vx;p.y+=p.vy;g.save();g.translate(p.x,p.y);g.rotate(p.spin+age*4);g.globalAlpha=1-age;g.fillStyle=Math.floor(p.born)%2?'#eab1bb':'#f0d48a';g.beginPath();g.ellipse(0,0,p.r,p.r*.55,0,0,Math.PI*2);g.fill();g.restore()}}
+function drawOverlay(now){if(state!=='ready'&&state!=='over')return;g.fillStyle='#10140ed8';rr(46,47,628,614,22);g.fill();g.textAlign='center';g.fillStyle='#fff6df';g.font='950 43px Georgia';g.fillText(state==='over'?'GARDEN REST':'DOROTHY’S GARDEN MERGE',360,300);g.fillStyle='#e8c77f';g.font='800 19px system-ui';g.fillText(state==='over'?`Score ${score} · Best ${best}`:'A cozy cottage garden where every merge grows something new.',360,345);g.fillStyle='#d1c5ae';g.font='16px system-ui';g.fillText(state==='over'?'Tap or press an arrow to plant a new garden':'Swipe or press an arrow to start growing',360,385);if(state==='ready'){flower(304,440,14,8,'#f0e7d7');flower(360,425,16,9,'#dd96a7');flower(416,440,14,8,'#a98bc0')}}
+function drawMessage(now){if(now>=messageUntil||!message)return;const a=clamp((messageUntil-now)/300,0,1);g.globalAlpha=Math.min(1,a+.25);g.fillStyle='#172117ee';rr(118,83,484,42,13);g.fill();g.strokeStyle='#839772';g.stroke();g.fillStyle='#f4e4bd';g.font='800 13px system-ui';g.textAlign='center';g.fillText(message,360,109);g.globalAlpha=1}
+function draw(){const now=performance.now();drawGardenFrame(now);const s=126,gap=12,gx=86,gy=92;for(let y=0;y<4;y++)for(let x=0;x<4;x++){const px=gx+x*(s+gap),py=gy+y*(s+gap),v=board[y][x];drawTile(px,py,v,s,readyToMerge(x,y),now)}updatePetals(now);drawMessage(now);drawOverlay(now);requestAnimationFrame(draw)}
+reset();draw();
+})();
+</script>
+<script type="module" src="/phase-w-platform.mjs?v=W45-HEADWEAR-SCALE-RECOVERY-63"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+BLACK FAMILY GAME NIGHT v1.3.0-real3d - GITHUB + CLOUDFLARE
+
+GITHUB DESKTOP
+1. Open the existing Black Family Game Night repository.
+2. Keep its hidden .git folder.
+3. Replace the tracked project files with this package.
+4. Commit summary: Black Family Game Night v1.3.0 - real 3D Prop Hunt rebuild
+5. Push origin/main.
+
+CLOUDFLARE
+The existing connection should deploy automatically.
+Confirm if needed:
+- Production branch: main
+- Build command: blank / None
+- Deploy command: npx wrangler deploy
+- Root directory: /
+
+IMPORTANT
+The updated wrangler.jsonc retains GameHub migration v1 and adds PropHuntRoom migration v2. Both bindings are required.
+
+VERIFY
+- Lodge shows v1.3.0-real3d.
+- Family Prop Hunt Play creates a private room.
+- A second device can join the invite URL.
+- Solid walls hide players and stop shots.
+- Camera does not leave the building through walls.

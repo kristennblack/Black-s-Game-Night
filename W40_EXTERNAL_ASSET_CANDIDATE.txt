@@ -1,0 +1,3 @@
+GAME-NIGHT-STAGING-CANDIDATE-W40-EXTERNAL-ASSET-PIPELINE-59
+Base official release: GAME-NIGHT-STAGING-PHASE-W30-PROP-HUNT-P0-GAMEPLAY-54
+Gate: external production assets + actual device visual proof required before CURRENT_RELEASE advances.
