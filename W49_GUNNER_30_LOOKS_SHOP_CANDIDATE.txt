@@ -1,2 +1,0 @@
-GAME-NIGHT-STAGING-CANDIDATE-W49-GUNNER-30-LOOKS-SHOP-CLEANUP-67
-Status: TECHNICAL CANDIDATE — exact final ZIP cold test and real-device visual approval required.

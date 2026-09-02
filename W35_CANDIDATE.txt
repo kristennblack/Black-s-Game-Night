@@ -1,7 +1,0 @@
-GAME-NIGHT-STAGING-CANDIDATE-W35-TRUE-PRODUCTION-VISUAL-SLICE-56
-TECHNICAL CANDIDATE
-621/621 regression PASS
-4305 staging PASS, 2 infrastructure warnings, 0 fail
-Production3D asset audit PASS
-Real-device WebGL visual gate PENDING
-Approved John likeness gate PRESERVED

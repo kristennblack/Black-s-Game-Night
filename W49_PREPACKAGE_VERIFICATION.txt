@@ -1,6 +1,0 @@
-W49 PREPACKAGE VERIFICATION
-Candidate: GAME-NIGHT-STAGING-CANDIDATE-W49-GUNNER-30-LOOKS-SHOP-CLEANUP-67
-Full Node regression: 703 / 703 PASS
-Staging validator: 4509 PASS / 2 WARN / 0 FAIL
-Warnings: existing Three.js/addon CDN dependencies; Wrangler/Cloudflare deployment unavailable in this environment.
-Exact ZIP cold extraction must still be rerun after packaging.

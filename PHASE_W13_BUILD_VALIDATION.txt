@@ -1,4 +1,0 @@
-W.13 working tree staging validator: 211 pass, 0 fail, 2 warnings.
-Cold-extracted W.13 package staging validator: 211 pass, 0 fail, 2 warnings.
-Warnings: inherited core 3D CDN dependency; live Wrangler/Cloudflare deployment unavailable in this environment.
-Catalog: 400 unique items; 175 token-store; 150 arcade/achievement; 35 seasonal/birthday; 20 collection completion; 20 secret/prestige.

@@ -1,5 +1,0 @@
-GAME-NIGHT-STAGING-CANDIDATE-W44-EARRING-HEADWEAR-62
-Base release identity remains W30 until real-device approval.
-Purpose: portrait semantic anchors for earrings, headwear and remaining accessory families.
-Actual browser QA proofs are packaged under visual_proofs/.
-Cloudflare deployment is not verified from this environment.
